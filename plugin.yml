@@ -1,0 +1,53 @@
+name: PrisonMine
+main: com.wolvencraft.mcprison.mines.PrisonMine
+version: 2.1.0
+description: A must-have tool for all prison servers
+authors: [bitWolfy, jjkoletar]
+depend: [PrisonSuite]
+commands:
+  mine:
+    description: PrisonMine help
+permissions:
+  mcprison.mine.*:
+    default: op
+    children:
+      mcprison.mine.admin: true
+  mcprison.mine.normal:
+    default: op
+    children:
+      mcprison.mine.info.time: true
+      mcprison.mine.reset.sign: true
+      mcprison.mine.protection.*: true
+      mcprison.mine.reset.broadcast: true
+  mcprison.mine.admin:
+    default: op
+    children:
+      mcprison.mine.normal: true
+      mcprison.mine.info.*: true
+      mcprison.mine.reset.*: true
+      mcprison.mine.edit: true
+      mcprison.mine.bypass.*: true
+  mcprison.mine.info.*:
+    default: op
+    children:
+      mcprison.mine.info.time: true
+      mcprison.mine.info.list: true
+  mcprison.mine.protection.*:
+    default: op
+    children:
+      mcprison.mine.protection.break: true
+      mcprison.mine.protection.place: true
+      mcprison.mine.protection.pvp: true
+  mcprison.mine.bypass.*:
+    default: op
+    children:
+      mcprison.mine.bypass.break: true
+      mcprison.mine.bypass.place: true
+      mcprison.mine.bypass.pvp: true
+      mcprison.mine.bypass.cooldown: true
+  mcprison.mine.reset.*:
+    default: op
+    children:
+      mcprison.mine.reset.broadcast: true
+      mcprison.mine.reset.manual: true
+      mcprison.mine.reset.sign: true
