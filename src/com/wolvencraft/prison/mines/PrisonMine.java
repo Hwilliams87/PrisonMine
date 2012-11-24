@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -18,7 +17,6 @@ import com.wolvencraft.prison.mines.mine.*;
 import com.wolvencraft.prison.mines.settings.*;
 import com.wolvencraft.prison.mines.util.GeneratorUtil;
 import com.wolvencraft.prison.mines.util.Message;
-import com.wolvencraft.prison.mines.util.Util;
 import com.wolvencraft.prison.region.PrisonRegion;
 
 public class PrisonMine extends PrisonPlugin {
@@ -81,31 +79,8 @@ public class PrisonMine extends PrisonPlugin {
 		
 		Message.log("PrisonMine started [ " + mines.size() + " mine(s) found ]");
 		
-		Message.debug("7. Starting up the timer");
-		final long checkEvery = settings.TICKRATE;
-		
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-			public void run() {
-				for(Mine curMine : mines) {
-					if(curMine.getAutomatic() && Mine.get(curMine.getParent()) == null) {
-						int nextReset = curMine.getResetsInSafe();
-						List<Integer> warnTimes = curMine.getWarningTimes();
-						
-						if(!curMine.getSilent() && curMine.getWarned() && warnTimes.indexOf(new Integer(nextReset)) != -1)
-							Message.broadcast(Util.parseVars(language.RESET_AUTOMATIC, curMine));
-						
-						if(nextReset <= 0) {
-							MineCommand.RESET.run(curMine.getName());
-						}
-						curMine.updateTimer(checkEvery);
-					}
-				
-					if(curMine.getCooldown() && curMine.getCooldownEndsIn() > 0)
-						curMine.updateCooldown(checkEvery);
-				}
-				DisplaySign.updateAll();
-			}
-		}, 0L, checkEvery);
+		Message.debug("7. Sending a timed task to PrisonCore");
+		PrisonSuite.addTask(new MineTask(20));
 	}
 	
 	
