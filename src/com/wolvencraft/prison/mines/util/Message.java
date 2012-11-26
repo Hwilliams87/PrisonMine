@@ -1,6 +1,7 @@
 package com.wolvencraft.prison.mines.util;
 
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,6 +12,8 @@ import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 
 public class Message extends com.wolvencraft.prison.util.Message {
+	private static Logger logger = Logger.getLogger("PrisonMine");
+	
 	public static void send(String message) {
 		CommandSender sender = CommandManager.getSender();
 		if(sender instanceof Player) send((Player) sender, message);
