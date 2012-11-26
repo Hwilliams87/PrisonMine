@@ -31,7 +31,7 @@ public class BlockBreakListener implements Listener
 		Player player = event.getPlayer();
 		
 		if(player.hasPermission("protection.bypass.break")) {
-			Message.debug("The player has a permission to bypass the protection. Aborting . . .");
+			Message.debug("The player has bypass permission");
 			signCheck(event);
 			return;
 		}

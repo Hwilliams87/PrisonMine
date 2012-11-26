@@ -29,7 +29,7 @@ public class BlockPlaceListener implements Listener
 		Player player = event.getPlayer();
 		
 		if(player.hasPermission("protection.bypass.place")) {
-			Message.debug("The player has a permission to bypass the protection. Aborting . . .");
+			Message.debug("The player has bypass permission");
 			return;
 		}
 
