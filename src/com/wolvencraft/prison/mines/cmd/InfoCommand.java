@@ -102,22 +102,25 @@ public class InfoCommand  implements BaseCommand {
 			}
 			if(finalList.size() % 2 != 0) Message.send("        " + finalList.get(finalList.size() - 1));
 			
-			Message.send("     ----------   ----------");
+			Message.send("                     ----------   ----------");
 			boolean enabled = curMine.getBlacklist().getEnabled();
 			boolean whitelist = curMine.getBlacklist().getWhitelist();
 			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
 			
-			str = "Blacklist: ";
-			if(enabled) str += ChatColor.GREEN + "on";
-			else str += ChatColor.RED + "off";
-			str += ChatColor.WHITE + " | Whitelist: ";
-			if(whitelist) str += ChatColor.GREEN + "on";
-			else str += ChatColor.RED + "off";
+			str = "               [ ";
+			if(enabled) str += ChatColor.GREEN;
+			else str += ChatColor.RED;
+			str += "Blacklist" + ChatColor.WHITE + " ]      [ ";
+			if(whitelist) str += ChatColor.GREEN;
+			else str += ChatColor.RED;
+			str += "Whitelist" + ChatColor.WHITE + " ]";
 			Message.send(str);
-			Message.send(ChatColor.BLUE + " Blacklist Composition: ");
-			for(MaterialData block : blocks) {
-				String[] parts = {block.getItemTypeId() + "", block.getData() + ""};
-				Message.send(" - " + Util.parseMetadata(parts, true) + " " + block.getItemType().toString().toLowerCase().replace("_", " "));
+			if(!blocks.isEmpty()) {
+				Message.send(ChatColor.BLUE + "    Blacklist Composition: ");
+				for(MaterialData block : blocks) {
+					String[] parts = {block.getItemTypeId() + "", block.getData() + ""};
+					Message.send("        - " + Util.parseMetadata(parts, true) + " " + block.getItemType().toString().toLowerCase().replace("_", " "));
+				}
 			}
 			
 			return true;

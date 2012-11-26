@@ -81,6 +81,7 @@ public class Util {
 	public static String parseMetadata(String[] parts, boolean recursive) {
 		if(recursive)
 		{
+			int data = Integer.parseInt(parts[1]);
 			switch(Integer.parseInt(parts[0]))
 			{
 				case 5:
@@ -88,17 +89,17 @@ public class Util {
 				case 17:
 				case 18:
 				{
-					if(Integer.parseInt(parts[1]) == 1) parts[1] = "pine";
-					else if(Integer.parseInt(parts[1]) == 2) parts[1] = "birch";
-					else if(Integer.parseInt(parts[1]) == 3) parts[1] = "jungle";
+					if(data == 1) parts[1] = "pine";
+					else if(data == 2) parts[1] = "birch";
+					else if(data == 3) parts[1] = "jungle";
 					else parts[1] = "oak";
 
 					break;
 				}
 				case 24:
 				{
-					if(Integer.parseInt(parts[1]) == 1) parts[1] = "chiseled";
-					else if(Integer.parseInt(parts[1]) == 2) parts[1] = "smooth";
+					if(data == 1) parts[1] = "chiseled";
+					else if(data == 2) parts[1] = "smooth";
 					else parts[1] = "";
 
 					break;
@@ -106,60 +107,64 @@ public class Util {
 				case 33:
 				case 34:
 				{
-					if(Integer.parseInt(parts[1]) == 1) parts[1] = "sandstone";
-					else if(Integer.parseInt(parts[1]) == 2) parts[1] = "wooden";
-					else if(Integer.parseInt(parts[1]) == 3) parts[1] = "cobblestone";
-					else if(Integer.parseInt(parts[1]) == 4) parts[1] = "brick";
-					else if(Integer.parseInt(parts[1]) == 5) parts[1] = "stone brick";
-					else if(Integer.parseInt(parts[1]) == 6) parts[1] = "smooth";
+					if(data == 1) parts[1] = "sandstone";
+					else if(data == 2) parts[1] = "wooden";
+					else if(data == 3) parts[1] = "cobblestone";
+					else if(data == 4) parts[1] = "brick";
+					else if(data == 5) parts[1] = "stone brick";
+					else if(data == 6) parts[1] = "smooth";
 					else parts[1] = "stone";
 
 					break;
 				}
 				case 35:
 				{
-					if(Integer.parseInt(parts[1]) == 1) parts[1] = "orange";
-					else if(Integer.parseInt(parts[1]) == 2) parts[1] = "magenta";
-					else if(Integer.parseInt(parts[1]) == 3) parts[1] = "lightblue";
-					else if(Integer.parseInt(parts[1]) == 4) parts[1] = "yellow";
-					else if(Integer.parseInt(parts[1]) == 5) parts[1] = "lime";
-					else if(Integer.parseInt(parts[1]) == 6) parts[1] = "pink";
-					else if(Integer.parseInt(parts[1]) == 7) parts[1] = "gray";
-					else if(Integer.parseInt(parts[1]) == 8) parts[1] = "lightgray";
-					else if(Integer.parseInt(parts[1]) == 9) parts[1] = "cyan";
-					else if(Integer.parseInt(parts[1]) == 10) parts[1] = "purple";
-					else if(Integer.parseInt(parts[1]) == 11) parts[1] = "blue";
-					else if(Integer.parseInt(parts[1]) == 12) parts[1] = "brown";
-					else if(Integer.parseInt(parts[1]) == 13) parts[1] = "green";
-					else if(Integer.parseInt(parts[1]) == 14) parts[1] = "red";
-					else if(Integer.parseInt(parts[1]) == 15) parts[1] = "black";
+					if(data == 1) parts[1] = "orange";
+					else if(data == 2) parts[1] = "magenta";
+					else if(data == 3) parts[1] = "lightblue";
+					else if(data == 4) parts[1] = "yellow";
+					else if(data == 5) parts[1] = "lime";
+					else if(data == 6) parts[1] = "pink";
+					else if(data == 7) parts[1] = "gray";
+					else if(data == 8) parts[1] = "lightgray";
+					else if(data == 9) parts[1] = "cyan";
+					else if(data == 10) parts[1] = "purple";
+					else if(data == 11) parts[1] = "blue";
+					else if(data == 12) parts[1] = "brown";
+					else if(data == 13) parts[1] = "green";
+					else if(data == 14) parts[1] = "red";
+					else if(data == 15) parts[1] = "black";
 					else parts[1] = "white";
 
 					break;
 				}
 				case 84:
 				{
-					if(Integer.parseInt(parts[1]) == 1) parts[1] = "gold disk";
-					else if(Integer.parseInt(parts[1]) == 2) parts[1] = "green disk";
-					else if(Integer.parseInt(parts[1]) == 3) parts[1] = "orange disk";
-					else if(Integer.parseInt(parts[1]) == 4) parts[1] = "red disk";
-					else if(Integer.parseInt(parts[1]) == 5) parts[1] = "lime disk";
-					else if(Integer.parseInt(parts[1]) == 6) parts[1] = "purple disk";
-					else if(Integer.parseInt(parts[1]) == 7) parts[1] = "violet disk";
-					else if(Integer.parseInt(parts[1]) == 8) parts[1] = "black disk";
-					else if(Integer.parseInt(parts[1]) == 9) parts[1] = "white disk";
-					else if(Integer.parseInt(parts[1]) == 10) parts[1] = "sea green disk";
-					else if(Integer.parseInt(parts[1]) == 11) parts[1] = "broken disk";
+					if(data == 1) parts[1] = "gold disk";
+					else if(data == 2) parts[1] = "green disk";
+					else if(data == 3) parts[1] = "orange disk";
+					else if(data == 4) parts[1] = "red disk";
+					else if(data == 5) parts[1] = "lime disk";
+					else if(data == 6) parts[1] = "purple disk";
+					else if(data == 7) parts[1] = "violet disk";
+					else if(data == 8) parts[1] = "black disk";
+					else if(data == 9) parts[1] = "white disk";
+					else if(data == 10) parts[1] = "sea green disk";
+					else if(data == 11) parts[1] = "broken disk";
 					else parts[1] = "";
 
 					break;
 				}
 				case 98:
 				{
-					if(Integer.parseInt(parts[1]) == 1) parts[1] = "mossy";
-					else if(Integer.parseInt(parts[1]) == 2) parts[1] = "cracked";
-					else if(Integer.parseInt(parts[1]) == 3) parts[1] = "chiseled";
+					if(data == 1) parts[1] = "mossy";
+					else if(data == 2) parts[1] = "cracked";
+					else if(data == 3) parts[1] = "chiseled";
 					else parts[1] = "";
+				}
+				default:
+				{
+					if(data == 0) parts[1] = "";
 				}
 			}
 		}
