@@ -1,5 +1,5 @@
 name: PrisonMine
-main: com.wolvencraft.mcprison.mines.PrisonMine
+main: com.wolvencraft.prison.mines.PrisonMine
 version: 2.1.0
 description: A must-have tool for all prison servers
 authors: [bitWolfy, jjkoletar]
