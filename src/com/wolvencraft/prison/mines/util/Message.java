@@ -21,7 +21,7 @@ public class Message extends com.wolvencraft.prison.util.Message {
 	}
 	
 	public static void sendSuccess(Player player, String message) {
-		message = PrisonMine.getLanguage().GENERAL_SUCCESS + " " + message;
+		message = PrisonMine.getLanguage().GENERAL_SUCCESS + " " + ChatColor.WHITE + message;
 		send(player, message);
 	}
 	
@@ -32,7 +32,7 @@ public class Message extends com.wolvencraft.prison.util.Message {
 	}
 	
 	public static void sendError(Player player, String message) {
-		message = PrisonMine.getLanguage().GENERAL_ERROR + " " + message;
+		message = PrisonMine.getLanguage().GENERAL_ERROR + " " + ChatColor.WHITE + message;
 		send(player, message);
 	}
 	
