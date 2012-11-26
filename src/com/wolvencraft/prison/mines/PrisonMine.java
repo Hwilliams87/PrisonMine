@@ -36,11 +36,11 @@ public class PrisonMine extends PrisonPlugin {
 	
 	public void onEnable() {
 		prisonSuite = PrisonSuite.addPlugin(this);
-		Message.debug("1. Established connection with PrisonCore");
 
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 		settings = new Settings(this);
+		Message.debug("1. Established connection with PrisonCore");
 		
 		getLanguageData().options().copyDefaults(true);
 		saveLanguageData();
