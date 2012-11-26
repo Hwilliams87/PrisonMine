@@ -27,7 +27,9 @@ public class DataCommand implements BaseCommand {
 		}
 		else if(args[1].equalsIgnoreCase("load")) {
 			CommandManager.getPlugin().reloadConfig();
+			CommandManager.getPlugin().reloadSettings();
 			CommandManager.getPlugin().reloadLanguageData();
+			CommandManager.getPlugin().reloadLanguage();
 			PrisonMine.setMines(MineData.loadAll());
 			PrisonMine.setSigns(SignData.loadAll());
 			Message.sendSuccess("Mine and sign data loaded from disc");

@@ -127,6 +127,8 @@ public class PrisonMine extends PrisonPlugin {
 	public static Language getLanguage()				{ return language; }
 	public static PrisonSuite getPrisonSuite() 			{ return prisonSuite; }
 	public double getVersion()							{ return version; }
+	public void reloadSettings()						{ settings = null; settings = new Settings(this); }
+	public void reloadLanguage()						{ language = null; language = new Language(this); }
 	
 	public static void setMines(List<Mine> newMines) {
 		mines.clear();
