@@ -14,7 +14,7 @@ public class Message extends com.wolvencraft.prison.util.Message {
 	public static void send(String message) {
 		CommandSender sender = CommandManager.getSender();
 		if(sender instanceof Player) send((Player) sender, message);
-		else log(message);
+		else Bukkit.getConsoleSender().sendMessage(message);
 	}
 	
 	public static void sendSuccess(Player player, String message) {
@@ -25,7 +25,7 @@ public class Message extends com.wolvencraft.prison.util.Message {
 	public static void sendSuccess(String message) {
 		CommandSender sender = CommandManager.getSender();
 		if(sender instanceof Player) sendSuccess((Player) sender, message);
-		else log(message);
+		else Bukkit.getConsoleSender().sendMessage(message);
 	}
 	
 	public static void sendError(Player player, String message) {
@@ -36,14 +36,14 @@ public class Message extends com.wolvencraft.prison.util.Message {
 	public static void sendError(String message) {
 		CommandSender sender = CommandManager.getSender();
 		if(sender instanceof Player) sendError((Player) sender, message);
-		else log(message);
+		else Bukkit.getConsoleSender().sendMessage(message);
 	}
 	
 	public static void sendCustom(String title, String message) {
 
 		CommandSender sender = CommandManager.getSender();
 		if(sender instanceof Player) send((Player) sender, ChatColor.GOLD + "[" + title + "] " + ChatColor.WHITE + message);
-		else log(message);
+		else Bukkit.getConsoleSender().sendMessage(message);
 	}
 
     /**
