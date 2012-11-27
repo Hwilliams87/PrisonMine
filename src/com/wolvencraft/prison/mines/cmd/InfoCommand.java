@@ -101,15 +101,15 @@ public class InfoCommand  implements BaseCommand {
 			}
 			if(finalList.size() % 2 != 0) Message.send("        " + finalList.get(finalList.size() - 1));
 			
-			Message.send("                     ----------   ----------");
+			Message.send(" ");
 			boolean enabled = curMine.getBlacklist().getEnabled();
 			boolean whitelist = curMine.getBlacklist().getWhitelist();
 			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
 			
-			str = "               [ ";
+			str = "                 [ ";
 			if(enabled) str += ChatColor.GREEN;
 			else str += ChatColor.RED;
-			str += "Blacklist" + ChatColor.WHITE + " ]      [ ";
+			str += "Blacklist" + ChatColor.WHITE + " ]       [ ";
 			if(whitelist) str += ChatColor.GREEN;
 			else str += ChatColor.RED;
 			str += "Whitelist" + ChatColor.WHITE + " ]";
@@ -121,6 +121,7 @@ public class InfoCommand  implements BaseCommand {
 					Message.send("        - " + Util.parseMetadata(parts, true) + " " + block.getItemType().toString().toLowerCase().replace("_", " "));
 				}
 			}
+			Message.send(" ");
 			
 			return true;
 			
