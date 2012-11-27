@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 
-import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
@@ -19,7 +18,7 @@ public class TimerCommand  implements BaseCommand {
 			return true;
 		}
 
-		Mine curMine = CommandManager.getCurrentMine();
+		Mine curMine = PrisonMine.getCurMine();
 		if(curMine == null) {
 			Message.sendError(PrisonMine.getLanguage().ERROR_MINENOTSELECTED);
 			return false;

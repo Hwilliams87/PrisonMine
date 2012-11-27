@@ -3,11 +3,15 @@ package com.wolvencraft.prison.mines;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.entity.Player;
 
 import com.wolvencraft.prison.PrisonSuite;
 import com.wolvencraft.prison.hooks.PrisonPlugin;
@@ -33,6 +37,8 @@ public class PrisonMine extends PrisonPlugin {
 	private static List<Mine> mines;
 	private static List<DisplaySign> signs;
 	private static List<BaseGenerator> generators;
+
+	private static Map<Player, Mine> curMines;
 	
 	public void onEnable() {
 		prisonSuite = PrisonSuite.addPlugin(this);
@@ -65,6 +71,8 @@ public class PrisonMine extends PrisonPlugin {
 		mines = MineData.loadAll();
 		signs = SignData.loadAll();
 		generators = GeneratorUtil.loadAll();
+		
+		curMines = new HashMap<Player, Mine>();
 		
 		Message.debug("5. Loaded data from file");
 		
@@ -138,5 +146,23 @@ public class PrisonMine extends PrisonPlugin {
 	public static void setSigns(List<DisplaySign> newSigns) {
 		signs.clear();
 		for(DisplaySign sign : newSigns) signs.add(sign);
+	}
+
+	public static Mine getCurMine(Player player) { return curMines.get(player); }
+	
+	public static Mine getCurMine() {
+		CommandSender sender = CommandManager.getSender();
+		if(sender instanceof Player) return getCurMine((Player) sender);
+		return null;
+	}
+	
+	public static void setCurMine(Player player, Mine mine) {
+		if(curMines.get(player) != null) curMines.remove(player);
+		if(mine != null) curMines.put(player, mine);
+	}
+	
+	public static void setCurMine(Mine mine) {
+		CommandSender sender = CommandManager.getSender();
+		if(sender instanceof Player) setCurMine((Player) sender, mine);
 	}
 }

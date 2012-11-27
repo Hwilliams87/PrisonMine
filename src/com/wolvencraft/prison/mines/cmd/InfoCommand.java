@@ -5,7 +5,6 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.material.MaterialData;
 
-import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.mine.Protection;
@@ -19,8 +18,8 @@ public class InfoCommand  implements BaseCommand {
 		Language language = PrisonMine.getLanguage();
 		
 		if(args.length == 1) {
-			if(CommandManager.getCurrentMine() != null) curMine = CommandManager.getCurrentMine();
-			else {
+			curMine = PrisonMine.getCurMine();
+			if(curMine == null) {
 				getHelp();
 				return true;
 			}

@@ -13,7 +13,7 @@ public class ResetCommand implements BaseCommand
 	public boolean run(String[] args) {
 		
 		Mine curMine;
-		if(args.length == 1) curMine = CommandManager.getCurrentMine();
+		if(args.length == 1) curMine = PrisonMine.getCurMine();
 		else curMine = Mine.get(args[1]);
 		
 		if(curMine == null) {

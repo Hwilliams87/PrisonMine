@@ -27,7 +27,7 @@ public class ProtectionCommand  implements BaseCommand {
 		}
 
 		Language language = PrisonMine.getLanguage();
-		Mine curMine = CommandManager.getCurrentMine();
+		Mine curMine = PrisonMine.getCurMine();
 		if(curMine == null) {
 			Message.sendError(language.ERROR_MINENOTSELECTED);
 			return false;

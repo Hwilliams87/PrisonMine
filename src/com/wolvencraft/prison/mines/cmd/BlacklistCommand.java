@@ -5,7 +5,6 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.material.MaterialData;
 
-import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.settings.Language;
@@ -23,7 +22,7 @@ public class BlacklistCommand implements BaseCommand {
 
 		Language language = PrisonMine.getLanguage();
 		
-		Mine curMine = CommandManager.getCurrentMine();
+		Mine curMine = PrisonMine.getCurMine();
 		if(curMine == null) {
 			Message.sendError(language.ERROR_MINENOTSELECTED);
 			return false;

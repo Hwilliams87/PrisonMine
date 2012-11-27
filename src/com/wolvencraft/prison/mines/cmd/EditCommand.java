@@ -34,7 +34,7 @@ public class EditCommand  implements BaseCommand {
 		}
 
 		Language language = PrisonMine.getLanguage();
-		Mine curMine = CommandManager.getCurrentMine();
+		Mine curMine = PrisonMine.getCurMine();
 		if(curMine == null
 				&& !args[0].equalsIgnoreCase("edit")
 				&& !args[0].equalsIgnoreCase("delete")
@@ -51,7 +51,7 @@ public class EditCommand  implements BaseCommand {
 			
 			if(args[1].equalsIgnoreCase("none")) {
 				Message.sendSuccess(Util.parseVars(language.MINE_DESELECTED, curMine));
-				CommandManager.setCurrentMine(null);
+				PrisonMine.setCurMine(null);
 				return true;
 			}
 			
@@ -60,8 +60,8 @@ public class EditCommand  implements BaseCommand {
 				Message.sendError(language.ERROR_MINENAME);
 				return false;
 			}
-			
-			CommandManager.setCurrentMine(curMine);
+
+			PrisonMine.setCurMine(curMine);
 			Message.sendSuccess(Util.parseVars(language.MINE_SELECTED, curMine));
 			return true;
 		}
@@ -187,7 +187,7 @@ public class EditCommand  implements BaseCommand {
 			}
 			
 			if(args.length == 1) {
-				curMine = CommandManager.getCurrentMine();
+				curMine = PrisonMine.getCurMine();
 				if(curMine == null) {
 					Message.sendError(language.ERROR_MINENOTSELECTED);
 					return false;
@@ -204,7 +204,7 @@ public class EditCommand  implements BaseCommand {
 			if(!GeneratorUtil.get(curMine.getGenerator()).remove(curMine)) return false;
 			
 			PrisonMine.getMines().remove(curMine);
-			CommandManager.setCurrentMine(null);
+			PrisonMine.setCurMine(null);
 			Message.sendCustom(curMine.getId(), "Mine successfully deleted");
 			curMine.delete();
 			MineData.saveAll();
