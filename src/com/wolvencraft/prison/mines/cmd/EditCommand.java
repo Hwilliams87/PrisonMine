@@ -49,6 +49,12 @@ public class EditCommand  implements BaseCommand {
 				return false;
 			}
 			
+			if(args[1].equalsIgnoreCase("none")) {
+				Message.sendSuccess(Util.parseVars(language.MINE_DESELECTED, curMine));
+				CommandManager.setCurrentMine(null);
+				return true;
+			}
+			
 			curMine = Mine.get(args[1]);
 			if(curMine == null) {
 				Message.sendError(language.ERROR_MINENAME);
@@ -57,16 +63,6 @@ public class EditCommand  implements BaseCommand {
 			
 			CommandManager.setCurrentMine(curMine);
 			Message.sendSuccess(Util.parseVars(language.MINE_SELECTED, curMine));
-			return true;
-		}
-		else if(args[0].equalsIgnoreCase("none")) {
-			if(args.length != 1) {
-				Message.sendError(language.ERROR_ARGUMENTS);
-				return false;
-			}
-
-			Message.sendSuccess(Util.parseVars(language.MINE_DESELECTED, curMine));
-			CommandManager.setCurrentMine(null);
 			return true;
 		}
 		else if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+")) {
