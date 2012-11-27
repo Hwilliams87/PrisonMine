@@ -21,21 +21,18 @@ public class CommandManager implements CommandExecutor
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		CommandManager.sender = sender;
 		if(!command.getName().equalsIgnoreCase("mine")) return false;
 		
 		if(args.length == 0) {
 			MineCommand.HELP.getHelp();
-			CommandManager.sender = null;
 			return true;
 		}
+
+		CommandManager.sender = sender;
+		
 		for(MineCommand cmd : MineCommand.values()) {
 			if(cmd.isCommand(args[0])) {
-				
-				String argString = "/mine";
-		        for (String arg : args) { argString = argString + " " + arg; }
-				Message.debug(sender.getName() + ": " + argString);
-				
+				if(sender == null) Message.debug("CommandSender is null! (4)");
 				boolean result = cmd.run(args);
 				CommandManager.sender = null;
 				return result;
