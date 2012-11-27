@@ -71,6 +71,13 @@ public class SaveCommand implements BaseCommand {
 			Message.sendError("Mine '" + args[1] + "' already exists!");
 			return false;
 		}
+		
+		for(String bannedName : PrisonMine.getSettings().BANNEDNAMES) {
+			if(args[1].equalsIgnoreCase(bannedName)) {
+				Message.sendError("This name is not valid");
+				return false;
+			}
+		}
 
         Message.debug("Passed mine existance check");
 		

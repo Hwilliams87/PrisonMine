@@ -343,7 +343,6 @@ public class EditCommand  implements BaseCommand {
 	public void getHelp() {
 		Message.formatHeader(20, "Editing");
 		Message.formatHelp("edit", "<id>", "Selects a mine to edit its properties");
-		Message.formatHelp("none", "", "De-selects the mine");
 		Message.formatHelp("name", "<name>", "Sets a display name for a mine");
 		Message.formatHelp("+", "<block> [percentage]", "Adds a block type to the mine");
 		Message.formatHelp("-", "<block> [persentage]", "Removes the block from the mine");
