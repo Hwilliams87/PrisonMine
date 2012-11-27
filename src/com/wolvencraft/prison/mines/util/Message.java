@@ -57,7 +57,7 @@ public class Message extends com.wolvencraft.prison.util.Message {
         if(message == null) message = "";
 		message = PrisonMine.getLanguage().GENERAL_SUCCESS + " " + ChatColor.WHITE + message;
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-        	p.sendMessage(Util.parseColors(message));
+        	if(p.hasPermission("mcprison.mine.reset.broadcast")) p.sendMessage(Util.parseColors(message));
         }
     }
     
