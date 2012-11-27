@@ -8,46 +8,46 @@ commands:
   mine:
     description: PrisonMine help
 permissions:
-  mcprison.mine.*:
+  prison.mine.*:
     default: op
     children:
-      mcprison.mine.admin: true
-  mcprison.mine.normal:
+      prison.mine.admin: true
+  prison.mine.normal:
     default: op
     children:
-      mcprison.mine.info.time: true
-      mcprison.mine.reset.sign: true
-      mcprison.mine.protection.*: true
-      mcprison.mine.reset.broadcast: true
-  mcprison.mine.admin:
+      prison.mine.info.time: true
+      prison.mine.reset.sign: true
+      prison.mine.protection.*: true
+      prison.mine.reset.broadcast: true
+  prison.mine.admin:
     default: op
     children:
-      mcprison.mine.normal: true
-      mcprison.mine.info.*: true
-      mcprison.mine.reset.*: true
-      mcprison.mine.edit: true
-      mcprison.mine.bypass.*: true
-  mcprison.mine.info.*:
+      prison.mine.normal: true
+      prison.mine.info.*: true
+      prison.mine.reset.*: true
+      prison.mine.edit: true
+      prison.mine.bypass.*: true
+  prison.mine.info.*:
     default: op
     children:
-      mcprison.mine.info.time: true
-      mcprison.mine.info.list: true
-  mcprison.mine.protection.*:
+      prison.mine.info.time: true
+      prison.mine.info.list: true
+  prison.mine.protection.*:
     default: op
     children:
-      mcprison.mine.protection.break: true
-      mcprison.mine.protection.place: true
-      mcprison.mine.protection.pvp: true
-  mcprison.mine.bypass.*:
+      prison.mine.protection.break: true
+      prison.mine.protection.place: true
+      prison.mine.protection.pvp: true
+  prison.mine.bypass.*:
     default: op
     children:
-      mcprison.mine.bypass.break: true
-      mcprison.mine.bypass.place: true
-      mcprison.mine.bypass.pvp: true
-      mcprison.mine.bypass.cooldown: true
-  mcprison.mine.reset.*:
+      prison.mine.bypass.break: true
+      prison.mine.bypass.place: true
+      prison.mine.bypass.pvp: true
+      prison.mine.bypass.cooldown: true
+  prison.mine.reset.*:
     default: op
     children:
-      mcprison.mine.reset.broadcast: true
-      mcprison.mine.reset.manual: true
-      mcprison.mine.reset.sign: true
+      prison.mine.reset.broadcast: true
+      prison.mine.reset.manual: true
+      prison.mine.reset.sign: true
