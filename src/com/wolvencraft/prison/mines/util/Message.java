@@ -13,40 +13,40 @@ import com.wolvencraft.prison.mines.PrisonMine;
 
 public class Message extends com.wolvencraft.prison.util.Message {
 	private static Logger logger = Logger.getLogger("PrisonMine");
-	
-	public static void send(String message) {
-		CommandSender sender = CommandManager.getSender();
-		if(sender instanceof Player) send((Player) sender, message);
-		else Bukkit.getConsoleSender().sendMessage(message);
+
+	public static void send(CommandSender sender, String message) {
+		if(message == null) message = "";
+		sender.sendMessage(Util.parseVars(message, PrisonMine.getCurMine(sender)));
 	}
 	
-	public static void sendSuccess(Player player, String message) {
-		message = PrisonMine.getLanguage().GENERAL_SUCCESS + " " + ChatColor.WHITE + message;
-		send(player, message);
+	public static void send(String message) {
+		if(message == null) message = "";
+		send(CommandManager.getSender(), message);
+	}
+	
+	public static void sendSuccess(CommandSender sender, String message) {
+		if(message == null) message = "";
+		send(sender, PrisonMine.getLanguage().GENERAL_SUCCESS + " " + ChatColor.WHITE + message);
 	}
 	
 	public static void sendSuccess(String message) {
-		CommandSender sender = CommandManager.getSender();
-		if(sender instanceof Player) sendSuccess((Player) sender, message);
-		else Bukkit.getConsoleSender().sendMessage(message);
+		if(message == null) message = "";
+		sendSuccess(CommandManager.getSender(), message);
 	}
 	
-	public static void sendError(Player player, String message) {
-		message = PrisonMine.getLanguage().GENERAL_ERROR + " " + ChatColor.WHITE + message;
-		send(player, message);
+	public static void sendError(CommandSender sender, String message) {
+		if(message == null) message = "";
+		send(sender, PrisonMine.getLanguage().GENERAL_ERROR + " " + ChatColor.WHITE + message);
 	}
 	
 	public static void sendError(String message) {
-		CommandSender sender = CommandManager.getSender();
-		if(sender instanceof Player) sendError((Player) sender, message);
-		else Bukkit.getConsoleSender().sendMessage(message);
+		if(message == null) message = "";
+		sendError(CommandManager.getSender(), message);
 	}
 	
 	public static void sendCustom(String title, String message) {
-
-		CommandSender sender = CommandManager.getSender();
-		if(sender instanceof Player) send((Player) sender, ChatColor.GOLD + "[" + title + "] " + ChatColor.WHITE + message);
-		else Bukkit.getConsoleSender().sendMessage(message);
+		if(message == null) message = "";
+		send(CommandManager.getSender(), ChatColor.GOLD + "[" + title + "] " + ChatColor.WHITE + message);
 	}
 
     /**
@@ -59,6 +59,7 @@ public class Message extends com.wolvencraft.prison.util.Message {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
         	if(p.hasPermission("mcprison.mine.reset.broadcast")) p.sendMessage(Util.parseColors(message));
         }
+        Bukkit.getServer().getConsoleSender().sendMessage(Util.parseColors(message));
     }
     
     /**

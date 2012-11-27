@@ -257,7 +257,7 @@ public class Util {
 	 * @return Parsed string
 	 */
 	public static String parseVars(String str, Mine curMine) {
-		if(curMine == null) return null;
+		if(curMine == null) return parseColors(str);
 		
 		String displayName = curMine.getName();
 		if(displayName.equals("")) displayName =  curMine.getId();

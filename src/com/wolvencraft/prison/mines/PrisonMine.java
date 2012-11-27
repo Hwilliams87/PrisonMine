@@ -11,7 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.entity.Player;
 
 import com.wolvencraft.prison.PrisonSuite;
 import com.wolvencraft.prison.hooks.PrisonPlugin;
@@ -38,7 +37,7 @@ public class PrisonMine extends PrisonPlugin {
 	private static List<DisplaySign> signs;
 	private static List<BaseGenerator> generators;
 
-	private static Map<Player, Mine> curMines;
+	private static Map<CommandSender, Mine> curMines;
 	
 	public void onEnable() {
 		prisonSuite = PrisonSuite.addPlugin(this);
@@ -72,7 +71,7 @@ public class PrisonMine extends PrisonPlugin {
 		signs = SignData.loadAll();
 		generators = GeneratorUtil.loadAll();
 		
-		curMines = new HashMap<Player, Mine>();
+		curMines = new HashMap<CommandSender, Mine>();
 		
 		Message.debug("5. Loaded data from file");
 		
@@ -148,21 +147,12 @@ public class PrisonMine extends PrisonPlugin {
 		for(DisplaySign sign : newSigns) signs.add(sign);
 	}
 
-	public static Mine getCurMine(Player player) { return curMines.get(player); }
+	public static Mine getCurMine(CommandSender sender) { return curMines.get(sender); }
+	public static Mine getCurMine() 					{ return getCurMine(CommandManager.getSender()); }
+	public static void setCurMine(Mine mine) 			{ setCurMine(CommandManager.getSender(), mine); }
 	
-	public static Mine getCurMine() {
-		CommandSender sender = CommandManager.getSender();
-		if(sender instanceof Player) return getCurMine((Player) sender);
-		return null;
-	}
-	
-	public static void setCurMine(Player player, Mine mine) {
-		if(curMines.get(player) != null) curMines.remove(player);
-		if(mine != null) curMines.put(player, mine);
-	}
-	
-	public static void setCurMine(Mine mine) {
-		CommandSender sender = CommandManager.getSender();
-		if(sender instanceof Player) setCurMine((Player) sender, mine);
+	public static void setCurMine(CommandSender sender, Mine mine) {
+		if(curMines.get(sender) != null) curMines.remove(sender);
+		if(mine != null) curMines.put(sender, mine);
 	}
 }

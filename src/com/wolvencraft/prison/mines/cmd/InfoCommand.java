@@ -33,7 +33,7 @@ public class InfoCommand  implements BaseCommand {
 		}
 		
 		if(curMine == null) {
-			Message.sendError(language.ERROR_MINENAME);
+			Message.sendError(language.ERROR_MINENAME.replaceAll("<ID>", args[1]));
 			return false;
 		}
 		
