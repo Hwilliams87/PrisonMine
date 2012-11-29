@@ -27,7 +27,7 @@ public class InfoCommand  implements BaseCommand {
 		
 		else curMine = Mine.get(args[1]);
 		
-		if(args.length > 3) {
+		if(args.length > 2) {
 			Message.sendError(language.ERROR_ARGUMENTS);
 			return false;
 		}
