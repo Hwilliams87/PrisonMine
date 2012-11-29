@@ -15,6 +15,6 @@ reset:
   automatic-reset-successful: "Mine &6<NAME>&f has been reset! Next reset in &6<NTIME>&f minute(s)."
   mine-cooldown: "Mine &6<name>&f can be reset in &6<COOLENDS>&f minute(s)."
 sign:
-  title: "-= &e<NAME>&0 =-"
+  title: "&e<NAME>&0"
 misc:
   mine-teleport: "You have been teleported to &6<NAME>&f"
