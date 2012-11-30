@@ -28,7 +28,7 @@ public class BlockPlaceListener implements Listener
 		
 		Player player = event.getPlayer();
 		
-		if(player.hasPermission("protection.bypass.place")) {
+		if(player.hasPermission("prison.mine.bypass.place")) {
 			Message.debug("The player has bypass permission");
 			return;
 		}
@@ -47,7 +47,7 @@ public class BlockPlaceListener implements Listener
 			
 			Message.debug("Location is in the mine protection region");
 			
-			if(!player.hasPermission("protection.place." + mine.getName()) && !player.hasPermission("protection.place")) {
+			if(!player.hasPermission("prison.mine.protection.place." + mine.getName()) && !player.hasPermission("prison.mine.protection.place")) {
 				Message.debug("Player " + event.getPlayer().getName() + " does not have permission to place blocks in the mine");
 				Message.sendError(player, errorString);
 				event.setCancelled(true);

@@ -28,7 +28,7 @@ public class BucketFillListener implements Listener
         
         Player player = event.getPlayer();
         
-        if(player.hasPermission("protection.bypass.break")) {
+        if(player.hasPermission("prison.mine.bypass.break")) {
             Message.debug("The player has a permission to bypass the protection. Aborting . . .");
 			return;
 		}
@@ -41,7 +41,7 @@ public class BucketFillListener implements Listener
             
         	if(!mine.getProtectionRegion().isLocationInRegion(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation())) continue;
         	
-	        if(!player.hasPermission("protection.break." + mine.getName()) && !player.hasPermission("protection.break")) {
+	        if(!player.hasPermission("prison.mine.protection.break." + mine.getName()) && !player.hasPermission("prison.mine.protection.break")) {
 	        	Message.debug("Player " + event.getPlayer().getName() + " does not have permission to fill buckets in the mine");
 	        	Message.sendError(player, "You are not allowed to fill buckets in this area");
 	        	event.setCancelled(true);

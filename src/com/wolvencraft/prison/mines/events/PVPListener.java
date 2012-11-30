@@ -32,7 +32,7 @@ public class PVPListener implements Listener {
 			attacker = (Player) event.getDamager();
 		}
 
-		if (attacker.hasPermission("protection.bypass")) { return; }
+		if (attacker.hasPermission("prison.mine.bypass.pvp")) { return; }
 		Player victim = (Player) event.getEntity();
 
 		List<Mine> mines = PrisonMine.getMines();
@@ -41,6 +41,13 @@ public class PVPListener implements Listener {
 			Message.debug("Checking mine " + mine.getName());
 			
 			if(!mine.getProtectionRegion().isLocationInRegion(victim.getLocation())) continue;
+        	
+	        if(!attacker.hasPermission("prison.mine.protection.pvp." + mine.getName()) && !attacker.hasPermission("prison.mine.protection.pvp")) {
+	        	Message.debug("Player " + attacker.getName() + " does not have permission to PvP in the mine");
+	        	Message.sendError(attacker, "You are not in a No-PvP zone");
+	        	event.setCancelled(true);
+	          	return;
+	        }
 			
 			if (!mine.getProtection().contains(Protection.PVP)) {
 				Message.debug(mine + " doesn't have PvP protection on");

@@ -30,7 +30,7 @@ public class BlockBreakListener implements Listener
 		
 		Player player = event.getPlayer();
 		
-		if(player.hasPermission("protection.bypass.break")) {
+		if(player.hasPermission("prison.mine.bypass.break")) {
 			Message.debug("The player has bypass permission");
 			signCheck(event);
 			return;
@@ -49,7 +49,7 @@ public class BlockBreakListener implements Listener
 			
 			Message.debug("Location is in the mine protection region");
 			
-			if(!player.hasPermission("protection.break." + mine.getName()) && !player.hasPermission("protection.break")) {
+			if(!player.hasPermission("prison.mine.protection.break." + mine.getName()) && !player.hasPermission("prison.mine.protection.break")) {
 				Message.debug("Player " + event.getPlayer().getName() + " does not have permission to break blocks in the mine");
 				Message.sendError(player, errorString);
 				event.setCancelled(true);

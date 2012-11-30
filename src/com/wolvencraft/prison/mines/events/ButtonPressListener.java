@@ -44,12 +44,12 @@ public class ButtonPressListener implements Listener {
 						Mine curMine = Mine.get(sign.getParent());
 						Player player = event.getPlayer();
 						
-						if(!player.hasPermission("mcprison.mine.reset.sign." + curMine.getId()) && !player.hasPermission("mcprison.mine.reset.sign")) {
+						if(!player.hasPermission("prison.mine.reset.sign." + curMine.getId()) && !player.hasPermission("prison.mine.reset.sign")) {
 							Message.sendError(player, PrisonMine.getLanguage().ERROR_ACCESS);
 							return;
 						}
 						
-						if(curMine.getCooldown() && curMine.getCooldownEndsIn() > 0 && !player.hasPermission("mcprison.mine.bypass.cooldown")) {
+						if(curMine.getCooldown() && curMine.getCooldownEndsIn() > 0 && !player.hasPermission("prison.mine.bypass.cooldown")) {
 							Message.sendError(Util.parseVars(PrisonMine.getLanguage().RESET_COOLDOWN, curMine));
 							return;
 						}

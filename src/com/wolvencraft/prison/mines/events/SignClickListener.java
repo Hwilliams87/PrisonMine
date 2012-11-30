@@ -11,10 +11,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.DisplaySign;
 import com.wolvencraft.prison.mines.util.Message;
-public class SignClickListener implements Listener
-{
-	public SignClickListener(PrisonMine plugin)
-	{
+public class SignClickListener implements Listener {
+	public SignClickListener(PrisonMine plugin) {
         Message.debug("Initiating SignClickListener");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -22,6 +20,7 @@ public class SignClickListener implements Listener
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		if(event.isCancelled()) return;
+		if(!event.getPlayer().hasPermission("prison.mine.edit")) return;
 		
 		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			Block block = event.getClickedBlock();
