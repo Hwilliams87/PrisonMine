@@ -14,6 +14,13 @@ public class ResetCommand implements BaseCommand
 		
 		Mine curMine;
 		if(args.length == 1) curMine = PrisonMine.getCurMine();
+		else if(args[1].equalsIgnoreCase("all")) {
+			boolean success = true;
+			for(Mine mine : PrisonMine.getMines()) {
+				if(!MineCommand.RESET.run(mine.getName())) success = false;
+			}
+			return success;
+		}
 		else curMine = Mine.get(args[1]);
 		
 		if(curMine == null) {
