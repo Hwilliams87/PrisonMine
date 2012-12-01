@@ -24,7 +24,7 @@ public class MineTask extends TimedTask {
 				List<Integer> warnTimes = curMine.getWarningTimes();
 				
 				if(!curMine.getSilent() && curMine.getWarned() && warnTimes.indexOf(new Integer(nextReset)) != -1)
-					Message.broadcast(Util.parseVars(PrisonMine.getLanguage().RESET_AUTOMATIC, curMine));
+					Message.broadcast(Util.parseVars(PrisonMine.getLanguage().RESET_WARNING, curMine));
 				
 				if(nextReset <= 0) {
 					MineCommand.RESET.run(curMine.getName());
