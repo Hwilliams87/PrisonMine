@@ -45,6 +45,8 @@ public class DisplaySign implements ConfigurationSerializable  {
 		}
 		String data = lines.get(0).substring(3);
 		int index = data.indexOf("|");
+		if(index == -1) index = data.indexOf(":");
+		
 		if(index == -1) {
 			parent = data.substring(0, data.length() - 1);
 			reset = false;
