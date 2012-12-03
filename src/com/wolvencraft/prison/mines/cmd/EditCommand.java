@@ -5,12 +5,8 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
-import com.wolvencraft.prison.PrisonSuite;
-import com.wolvencraft.prison.region.PrisonSelection;
-import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.generation.BaseGenerator;
 import com.wolvencraft.prison.mines.mine.Mine;
@@ -324,13 +320,6 @@ public class EditCommand  implements BaseCommand {
 			curMine.setParent(args[1]);
 			Message.sendCustom(curMine.getName(), "Mine will is now linked to " + ChatColor.GREEN + args[1]);
 			
-			return curMine.save();
-		}
-		else if(args[0].equalsIgnoreCase("setregion")) {
-			Player player = (Player) CommandManager.getSender();
-			PrisonSelection sel = PrisonSuite.getSelection(player);
-			curMine.setRegion(sel);
-			Message.sendCustom("DEBUG", "Region set");
 			return curMine.save();
 		}
 		else {
