@@ -343,7 +343,7 @@ public class Util {
 			str = str.replaceAll("<NTIME>", ntimeClock);
 		}
 		
-		if(str.startsWith("<M|") && str.endsWith(">")) str = parseVars(PrisonMine.getLanguage().SIGN_TITLE, curMine);
+		if((str.startsWith("<M|") || str.startsWith("<M:")) && str.endsWith(">")) str = parseVars(PrisonMine.getLanguage().SIGN_TITLE, curMine);
 		str = str.replaceAll("<M>", "");
 		
 		return parseColors(str);
