@@ -2,6 +2,7 @@ package com.wolvencraft.prison.mines.util;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -263,6 +264,19 @@ public class Util {
 		if(displayName.equals("")) displayName =  curMine.getId();
 		str = str.replaceAll("<ID>", curMine.getId());
 		str = str.replaceAll("<NAME>", displayName);
+		
+		List<Mine> children = curMine.getChildren();
+		String mineIds = curMine.getId();
+		String mineNames = displayName;
+		if(!children.isEmpty()) {
+			for(Mine childMine : children) {
+				mineIds += ", " + childMine.getId();
+				mineNames += ", " + childMine.getName();
+			}
+		}
+		str = str.replaceAll("<NAMES>", mineNames);
+		str = str.replaceAll("<IDS>", mineIds);
+		
 		
 		if(curMine.getCooldown()) {
 			str = str.replaceAll("<COOLTIME>", parseSeconds(curMine.getCooldownPeriod()));
