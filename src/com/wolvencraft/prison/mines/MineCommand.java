@@ -17,18 +17,18 @@ import com.wolvencraft.prison.mines.util.Message;
  * @author bitWolfy
  */
 public enum MineCommand implements CommandHook {
-	BLACKLIST (BlacklistCommand.class, "mcprison.mine.edit", true, "blacklist", "bl"),
-	DATA (DataCommand.class, "mcprison.mine.admin", true, "data"),
+	BLACKLIST (BlacklistCommand.class, "prison.mine.edit", true, "blacklist", "bl"),
+	DATA (DataCommand.class, "prison.mine.admin", true, "data"),
 	DEBUG(DebugCommand.class, "", false, "setregion", "tp"),
-	EDIT (EditCommand.class, "mcprison.mine.edit", true, "edit", "add", "+", "remove", "-", "delete", "del", "name", "silent", "generator", "link", "setparent", "cooldown", "setregion"),
+	EDIT (EditCommand.class, "prison.mine.edit", true, "edit", "add", "+", "remove", "-", "delete", "del", "name", "silent", "generator", "link", "setparent", "cooldown", "setregion"),
 	HELP (HelpCommand.class, null, true, "help"),
-	INFO (InfoCommand.class, "mcprison.mine.info.time", true, "info"),
-	LIST (ListCommand.class, "mcprison.mine.info.list", true, "list"),
+	INFO (InfoCommand.class, "prison.mine.info.time", true, "info"),
+	LIST (ListCommand.class, "prison.mine.info.list", true, "list"),
 	META (MetaCommand.class, null, true, "meta", "about"),
-	PROTECTION (ProtectionCommand.class, "mcprison.mine.edit", true, "protection", "prot"),
+	PROTECTION (ProtectionCommand.class, "prison.mine.edit", true, "protection", "prot"),
 	RESET (ResetCommand.class, null, true, "reset"),
-	SAVE (SaveCommand.class, "mcprison.mine.edit", false, "save", "create", "new"),
-	TIMER (TimerCommand.class, "mcprison.mine.edit", true, "timer", "auto");
+	SAVE (SaveCommand.class, "prison.mine.edit", false, "save", "create", "new"),
+	TRIGGER (TriggerCommand.class, "prison.mine.edit", true, "trigger");
 	
 	MineCommand(Class<?> clazz, String permission, boolean allowConsole, String... args) {
 		try {
