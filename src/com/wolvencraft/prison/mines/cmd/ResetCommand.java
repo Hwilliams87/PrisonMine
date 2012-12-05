@@ -57,7 +57,6 @@ public class ResetCommand implements BaseCommand
 		String generator = curMine.getGenerator();
 		if(forcedGenerator.equals("")) generator = curMine.getGenerator();
 		
-		if(curMine.getAutomatic()) curMine.resetTimer();
 		if(curMine.getCooldown()) curMine.resetCooldown();
 		
 		if(!(curMine.reset(generator))) return false;

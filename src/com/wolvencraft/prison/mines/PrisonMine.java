@@ -18,6 +18,7 @@ import com.wolvencraft.prison.mines.events.*;
 import com.wolvencraft.prison.mines.generation.BaseGenerator;
 import com.wolvencraft.prison.mines.mine.*;
 import com.wolvencraft.prison.mines.settings.*;
+import com.wolvencraft.prison.mines.tasks.DisplaySignTask;
 import com.wolvencraft.prison.mines.util.GeneratorUtil;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.region.PrisonRegion;
@@ -86,8 +87,8 @@ public class PrisonMine extends PrisonPlugin {
 		
 		Message.log("PrisonMine started [ " + mines.size() + " mine(s) found ]");
 		
-		Message.debug("7. Sending a timed task to PrisonCore");
-		PrisonSuite.addTask(new MineTask(20));
+		Message.debug("7. Sending sign task to PrisonCore");
+		PrisonSuite.addTask(new DisplaySignTask());
 	}
 	
 	
@@ -97,7 +98,7 @@ public class PrisonMine extends PrisonPlugin {
 		SignData.saveAll();
 		
 		getServer().getScheduler().cancelTasks(this);
-		Message.log("[PrisonMine] Plugin stopped");
+		Message.log("Plugin stopped");
 	}
 	
 	public void reloadLanguageData() {

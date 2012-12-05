@@ -5,6 +5,9 @@ import com.wolvencraft.prison.region.PrisonSelection;
 import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.generation.BaseGenerator;
+import com.wolvencraft.prison.mines.triggers.BaseTrigger;
+import com.wolvencraft.prison.mines.triggers.CompositionTrigger;
+import com.wolvencraft.prison.mines.triggers.TimeTrigger;
 import com.wolvencraft.prison.mines.util.GeneratorUtil;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
@@ -51,10 +54,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     private List<MineBlock> blocks;
     private Blacklist blockReplaceBlacklist;
-
-    private boolean resetAutomatically;
-    private int resetPeriod;
-    private long resetsIn;
+    
+    private List<BaseTrigger> resetTriggers;
     
     private boolean cooldownEnabled;
     private int cooldownPeriod;
@@ -97,10 +98,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     	blocks.add(new MineBlock(new MaterialData(Material.AIR), 1.0));
     	blockReplaceBlacklist = new Blacklist();
     	
-    	resetAutomatically = false;
-    	resetPeriod = 300;
-    	resetsIn = 6000;
-
+    	resetTriggers = new ArrayList<BaseTrigger>();
+    	
     	cooldownEnabled = false;
     	cooldownPeriod = 0;
     	cooldownEndsIn = 0;
@@ -138,9 +137,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	blocks = (List<MineBlock>) map.get("blocks");
     	blockReplaceBlacklist = (Blacklist) map.get("blockReplaceBlacklist");
     	
-    	resetAutomatically = ((Boolean) map.get("resetAutomatically")).booleanValue();
-    	resetPeriod = ((Integer) map.get("resetPeriod")).intValue();
-    	resetsIn = ((Integer) map.get("resetsIn")).intValue();
+    	resetTriggers = (List<BaseTrigger>) map.get("resetTriggers");
 
     	cooldownEnabled = ((Boolean) map.get("cooldownEnabled")).booleanValue();
     	cooldownPeriod = ((Integer) map.get("cooldownPeriod")).intValue();
@@ -180,9 +177,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         map.put("blocks", blocks);
         map.put("blockReplaceBlacklist", blockReplaceBlacklist);
         
-        map.put("resetAutomatically", resetAutomatically);
-        map.put("resetPeriod", resetPeriod);
-        map.put("resetsIn", resetsIn);
+        map.put("resetTriggers", resetTriggers);
         
         map.put("cooldownEnabled", cooldownEnabled);
         map.put("cooldownPeriod", cooldownPeriod);
@@ -236,45 +231,35 @@ public class Mine implements ConfigurationSerializable, Listener {
         return true;
     }
     
-    public String getId()						{ return id; }
-    public String getName() 					{ if(name.equalsIgnoreCase("")) return id; else return name; }
+    public String getId()							{ return id; }
+    public String getName() 						{ if(name.equalsIgnoreCase("")) return id; else return name; }
     
-    public boolean hasParent()					{ return (parent != null); }
-    public String getParent() 					{ return parent; }
-    public Mine getSuperParent()				{ return getSuperParent(this); }
+    public boolean hasParent()						{ return (parent != null); }
+    public String getParent() 						{ return parent; }
+    public Mine getSuperParent()					{ return getSuperParent(this); }
     
-    public PrisonRegion getRegion() 			{ return region;}
-    public World getWorld() 					{ return world; }
-    public Location getTpPoint() 				{ return tpPoint; }
+    public PrisonRegion getRegion() 				{ return region;}
+    public World getWorld() 						{ return world; }
+    public Location getTpPoint() 					{ return tpPoint; }
 
-    public List<MineBlock> getBlocks()			{ return blocks; }
-    public Blacklist getBlacklist() 			{ return blockReplaceBlacklist; }
-
-    public boolean getAutomatic() 				{ return resetAutomatically; }
-    public int getResetPeriod() 				{ return resetPeriod; }
-    public int getResetPeriodSafe() 			{ return getResetPeriodSafe(this); }
-    public int getResetsIn() 					{ return (int)(resetsIn / 20); }
-    public int getResetsInSafe() 				{ return getResetsInSafe(this); }
-
-    public boolean getCooldown() 				{ return cooldownEnabled; }
-    public int getCooldownPeriod() 				{ return cooldownPeriod; }
-    public int getCooldownEndsIn() 				{ return (int)(cooldownEndsIn / 20); }
+    public List<MineBlock> getBlocks()				{ return blocks; }
+    public Blacklist getBlacklist() 				{ return blockReplaceBlacklist; }
     
-    public boolean getSilent() 					{ return silent; }
+    public boolean getCooldown() 					{ return cooldownEnabled; }
+    public int getCooldownPeriod() 					{ return cooldownPeriod; }
+    public int getCooldownEndsIn() 					{ return (int)(cooldownEndsIn / 20); }
     
-    public String getGenerator() 				{ return generator.toUpperCase(); }
+    public boolean getSilent() 						{ return silent; }
     
-    public boolean getWarned()					{ return warned; }
-    public List<Integer> getWarningTimes()		{ return warningTimes; }
+    public String getGenerator() 					{ return generator.toUpperCase(); }
     
-    public List<Protection> getProtection() 	{ return enabledProtection; }
-    public PrisonRegion getProtectionRegion() 	{ return protectionRegion; }
-    public Blacklist getBreakBlacklist() 		{ return breakBlacklist; }
-    public Blacklist getPlaceBlacklist() 		{ return placeBlacklist; }
+    public boolean getWarned()						{ return warned; }
+    public List<Integer> getWarningTimes()			{ return warningTimes; }
     
-    public int getBlocksLeft() 					{ return blocksLeft; }
-    public int getTotalBlocks() 				{ return totalBlocks; }
-    
+    public List<Protection> getProtection() 		{ return enabledProtection; }
+    public PrisonRegion getProtectionRegion() 		{ return protectionRegion; }
+    public Blacklist getBreakBlacklist() 			{ return breakBlacklist; }
+    public Blacklist getPlaceBlacklist() 			{ return placeBlacklist; }
     
     
     public void setName(String name) 								{ this.name = name; }
@@ -282,11 +267,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     public void setRegion(PrisonSelection sel)						{ this.region = null; this.region = new PrisonRegion(sel); }
     public void setTpPoint(Location tpPoint) 						{ this.tpPoint = tpPoint; }
     public void setSilent(boolean silent) 							{ this.silent = silent; }
-    
-    public void setResetAutomatically(boolean resetAutomatically) 	{ this.resetAutomatically = resetAutomatically; }
-    public void setResetPeriod(int resetPeriod) 					{ this.resetPeriod = resetPeriod; }
-    public void updateTimer(long ticks) 							{ resetsIn -= ticks; }
-    public void resetTimer() 										{ resetsIn = resetPeriod * 20; }
     
     public void setCooldownEnabled(boolean cooldownEnabled) 		{ this.cooldownEnabled = cooldownEnabled; }
     public void setCooldownPeriod (int cooldownPeriod) 				{ this.cooldownPeriod = cooldownPeriod; }
@@ -297,10 +277,60 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public void setWarned(boolean warned) 							{ this.warned = warned; }
     
-    public void updateBlocksLeft()								 	{ blocksLeft--; }
-    public void resetBlocksLeft() 									{ blocksLeft = totalBlocks; }
-    
 	
+    // Triggers
+    public List<BaseTrigger> getTriggers()			{ return resetTriggers; }
+    
+    public BaseTrigger getTrigger(String triggerId)		{
+    	for(BaseTrigger trigger : resetTriggers) {
+    		if(trigger.getId().equalsIgnoreCase(triggerId)) return trigger;
+    	}
+    	return null;
+    }
+    
+    public boolean getAutomaticReset() { return (getTrigger("time") != null); }
+    
+    public int getResetPeriod() 	{ return ((TimeTrigger)(getTrigger("time"))).getPeriod(); }
+    public int getResetPeriodSafe() { return getResetPeriodSafe(this); }
+    public int getResetsIn() 		{ return ((TimeTrigger)(getTrigger("time"))).getNext(); }
+    public int getResetsInSafe() 	{ return getResetsInSafe(this); }
+    
+    public void setResetPeriod(int period)	{ ((TimeTrigger)(getTrigger("time"))).setPeriod(period); }
+    public void setAutomaticReset(boolean state) {
+    	if(state) {
+    		if(!getAutomaticReset()) resetTriggers.add(new TimeTrigger(this, 900));
+    	}
+    	else {
+    		if(getAutomaticReset()) resetTriggers.remove(getTrigger("time"));
+    	}
+    }
+    
+    public boolean getCompositionReset() { return (getTrigger("composition") != null); }
+    
+    public int getBlocksLeft() 		{ return blocksLeft; }
+    public int getTotalBlocks() 	{ return totalBlocks; }
+    
+    public void updateBlocksLeft()	{ blocksLeft--; }
+    public void resetBlocksLeft() 	{ blocksLeft = totalBlocks; }
+    
+    public double getCompositionPercent() { return ((CompositionTrigger)(getTrigger("composition"))).getPercent(); }
+    
+    public void setCompositionPercent(double percent) { ((CompositionTrigger)(getTrigger("composition"))).setPercent(percent); }
+    
+    public void setCompositionReset(boolean state) {
+    	if(state) {
+    		if(!getCompositionReset()) resetTriggers.add(new CompositionTrigger(this, 900));
+    	}
+    	else {
+    		if(getCompositionReset()) resetTriggers.remove(getTrigger("composition"));
+    	}
+    }
+    
+    public boolean getGlobalReset() { return (getTrigger("global") != null); }
+    //TODO Add the code for global reset trigger
+    
+    // Everything else
+    
 	public List<Mine> getChildren() {
 		List<Mine> children = new ArrayList<Mine>();
 		for(Mine mine : PrisonMine.getMines()) {
@@ -357,7 +387,7 @@ public class Mine implements ConfigurationSerializable, Listener {
 		if(!curMine.hasParent()) return curMine.getResetsIn();
 		else return getResetsInSafe(get(curMine.getParent()));
 	}
-	
+
 	private static int getResetPeriodSafe(Mine curMine) {
 		if(curMine.getParent() == null) return curMine.getResetPeriod();
 		else return getResetPeriodSafe(get(curMine.getParent()));

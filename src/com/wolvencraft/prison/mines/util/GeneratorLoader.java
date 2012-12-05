@@ -11,7 +11,6 @@ import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.generation.BaseGenerator;
 
 public class GeneratorLoader {
-    @SuppressWarnings("resource")
 	public static List<BaseGenerator> load(List<BaseGenerator> generators) {
 		File dir = new File(CommandManager.getPlugin().getDataFolder() + "/generators");
 	
