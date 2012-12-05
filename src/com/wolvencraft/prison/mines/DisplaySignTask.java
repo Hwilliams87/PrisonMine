@@ -1,4 +1,4 @@
-package com.wolvencraft.prison.mines.tasks;
+package com.wolvencraft.prison.mines;
 
 import com.wolvencraft.prison.hooks.TimedTask;
 import com.wolvencraft.prison.mines.mine.DisplaySign;
