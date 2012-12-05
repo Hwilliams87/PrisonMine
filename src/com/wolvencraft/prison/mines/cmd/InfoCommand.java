@@ -38,7 +38,7 @@ public class InfoCommand  implements BaseCommand {
 		}
 		
 		Mine parentMine = curMine.getSuperParent();
-		if(Util.hasPermission("mcprison.mine.info.*")) {
+		if(Util.hasPermission("prison.mine.info.*")) {
 			
 			Message.send("");
 			String displayString = "---==[ " + ChatColor.GREEN + ChatColor.BOLD + curMine.getName() + ChatColor.WHITE + " ]==---";
@@ -125,7 +125,7 @@ public class InfoCommand  implements BaseCommand {
 			
 			return true;
 			
-		} else if(Util.hasPermission("mcprison.mine.info.time")) {
+		} else if(Util.hasPermission("prison.mine.info.time")) {
 			String displayString = "---==[ " + ChatColor.GREEN + ChatColor.BOLD + curMine.getName() + ChatColor.WHITE + " ]==---";
 			for(int i = 0; i < 25 - (curMine.getName().length() / 2); i++) displayString = " " + displayString;
 			Message.send(displayString);
