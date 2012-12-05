@@ -208,7 +208,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         BaseGenerator gen = GeneratorUtil.get(generator);
         if(gen == null) {
         	if(CommandManager.getSender() != null) Message.send((Player) CommandManager.getSender(), "Invalid generator selected!");
-            else Message.log("[PrisonMine] Invalid generator selected!");
+            else Message.log("Invalid generator selected!");
             return false;
         }
         else return gen.run(this);
@@ -301,6 +301,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     		if(!getAutomaticReset()) resetTriggers.add(new TimeTrigger(this, 900));
     	}
     	else {
+    		getTrigger("time").cancel();
     		if(getAutomaticReset()) resetTriggers.remove(getTrigger("time"));
     	}
     }
@@ -322,6 +323,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     		if(!getCompositionReset()) resetTriggers.add(new CompositionTrigger(this, 900));
     	}
     	else {
+    		getTrigger("composition").cancel();
     		if(getCompositionReset()) resetTriggers.remove(getTrigger("composition"));
     	}
     }

@@ -71,33 +71,13 @@ public class TimeTrigger implements BaseTrigger, ConfigurationSerializable {
 			mine.updateCooldown(PrisonMine.getSettings().TICKRATE);
 	}
 	
-	/**
-	 * Returns the name of the task for debug. Only useful outside of the mine class.
-	 * @return Name of the trigger
-	 */
-	public String getName() { return "PrisonMine:" + this.getName() + ":" + mine.getId(); }
+	public String getName() 	{ return "PrisonMine:" + this.getName() + ":" + mine.getId(); }
+	public String getId() 		{ return "time"; }
+	public boolean getExpired() { return canceled; }
+	public void cancel() 		{ canceled = true; }
 	
-	/**
-	 * Returns the internal ID of the reset trigger. Useless outside of the mine class
-	 * @return ID of the trigger
-	 */
-	public String getId() { return "time"; }
-	
-	/**
-	 * Checks if the task has expired
-	 * @return true if the task has expired, false otherwise.
-	 */
-	public boolean getExpired() {
-		return canceled;
-	}
-	
-	/**
-	 * Cancels the current task.
-	 */
-	public void cancel() { canceled = true; }
-	
-	public int getPeriod() { return (int)(period / 20); }
-	public int getNext() { return (int)(next / 20); }
+	public int getPeriod() 		{ return (int)(period / 20); }
+	public int getNext() 		{ return (int)(next / 20); }
 	
 	public void setPeriod(int period) { this.period = period * 20; }
 }

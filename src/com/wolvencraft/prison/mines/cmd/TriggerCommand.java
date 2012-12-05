@@ -58,7 +58,15 @@ public class TriggerCommand implements BaseCommand {
 					Message.sendCustom(curMine.getName(), "Composition trigger is " + ChatColor.GREEN + "on");
 				}
 			} else {
-				
+				String percentString = args[2];
+				if(percentString.endsWith("%")) percentString.substring(0, percentString.length() - 1);
+				double percent = Double.parseDouble(percentString) / 100;
+				if(percent <= 0 || percent > 100) {
+					Message.sendError("Invalid percent value provided");
+					return false;
+				}
+				curMine.setCompositionPercent(percent);
+				Message.sendCustom(curMine.getName(), "Mine will recet once it is " + ChatColor.GOLD + percentString + ChatColor.WHITE + "% empty");
 			}
 		} else if(args[1].equalsIgnoreCase("global")) {
 			if(args[2].equalsIgnoreCase("toggle")) {
