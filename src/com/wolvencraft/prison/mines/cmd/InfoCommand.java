@@ -66,7 +66,7 @@ public class InfoCommand  implements BaseCommand {
 			Message.send(str);
 			
 			// Timer. Not displayed if it is disabled
-			if(parentMine.getAutomatic())
+			if(parentMine.getAutomaticReset())
 				Message.send("    Resets every ->  " + ChatColor.GREEN + Util.parseSeconds(parentMine.getResetPeriodSafe()) + "    " + ChatColor.GOLD + Util.parseSeconds(parentMine.getResetsInSafe()) + ChatColor.WHITE + "  <- Next Reset");
 			
 			// Generator & parent mine
@@ -131,7 +131,7 @@ public class InfoCommand  implements BaseCommand {
 			Message.send(displayString);
 			Message.send("");
 			
-			if(parentMine.getAutomatic())
+			if(parentMine.getAutomaticReset())
 				Message.send("    Resets every ->  " + ChatColor.GREEN + Util.parseSeconds(parentMine.getResetPeriodSafe()) + "    " + ChatColor.GOLD + Util.parseSeconds(parentMine.getResetsInSafe()) + ChatColor.WHITE + "  <- Next Reset");
 			else Message.send("   Mine has to be reset automatically");
 			

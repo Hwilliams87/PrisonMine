@@ -30,6 +30,7 @@ public class TimerCommand  implements BaseCommand {
 				return false;
 			}
 			
+			/*
 			if(curMine.getAutomatic()) {
 				curMine.setResetAutomatically(false);
 				Message.sendCustom(curMine.getName(), "Automatic mine reset is " + ChatColor.RED + "off");
@@ -39,6 +40,7 @@ public class TimerCommand  implements BaseCommand {
 				if(curMine.getResetPeriod() == 0) curMine.setResetPeriod(900);
 				Message.sendCustom(curMine.getName(), "Automatic mine reset is " + ChatColor.GREEN + "on");
 			}
+			*/
 		}
 		else if(args[1].equalsIgnoreCase("set")) {
 			if(args.length != 3) {
