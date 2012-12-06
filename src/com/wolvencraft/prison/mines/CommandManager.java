@@ -6,8 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import com.wolvencraft.prison.mines.util.Message;
 
-public class CommandManager implements CommandExecutor
-{
+public class CommandManager implements CommandExecutor {
 	private static PrisonMine plugin;
 	private static CommandSender sender;
 	
@@ -29,7 +28,6 @@ public class CommandManager implements CommandExecutor
 		
 		for(MineCommand cmd : MineCommand.values()) {
 			if(cmd.isCommand(args[0])) {
-				if(sender == null) Message.debug("CommandSender is null! (4)");
 				boolean result = cmd.run(args);
 				CommandManager.sender = null;
 				return result;

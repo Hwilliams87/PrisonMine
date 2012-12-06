@@ -28,7 +28,8 @@ public enum MineCommand implements CommandHook {
 	PROTECTION (ProtectionCommand.class, "prison.mine.edit", true, "protection", "prot"),
 	RESET (ResetCommand.class, null, true, "reset"),
 	SAVE (SaveCommand.class, "prison.mine.edit", false, "save", "create", "new"),
-	TRIGGER (TriggerCommand.class, "prison.mine.edit", true, "trigger");
+	TRIGGER (TriggerCommand.class, "prison.mine.edit", true, "trigger"),
+	TIMER (WarningCommand.class, "prison.mine.edit", true, "warning");
 	
 	MineCommand(Class<?> clazz, String permission, boolean allowConsole, String... args) {
 		try {

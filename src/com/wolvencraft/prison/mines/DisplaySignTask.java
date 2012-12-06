@@ -6,9 +6,7 @@ import com.wolvencraft.prison.mines.mine.DisplaySign;
 public class DisplaySignTask implements TimedTask {
 	public boolean canceled;
 	
-	public DisplaySignTask() {
-		canceled = false;
-	}
+	public DisplaySignTask() { canceled = false; }
 	
 	public void run() { DisplaySign.updateAll(); }
 

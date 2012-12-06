@@ -18,6 +18,7 @@ import com.wolvencraft.prison.mines.events.*;
 import com.wolvencraft.prison.mines.generation.BaseGenerator;
 import com.wolvencraft.prison.mines.mine.*;
 import com.wolvencraft.prison.mines.settings.*;
+import com.wolvencraft.prison.mines.triggers.BaseTrigger;
 import com.wolvencraft.prison.mines.util.GeneratorUtil;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.region.PrisonRegion;
@@ -64,6 +65,7 @@ public class PrisonMine extends PrisonPlugin {
 		ConfigurationSerialization.registerClass(SimpleLoc.class, "SimpleLoc");
 		ConfigurationSerialization.registerClass(Protection.class, "Protection");
 		ConfigurationSerialization.registerClass(PrisonRegion.class, "PrisonRegion");
+		ConfigurationSerialization.registerClass(BaseTrigger.class, "BaseTrigger");
 		
 		Message.debug("4. Registered serializable classes");
 		
@@ -91,8 +93,7 @@ public class PrisonMine extends PrisonPlugin {
 	}
 	
 	
-	public void onDisable()
-	{
+	public void onDisable() {
 		MineData.saveAll();
 		SignData.saveAll();
 		
@@ -101,7 +102,7 @@ public class PrisonMine extends PrisonPlugin {
 	}
 	
 	public void reloadLanguageData() {
-		String lang = this.getConfig().getString("configuration.language");
+		String lang = settings.LANGUAGE;
 		if(lang == null) lang = "english";
 		lang = lang + ".yml";
 		Message.log("Language file used: " + lang);
@@ -134,6 +135,9 @@ public class PrisonMine extends PrisonPlugin {
 	public static Language getLanguage()				{ return language; }
 	public static PrisonSuite getPrisonSuite() 			{ return prisonSuite; }
 	public double getVersion()							{ return version; }
+	public static Mine getCurMine(CommandSender sender) { return curMines.get(sender); }
+	public static Mine getCurMine() 					{ return getCurMine(CommandManager.getSender()); }
+	public static void setCurMine(Mine mine) 			{ setCurMine(CommandManager.getSender(), mine); }
 	public void reloadSettings()						{ settings = null; settings = new Settings(this); }
 	public void reloadLanguage()						{ language = null; language = new Language(this); }
 	
@@ -146,10 +150,6 @@ public class PrisonMine extends PrisonPlugin {
 		signs.clear();
 		for(DisplaySign sign : newSigns) signs.add(sign);
 	}
-
-	public static Mine getCurMine(CommandSender sender) { return curMines.get(sender); }
-	public static Mine getCurMine() 					{ return getCurMine(CommandManager.getSender()); }
-	public static void setCurMine(Mine mine) 			{ setCurMine(CommandManager.getSender(), mine); }
 	
 	public static void setCurMine(CommandSender sender, Mine mine) {
 		if(curMines.get(sender) != null) curMines.remove(sender);
