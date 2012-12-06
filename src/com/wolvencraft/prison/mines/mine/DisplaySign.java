@@ -33,7 +33,9 @@ public class DisplaySign implements ConfigurationSerializable  {
 	private Location loc;
 	private String parent;
 	private boolean reset;
+	private boolean paid;
 	private List<String> lines;
+	private double price;
 	
 	public DisplaySign(Sign sign) {
 		id = generateId();
@@ -43,17 +45,27 @@ public class DisplaySign implements ConfigurationSerializable  {
 			String line = sign.getLine(i);
 			lines.add(line);
 		}
-		String data = lines.get(0).substring(3);
-		int index = data.indexOf("|");
-		if(index == -1) index = data.indexOf(":");
+		String line = lines.get(0).substring(3);
+		line = line.substring(0, line.length() - 1);
+		String[] data = line.split(":");
+		if(data.length == 1) data = line.split("|");
 		
-		if(index == -1) {
-			parent = data.substring(0, data.length() - 1);
+		if(data.length == 1) {
+			parent = data[0];
 			reset = false;
-		} else {
-			parent = data.substring(0, data.length() - 3);
-			reset = true;
+			paid = false;
+			price = -1;
+		} else if(data.length == 2) {
+			parent = data[0];
+			reset = false;
+			paid = false;
+			price = -1;
+			if(data[1].equalsIgnoreCase("R")) reset = true;
+			else if(data[1].startsWith("$")){
+				price = Double.parseDouble(data[1].substring(1));
+			}
 		}
+		
 		Message.debug("Created a new sign: " + parent + " | " + reset);
 		save();
 	}
@@ -67,7 +79,9 @@ public class DisplaySign implements ConfigurationSerializable  {
 			lines.add(line);
 		}
 		parent = parentSignClass.getParent();
+		paid = false;
 		reset = false;
+		price = -1;
 		Message.debug("Created a new sign: " + parent + " | " + reset);
 		save();
 	}
@@ -80,6 +94,8 @@ public class DisplaySign implements ConfigurationSerializable  {
         lines = (List<String>) me.get("lines");
         parent = (String) me.get("parent");
         reset = ((Boolean) me.get("reset")).booleanValue();
+        paid = ((Boolean) me.get("paid")).booleanValue();
+        price = ((Integer) me.get("price")).intValue();
         Message.debug("Loaded a sign: " + parent + " | " + reset);
 	}
 	
@@ -90,7 +106,9 @@ public class DisplaySign implements ConfigurationSerializable  {
         me.put("world", loc.getWorld().getName());
         me.put("parent", parent);
         me.put("reset", reset);
+        me.put("paid", paid);
         me.put("lines", lines);
+        me.put("price", price);
         return me;
     }
 
@@ -98,7 +116,9 @@ public class DisplaySign implements ConfigurationSerializable  {
     public Location getLocation() 	{ return loc; }
     public String getParent()	 	{ return parent; }
     public boolean getReset() 		{ return reset; }
+    public boolean getPaid()		{ return paid; }
     public List<String> getLines() 	{ return lines; }
+    public double getPrice()		{ return price; }
     
     public void initChildren() {
     	Location locNearby = loc.clone();

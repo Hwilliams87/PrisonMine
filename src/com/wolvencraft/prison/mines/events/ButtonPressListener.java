@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import com.wolvencraft.prison.hooks.EconomyHook;
 import com.wolvencraft.prison.mines.MineCommand;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.DisplaySign;
@@ -52,6 +53,10 @@ public class ButtonPressListener implements Listener {
 						if(curMine.getCooldown() && curMine.getCooldownEndsIn() > 0 && !player.hasPermission("prison.mine.bypass.cooldown")) {
 							Message.sendError(Util.parseVars(PrisonMine.getLanguage().RESET_COOLDOWN, curMine));
 							return;
+						}
+						
+						if(EconomyHook.usingVault()) {
+							if(!EconomyHook.withdraw(player, sign.getPrice())) return;
 						}
 						
 						MineCommand.RESET.run(curMine.getName());
