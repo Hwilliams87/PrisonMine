@@ -6,6 +6,7 @@ import java.util.Map;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 
+import com.wolvencraft.prison.PrisonSuite;
 import com.wolvencraft.prison.mines.MineCommand;
 import com.wolvencraft.prison.mines.mine.Mine;
 @SerializableAs("CompositionTrigger")
@@ -19,12 +20,16 @@ public class CompositionTrigger implements BaseTrigger, ConfigurationSerializabl
 		this.percent = percent;
 		mine = mineObj.getId();
 		canceled = false;
+		
+		PrisonSuite.addTask(this);
 	}
 	
 	public CompositionTrigger(Map<String, Object> map) {
 		percent = Double.parseDouble((String)map.get("percent"));
 		mine = (String) map.get("mine");
 		canceled = false;
+		
+		PrisonSuite.addTask(this);
 	}
 	
 	public Map<String, Object> serialize() {
@@ -42,8 +47,12 @@ public class CompositionTrigger implements BaseTrigger, ConfigurationSerializabl
 			mineObj.resetBlocksLeft();
 		}
 	}
+
+	public void cancel() {
+		Mine.get(mine).removeTrigger("composition");
+		canceled = true;
+	}
 	
-	public void cancel() { canceled = true; }
 	public boolean getExpired() { return canceled; }
 	public String getName() { return "PrisonMine:CompositionTrigger:" + mine; }
 	public String getId() { return "composition"; }

@@ -288,6 +288,13 @@ public class Mine implements ConfigurationSerializable, Listener {
     	return null;
     }
     
+    public boolean removeTrigger(String triggerId) {
+    	for(BaseTrigger trigger : resetTriggers) {
+    		if(trigger.getId().equalsIgnoreCase(triggerId)) return resetTriggers.remove(trigger);
+    	}
+    	return false;
+    }
+    
     public boolean getAutomaticReset() { return (getTrigger("time") != null); }
     
     public int getResetPeriod() 	{ return ((TimeTrigger)(getTrigger("time"))).getPeriod(); }
@@ -304,7 +311,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     	else {
     		if(!getAutomaticReset()) return false;
     		getTrigger("time").cancel();
-    		resetTriggers.remove(getTrigger("time"));
     	}
     	return true;
     }

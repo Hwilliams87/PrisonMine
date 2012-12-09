@@ -74,10 +74,14 @@ public class TimeTrigger implements BaseTrigger {
 			mineObj.updateCooldown(PrisonMine.getSettings().TICKRATE);
 	}
 	
+	public void cancel() {
+		Mine.get(mine).removeTrigger("time");
+		canceled = true;
+	}
+	
 	public String getName() 	{ return "PrisonMine:TimeTrigger:" + mine; }
 	public String getId() 		{ return "time"; }
 	public boolean getExpired() { return canceled; }
-	public void cancel() 		{ canceled = true; }
 	
 	public int getPeriod() 		{ return (int)(period / 20); }
 	public int getNext() 		{ return (int)(next / 20); }
