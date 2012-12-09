@@ -12,7 +12,9 @@ editing:
 reset:
   manual-reset-successful: "Mine &6<NAME>&f has been reset!"
   automatic-reset-warning: "Mine &6<NAME>&f will reset in &6<NTIME>&f minute(s)."
-  automatic-reset-successful: "Mine &6<NAME>&f has been reset! Next reset in &6<PTIME>&f minute(s)."
+  automatic-reset-successful: "Mine &6<NAME>&f has been reset!"
+  timed-reset-successful: "Mine &6<NAME>&f has been reset! Next reset in &6<PTIME>&f minute(s)."
+  composition-reset-successful: "Mine &6<NAME>&f has been reset!"
   mine-cooldown: "Mine &6<name>&f can be reset in &6<COOLENDS>&f minute(s)."
 sign:
   title: "&e<NAME>&0"
