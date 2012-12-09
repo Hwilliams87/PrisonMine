@@ -30,16 +30,12 @@ public class TriggerCommand implements BaseCommand {
 		if(args[1].equalsIgnoreCase("time")) {
 			if(args[2].equalsIgnoreCase("toggle")) {
 				if(curMine.getAutomaticReset()) {
-					if(curMine.setAutomaticReset(false))
-						Message.sendCustom(curMine.getName(), "Time trigger is " + ChatColor.RED + "off");
-					else
-						Message.sendError("General error. Contact an admin immediately.");
+					curMine.setAutomaticReset(false);
+					Message.sendCustom(curMine.getName(), "Time trigger is " + ChatColor.RED + "off");
 				}
 				else {
-					if(curMine.setAutomaticReset(true))
-						Message.sendCustom(curMine.getName(), "Time trigger is " + ChatColor.GREEN + "on");
-					else
-						Message.sendError("General error. Contact an admin immediately.");
+					curMine.setAutomaticReset(true);
+					Message.sendCustom(curMine.getName(), "Time trigger is " + ChatColor.GREEN + "on");
 				}
 			} else {
 				int time = Util.parseTime(args[2]);
@@ -54,16 +50,12 @@ public class TriggerCommand implements BaseCommand {
 		} else if(args[1].equalsIgnoreCase("composition")) {
 			if(args[2].equalsIgnoreCase("toggle")) {
 				if(curMine.getCompositionReset()) {
-					if(curMine.setCompositionReset(false))
-						Message.sendCustom(curMine.getName(), "Composition trigger is " + ChatColor.RED + "off");
-					else
-						Message.sendError("General error. Contact an admin immediately.");
+					curMine.setCompositionReset(false);
+					Message.sendCustom(curMine.getName(), "Composition trigger is " + ChatColor.RED + "off");
 				}
 				else {
-					if(curMine.setCompositionReset(true))
-						Message.sendCustom(curMine.getName(), "Composition trigger is " + ChatColor.GREEN + "on");
-					else
-						Message.sendError("General error. Contact an admin immediately.");
+					curMine.setCompositionReset(true);
+					Message.sendCustom(curMine.getName(), "Composition trigger is " + ChatColor.GREEN + "on");
 				}
 			} else {
 				String percentString = args[2];

@@ -20,7 +20,7 @@ public class CompositionTrigger implements BaseTrigger, ConfigurationSerializabl
 		this.percent = percent;
 		mine = mineObj.getId();
 		canceled = false;
-		
+
 		PrisonSuite.addTask(this);
 	}
 	
@@ -28,7 +28,7 @@ public class CompositionTrigger implements BaseTrigger, ConfigurationSerializabl
 		percent = Double.parseDouble((String)map.get("percent"));
 		mine = (String) map.get("mine");
 		canceled = false;
-		
+
 		PrisonSuite.addTask(this);
 	}
 	
