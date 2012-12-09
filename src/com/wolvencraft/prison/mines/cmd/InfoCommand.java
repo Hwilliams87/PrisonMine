@@ -74,14 +74,14 @@ public class InfoCommand  implements BaseCommand {
 				String fillerString = "";
 				
 				if(automaticReset) {
-					if(!compositionReset) fillerString += "                       ";
+					if(!compositionReset) fillerString += "               ";
 					fillerString += "       [ " + ChatColor.GREEN + Util.parseSeconds(parentMine.getResetsInSafe()) + ChatColor.WHITE + " | " + ChatColor.RED + Util.parseSeconds(parentMine.getResetPeriodSafe()) + ChatColor.WHITE + " ]";
 				} else {
-					fillerString += "                                                       ";
+					fillerString += "               ";
 				}
 				
 				if(compositionReset) {
-					fillerString += "      [ " + ChatColor.GREEN + curMine.getPercent() + "%" + ChatColor.WHITE + " | " + ChatColor.RED + curMine.getCompositionPercent() + "%" + ChatColor.WHITE + " ]";
+					fillerString += "       [ " + ChatColor.GREEN + curMine.getPercent() + "%" + ChatColor.WHITE + " | " + ChatColor.RED + curMine.getCompositionPercent() + "%" + ChatColor.WHITE + " ]";
 				}
 				
 				Message.send(fillerString);
