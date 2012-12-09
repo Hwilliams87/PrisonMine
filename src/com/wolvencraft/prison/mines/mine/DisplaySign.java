@@ -47,8 +47,11 @@ public class DisplaySign implements ConfigurationSerializable  {
 		}
 		String line = lines.get(0).substring(3);
 		line = line.substring(0, line.length() - 1);
+		Message.debug(line);
 		String[] data = line.split(":");
-		if(data.length == 1) data = line.split("|");
+		String temp = "";
+		for(String part : data) temp += part + ":";
+		Message.debug(temp);
 		
 		if(data.length == 1) {
 			parent = data[0];
@@ -61,8 +64,9 @@ public class DisplaySign implements ConfigurationSerializable  {
 			paid = false;
 			price = -1;
 			if(data[1].equalsIgnoreCase("R")) reset = true;
-			else if(data[1].startsWith("$")){
-				price = Double.parseDouble(data[1].substring(1));
+			else {
+				reset = true;
+				price = Double.parseDouble(data[1]);
 			}
 		}
 		
@@ -95,7 +99,7 @@ public class DisplaySign implements ConfigurationSerializable  {
         parent = (String) me.get("parent");
         reset = ((Boolean) me.get("reset")).booleanValue();
         paid = ((Boolean) me.get("paid")).booleanValue();
-        price = ((Integer) me.get("price")).intValue();
+        price = ((Double) me.get("price")).doubleValue();
         Message.debug("Loaded a sign: " + parent + " | " + reset);
 	}
 	

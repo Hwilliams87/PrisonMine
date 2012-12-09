@@ -18,5 +18,6 @@ reset:
   mine-cooldown: "Mine &6<name>&f can be reset in &6<COOLENDS>&f minute(s)."
 sign:
   title: "&e<NAME>&0"
+  withdraw: "&b<PRICE> &fhas been withdrawn from your account!"
 misc:
   mine-teleport: "You have been teleported to &6<NAME>&f"

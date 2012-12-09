@@ -23,6 +23,7 @@ public class Language extends com.wolvencraft.prison.settings.Language {
 	public final String RESET_COOLDOWN;
 	
 	public final String SIGN_TITLE;
+	public final String SIGN_WITHDRAW;
 	
 	public final String MISC_TELEPORT;
 	
@@ -47,6 +48,7 @@ public class Language extends com.wolvencraft.prison.settings.Language {
 		RESET_COOLDOWN = plugin.getLanguageData().getString("reset.mine-cooldown");
 		
 		SIGN_TITLE = plugin.getLanguageData().getString("sign.title");
+		SIGN_WITHDRAW = plugin.getLanguageData().getString("sign.withdraw");
 		
 		MISC_TELEPORT = plugin.getLanguageData().getString("misc.mine-teleport");
 	}
