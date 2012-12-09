@@ -34,7 +34,7 @@ public class CompositionTrigger implements BaseTrigger, ConfigurationSerializabl
 	
 	public Map<String, Object> serialize() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("percent", percent);
+		map.put("percent", Double.toString(percent));
 		map.put("mine", mine);
 		return map;
 	}

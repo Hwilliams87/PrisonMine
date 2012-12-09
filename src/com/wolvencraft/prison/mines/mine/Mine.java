@@ -330,7 +330,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     public boolean setCompositionReset(boolean state) {
     	if(state) {
     		if(getCompositionReset()) return false;
-    		resetTriggers.add(new CompositionTrigger(this, 900));
+    		resetTriggers.add(new CompositionTrigger(this, 0));
     	}
     	else {
     		if(!getCompositionReset()) return false;
