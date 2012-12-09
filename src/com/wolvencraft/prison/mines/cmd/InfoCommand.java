@@ -64,11 +64,29 @@ public class InfoCommand  implements BaseCommand {
 			else str += ChatColor.RED;
 			str += "Block Placement" + ChatColor.WHITE + " ]";
 			Message.send(str);
+			Message.send("");
 			
-			// Timer. Not displayed if it is disabled
-			if(parentMine.getAutomaticReset())
-				Message.send("    Resets every ->  " + ChatColor.GREEN + Util.parseSeconds(parentMine.getResetPeriodSafe()) + "    " + ChatColor.GOLD + Util.parseSeconds(parentMine.getResetsInSafe()) + ChatColor.WHITE + "  <- Next Reset");
+			// Timer and Composition triggers information
+			boolean automaticReset = parentMine.getAutomaticReset();
+			boolean compositionReset = curMine.getCompositionReset();
 			
+			if(automaticReset || compositionReset) {
+				String fillerString = "";
+				
+				if(automaticReset) {
+					if(!compositionReset) fillerString += "                       ";
+					fillerString += "       [ " + ChatColor.GREEN + Util.parseSeconds(parentMine.getResetsInSafe()) + ChatColor.WHITE + " | " + ChatColor.RED + Util.parseSeconds(parentMine.getResetPeriodSafe()) + ChatColor.WHITE + " ]";
+				} else {
+					fillerString += "                                                       ";
+				}
+				
+				if(compositionReset) {
+					fillerString += "      [ " + ChatColor.GREEN + curMine.getPercent() + "%" + ChatColor.WHITE + " | " + ChatColor.RED + curMine.getCompositionPercent() + "%" + ChatColor.WHITE + " ]";
+				}
+				
+				Message.send(fillerString);
+				Message.send("");
+			}
 			// Generator & parent mine
 			str = "    Generator: " + ChatColor.GOLD + curMine.getGenerator();
 			String parentName;
