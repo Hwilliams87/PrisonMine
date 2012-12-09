@@ -88,6 +88,16 @@ public class InfoCommand  implements BaseCommand {
 				Message.send(fillerString);
 				Message.send("");
 			}
+			
+			if(parentMine.getWarned()) {
+				String fillerString = ChatColor.YELLOW + "   Warnings: " + ChatColor.WHITE;
+				for(Integer warning : parentMine.getWarningTimes()) {
+					fillerString += Util.parseSeconds(warning) + ", ";
+				}
+				Message.send(fillerString);
+				Message.send("");
+			}
+			
 			// Generator & parent mine
 			str = "    Generator: " + ChatColor.GOLD + curMine.getGenerator();
 			String parentName;
