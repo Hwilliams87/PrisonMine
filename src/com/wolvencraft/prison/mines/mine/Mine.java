@@ -319,11 +319,12 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public int getBlocksLeft() 		{ return blocksLeft; }
     public int getTotalBlocks() 	{ return totalBlocks; }
+    public double getPercent()		{ return (blocksLeft / totalBlocks) * 100; }
     
     public void updateBlocksLeft()	{ blocksLeft--; }
     public void resetBlocksLeft() 	{ blocksLeft = totalBlocks; }
     
-    public double getCompositionPercent() { return ((CompositionTrigger)(getTrigger("composition"))).getPercent(); }
+    public double getCompositionPercent() { return ((CompositionTrigger)(getTrigger("composition"))).getPercent() * 100; }
     
     public void setCompositionPercent(double percent) { ((CompositionTrigger)(getTrigger("composition"))).setPercent(percent); }
     

@@ -25,7 +25,7 @@ public class TimeTrigger implements BaseTrigger {
 	public TimeTrigger(Mine mineObj, long period) {
 		mine = mineObj.getId();
 		this.period = period * 20;
-		this.next = period;
+		this.next = this.period;
 		
 		canceled = false;
 		
