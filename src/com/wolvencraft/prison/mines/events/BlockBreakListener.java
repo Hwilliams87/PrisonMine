@@ -29,12 +29,6 @@ public class BlockBreakListener implements Listener
 		Message.debug("BlockBreakEvent caught");
 		
 		Player player = event.getPlayer();
-		
-		if(player.hasPermission("prison.mine.bypass.break")) {
-			Message.debug("The player has bypass permission");
-			signCheck(event);
-			return;
-		}
 
 		List<Mine> mines = PrisonMine.getMines();
 		
@@ -49,7 +43,9 @@ public class BlockBreakListener implements Listener
 			
 			Message.debug("Location is in the mine protection region");
 			
-			if(!player.hasPermission("prison.mine.protection.break." + mine.getName()) && !player.hasPermission("prison.mine.protection.break")) {
+			mine.recountBlocks();
+			
+			if(!player.hasPermission("prison.mine.protection.break." + mine.getName()) && !player.hasPermission("prison.mine.protection.break") && !player.hasPermission("prison.mine.bypass.break")) {
 				Message.debug("Player " + event.getPlayer().getName() + " does not have permission to break blocks in the mine");
 				Message.sendError(player, errorString);
 				event.setCancelled(true);
@@ -58,7 +54,6 @@ public class BlockBreakListener implements Listener
 				
 			if(!mine.getProtection().contains(Protection.BLOCK_BREAK)) {
 				Message.debug("Mine has no block breaking protection enabled");
-				mine.updateBlocksLeft();
 				continue;
 			}
 				
@@ -85,7 +80,6 @@ public class BlockBreakListener implements Listener
 				Message.sendError(player, errorString);
 				event.setCancelled(true);
 			}
-			mine.updateBlocksLeft();
 		}
 		Message.debug("Broken block was not in the mine region");
 		signCheck(event);

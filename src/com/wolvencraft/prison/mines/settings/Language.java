@@ -18,6 +18,8 @@ public class Language extends com.wolvencraft.prison.settings.Language {
 	public final String RESET_MANUAL;
 	public final String RESET_WARNING;
 	public final String RESET_AUTOMATIC;
+	public final String RESET_TIMED;
+	public final String RESET_COMPOSITION;
 	public final String RESET_COOLDOWN;
 	
 	public final String SIGN_TITLE;
@@ -40,6 +42,8 @@ public class Language extends com.wolvencraft.prison.settings.Language {
 		RESET_MANUAL = plugin.getLanguageData().getString("reset.manual-reset-successful");
 		RESET_WARNING = plugin.getLanguageData().getString("reset.automatic-reset-warning");
 		RESET_AUTOMATIC = plugin.getLanguageData().getString("reset.automatic-reset-successful");
+		RESET_TIMED = plugin.getLanguageData().getString("reset.timed-reset-successful");
+		RESET_COMPOSITION = plugin.getLanguageData().getString("reset.composition-reset-successful");
 		RESET_COOLDOWN = plugin.getLanguageData().getString("reset.mine-cooldown");
 		
 		SIGN_TITLE = plugin.getLanguageData().getString("sign.title");

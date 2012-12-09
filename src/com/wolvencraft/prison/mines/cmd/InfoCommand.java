@@ -80,6 +80,7 @@ public class InfoCommand  implements BaseCommand {
 					fillerString += "               ";
 				}
 				
+				curMine.recountBlocks();
 				if(compositionReset) {
 					fillerString += "       [ " + ChatColor.GREEN + curMine.getPercent() + "%" + ChatColor.WHITE + " | " + ChatColor.RED + curMine.getCompositionPercent() + "%" + ChatColor.WHITE + " ]";
 				}
