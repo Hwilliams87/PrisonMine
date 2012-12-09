@@ -296,14 +296,17 @@ public class Mine implements ConfigurationSerializable, Listener {
     public int getResetsInSafe() 	{ return getResetsInSafe(this); }
     
     public void setResetPeriod(int period)	{ ((TimeTrigger)(getTrigger("time"))).setPeriod(period); }
-    public void setAutomaticReset(boolean state) {
+    public boolean setAutomaticReset(boolean state) {
     	if(state) {
-    		if(!getAutomaticReset()) resetTriggers.add(new TimeTrigger(this, 900));
+    		if(getAutomaticReset()) return false;
+    		resetTriggers.add(new TimeTrigger(this, 900));
     	}
     	else {
+    		if(!getAutomaticReset()) return false;
     		getTrigger("time").cancel();
-    		if(getAutomaticReset()) resetTriggers.remove(getTrigger("time"));
+    		resetTriggers.remove(getTrigger("time"));
     	}
+    	return true;
     }
     
     public boolean getCompositionReset() { return (getTrigger("composition") != null); }
@@ -318,18 +321,18 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public void setCompositionPercent(double percent) { ((CompositionTrigger)(getTrigger("composition"))).setPercent(percent); }
     
-    public void setCompositionReset(boolean state) {
+    public boolean setCompositionReset(boolean state) {
     	if(state) {
-    		if(!getCompositionReset()) resetTriggers.add(new CompositionTrigger(this, 900));
+    		if(getCompositionReset()) return false;
+    		resetTriggers.add(new CompositionTrigger(this, 900));
     	}
     	else {
+    		if(!getCompositionReset()) return false;
     		getTrigger("composition").cancel();
-    		if(getCompositionReset()) resetTriggers.remove(getTrigger("composition"));
+    		resetTriggers.remove(getTrigger("composition"));
     	}
+    	return true;
     }
-    
-    public boolean getGlobalReset() { return (getTrigger("global") != null); }
-    //TODO Add the code for global reset trigger
     
     // Everything else
     

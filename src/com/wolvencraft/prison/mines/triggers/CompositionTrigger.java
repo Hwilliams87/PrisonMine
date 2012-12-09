@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.SerializableAs;
 
 import com.wolvencraft.prison.mines.MineCommand;
 import com.wolvencraft.prison.mines.mine.Mine;
-
+@SerializableAs("CompositionTrigger")
 public class CompositionTrigger implements BaseTrigger, ConfigurationSerializable {
 	
 	double percent;
@@ -42,7 +43,7 @@ public class CompositionTrigger implements BaseTrigger, ConfigurationSerializabl
 	
 	public void cancel() { canceled = true; }
 	public boolean getExpired() { return canceled; }
-	public String getName() { return "PrisonMine:" + this.getName() + ":" + mine.getId(); }
+	public String getName() { return "PrisonMine:CompositionTrigger:" + mine.getId(); }
 	public String getId() { return "composition"; }
 	
 	public double getPercent() { return percent; }

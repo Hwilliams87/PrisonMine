@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.SerializableAs;
 
 import com.wolvencraft.prison.PrisonSuite;
 import com.wolvencraft.prison.mines.MineCommand;
@@ -13,7 +13,8 @@ import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 
-public class TimeTrigger implements BaseTrigger, ConfigurationSerializable {
+@SerializableAs("TimeTrigger")
+public class TimeTrigger implements BaseTrigger {
 	
 	private long period;
 	private long next;
@@ -23,7 +24,7 @@ public class TimeTrigger implements BaseTrigger, ConfigurationSerializable {
 	
 	public TimeTrigger(Mine mine, long period) {
 		this.mine = mine;
-		this.period = period;
+		this.period = period * 20;
 		this.next = period;
 		
 		canceled = false;
@@ -71,7 +72,7 @@ public class TimeTrigger implements BaseTrigger, ConfigurationSerializable {
 			mine.updateCooldown(PrisonMine.getSettings().TICKRATE);
 	}
 	
-	public String getName() 	{ return "PrisonMine:" + this.getName() + ":" + mine.getId(); }
+	public String getName() 	{ return "PrisonMine:TimeTrigger:" + mine.getId(); }
 	public String getId() 		{ return "time"; }
 	public boolean getExpired() { return canceled; }
 	public void cancel() 		{ canceled = true; }

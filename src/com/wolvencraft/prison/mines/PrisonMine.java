@@ -18,7 +18,7 @@ import com.wolvencraft.prison.mines.events.*;
 import com.wolvencraft.prison.mines.generation.BaseGenerator;
 import com.wolvencraft.prison.mines.mine.*;
 import com.wolvencraft.prison.mines.settings.*;
-import com.wolvencraft.prison.mines.triggers.BaseTrigger;
+import com.wolvencraft.prison.mines.triggers.*;
 import com.wolvencraft.prison.mines.util.GeneratorUtil;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.region.PrisonRegion;
@@ -66,6 +66,8 @@ public class PrisonMine extends PrisonPlugin {
 		ConfigurationSerialization.registerClass(Protection.class, "Protection");
 		ConfigurationSerialization.registerClass(PrisonRegion.class, "PrisonRegion");
 		ConfigurationSerialization.registerClass(BaseTrigger.class, "BaseTrigger");
+		ConfigurationSerialization.registerClass(TimeTrigger.class, "TimeTrigger");
+		ConfigurationSerialization.registerClass(CompositionTrigger.class, "CompositionTrigger");
 		
 		Message.debug("4. Registered serializable classes");
 		
