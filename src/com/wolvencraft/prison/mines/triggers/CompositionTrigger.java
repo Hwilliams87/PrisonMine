@@ -12,38 +12,40 @@ import com.wolvencraft.prison.mines.mine.Mine;
 public class CompositionTrigger implements BaseTrigger, ConfigurationSerializable {
 	
 	double percent;
-	Mine mine;
+	String mine;
 	boolean canceled;
 	
-	public CompositionTrigger(Mine mine, double percent) {
+	public CompositionTrigger(Mine mineObj, double percent) {
 		this.percent = percent;
-		this.mine = mine;
+		mine = mineObj.getId();
 		canceled = false;
 	}
 	
 	public CompositionTrigger(Map<String, Object> map) {
-		percent = (Double) map.get("percent");
-		mine = Mine.get((String)map.get("mine"));
+		percent = Double.parseDouble((String)map.get("percent"));
+		mine = (String) map.get("mine");
 		canceled = false;
 	}
 	
 	public Map<String, Object> serialize() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("percent", percent);
-		map.put("mine", mine.getId());
+		map.put("mine", mine);
 		return map;
 	}
 	
 	public void run() {
-		if(((double) mine.getBlocksLeft() / (double) mine.getTotalBlocks()) < percent) {
-			MineCommand.RESET.run(mine.getName());
-			mine.resetBlocksLeft();
+		Mine mineObj = Mine.get(mine);
+		if(mineObj == null) return;
+		if(((double) mineObj.getBlocksLeft() / (double) mineObj.getTotalBlocks()) < percent) {
+			MineCommand.RESET.run(mineObj.getName());
+			mineObj.resetBlocksLeft();
 		}
 	}
 	
 	public void cancel() { canceled = true; }
 	public boolean getExpired() { return canceled; }
-	public String getName() { return "PrisonMine:CompositionTrigger:" + mine.getId(); }
+	public String getName() { return "PrisonMine:CompositionTrigger:" + mine; }
 	public String getId() { return "composition"; }
 	
 	public double getPercent() { return percent; }

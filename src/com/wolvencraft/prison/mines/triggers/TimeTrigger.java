@@ -18,12 +18,12 @@ public class TimeTrigger implements BaseTrigger {
 	
 	private long period;
 	private long next;
-	private Mine mine;
+	private String mine;
 	
 	private boolean canceled;
 	
-	public TimeTrigger(Mine mine, long period) {
-		this.mine = mine;
+	public TimeTrigger(Mine mineObj, long period) {
+		mine = mineObj.getId();
 		this.period = period * 20;
 		this.next = period;
 		
@@ -33,9 +33,9 @@ public class TimeTrigger implements BaseTrigger {
 	}
 	
 	public TimeTrigger(Map<String, Object> map) {
-		mine = (Mine) map.get(Mine.get("mine"));
-		period = (Long)(map.get("period"));
-		next = (Long)(map.get("next"));
+		mine = (String)map.get("mine");
+		period = Long.parseLong((String)map.get("period"));
+		next = Long.parseLong((String)map.get("next"));
 		
 		canceled = false;
 		
@@ -44,9 +44,9 @@ public class TimeTrigger implements BaseTrigger {
 	
 	public Map<String, Object> serialize() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("mine", mine.getId());
-		map.put("period", period);
-		map.put("next", next);
+		map.put("mine", mine);
+		map.put("period", Long.toString(period));
+		map.put("next", Long.toString(next));
 		return map;
 	}
 	
@@ -54,25 +54,27 @@ public class TimeTrigger implements BaseTrigger {
 	 * Bulk of the task. All timed actions go here.
 	 */
 	public void run() {
-		if(!mine.hasParent()) {
-			List<Integer> warnTimes = mine.getWarningTimes();
+		Mine mineObj = Mine.get(mine);
+		if(mineObj == null) return;
+		if(!mineObj.hasParent()) {
+			List<Integer> warnTimes = mineObj.getWarningTimes();
 			
-			if(!mine.getSilent() && mine.getWarned() && warnTimes.indexOf(next) != -1)
-				Message.broadcast(Util.parseVars(PrisonMine.getLanguage().RESET_WARNING, mine));
+			if(!mineObj.getSilent() && mineObj.getWarned() && warnTimes.indexOf(next) != -1)
+				Message.broadcast(Util.parseVars(PrisonMine.getLanguage().RESET_WARNING, mineObj));
 			
 			if(next <= 0) {
-				MineCommand.RESET.run(mine.getName());
+				MineCommand.RESET.run(mineObj.getName());
 				next = period;
 			} else {
 				next -= PrisonMine.getSettings().TICKRATE;
 			}
 		}
 	
-		if(mine.getCooldown() && mine.getCooldownEndsIn() > 0)
-			mine.updateCooldown(PrisonMine.getSettings().TICKRATE);
+		if(mineObj.getCooldown() && mineObj.getCooldownEndsIn() > 0)
+			mineObj.updateCooldown(PrisonMine.getSettings().TICKRATE);
 	}
 	
-	public String getName() 	{ return "PrisonMine:TimeTrigger:" + mine.getId(); }
+	public String getName() 	{ return "PrisonMine:TimeTrigger:" + mine; }
 	public String getId() 		{ return "time"; }
 	public boolean getExpired() { return canceled; }
 	public void cancel() 		{ canceled = true; }
