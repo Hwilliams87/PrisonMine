@@ -287,6 +287,9 @@ public class Util {
 		str = str.replaceAll("<RBLOCKS>", curMine.getBlocksLeft() + "");
 		str = str.replaceAll("<PBLOCKS>", (curMine.getBlocksLeft() / curMine.getTotalBlocks()) * 100 + "");
 		
+		str = str.replaceAll("<PPER>", curMine.getPercent() + "");
+		str = str.replaceAll("<NPER>", curMine.getCompositionPercent() + "");
+		
 		if(curMine.getAutomaticReset()) {
 			// Reset period variable calculations
 			int ptime = curMine.getResetPeriod();
