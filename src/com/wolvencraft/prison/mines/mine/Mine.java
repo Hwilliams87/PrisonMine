@@ -319,7 +319,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public int getBlocksLeft() 		{ return blocksLeft; }
     public int getTotalBlocks() 	{ return totalBlocks; }
-    public double getPercent()		{ return (blocksLeft / totalBlocks) * 100; }
+    public double getPercent()		{ return ((double)blocksLeft / (double)totalBlocks) * 100; }
     
     public void recountBlocks()		{ blocksLeft = region.getBlockCountSolid(); }
     

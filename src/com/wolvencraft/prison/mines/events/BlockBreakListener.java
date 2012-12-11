@@ -39,11 +39,10 @@ public class BlockBreakListener implements Listener
 		for(Mine mine : mines) {
 			Message.debug("Checking mine " + mine.getName());
 			
+			if(mine.getRegion().isLocationInRegion(b.getLocation())) mine.recountBlocks();
 			if(!mine.getProtectionRegion().isLocationInRegion(b.getLocation())) continue;
 			
 			Message.debug("Location is in the mine protection region");
-			
-			mine.recountBlocks();
 			
 			if(!player.hasPermission("prison.mine.protection.break." + mine.getName()) && !player.hasPermission("prison.mine.protection.break") && !player.hasPermission("prison.mine.bypass.break")) {
 				Message.debug("Player " + event.getPlayer().getName() + " does not have permission to break blocks in the mine");
