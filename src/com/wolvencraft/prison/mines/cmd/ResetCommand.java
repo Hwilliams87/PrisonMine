@@ -80,6 +80,8 @@ public class ResetCommand implements BaseCommand
 			if(!curMine.getSilent()) Message.broadcast(broadcastMessage);
 			else if(!automatic) Message.sendSuccess(broadcastMessage);
 		}
+		
+		curMine.recountBlocks();
 		return true;
 	}
 	
