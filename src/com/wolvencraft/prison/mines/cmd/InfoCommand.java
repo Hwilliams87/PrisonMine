@@ -90,10 +90,12 @@ public class InfoCommand  implements BaseCommand {
 			}
 			
 			if(parentMine.getWarned()) {
-				String fillerString = ChatColor.YELLOW + "   Warnings: " + ChatColor.WHITE;
+				String fillerString = "";
 				for(Integer warning : parentMine.getWarningTimes()) {
-					fillerString += Util.parseSeconds(warning) + ", ";
+					if(!fillerString.equals("")) fillerString += ",";
+					fillerString += " " + Util.parseSeconds(warning);
 				}
+				fillerString = ChatColor.YELLOW + "   Warnings: " + ChatColor.WHITE + fillerString;
 				Message.send(fillerString);
 				Message.send("");
 			}
