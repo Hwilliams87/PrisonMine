@@ -216,6 +216,7 @@ public class DisplaySign implements ConfigurationSerializable  {
 	
 	public static void updateAll() {
 		for(DisplaySign sign : PrisonMine.getSigns()) {
+			if(sign.getLocation().getBlock() == null) continue;
 			BlockState b = sign.getLocation().getBlock().getState();
 			if(b instanceof Sign) {
 				Sign signBlock = (Sign) b;
