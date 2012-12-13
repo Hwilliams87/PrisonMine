@@ -20,7 +20,7 @@ public class CommandManager implements CommandExecutor {
 		if(!command.getName().equalsIgnoreCase("mine")) return false;
 		
 		if(args.length == 0) {
-			MineCommand.HELP.getHelp();
+			MineCommand.HELP.run("");
 			return true;
 		}
 
