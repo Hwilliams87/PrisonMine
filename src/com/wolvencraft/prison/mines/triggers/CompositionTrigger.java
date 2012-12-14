@@ -44,6 +44,7 @@ public class CompositionTrigger implements BaseTrigger, ConfigurationSerializabl
 		Mine mineObj = Mine.get(mine);
 		if(mineObj == null) return;
 		if(((double) mineObj.getBlocksLeft() / (double) mineObj.getTotalBlocks()) < percent) {
+			Message.debug("Resetting mine " + mineObj.getName() + " based on composition");
 			Message.debug("(" + mineObj.getBlocksLeft() + " / " + mineObj.getTotalBlocks() + ") < " + percent);
 			MineCommand.RESET.run(mineObj.getName());
 			mineObj.recountBlocks();

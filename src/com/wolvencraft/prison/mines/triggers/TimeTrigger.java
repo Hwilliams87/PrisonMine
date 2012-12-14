@@ -63,6 +63,7 @@ public class TimeTrigger implements BaseTrigger {
 				Message.broadcast(Util.parseVars(PrisonMine.getLanguage().RESET_WARNING, mineObj));
 			
 			if(next <= 0) {
+				Message.debug("Resetting mine " + mineObj.getName() + " on a timer");
 				MineCommand.RESET.run(mineObj.getName());
 				next = period;
 			} else {
