@@ -66,7 +66,7 @@ public class TriggerCommand implements BaseCommand {
 					return false;
 				}
 				curMine.setCompositionPercent(percent);
-				Message.sendCustom(curMine.getName(), "Mine will recet once it is " + ChatColor.GOLD + percentString + "%" + ChatColor.WHITE + " empty");
+				Message.sendCustom(curMine.getName(), "Mine will reset once it is " + ChatColor.GOLD + percentString + "%" + ChatColor.WHITE + " empty");
 			}
 		} else {
 			Message.sendError(PrisonMine.getLanguage().ERROR_COMMAND);
