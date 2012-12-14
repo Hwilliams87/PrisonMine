@@ -30,5 +30,5 @@ public class ListCommand implements BaseCommand {
 	}
 
 	public void getHelp() {}
-	public void getHelpLine() { Message.formatHelp("list", "", "Lists all the available mines", "mcprison.mine.info.list"); }
+	public void getHelpLine() { Message.formatHelp("list", "", "Lists all the available mines", "prison.mine.info.list"); }
 }

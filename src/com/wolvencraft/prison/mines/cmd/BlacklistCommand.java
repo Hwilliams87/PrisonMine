@@ -103,5 +103,5 @@ public class BlacklistCommand implements BaseCommand {
 		return;
 	}
 	
-	public void getHelpLine() { Message.formatHelp("blacklist", "", "More information on the reset blacklist", "mcprison.mine.edit"); }
+	public void getHelpLine() { Message.formatHelp("blacklist", "", "More information on the reset blacklist", "prison.mine.edit"); }
 }

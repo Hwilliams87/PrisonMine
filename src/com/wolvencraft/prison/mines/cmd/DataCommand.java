@@ -47,5 +47,5 @@ public class DataCommand implements BaseCommand {
 		Message.formatHelp("data", "load", "Loads the mine data from file");
 	}
 	
-	public void getHelpLine() { Message.formatHelp("data", "", "Shows information on data manipulation", "mcprison.mine.admin"); }
+	public void getHelpLine() { Message.formatHelp("data", "", "Shows information on data manipulation", "prison.mine.admin"); }
 }

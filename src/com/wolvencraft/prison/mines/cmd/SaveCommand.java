@@ -104,5 +104,5 @@ public class SaveCommand implements BaseCommand {
 		return;
 	}
 	
-	public void getHelpLine() { Message.formatHelp("save", "<name> [generator]", "Saves the mine region to file", "mcprison.mine.edit"); }
+	public void getHelpLine() { Message.formatHelp("save", "<name> [generator]", "Saves the mine region to file", "prison.mine.edit"); }
 }

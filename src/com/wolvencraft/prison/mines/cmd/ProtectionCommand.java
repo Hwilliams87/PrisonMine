@@ -287,5 +287,5 @@ public class ProtectionCommand  implements BaseCommand {
 		return;
 	}
 	
-	public void getHelpLine() { Message.formatHelp("prot", "", "Shows the help page for mine protection options", "mcprison.mine.edit"); }
+	public void getHelpLine() { Message.formatHelp("prot", "", "Shows the help page for mine protection options", "prison.mine.edit"); }
 }

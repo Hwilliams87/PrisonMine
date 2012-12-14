@@ -8,8 +8,7 @@ import com.wolvencraft.prison.mines.util.GeneratorUtil;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 
-public class ResetCommand implements BaseCommand
-{	
+public class ResetCommand implements BaseCommand {	
 	public boolean run(String[] args) {
 		
 		Mine curMine;
@@ -20,8 +19,7 @@ public class ResetCommand implements BaseCommand
 				if(!MineCommand.RESET.run(mine.getName())) success = false;
 			}
 			return success;
-		}
-		else curMine = Mine.get(args[1]);
+		} else curMine = Mine.get(args[1]);
 		
 		if(curMine == null) {
 			if(args.length == 1) getHelp();
@@ -33,19 +31,18 @@ public class ResetCommand implements BaseCommand
 		if(CommandManager.getSender() == null) {
 			automatic = true;
 			Message.debug("Automatic reset!");
-		}
-		else {
+		} else {
 			automatic = false;
 			Message.debug("Manual reset!");
 		}
 		
 		if(!automatic) {
-			if(!Util.hasPermission("mcprison.mine.reset.manual." + curMine.getId()) && !Util.hasPermission("mcprison.mine.reset.manual")) {
+			if(!Util.hasPermission("prison.mine.reset.manual." + curMine.getId()) && !Util.hasPermission("prison.mine.reset.manual")) {
 				Message.sendError(PrisonMine.getLanguage().ERROR_ACCESS);
 				return false;
 			}
 			
-			if(curMine.getCooldown() && curMine.getCooldownEndsIn() > 0 && !Util.hasPermission("mcprison.mine.bypass.cooldown")) {
+			if(curMine.getCooldown() && curMine.getCooldownEndsIn() > 0 && !Util.hasPermission("prison.mine.bypass.cooldown")) {
 				Message.sendError(Util.parseVars(PrisonMine.getLanguage().RESET_COOLDOWN, curMine));
 				return false;
 			}
@@ -71,8 +68,7 @@ public class ResetCommand implements BaseCommand
 				broadcastMessage = PrisonMine.getLanguage().RESET_COMPOSITION;
 			else
 				broadcastMessage = PrisonMine.getLanguage().RESET_AUTOMATIC;
-		}
-		else broadcastMessage = PrisonMine.getLanguage().RESET_MANUAL;
+		} else broadcastMessage = PrisonMine.getLanguage().RESET_MANUAL;
 		
 		if(curMine.getParent() == null) {
 			broadcastMessage = Util.parseVars(broadcastMessage, curMine);
@@ -94,5 +90,5 @@ public class ResetCommand implements BaseCommand
 		return;
 	}
 	
-	public void getHelpLine() { Message.formatHelp("reset", "<name> [generator]", "Resets the mine manually", "mcprison.mine.reset.manual"); }
+	public void getHelpLine() { Message.formatHelp("reset", "<name> [generator]", "Resets the mine manually", "prison.mine.reset.manual"); }
 }

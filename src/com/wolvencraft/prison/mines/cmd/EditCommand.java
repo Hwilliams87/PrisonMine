@@ -354,5 +354,5 @@ public class EditCommand  implements BaseCommand {
 		return;
 	}
 	
-	public void getHelpLine() { Message.formatHelp("edit", "", "Shows a help page on mine atribute editing", "mcprison.mine.edit"); }
+	public void getHelpLine() { Message.formatHelp("edit", "", "Shows a help page on mine atribute editing", "prison.mine.edit"); }
 }

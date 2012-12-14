@@ -84,6 +84,6 @@ public class TriggerCommand implements BaseCommand {
 		Message.formatHelp("trigger", "composition <percent>", "Sets the composition percent");
 	}
 
-	public void getHelpLine() { Message.formatHelp("trigger", "", "Shows the reset trigger help page"); }
+	public void getHelpLine() { Message.formatHelp("trigger", "", "Shows the reset trigger help page", "prison.mine.edit"); }
 
 }
