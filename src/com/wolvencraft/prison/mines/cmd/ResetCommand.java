@@ -65,9 +65,9 @@ public class ResetCommand implements BaseCommand
 		if(automatic) {
 			for(Mine childMine : curMine.getChildren()) { MineCommand.RESET.run(childMine.getId()); }
 			
-			if(curMine.getResetsIn() <= 0)
+			if(curMine.getAutomaticReset() && curMine.getResetsIn() <= 0)
 				broadcastMessage = PrisonMine.getLanguage().RESET_TIMED;
-			else if(curMine.getPercent() <= curMine.getCompositionPercent())
+			else if(curMine.getCompositionReset() && curMine.getPercent() <= curMine.getCompositionPercent())
 				broadcastMessage = PrisonMine.getLanguage().RESET_COMPOSITION;
 			else
 				broadcastMessage = PrisonMine.getLanguage().RESET_AUTOMATIC;
