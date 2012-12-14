@@ -32,8 +32,7 @@ public class DebugCommand implements BaseCommand {
 		if(args[0].equalsIgnoreCase("debug")) {
 			getHelp();
 			return true;
-		}
-		if(args[0].equalsIgnoreCase("setregion")) {
+		} else if(args[0].equalsIgnoreCase("setregion")) {
 			PrisonSelection sel = PrisonSuite.getSelection(player);
 			curMine.setRegion(sel);
 			Message.sendCustom("DEBUG", "Region set");
@@ -44,7 +43,7 @@ public class DebugCommand implements BaseCommand {
 			return true;
 		} else if(args[0].equalsIgnoreCase("unload")){
 			List<Mine> mines = PrisonMine.getMines();
-			mines.remove(mines.indexOf(args[1]));
+			mines.remove(Mine.get(args[1]));
 			PrisonMine.setMines(mines);
 			Message.sendCustom("DEBUG", "Unloaded " + args[1] + " from memory");
 			return true;
