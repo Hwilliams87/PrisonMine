@@ -55,7 +55,7 @@ public class ButtonPressListener implements Listener {
 							return;
 						}
 						
-						if(EconomyHook.usingVault()) {
+						if(EconomyHook.usingVault() && sign.getPaid() && sign.getPrice() != -1) {
 							Message.debug("Withdrawing " + sign.getPrice() + " from " + player.getName());
 							if(!EconomyHook.withdraw(player, sign.getPrice())) return;
 							Message.debug("Successfully withdrawn the money. New balance: " + EconomyHook.getBalance(player));
