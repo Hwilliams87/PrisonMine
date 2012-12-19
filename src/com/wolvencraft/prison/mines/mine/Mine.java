@@ -314,6 +314,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	}
     	return true;
     }
+    public void resetTimer() { ((TimeTrigger)(getTrigger("time"))).resetTimer(); }
     
     public boolean getCompositionReset() { return (getTrigger("composition") != null); }
     

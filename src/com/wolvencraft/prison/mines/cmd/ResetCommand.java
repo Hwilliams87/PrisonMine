@@ -11,18 +11,29 @@ import com.wolvencraft.prison.mines.util.Util;
 public class ResetCommand implements BaseCommand {	
 	public boolean run(String[] args) {
 		
-		Mine curMine;
-		if(args.length == 1) curMine = PrisonMine.getCurMine();
-		else if(args[1].equalsIgnoreCase("all")) {
-			boolean success = true;
-			for(Mine mine : PrisonMine.getMines()) {
-				if(!CommandHandler.RESET.run(mine.getName())) success = false;
-			}
-			return success;
-		} else curMine = Mine.get(args[1]);
-		
+		Mine curMine = null;
+		String generator = "";
+		if(args.length == 1) {
+			getHelp();
+			return true;
+		} else if(args.length == 2) {
+			if(args[1].equalsIgnoreCase("all")) {
+				boolean success = true;
+				for(Mine mine : PrisonMine.getMines()) {
+					if(!CommandHandler.RESET.run(mine.getName())) success = false;
+				}
+				return success;
+			} else curMine = Mine.get(args[1]);
+		} else if(args.length == 3) {
+			curMine = Mine.get(args[1]);
+			generator = args[2];
+		} else {
+			Message.sendError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
+			return false;
+		}
+				
 		if(curMine == null) {
-			if(args.length == 1) getHelp();
+			Message.sendError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
 			return false;
 		}
 		
@@ -47,14 +58,12 @@ public class ResetCommand implements BaseCommand {
 				return false;
 			}
 		}
-		
-		String forcedGenerator = "";
-		if(args.length == 3) forcedGenerator = args[2];
-		
-		String generator = curMine.getGenerator();
-		if(forcedGenerator.equals("")) generator = curMine.getGenerator();
+
+		if(generator.equals("")) generator = curMine.getGenerator();
 		
 		if(curMine.getCooldown()) curMine.resetCooldown();
+		
+		if(curMine.getAutomaticReset() && PrisonMine.getSettings().RESETTIMER) curMine.resetTimer();
 		
 		if(!(curMine.reset(generator))) return false;
 		
