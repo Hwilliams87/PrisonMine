@@ -66,6 +66,7 @@ public class DisplaySign implements ConfigurationSerializable  {
 			if(data[1].equalsIgnoreCase("R")) reset = true;
 			else {
 				reset = true;
+				paid = true;
 				price = Double.parseDouble(data[1]);
 			}
 		}
