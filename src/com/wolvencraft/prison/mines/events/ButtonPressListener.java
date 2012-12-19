@@ -51,14 +51,14 @@ public class ButtonPressListener implements Listener {
 						}
 						
 						if(curMine.getCooldown() && curMine.getCooldownEndsIn() > 0 && !player.hasPermission("prison.mine.bypass.cooldown")) {
-							Message.sendError(Util.parseVars(PrisonMine.getLanguage().RESET_COOLDOWN, curMine));
+							Message.sendError(player, Util.parseVars(PrisonMine.getLanguage().RESET_COOLDOWN, curMine));
 							return;
 						}
 						
 						if(EconomyHook.usingVault() && sign.getPaid() && sign.getPrice() != -1) {
 							Message.debug("Withdrawing " + sign.getPrice() + " from " + player.getName());
 							if(!EconomyHook.withdraw(player, sign.getPrice())) {
-								Message.sendError(Util.parseColors(PrisonMine.getLanguage().SIGN_FUNDS.replaceAll("<PRICE>", sign.getPrice() + "")));
+								Message.sendError(player, Util.parseColors(PrisonMine.getLanguage().SIGN_FUNDS.replaceAll("<PRICE>", sign.getPrice() + "")));
 								return;
 							}
 							Message.debug("Successfully withdrawn the money. New balance: " + EconomyHook.getBalance(player));
