@@ -1,2 +1,2 @@
 teleport-on-reset: true
-reset-timer-on-manual: false
+reset-timer-on-manual: true
