@@ -291,6 +291,9 @@ public class Util {
 			str = str.replaceAll("<PPER>", curMine.getPercent() + "");
 			str = str.replaceAll("<NPER>", curMine.getCompositionPercent() + "");
 		}
+
+		if(CommandManager.getSender() == null) str = str.replaceAll("<PLAYER>", "CONSOLE");
+		else str = str.replace("<PLAYER>", CommandManager.getSender().getName());
 		
 		if(curMine.getAutomaticReset()) {
 			// Reset period variable calculations
