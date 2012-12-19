@@ -19,5 +19,6 @@ reset:
 sign:
   title: "&e<NAME>&0"
   withdraw: "&b<PRICE> &fhas been withdrawn from your account!"
+  funds: "You do not have enough money to reset the mine!"
 misc:
   mine-teleport: "You have been teleported to &6<NAME>&f"

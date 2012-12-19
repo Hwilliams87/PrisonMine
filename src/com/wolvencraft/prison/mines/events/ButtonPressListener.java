@@ -57,7 +57,10 @@ public class ButtonPressListener implements Listener {
 						
 						if(EconomyHook.usingVault() && sign.getPaid() && sign.getPrice() != -1) {
 							Message.debug("Withdrawing " + sign.getPrice() + " from " + player.getName());
-							if(!EconomyHook.withdraw(player, sign.getPrice())) return;
+							if(!EconomyHook.withdraw(player, sign.getPrice())) {
+								Message.sendError(Util.parseColors(PrisonMine.getLanguage().SIGN_FUNDS.replaceAll("<PRICE>", sign.getPrice() + "")));
+								return;
+							}
 							Message.debug("Successfully withdrawn the money. New balance: " + EconomyHook.getBalance(player));
 							Message.sendSuccess(player, Util.parseColors(PrisonMine.getLanguage().SIGN_WITHDRAW.replaceAll("<PRICE>", sign.getPrice() + "")));
 						} else Message.debug("Vault not found");

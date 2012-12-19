@@ -24,6 +24,7 @@ public class Language extends com.wolvencraft.prison.settings.Language {
 	
 	public final String SIGN_TITLE;
 	public final String SIGN_WITHDRAW;
+	public final String SIGN_FUNDS;
 	
 	public final String MISC_TELEPORT;
 	
@@ -49,6 +50,7 @@ public class Language extends com.wolvencraft.prison.settings.Language {
 		
 		SIGN_TITLE = plugin.getLanguageData().getString("sign.title");
 		SIGN_WITHDRAW = plugin.getLanguageData().getString("sign.withdraw");
+		SIGN_FUNDS = plugin.getLanguageData().getString("sign.funds");
 		
 		MISC_TELEPORT = plugin.getLanguageData().getString("misc.mine-teleport");
 	}
