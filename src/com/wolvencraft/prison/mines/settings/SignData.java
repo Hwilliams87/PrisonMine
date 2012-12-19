@@ -23,9 +23,9 @@ public class SignData {
 	public static void saveAll() {
 		List<DisplaySign> signs = PrisonMine.getSigns();
 		for (DisplaySign sign : signs) {
-			File signFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "signs"), sign.getId() + ".yml");
+			File signFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "signs"), sign.getId() + ".psign.yml");
 	        FileConfiguration signConf =  YamlConfiguration.loadConfiguration(signFile);
-	        signConf.set("signclass", sign);
+	        signConf.set("displaysign", sign);
 	        try {
 	            signConf.save(signFile);
 	        } catch (IOException e) {
@@ -48,14 +48,14 @@ public class SignData {
         }
         File[] signFiles = signFolder.listFiles(new FileFilter() {
             public boolean accept(File file) {
-                return file.getName().contains(".yml");
+                return file.getName().contains(".psign.yml");
             }
         });
         
         signs.clear();
         for (File signFile : signFiles) {
             FileConfiguration mineConf = YamlConfiguration.loadConfiguration(signFile);
-            Object sign = mineConf.get("signclass");
+            Object sign = mineConf.get("displaysign");
             if (sign instanceof DisplaySign) {
                 signs.add((DisplaySign) sign);
             }

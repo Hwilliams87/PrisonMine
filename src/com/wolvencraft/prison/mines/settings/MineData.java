@@ -24,13 +24,13 @@ public class MineData
 	public static void saveAll() {
 		List<Mine> mines = PrisonMine.getMines();
 		for (Mine mine : mines) {
-            File mineFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "mines"), mine.getId() + ".yml");
+            File mineFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "mines"), mine.getId() + ".pmine.yml");
             FileConfiguration mineConf =  YamlConfiguration.loadConfiguration(mineFile);
             mineConf.set("mine", mine);
             try {
                 mineConf.save(mineFile);
             } catch (IOException e) {
-            	CommandManager.getPlugin().getLogger().severe("[MineReset] Unable to serialize mine '" + mine.getId() + "'!");
+            	Message.log(Level.SEVERE, "Unable to serialize mine '" + mine.getId() + "'!");
                 e.printStackTrace();
             }
         }
@@ -49,7 +49,7 @@ public class MineData
         }
         File[] mineFiles = mineFolder.listFiles(new FileFilter() {
             public boolean accept(File file) {
-                return file.getName().contains(".yml");
+                return file.getName().contains(".pmine.yml");
             }
         });
 
@@ -80,12 +80,12 @@ public class MineData
 		
 		File[] mineFiles = mineFolder.listFiles(new FileFilter() {
             public boolean accept(File file) {
-                return file.getName().contains(".yml");
+                return file.getName().contains(".pmine.yml");
             }
         });
 		
 		for(File mineFile : mineFiles) {
-			if(mineFile.getName().equals(curMine.getId() + ".yml")) {
+			if(mineFile.getName().equals(curMine.getId() + ".pmine.yml")) {
 				return mineFile.delete();
 			}
 		}
