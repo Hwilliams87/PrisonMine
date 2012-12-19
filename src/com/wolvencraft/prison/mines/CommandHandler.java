@@ -58,6 +58,12 @@ public enum CommandHandler implements CommandHook {
 	public boolean isCommand(String arg) { return alias.contains(arg); }
 	public void getHelp() { clazz.getHelp(); }
 	public void getHelpLine() { clazz.getHelpLine(); }
+	
+	public List<String> getLocalAlias() {
+		List<String> temp = new ArrayList<String>();
+		for(String str : alias) temp.add(str);
+		return temp;
+	}
 
 	public boolean run(String[] args) {
 		CommandSender sender = CommandManager.getSender();
