@@ -20,13 +20,13 @@ public class CommandManager implements CommandExecutor {
 		if(!command.getName().equalsIgnoreCase("mine")) return false;
 		
 		if(args.length == 0) {
-			MineCommand.HELP.run("");
+			CommandHandler.HELP.run("");
 			return true;
 		}
 
 		CommandManager.sender = sender;
 		
-		for(MineCommand cmd : MineCommand.values()) {
+		for(CommandHandler cmd : CommandHandler.values()) {
 			if(cmd.isCommand(args[0])) {
 				boolean result = cmd.run(args);
 				CommandManager.sender = null;
@@ -34,6 +34,7 @@ public class CommandManager implements CommandExecutor {
 			}
 		}
 		
+		Message.debug("Unknown command");
 		Message.sendError(PrisonMine.getLanguage().ERROR_COMMAND);
 		CommandManager.sender = null;
 		return false;

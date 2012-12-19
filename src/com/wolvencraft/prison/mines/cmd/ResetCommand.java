@@ -1,7 +1,7 @@
 package com.wolvencraft.prison.mines.cmd;
 
 import com.wolvencraft.prison.mines.CommandManager;
-import com.wolvencraft.prison.mines.MineCommand;
+import com.wolvencraft.prison.mines.CommandHandler;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.GeneratorUtil;
@@ -16,7 +16,7 @@ public class ResetCommand implements BaseCommand {
 		else if(args[1].equalsIgnoreCase("all")) {
 			boolean success = true;
 			for(Mine mine : PrisonMine.getMines()) {
-				if(!MineCommand.RESET.run(mine.getName())) success = false;
+				if(!CommandHandler.RESET.run(mine.getName())) success = false;
 			}
 			return success;
 		} else curMine = Mine.get(args[1]);
@@ -62,7 +62,7 @@ public class ResetCommand implements BaseCommand {
 		if(automatic) {
 			for(Mine childMine : curMine.getChildren()) {
 				Message.debug(childMine.getId() + " inherits from " + curMine.getId() + " and is scheduled for reset");
-				MineCommand.RESET.run(childMine.getId());
+				CommandHandler.RESET.run(childMine.getId());
 			}
 			
 			if(curMine.getAutomaticReset() && curMine.getResetsIn() <= 0)

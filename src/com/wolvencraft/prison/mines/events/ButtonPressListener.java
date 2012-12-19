@@ -10,7 +10,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.wolvencraft.prison.hooks.EconomyHook;
-import com.wolvencraft.prison.mines.MineCommand;
+import com.wolvencraft.prison.mines.CommandHandler;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.DisplaySign;
 import com.wolvencraft.prison.mines.mine.Mine;
@@ -62,7 +62,7 @@ public class ButtonPressListener implements Listener {
 							Message.sendSuccess(player, Util.parseColors(PrisonMine.getLanguage().SIGN_WITHDRAW.replaceAll("<PRICE>", sign.getPrice() + "")));
 						} else Message.debug("Vault not found");
 						
-						MineCommand.RESET.run(curMine.getName());
+						CommandHandler.RESET.run(curMine.getName());
 					}
 				}
 			}

@@ -7,7 +7,7 @@ import java.util.Map;
 import org.bukkit.configuration.serialization.SerializableAs;
 
 import com.wolvencraft.prison.PrisonSuite;
-import com.wolvencraft.prison.mines.MineCommand;
+import com.wolvencraft.prison.mines.CommandHandler;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
@@ -64,7 +64,7 @@ public class TimeTrigger implements BaseTrigger {
 			
 			if(next <= 0) {
 				Message.debug("Resetting mine " + mineObj.getName() + " on a timer");
-				MineCommand.RESET.run(mineObj.getName());
+				CommandHandler.RESET.run(mineObj.getName());
 				next = period;
 			} else {
 				next -= PrisonMine.getSettings().TICKRATE;

@@ -16,10 +16,10 @@ import com.wolvencraft.prison.mines.util.Message;
  * Wolfy <3 subcommands. They are kinky.
  * @author bitWolfy
  */
-public enum MineCommand implements CommandHook {
+public enum CommandHandler implements CommandHook {
 	BLACKLIST (BlacklistCommand.class, "prison.mine.edit", true, "blacklist", "bl"),
 	DATA (DataCommand.class, "prison.mine.admin", true, "data"),
-	DEBUG(DebugCommand.class, "", false, "debug", "setregion", "tp", "unload"),
+	DEBUG(DebugCommand.class, null, true, "debug", "setregion", "tp", "unload"),
 	EDIT (EditCommand.class, "prison.mine.edit", true, "edit", "add", "+", "remove", "-", "delete", "del", "name", "silent", "generator", "link", "setparent", "cooldown", "setregion"),
 	HELP (HelpCommand.class, null, true, "help"),
 	INFO (InfoCommand.class, "prison.mine.info.time", true, "info"),
@@ -31,7 +31,7 @@ public enum MineCommand implements CommandHook {
 	TRIGGER (TriggerCommand.class, "prison.mine.edit", true, "trigger"),
 	TIMER (WarningCommand.class, "prison.mine.edit", true, "warning");
 	
-	MineCommand(Class<?> clazz, String permission, boolean allowConsole, String... args) {
+	CommandHandler(Class<?> clazz, String permission, boolean allowConsole, String... args) {
 		try {
 			this.clazz = (BaseCommand) clazz.newInstance();
 			this.permission = permission;

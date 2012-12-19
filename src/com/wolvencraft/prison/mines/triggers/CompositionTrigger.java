@@ -7,7 +7,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 
 import com.wolvencraft.prison.PrisonSuite;
-import com.wolvencraft.prison.mines.MineCommand;
+import com.wolvencraft.prison.mines.CommandHandler;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
 @SerializableAs("CompositionTrigger")
@@ -46,7 +46,7 @@ public class CompositionTrigger implements BaseTrigger, ConfigurationSerializabl
 		if(((double) mineObj.getBlocksLeft() / (double) mineObj.getTotalBlocks()) < percent) {
 			Message.debug("Resetting mine " + mineObj.getName() + " based on composition");
 			Message.debug("(" + mineObj.getBlocksLeft() + " / " + mineObj.getTotalBlocks() + ") < " + percent);
-			MineCommand.RESET.run(mineObj.getName());
+			CommandHandler.RESET.run(mineObj.getName());
 			mineObj.recountBlocks();
 		}
 	}
