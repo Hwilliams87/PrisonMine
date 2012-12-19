@@ -13,7 +13,7 @@ import com.wolvencraft.prison.mines.generation.BaseGenerator;
 public class GeneratorLoader {
 	@SuppressWarnings("resource")
 	public static List<BaseGenerator> load(List<BaseGenerator> generators) {
-		File dir = new File(CommandManager.getPlugin().getDataFolder() + "/generators");
+		File dir = new File(CommandManager.getPlugin().getDataFolder() + "/extensions");
 	
 		if (!dir.exists()) {
 		    dir.mkdir();
