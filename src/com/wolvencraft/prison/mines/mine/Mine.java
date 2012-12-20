@@ -4,6 +4,7 @@ import com.wolvencraft.prison.region.PrisonRegion;
 import com.wolvencraft.prison.region.PrisonSelection;
 import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
+import com.wolvencraft.prison.mines.flags.BaseFlag;
 import com.wolvencraft.prison.mines.generation.BaseGenerator;
 import com.wolvencraft.prison.mines.triggers.BaseTrigger;
 import com.wolvencraft.prison.mines.triggers.CompositionTrigger;
@@ -56,6 +57,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     private Blacklist blockReplaceBlacklist;
     
     private List<BaseTrigger> resetTriggers;
+    private List<BaseFlag> flags;
     
     private boolean cooldownEnabled;
     private int cooldownPeriod;
@@ -111,6 +113,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     	warned = true;
     	warningTimes = new ArrayList<Integer>();
     	
+    	flags = new ArrayList<BaseFlag>();
+    	
     	enabledProtection = new ArrayList<Protection>();
     	protectionRegion = region.clone();
     	breakBlacklist = new Blacklist();
@@ -150,6 +154,9 @@ public class Mine implements ConfigurationSerializable, Listener {
     	warned = ((Boolean) map.get("warned")).booleanValue();
     	warningTimes = (List<Integer>) map.get("warningTimes");
     	
+    	if(map.containsKey("flags")) flags = (List<BaseFlag>) map.get("flags");
+    	else flags = new ArrayList<BaseFlag>();
+    	
     	enabledProtection = (List<Protection>) map.get("enabledProtection");
     	protectionRegion = (PrisonRegion) map.get("protectionRegion");
     	breakBlacklist = (Blacklist) map.get("breakBlacklist");
@@ -188,6 +195,8 @@ public class Mine implements ConfigurationSerializable, Listener {
         
         map.put("warned", warned);
         map.put("warningTimes", warningTimes);
+        
+        map.put("flags", flags);
         
         map.put("enabledProtection", enabledProtection);
         map.put("protectionRegion", protectionRegion);
