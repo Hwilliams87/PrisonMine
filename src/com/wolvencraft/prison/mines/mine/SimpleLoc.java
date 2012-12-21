@@ -2,6 +2,7 @@ package com.wolvencraft.prison.mines.mine;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -31,6 +32,7 @@ public class SimpleLoc implements ConfigurationSerializable, Listener {
 	
 	public SimpleLoc(Map<String, Object> me) {
 		world = Bukkit.getWorld((String) me.get("world"));
+		if(world == null) world = Bukkit.getWorld((UUID.fromString((String) me.get("world"))));
 		x = ((Double) me.get("x")).doubleValue();
 		y = ((Double) me.get("y")).doubleValue();
 		z = ((Double) me.get("z")).doubleValue();

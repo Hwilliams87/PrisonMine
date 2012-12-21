@@ -39,13 +39,13 @@ public class ImportData {
 
         for (File mineFile : mrFiles) {
         	try {
-	            FileConfiguration mineConf = YamlConfiguration.loadConfiguration(mineFile);
-	            Object mine = mineConf.get("mine");
-	            if (mine instanceof MRMine) { mines.add(((MRMine) mine).importMine()); }
-	            else if(mine instanceof MRLMine) { mines.add(((MRLMine) mine).importMine()); }
-	            else Message.log(Level.WARNING, "Unknown file in the import directory: " + mineFile.getName());
-        	}
-        	catch (IllegalArgumentException ex) { Message.log(Level.SEVERE, ex.getMessage()); }
+		        FileConfiguration mineConf = YamlConfiguration.loadConfiguration(mineFile);
+		        Object mine = mineConf.get("mine");
+		        if (mine instanceof MRMine) { mines.add(((MRMine) mine).importMine()); }
+		        else if(mine instanceof MRLMine) { mines.add(((MRLMine) mine).importMine()); }
+		        else Message.log(Level.WARNING, "Unknown file in the import directory: " + mineFile.getName());
+        	} catch (IllegalArgumentException ex) { Message.log(Level.SEVERE, "You failed to rename the class properly: " + mineFile.getName()); }
+        	
         }
         return mines;
 	}

@@ -20,6 +20,8 @@ import com.wolvencraft.prison.mines.generation.BaseGenerator;
 import com.wolvencraft.prison.mines.mine.*;
 import com.wolvencraft.prison.mines.settings.*;
 import com.wolvencraft.prison.mines.triggers.*;
+import com.wolvencraft.prison.mines.upgrade.MRLMine;
+import com.wolvencraft.prison.mines.upgrade.MRMine;
 import com.wolvencraft.prison.mines.util.GeneratorUtil;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.region.PrisonRegion;
@@ -72,6 +74,8 @@ public class PrisonMine extends PrisonPlugin {
 		ConfigurationSerialization.registerClass(BaseFlag.class, "BaseFlag");
 		ConfigurationSerialization.registerClass(SurfaceOreFlag.class, "SurfaceOreFlag");
 		
+		ConfigurationSerialization.registerClass(MRMine.class, "MRMine");
+		ConfigurationSerialization.registerClass(MRLMine.class, "MRLMine");
 		Message.debug("4. Registered serializable classes");
 		
 		mines = MineData.loadAll();

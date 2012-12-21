@@ -25,7 +25,7 @@ import java.util.UUID;
 /**
  * @author jjkoletar, bitWolfy
  */
-@SerializableAs("Mine")
+@SerializableAs("MRMine")
 public class MRMine implements ConfigurationSerializable, Listener {
     private Location one;
     private Location two;
@@ -129,10 +129,13 @@ public class MRMine implements ConfigurationSerializable, Listener {
     	PrisonRegion region = new PrisonRegion(one, two);
     	
     	Mine mine = new Mine(name, displayName, parent, region, world, tpPoint, blocks, blacklist, cooldownEnabled, cooldownSeconds, generator, silent, warned, warningTimes, enabledProtection, breakBlacklist, placeBlacklist);
-    	mine.setParent(parent);
-    	for(MineBlock block : blocks) { mine.getBlocks().add(block); }
     	
-    	
+    	if(automatic) {
+        	mine.setAutomaticReset(true);
+        	mine.setResetPeriod(automaticSeconds);
+    	}
+        
+    	mine.save();
     	Message.log("Imported mine from MineReset: " + name);
     	return mine;
     }

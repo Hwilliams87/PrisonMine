@@ -2,8 +2,10 @@ package com.wolvencraft.prison.mines.upgrade;
  
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.prison.mines.mine.Mine;
@@ -21,6 +23,8 @@ import java.util.Map.Entry;
 /**
  * @author jjkoletar
  */
+
+@SerializableAs("MRLMine")
 public class MRLMine implements ConfigurationSerializable {
     private int minX;
     private int minY;
@@ -125,12 +129,19 @@ public class MRLMine implements ConfigurationSerializable {
     	Mine mine = new Mine(name, region, world, two, "RANDOM");
     	
     	Iterator<Entry<SerializableBlock, Double>> it = composition.entrySet().iterator();
+    	double totalValue = 0;
+        List<MineBlock> blocks = mine.getBlocks();
         while (it.hasNext()) {
-            List<MineBlock> blocks = mine.getBlocks();
 			Map.Entry<SerializableBlock, Double> pairs = (Map.Entry<SerializableBlock, Double>) it.next();
             blocks.add(new MineBlock(new MaterialData(pairs.getKey().getBlockId()), pairs.getValue()));
+            totalValue += pairs.getValue().doubleValue();
             it.remove();
         }
+        
+        if(totalValue < 1) {
+        	blocks.add(new MineBlock(new MaterialData(Material.AIR), (1.0 - totalValue)));
+        }
+        
         
         if(resetDelay != 0) {
         	mine.setAutomaticReset(true);
@@ -141,6 +152,7 @@ public class MRLMine implements ConfigurationSerializable {
         	mine.getWarningTimes().add(warning);
         }
         
+        mine.save();
         Message.log("Imported mine from MineResetLite: " + name);
     	return mine;
     }
