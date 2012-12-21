@@ -41,9 +41,8 @@ import java.util.logging.Level;
  * @author bitWolfy
  *
  */
-@SerializableAs("Mine")
+@SerializableAs("pMine")
 public class Mine implements ConfigurationSerializable, Listener {
-
     private String id;
     private String name;
 
@@ -122,7 +121,63 @@ public class Mine implements ConfigurationSerializable, Listener {
     	
     	totalBlocks = blocksLeft = region.getBlockCount();
     }
+    
+    /**
+     * Full constructor. Should only be used to import mines of old format.
+     * @param id
+     * @param name
+     * @param parent
+     * @param region
+     * @param world
+     * @param tpPoint
+     * @param blocks
+     * @param blockReplaceBlacklist
+     * @param cooldownEnabled
+     * @param cooldownPeriod
+     * @param generator
+     * @param silent
+     * @param warned
+     * @param warningTimes
+     * @param enabledProtection
+     * @param breakBlacklist
+     * @param placeBlacklist
+     */
+    public Mine(String id, String name, String parent, PrisonRegion region, World world, Location tpPoint, List<MineBlock> blocks, Blacklist blockReplaceBlacklist, boolean cooldownEnabled, int cooldownPeriod, String generator, boolean silent, boolean warned, List<Integer> warningTimes, List<Protection> enabledProtection, Blacklist breakBlacklist, Blacklist placeBlacklist) {
+        this.id = id;
+        this.name = name;
 
+        this.parent = parent;
+        
+        this.region = region;
+        this.world = world;
+        this.tpPoint = tpPoint;
+        
+        this.blocks = blocks;
+        this.blockReplaceBlacklist = blockReplaceBlacklist;
+        
+        this.resetTriggers = new ArrayList<BaseTrigger>();
+        this.flags = new ArrayList<BaseFlag>();
+        
+        this.cooldownEnabled = cooldownEnabled;
+        this.cooldownPeriod = cooldownPeriod;
+        this.cooldownEndsIn = cooldownPeriod * 20;
+        
+        this.generator = generator;
+        
+        this.silent = silent;
+        
+        this.warned = warned;
+        this.warningTimes = warningTimes;
+        
+        this.enabledProtection = enabledProtection;
+        this.protectionRegion = region.clone(); 
+        this.breakBlacklist = breakBlacklist;
+        this.placeBlacklist = placeBlacklist;
+        
+        this.totalBlocks = region.getBlockCount();
+        this.blocksLeft = region.getBlockCount();
+    }
+    
     /**
      * Constructor for deserialization from a map
      * @param map Map to deserialize from
