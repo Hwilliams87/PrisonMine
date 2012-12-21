@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Map.Entry;
  
 /**
+ * Here lies the mine object code as written by jjkoletar in MineResetLite 0.3.2<br />
+ * I, bitWolfy, do not claim ownership of this code. If you wish to have it removed, contact me immediately.
  * @author jjkoletar
  */
 

@@ -23,8 +23,11 @@ import java.util.Map;
 import java.util.UUID;
  
 /**
- * @author jjkoletar, bitWolfy
+ * Here lies the mine object code as written by me and jjkoletar in MineReset 2.0.1<br />
+ * Please, contact me if you have any objections to me using this code for my purposes.
+ * @author bitWolfy, jjkoletar
  */
+
 @SerializableAs("MRMine")
 public class MRMine implements ConfigurationSerializable, Listener {
     private Location one;
