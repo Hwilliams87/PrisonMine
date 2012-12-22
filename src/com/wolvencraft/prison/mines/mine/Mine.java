@@ -407,6 +407,18 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     // Everything else
     
+    public List<BaseFlag> getFlags() { return flags; }
+    public boolean hasFlag(BaseFlag flag) { return flags.contains(flag); }
+    public void addFlag(BaseFlag flag) { flags.add(flag); }
+    public void removeFlag(BaseFlag flag) { flags.remove(flag); }
+    
+    public BaseFlag getFlag(String alias) {
+    	for(BaseFlag flag : flags) {
+    		if(flag.getName().equalsIgnoreCase(alias)) return flag;
+    	}
+    	return null;
+    }
+    
 	public List<Mine> getChildren() {
 		List<Mine> children = new ArrayList<Mine>();
 		for(Mine mine : PrisonMine.getMines()) {

@@ -3,46 +3,40 @@ package com.wolvencraft.prison.mines.flags;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.serialization.SerializableAs;
+import org.bukkit.material.MaterialData;
 
-@SerializableAs("SurfaceOre")
+import com.wolvencraft.prison.mines.util.BlockSerializable;
+import com.wolvencraft.prison.mines.util.Util;
+
+@SerializableAs("SurfaceOreFlag")
 public class SurfaceOreFlag implements BaseFlag {
 	
-	public String name;
-	public Map<String, Object> params;
+	public String name = "surfaceore";
+	public MaterialData param;
+	public String[] validValues = {"<ID:DATA>", "none"};
 	
 	public SurfaceOreFlag() {
-		name = "SurfaceOre";
-		params = new HashMap<String, Object>();
+		param = new MaterialData(Material.AIR);
 	}
 	
 	public SurfaceOreFlag(Map<String, Object> map) {
-		name = "SurfaceOreFlag";
-		params = new HashMap<String, Object>();
-		params.put("block", map.get("block"));
+		param = ((BlockSerializable) map.get(param)).toMaterialData();
 	}
 
-	@Override
 	public Map<String, Object> serialize() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("block", params.get("block"));
+		map.put("param", new BlockSerializable(param));
 		return map;
 	}
-
-	@Override
-	public String getName() { return name; }
-
-	@Override
-	public Map<String, Object> getParams() { return params; }
-
-	@Override
-	public void setParam(String param, String value) { 
-		if(params.containsKey(param)) params.remove(param);
-		params.put(param, value);
-	}
 	
-	public void setBlock(String block) { 
-		if(params.containsKey("block")) params.remove("block");
-		params.put("block", block);
+	public String getName()				{ return name; }
+	public Object getParam() 			{ return param; }
+	public void setParam(String value) 	{ param = Util.getBlock(value); }
+	public String[] getValidValues()	{ return validValues; }
+	public boolean checkValue(String value) {
+		if(value.split(":").length == 2 || value.equalsIgnoreCase("none")) return true;
+		return false;
 	}
 }

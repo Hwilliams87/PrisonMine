@@ -10,7 +10,6 @@ public class Settings extends com.wolvencraft.prison.settings.Settings {
 	public final boolean TPONRESET;
 	public final boolean RESETTIMER;
 	public final List<String> BANNEDNAMES;
-	public final String[] VALIDFLAGS = {"surfaceore", "effect"};
 	
 	public Settings(PrisonMine plugin) {
 		super(PrisonMine.getPrisonSuite());

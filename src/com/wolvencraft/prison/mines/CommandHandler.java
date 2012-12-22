@@ -21,6 +21,7 @@ public enum CommandHandler implements CommandHook {
 	DATA (DataCommand.class, "prison.mine.admin", true, "data"),
 	DEBUG(DebugCommand.class, null, true, "import", "debug", "setregion", "tp", "unload", "setwarp"),
 	EDIT (EditCommand.class, "prison.mine.edit", true, "edit", "add", "+", "remove", "-", "delete", "del", "name", "silent", "generator", "link", "setparent", "cooldown", "setregion"),
+	FLAG (FlagCommand.class, "prison.mine.edit", true, "flag"),
 	HELP (HelpCommand.class, null, true, "help"),
 	INFO (InfoCommand.class, "prison.mine.info.time", true, "info"),
 	LIST (ListCommand.class, "prison.mine.info.list", true, "list"),

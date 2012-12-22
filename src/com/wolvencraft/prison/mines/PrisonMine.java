@@ -22,6 +22,7 @@ import com.wolvencraft.prison.mines.settings.*;
 import com.wolvencraft.prison.mines.triggers.*;
 import com.wolvencraft.prison.mines.upgrade.MRLMine;
 import com.wolvencraft.prison.mines.upgrade.MRMine;
+import com.wolvencraft.prison.mines.util.BlockSerializable;
 import com.wolvencraft.prison.mines.util.GeneratorUtil;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.region.PrisonRegion;
@@ -73,6 +74,8 @@ public class PrisonMine extends PrisonPlugin {
 		ConfigurationSerialization.registerClass(CompositionTrigger.class, "CompositionTrigger");
 		ConfigurationSerialization.registerClass(BaseFlag.class, "BaseFlag");
 		ConfigurationSerialization.registerClass(SurfaceOreFlag.class, "SurfaceOreFlag");
+		ConfigurationSerialization.registerClass(EffectFlag.class, "EffectFlag");
+		ConfigurationSerialization.registerClass(BlockSerializable.class, "BlockSerializable");
 		
 		ConfigurationSerialization.registerClass(MRMine.class, "MRMine");
 		ConfigurationSerialization.registerClass(MRLMine.class, "MRLMine");
