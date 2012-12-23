@@ -1,8 +1,9 @@
-Mine Reset - Refill your mines with ease  
+PrisonMine - Refill your mines with ease  
 ========================
           
-[ [Visit BukkitDev](http://dev.bukkit.org/server-mods/minereset/) | [Commands](https://github.com/bitWolfy/MineReset/wiki/Commands/) | [Permissions](https://github.com/bitWolfy/MineReset/wiki/Permissions/) | [Configuration](https://github.com/bitWolfy/MineReset/wiki/Configuration/) | [Tickets](https://github.com/bitWolfy/MineReset/issues) ]
-## ![download](http://www.freeiconsweb.com/Icons-show/splashyIcons/download.png) DOWNLOAD: [MineReset 1.2](http://dev.bukkit.org/server-mods/minereset/files/8-mine-reset-1-2/) |  [Latest Dev Build](https://s3.amazonaws.com/builds.mcprison.com/MineReset/lastSuccessful/MineReset.jar) ##
+<center>[ [Visit BukkitDev](http://dev.bukkit.org/server-mods/PrisonMine/) | [Commands](https://github.com/bitWolfy/PrisonMine/wiki/Commands/) | [Permissions](https://github.com/bitWolfy/PrisonMine/wiki/Permissions/) | [Configuration](https://github.com/bitWolfy/PrisonMine/wiki/Configuration/) | [Tickets](https://github.com/bitWolfy/PrisonMine/issues) ]</center>
+
+<center>![PrisonMine](http://update.wolvencraft.com/src/PrisonMine/logo_small.png)</center>
 
 Aren't you tired of manually selecting the mine region with World Edit, then typing in an incredibly long command that will reset the mining area while keeping the block pattern random? Tired of people going straight for the diamonds, the location of which they remember? I have good news for you.
 
@@ -10,7 +11,7 @@ With Mine Reset, all you need to do is set up an area, set up the block ratios u
 
 Features
 -------
-The plugin is packed the features; all of them are listed on the [Commands](https://github.com/bitWolfy/MineReset/wiki/Commands/) page, but here's a quick glimpse:
+The plugin is packed the features; all of them are listed on the [Commands](https://github.com/bitWolfy/PrisonMine/wiki/Commands/) page, but here's a quick glimpse:
 
 * Select a region with ease, either with built-in commands or with a World Edit wand
 * Add a custom block ratio - all materials supported
@@ -18,18 +19,11 @@ The plugin is packed the features; all of them are listed on the [Commands](http
 * Multiple generators – control the way your mine is to be reset
 * Set up an automatic reset timer for each of the mines
     * Link mines together and make them share the same timer
-* Teleportation to the mine with a defined "mine spawn" point
-    * Teleport players out of the mine before it resets
+* Teleport players out of the mine before it resets
 * Permissions support
     * Per-mine permissions!
 * Customizable messages to be broadcasted to players
 * Plugin update notifications
-
-Planned Future Features
---------------------
-
-* More generators!
-* You tell me!
 
 Credits
 ------
