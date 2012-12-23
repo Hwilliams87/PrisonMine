@@ -13,7 +13,7 @@ import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.mine.MineBlock;
 import com.wolvencraft.prison.mines.settings.Language;
 import com.wolvencraft.prison.mines.settings.MineData;
-import com.wolvencraft.prison.mines.util.GeneratorUtil;
+import com.wolvencraft.prison.mines.util.ExtensionLoader;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 
@@ -197,7 +197,7 @@ public class EditCommand  implements BaseCommand {
 				}
 			}
 			
-			if(!GeneratorUtil.get(curMine.getGenerator()).remove(curMine)) return false;
+			if(!ExtensionLoader.get(curMine.getGenerator()).remove(curMine)) return false;
 			
 			PrisonMine.getMines().remove(curMine);
 			PrisonMine.setCurMine(null);
@@ -281,7 +281,7 @@ public class EditCommand  implements BaseCommand {
 				return false;
 			}
 			
-			if(!GeneratorUtil.get(args[1]).init(curMine)) return false;
+			if(!ExtensionLoader.get(args[1]).init(curMine)) return false;
 			curMine.setGenerator(args[1].toUpperCase());
 			
 			Message.sendCustom(curMine.getName(), "Mine generator has been set to " + ChatColor.GREEN + args[1].toUpperCase());
@@ -340,7 +340,7 @@ public class EditCommand  implements BaseCommand {
 		Message.formatHelp("setparent", "<id>", "Links the timers of two mines");
 		Message.formatHelp("generator", "<generator>", "Changes the active generator");
 		Message.formatMessage("The following generators are supported: ");
-		Message.formatMessage(GeneratorUtil.list());
+		Message.formatMessage(ExtensionLoader.list());
 		Message.formatHelp("cooldown toggle", "", "Toggles the reset cooldown");
 		Message.formatHelp("cooldown <time>", "", "Sets the cooldown time");
 		return;

@@ -4,7 +4,7 @@ import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.CommandHandler;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
-import com.wolvencraft.prison.mines.util.GeneratorUtil;
+import com.wolvencraft.prison.mines.util.ExtensionLoader;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 
@@ -98,7 +98,7 @@ public class ResetCommand implements BaseCommand {
 		Message.formatHelp("reset", "<name> [generator]", "Resets the mine manually");
 		Message.formatMessage("Resets the mine according to the generation rules");
 		Message.formatMessage("The following generators are supported: ");
-		Message.formatMessage(GeneratorUtil.list());
+		Message.formatMessage(ExtensionLoader.list());
 		return;
 	}
 	

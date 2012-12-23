@@ -11,7 +11,7 @@ import com.wolvencraft.prison.region.PrisonSelection;
 import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
-import com.wolvencraft.prison.mines.util.GeneratorUtil;
+import com.wolvencraft.prison.mines.util.ExtensionLoader;
 import com.wolvencraft.prison.mines.util.Message;
 
 public class SaveCommand implements BaseCommand {
@@ -32,7 +32,7 @@ public class SaveCommand implements BaseCommand {
 		
 		String generator;
 		if(args.length == 3) {
-			if(GeneratorUtil.get(args[2]) != null) {
+			if(ExtensionLoader.get(args[2]) != null) {
 				generator = args[2].toUpperCase();
 			}
 			else {
@@ -83,7 +83,7 @@ public class SaveCommand implements BaseCommand {
 		
 		Mine newMine = new Mine(args[1], new PrisonRegion(sel), sel.getPos1().getWorld(), player.getLocation(), generator);
 		
-		if(!GeneratorUtil.get(generator).init(newMine)) return false;
+		if(!ExtensionLoader.get(generator).init(newMine)) return false;
 		
 		PrisonMine.getMines().add(newMine);
 		newMine.save();
@@ -100,7 +100,7 @@ public class SaveCommand implements BaseCommand {
 		Message.formatHelp("save", "<name> [generator]", "Saves the mine region");
 		Message.formatMessage("If no generator is specified, " + ChatColor.GOLD + "RANDOM" + ChatColor.WHITE + " will be used.");
 		Message.formatMessage("Available generators:");
-		Message.formatMessage(GeneratorUtil.list());
+		Message.formatMessage(ExtensionLoader.list());
 		return;
 	}
 	

@@ -9,7 +9,7 @@ import com.wolvencraft.prison.mines.generation.BaseGenerator;
 import com.wolvencraft.prison.mines.triggers.BaseTrigger;
 import com.wolvencraft.prison.mines.triggers.CompositionTrigger;
 import com.wolvencraft.prison.mines.triggers.TimeTrigger;
-import com.wolvencraft.prison.mines.util.GeneratorUtil;
+import com.wolvencraft.prison.mines.util.ExtensionLoader;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 
@@ -269,7 +269,7 @@ public class Mine implements ConfigurationSerializable, Listener {
      */
     public boolean reset(String generator) {
         removePlayers();
-        BaseGenerator gen = GeneratorUtil.get(generator);
+        BaseGenerator gen = ExtensionLoader.get(generator);
         if(gen == null) {
         	if(CommandManager.getSender() != null) Message.send((Player) CommandManager.getSender(), "Invalid generator selected!");
             else Message.log("Invalid generator selected!");
@@ -371,8 +371,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	if(state) {
     		if(getAutomaticReset()) return false;
     		resetTriggers.add(new TimeTrigger(this, 900));
-    	}
-    	else {
+    	} else {
     		if(!getAutomaticReset()) return false;
     		getTrigger("time").cancel();
     	}
@@ -494,7 +493,7 @@ public class Mine implements ConfigurationSerializable, Listener {
 	}
 	
 	public boolean save() {
-		File mineFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "mines"), id + ".yml");
+		File mineFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "mines"), id + ".pmine.yml");
         FileConfiguration mineConf =  YamlConfiguration.loadConfiguration(mineFile);
         mineConf.set("mine", this);
         try {
@@ -512,11 +511,11 @@ public class Mine implements ConfigurationSerializable, Listener {
 		if(!mineFolder.exists() || !mineFolder.isDirectory()) return false;
 		
 		File[] mineFiles = mineFolder.listFiles(new FileFilter() {
-            public boolean accept(File file) { return file.getName().contains(".yml"); }
+            public boolean accept(File file) { return file.getName().contains(".pmine.yml"); }
         });
 		
 		for(File mineFile : mineFiles) {
-			if(mineFile.getName().equals(id + ".yml")) {
+			if(mineFile.getName().equals(id + ".pmine.yml")) {
 				return mineFile.delete();
 			}
 		}
