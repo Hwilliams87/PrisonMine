@@ -103,6 +103,7 @@ public class Message extends com.wolvencraft.prison.util.Message {
 	}
 	
 	public static void formatHeader(int padding, String name) {
+		if(name == null) name = "";
 		CommandSender sender = CommandManager.getSender();
 		String spaces = "";
 		for(int i = 0; i < padding; i++) { spaces = spaces + " "; }

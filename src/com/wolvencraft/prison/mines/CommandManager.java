@@ -18,13 +18,13 @@ public class CommandManager implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(!command.getName().equalsIgnoreCase("mine")) return false;
+
+		CommandManager.sender = sender;
 		
 		if(args.length == 0) {
 			CommandHandler.HELP.run("");
 			return true;
 		}
-
-		CommandManager.sender = sender;
 		
 		for(CommandHandler cmd : CommandHandler.values()) {
 			if(cmd.isCommand(args[0])) {
