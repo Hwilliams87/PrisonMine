@@ -26,6 +26,12 @@ public enum FlagHandler {
 		} catch (IllegalAccessException e) {
 			Message.log(Level.SEVERE, "Error instantiating a new flag! [IllegalAccessException]");
 			return null;
+		} catch (NullPointerException npe) {
+			Message.log(Level.SEVERE, "Error instantiating a new flag!  [NullPointerException]");
+			return null;
+		} catch (Exception ex) {
+			Message.log(Level.SEVERE, "Error instantiating a new flag!  [Exception]");
+			return null;
 		}
 	}
 	
@@ -33,14 +39,16 @@ public enum FlagHandler {
 	
 	public static boolean exists(String alias) {
 		for(FlagHandler handler : values()) {
-			if(handler.getClass().getName().equalsIgnoreCase(alias)) return true;
+			Message.debug(handler.getAlias() + " =?= " + alias);
+			if(handler.getAlias().equalsIgnoreCase(alias)) return true;
 		}
+		Message.debug(alias + " does not match any handlers");
 		return false;
 	}
 	
 	public static FlagHandler get(String alias) {
 		for(FlagHandler handler : values()) {
-			if(handler.getClass().getName().equalsIgnoreCase(alias)) return handler;
+			if(handler.getAlias().equalsIgnoreCase(alias)) return handler;
 		}
 		return null;
 	}

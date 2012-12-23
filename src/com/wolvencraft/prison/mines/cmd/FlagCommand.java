@@ -24,6 +24,7 @@ public class FlagCommand implements BaseCommand {
 		}
 		
 		BaseFlag flag = FlagHandler.get(args[1]).dispatch();
+		if(flag == null) return false;
 		if(!flag.checkValue(args[2])) {
 			String[] validValues = flag.getValidValues();
 			String valueString = validValues[0];
@@ -34,7 +35,8 @@ public class FlagCommand implements BaseCommand {
 		}
 		if(!curMine.hasFlag(flag)) { curMine.addFlag(flag); }
 		curMine.getFlag(args[1]).setParam(args[2]);
-		return false;
+		Message.sendCustom(curMine.getName(), "A new flag has been added to the mine: " + flag.getName() + ":" + flag.getParam().toString());
+		return curMine.save();
 	}
 
 	@Override
