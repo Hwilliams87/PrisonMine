@@ -133,6 +133,7 @@ public class MRLMine implements ConfigurationSerializable {
     	Iterator<Entry<SerializableBlock, Double>> it = composition.entrySet().iterator();
     	double totalValue = 0;
         List<MineBlock> blocks = mine.getBlocks();
+        blocks.remove(new MineBlock(new MaterialData(Material.AIR), 1.0));
         while (it.hasNext()) {
 			Map.Entry<SerializableBlock, Double> pairs = (Map.Entry<SerializableBlock, Double>) it.next();
             blocks.add(new MineBlock(new MaterialData(pairs.getKey().getBlockId()), pairs.getValue()));
