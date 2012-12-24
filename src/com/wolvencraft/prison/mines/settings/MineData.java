@@ -2,7 +2,6 @@ package com.wolvencraft.prison.mines.settings;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -15,30 +14,19 @@ import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
 
-public class MineData
-{
+public class MineData {
 	/**
-	 * Saves the mine data to disc
-	 * @param mines List of mines to save
+	 * Saves all the mine data to disc
 	 */
 	public static void saveAll() {
 		List<Mine> mines = PrisonMine.getMines();
 		for (Mine mine : mines) {
-            File mineFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "mines"), mine.getId() + ".pmine.yml");
-            FileConfiguration mineConf =  YamlConfiguration.loadConfiguration(mineFile);
-            mineConf.set("mine", mine);
-            try {
-                mineConf.save(mineFile);
-            } catch (IOException e) {
-            	Message.log(Level.SEVERE, "Unable to serialize mine '" + mine.getId() + "'!");
-                e.printStackTrace();
-            }
+            mine.save();
         }
 	}
 	
 	/**
 	 * Loads the mine data from disc
-	 * @param mines List of mines to write the data to
 	 * @return Loaded list of mines
 	 */
 	public static List<Mine> loadAll() {
@@ -46,50 +34,23 @@ public class MineData
 		File mineFolder = new File(CommandManager.getPlugin().getDataFolder(), "mines");
         if (!mineFolder.exists() || !mineFolder.isDirectory()) {
             mineFolder.mkdir();
+            return mines;
         }
         File[] mineFiles = mineFolder.listFiles(new FileFilter() {
-            public boolean accept(File file) {
-                return file.getName().contains(".pmine.yml");
-            }
+            public boolean accept(File file) { return file.getName().contains(".pmine.yml"); }
         });
 
         for (File mineFile : mineFiles) {
         	try {
 	            FileConfiguration mineConf = YamlConfiguration.loadConfiguration(mineFile);
 	            Object mine = mineConf.get("mine");
-	            if (mine instanceof Mine) {
-	            	mines.add((Mine) mine);
-	            }
+	            if (mine instanceof Mine) mines.add((Mine) mine);
         	}
         	catch (IllegalArgumentException ex) {
         		Message.log(Level.SEVERE, ex.getMessage());
+        		continue;
         	}
         }
         return mines;
-	}
-	
-	/**
-	 * Deletes the mine file from the data folder.
-	 * <br /><b>Deprecated</b>
-	 * @param curMine
-	 * @return
-	 */
-	public static boolean delete(Mine curMine) {
-		File mineFolder = new File(CommandManager.getPlugin().getDataFolder(), "mines");
-		if(!mineFolder.exists() || !mineFolder.isDirectory()) return false;
-		
-		File[] mineFiles = mineFolder.listFiles(new FileFilter() {
-            public boolean accept(File file) {
-                return file.getName().contains(".pmine.yml");
-            }
-        });
-		
-		for(File mineFile : mineFiles) {
-			if(mineFile.getName().equals(curMine.getId() + ".pmine.yml")) {
-				return mineFile.delete();
-			}
-		}
-		
-		return false;
 	}
 }
