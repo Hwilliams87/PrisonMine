@@ -51,10 +51,7 @@ public class CompositionTrigger implements BaseTrigger, ConfigurationSerializabl
 		}
 	}
 
-	public void cancel() {
-		Mine.get(mine).removeTrigger("composition");
-		canceled = true;
-	}
+	public void cancel() { canceled = true; }
 	
 	public boolean getExpired() { return canceled; }
 	public String getName() { return "PrisonMine:CompositionTrigger:" + mine; }

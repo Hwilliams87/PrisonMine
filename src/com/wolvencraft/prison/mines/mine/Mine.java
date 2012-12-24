@@ -374,6 +374,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	} else {
     		if(!getAutomaticReset()) return false;
     		getTrigger("time").cancel();
+    		removeTrigger("time");
     	}
     	return true;
     }
@@ -399,7 +400,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	else {
     		if(!getCompositionReset()) return false;
     		getTrigger("composition").cancel();
-    		resetTriggers.remove(getTrigger("composition"));
+    		removeTrigger("composition");
     	}
     	return true;
     }

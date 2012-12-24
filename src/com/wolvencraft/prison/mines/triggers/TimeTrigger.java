@@ -50,9 +50,6 @@ public class TimeTrigger implements BaseTrigger {
 		return map;
 	}
 	
-	/**
-	 * Bulk of the task. All timed actions go here.
-	 */
 	public void run() {
 		Mine mineObj = Mine.get(mine);
 		if(mineObj == null) return;
@@ -75,10 +72,7 @@ public class TimeTrigger implements BaseTrigger {
 			mineObj.updateCooldown(PrisonMine.getSettings().TICKRATE);
 	}
 	
-	public void cancel() {
-		Mine.get(mine).removeTrigger("time");
-		canceled = true;
-	}
+	public void cancel() { canceled = true; }
 	
 	public String getName() 	{ return "PrisonMine:TimeTrigger:" + mine; }
 	public String getId() 		{ return "time"; }
