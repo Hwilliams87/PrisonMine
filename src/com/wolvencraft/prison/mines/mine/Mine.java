@@ -488,7 +488,7 @@ public class Mine implements ConfigurationSerializable, Listener {
 	
 	public static Mine get(String id) {
 		for(Mine curMine : PrisonMine.getMines()) {
-			if(curMine.getName().equalsIgnoreCase(id)) return curMine;
+			if(curMine.getId().equalsIgnoreCase(id)) return curMine;
 		}
 		return null;
 	}

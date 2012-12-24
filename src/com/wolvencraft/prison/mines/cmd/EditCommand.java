@@ -53,7 +53,7 @@ public class EditCommand  implements BaseCommand {
 			
 			curMine = Mine.get(args[1]);
 			if(curMine == null) {
-				Message.sendError(language.ERROR_MINENAME);
+				Message.sendError(language.ERROR_MINENAME.replace("<ID>", args[1]));
 				return false;
 			}
 
@@ -284,7 +284,7 @@ public class EditCommand  implements BaseCommand {
 			if(!ExtensionLoader.get(args[1]).init(curMine)) return false;
 			curMine.setGenerator(args[1].toUpperCase());
 			
-			Message.sendCustom(curMine.getName(), "Mine generator has been set to " + ChatColor.GREEN + args[1].toUpperCase());
+			Message.sendCustom(curMine.getId(), "Mine generator has been set to " + ChatColor.GREEN + args[1].toUpperCase());
 
 			return curMine.save();
 		}
@@ -295,7 +295,7 @@ public class EditCommand  implements BaseCommand {
 			}
 			
 			if(args[1].equalsIgnoreCase("none")) {
-				Message.sendCustom(curMine.getName(), "Mine is no longer linked to " + ChatColor.RED + curMine.getParent());
+				Message.sendCustom(curMine.getId(), "Mine is no longer linked to " + ChatColor.RED + curMine.getParent());
 				curMine.setParent(null);
 				
 				return curMine.save();
@@ -306,19 +306,19 @@ public class EditCommand  implements BaseCommand {
 				return false;
 			}
 			
-			if(args[1].equalsIgnoreCase(curMine.getName())) {
+			if(args[1].equalsIgnoreCase(curMine.getId())) {
 				Message.sendError("You cannot set mine's parent to itself, silly");
 				return false;
 			}
 			
 			if(Mine.get(args[1]).getParent() != null
-					&& Mine.get(args[1]).getParent().equalsIgnoreCase(curMine.getName())) {
+					&& Mine.get(args[1]).getParent().equalsIgnoreCase(curMine.getId())) {
 				Message.sendError("Infinite loop detected in timers!");
 				return false;
 			}
 			
 			curMine.setParent(args[1]);
-			Message.sendCustom(curMine.getName(), "Mine will is now linked to " + ChatColor.GREEN + args[1]);
+			Message.sendCustom(curMine.getId(), "Mine will is now linked to " + ChatColor.GREEN + args[1]);
 			
 			return curMine.save();
 		}

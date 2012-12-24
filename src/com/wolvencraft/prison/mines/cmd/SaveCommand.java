@@ -91,7 +91,7 @@ public class SaveCommand implements BaseCommand {
         Message.debug("Mine creation completed");
 		
 		PrisonMine.setCurMine(newMine);
-		Message.sendCustom(newMine.getName(), "Mine created successfully!");
+		Message.sendCustom(newMine.getId(), "Mine created successfully!");
 		return true;
 	}
 	

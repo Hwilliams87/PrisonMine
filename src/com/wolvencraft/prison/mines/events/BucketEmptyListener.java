@@ -37,11 +37,11 @@ public class BucketEmptyListener implements Listener
         List<Mine> mines = PrisonMine.getMines();
 
         for (Mine mine : mines) {
-			Message.debug("Checking mine " + mine.getName());
+			Message.debug("Checking mine " + mine.getId());
             
         	if(!mine.getProtectionRegion().isLocationInRegion(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation())) continue;
         	
-	        if(!player.hasPermission("prison.mine.protection.place." + mine.getName()) && !player.hasPermission("prison.mine.protection.place")) {
+	        if(!player.hasPermission("prison.mine.protection.place." + mine.getId()) && !player.hasPermission("prison.mine.protection.place")) {
 	        	Message.debug("Player " + event.getPlayer().getName() + " does not have permission to empty buckets in the mine");
 	        	Message.sendError(player, "You are not allowed to empty buckets in this area");
 	        	event.setCancelled(true);

@@ -113,7 +113,7 @@ public class InfoCommand  implements BaseCommand {
 			List<Mine> children = curMine.getChildren();
 			if(children.size() != 0) {
 				str = "    Children:" + ChatColor.GOLD;
-				for(Mine mine : children) { str += " " + mine.getName(); }
+				for(Mine mine : children) { str += " " + mine.getId(); }
 				Message.send(str);
 			}
 			

@@ -35,7 +35,7 @@ public class FlagCommand implements BaseCommand {
 		}
 		if(!curMine.hasFlag(flag)) { curMine.addFlag(flag); }
 		curMine.getFlag(args[1]).setParam(args[2]);
-		Message.sendCustom(curMine.getName(), "A new flag has been added to the mine: " + flag.getName() + ":" + flag.getParam().toString());
+		Message.sendCustom(curMine.getId(), "A new flag has been added to the mine: " + flag.getName() + ":" + flag.getParam().toString());
 		return curMine.save();
 	}
 

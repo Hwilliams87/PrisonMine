@@ -38,11 +38,11 @@ public class PVPListener implements Listener {
 		List<Mine> mines = PrisonMine.getMines();
 
 		for (Mine mine : mines) {
-			Message.debug("Checking mine " + mine.getName());
+			Message.debug("Checking mine " + mine.getId());
 			
 			if(!mine.getProtectionRegion().isLocationInRegion(victim.getLocation())) continue;
         	
-	        if(!attacker.hasPermission("prison.mine.protection.pvp." + mine.getName()) && !attacker.hasPermission("prison.mine.protection.pvp")) {
+	        if(!attacker.hasPermission("prison.mine.protection.pvp." + mine.getId()) && !attacker.hasPermission("prison.mine.protection.pvp")) {
 	        	Message.debug("Player " + attacker.getName() + " does not have permission to PvP in the mine");
 	        	Message.sendError(attacker, "You are not in a No-PvP zone");
 	        	event.setCancelled(true);

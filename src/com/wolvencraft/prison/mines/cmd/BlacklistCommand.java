@@ -67,7 +67,7 @@ public class BlacklistCommand implements BaseCommand {
 			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
 			blocks.add(block);
 			curMine.getBlacklist().setBlocks(blocks);
-			Message.sendCustom(curMine.getName(), ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been added to the blacklistlist");
+			Message.sendCustom(curMine.getId(), ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been added to the blacklistlist");
 		}
 		else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-")) {
 			if(args.length != 3) {
@@ -84,7 +84,7 @@ public class BlacklistCommand implements BaseCommand {
 			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
 			blocks.remove(block);
 			curMine.getBlacklist().setBlocks(blocks);
-			Message.sendCustom(curMine.getName(), ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been removed from the list");
+			Message.sendCustom(curMine.getId(), ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been removed from the list");
 		}
 		else {
 			Message.sendError(language.ERROR_COMMAND);

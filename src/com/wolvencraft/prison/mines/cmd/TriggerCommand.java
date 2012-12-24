@@ -31,11 +31,11 @@ public class TriggerCommand implements BaseCommand {
 			if(args[2].equalsIgnoreCase("toggle")) {
 				if(curMine.getAutomaticReset()) {
 					curMine.setAutomaticReset(false);
-					Message.sendCustom(curMine.getName(), "Time trigger is " + ChatColor.RED + "off");
+					Message.sendCustom(curMine.getId(), "Time trigger is " + ChatColor.RED + "off");
 				}
 				else {
 					curMine.setAutomaticReset(true);
-					Message.sendCustom(curMine.getName(), "Time trigger is " + ChatColor.GREEN + "on");
+					Message.sendCustom(curMine.getId(), "Time trigger is " + ChatColor.GREEN + "on");
 				}
 			} else {
 				int time = Util.parseTime(args[2]);
@@ -45,17 +45,17 @@ public class TriggerCommand implements BaseCommand {
 				}
 				curMine.setResetPeriod(time);
 				String parsedTime = Util.parseSeconds(time);
-				Message.sendCustom(curMine.getName(), "Mine will now reset every " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s)");
+				Message.sendCustom(curMine.getId(), "Mine will now reset every " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s)");
 			}
 		} else if(args[1].equalsIgnoreCase("composition")) {
 			if(args[2].equalsIgnoreCase("toggle")) {
 				if(curMine.getCompositionReset()) {
 					curMine.setCompositionReset(false);
-					Message.sendCustom(curMine.getName(), "Composition trigger is " + ChatColor.RED + "off");
+					Message.sendCustom(curMine.getId(), "Composition trigger is " + ChatColor.RED + "off");
 				}
 				else {
 					curMine.setCompositionReset(true);
-					Message.sendCustom(curMine.getName(), "Composition trigger is " + ChatColor.GREEN + "on");
+					Message.sendCustom(curMine.getId(), "Composition trigger is " + ChatColor.GREEN + "on");
 				}
 			} else {
 				String percentString = args[2];
@@ -66,7 +66,7 @@ public class TriggerCommand implements BaseCommand {
 					return false;
 				}
 				curMine.setCompositionPercent(percent);
-				Message.sendCustom(curMine.getName(), "Mine will reset once it is " + ChatColor.GOLD + percentString + "%" + ChatColor.WHITE + " empty");
+				Message.sendCustom(curMine.getId(), "Mine will reset once it is " + ChatColor.GOLD + percentString + "%" + ChatColor.WHITE + " empty");
 			}
 		} else {
 			Message.sendError(PrisonMine.getLanguage().ERROR_COMMAND);

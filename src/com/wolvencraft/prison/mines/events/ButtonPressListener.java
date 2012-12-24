@@ -65,7 +65,7 @@ public class ButtonPressListener implements Listener {
 							Message.sendSuccess(player, Util.parseColors(PrisonMine.getLanguage().SIGN_WITHDRAW.replaceAll("<PRICE>", sign.getPrice() + "")));
 						} else Message.debug("Vault not found");
 						
-						CommandHandler.RESET.run(curMine.getName());
+						CommandHandler.RESET.run(curMine.getId());
 					}
 				}
 			}

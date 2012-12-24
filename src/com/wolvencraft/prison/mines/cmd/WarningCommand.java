@@ -32,11 +32,11 @@ public class WarningCommand  implements BaseCommand {
 			
 			if(curMine.getWarned()) {
 				curMine.setWarned(false);
-				Message.sendCustom(curMine.getName(), "Reset warnings are " + ChatColor.RED + "off");
+				Message.sendCustom(curMine.getId(), "Reset warnings are " + ChatColor.RED + "off");
 			}
 			else {
 				curMine.setWarned(true);
-				Message.sendCustom(curMine.getName(), "Reset warnings are " + ChatColor.GREEN + "on");
+				Message.sendCustom(curMine.getId(), "Reset warnings are " + ChatColor.GREEN + "on");
 			}
 		} else if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+")) {
 			if(args.length != 3) {
@@ -57,7 +57,7 @@ public class WarningCommand  implements BaseCommand {
 			List<Integer> warnList = curMine.getWarningTimes();
 			warnList.add(time);
 			String parsedTime = Util.parseSeconds(time);
-			Message.sendSuccess(curMine.getName() + " will now send warnings " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s) before the reset");
+			Message.sendSuccess(curMine.getId() + " will now send warnings " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s) before the reset");
 		} else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
 			if(args.length != 4) {
 				Message.sendError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
@@ -73,12 +73,12 @@ public class WarningCommand  implements BaseCommand {
 			List<Integer> warnList = curMine.getWarningTimes();
 			int index = warnList.indexOf(time);
 			if(index == -1) {
-				Message.sendError("'" + curMine.getName() + "' does not send a warning " + ChatColor.GOLD + Util.parseSeconds(time) + ChatColor.WHITE + " minute(s) before the reset");
+				Message.sendError("'" + curMine.getId() + "' does not send a warning " + ChatColor.GOLD + Util.parseSeconds(time) + ChatColor.WHITE + " minute(s) before the reset");
 				return false;
 			}
 			
 			warnList.remove(index);
-			Message.sendSuccess(curMine.getName() + " will no longer send a warning " + ChatColor.GOLD + Util.parseSeconds(time) + ChatColor.WHITE + " minute(s) before the reset");
+			Message.sendSuccess(curMine.getId() + " will no longer send a warning " + ChatColor.GOLD + Util.parseSeconds(time) + ChatColor.WHITE + " minute(s) before the reset");
 		}
 		else {
 			Message.sendError(PrisonMine.getLanguage().ERROR_COMMAND);
