@@ -1,36 +1,39 @@
 package com.wolvencraft.prison.mines.mine;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.SerializableAs;
-
-/**
- * @author jjkoletar
- */
-
-@SerializableAs("Protection")
-public enum Protection implements ConfigurationSerializable {
+public enum Protection {
     PVP("PVP"),
     BLOCK_PLACE("BLOCK_PLACE"),
     BLOCK_BREAK("BLOCK_BREAK");
     
     private String alias;
     
-    Protection(String alias) {
-    	this.alias = alias;
+    Protection(String alias) { this.alias = alias; }
+	
+    public String getAlias() { return alias; }
+    
+    public static Protection get(String alias) {
+    	for(Protection prot : values()) {
+    		if(prot.getAlias().equalsIgnoreCase(alias)) return prot;
+    	}
+    	return null;
     }
-
-	Protection (Map<String, Object> map) {
-		alias = (String) map.get("alias");
+    
+	public static List<String> toStringList(List<Protection> source) {
+		List<String> list = new ArrayList<String>();
+		for(Protection prot : source) {
+			list.add(prot.getAlias());
+		}
+		return list;
 	}
 	
-	@Override
-	public Map<String, Object> serialize() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("alias", alias);
-		return map;
+	public static List<Protection> toProtectionList(List<String> source) {
+		List<Protection> list = new ArrayList<Protection>();
+		for(String string : source) {
+			list.add(get(string));
+		}
+		return list;
 	}
-	
 }

@@ -212,7 +212,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	if(map.containsKey("flags")) flags = (List<BaseFlag>) map.get("flags");
     	else flags = new ArrayList<BaseFlag>();
     	
-    	enabledProtection = (List<Protection>) map.get("enabledProtection");
+    	enabledProtection = Protection.toProtectionList((List<String>) map.get("enabledProtection"));
     	protectionRegion = (PrisonRegion) map.get("protectionRegion");
     	breakBlacklist = (Blacklist) map.get("breakBlacklist");
     	placeBlacklist = (Blacklist) map.get("placeBlacklist");
@@ -253,7 +253,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         
         map.put("flags", flags);
         
-        map.put("enabledProtection", enabledProtection);
+        map.put("enabledProtection", Protection.toStringList(enabledProtection));
         map.put("protectionRegion", protectionRegion);
         map.put("breakBlacklist", breakBlacklist);
         map.put("placeBlacklist", placeBlacklist);
