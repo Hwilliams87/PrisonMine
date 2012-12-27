@@ -14,8 +14,7 @@ import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.mine.Protection;
 import com.wolvencraft.prison.mines.util.Message;
 
-public class BlockPlaceListener implements Listener
-{
+public class BlockPlaceListener implements Listener {
 	public BlockPlaceListener(PrisonMine plugin) {
 		Message.debug("Initiating BlockPlaceListener");
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);

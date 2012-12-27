@@ -14,6 +14,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import java.util.List;
 
 public class PVPListener implements Listener {
+	
 	public PVPListener(PrisonMine plugin) {
 		Message.debug("Initiating PVPListener");
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);

@@ -14,8 +14,7 @@ import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.mine.Protection;
 import com.wolvencraft.prison.mines.util.Message;
 
-public class BucketEmptyListener implements Listener
-{
+public class BucketEmptyListener implements Listener {
 	public BucketEmptyListener(PrisonMine plugin) {
         Message.debug("Initiating BucketEmptyListener");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);

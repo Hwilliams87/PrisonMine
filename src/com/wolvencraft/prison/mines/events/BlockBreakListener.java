@@ -17,8 +17,7 @@ import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.mine.Protection;
 import com.wolvencraft.prison.mines.util.Message;
 
-public class BlockBreakListener implements Listener
-{
+public class BlockBreakListener implements Listener {
 	public BlockBreakListener(PrisonMine plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }

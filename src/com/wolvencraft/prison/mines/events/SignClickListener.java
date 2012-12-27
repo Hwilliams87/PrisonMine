@@ -12,6 +12,7 @@ import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.DisplaySign;
 import com.wolvencraft.prison.mines.util.Message;
 public class SignClickListener implements Listener {
+	
 	public SignClickListener(PrisonMine plugin) {
         Message.debug("Initiating SignClickListener");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
