@@ -29,7 +29,6 @@ import com.wolvencraft.prison.region.PrisonRegion;
 
 public class PrisonMine extends PrisonPlugin {
 	private static PrisonSuite prisonSuite;
-	private double version = 1.0;
 	
 	private static Settings settings;
 	private FileConfiguration languageData = null;
@@ -145,7 +144,7 @@ public class PrisonMine extends PrisonPlugin {
 	public static Settings getSettings()				{ return settings; }
 	public static Language getLanguage()				{ return language; }
 	public static PrisonSuite getPrisonSuite() 			{ return prisonSuite; }
-	public double getVersion()							{ return version; }
+	public double getVersion()							{ return Double.parseDouble(this.getDescription().getVersion()); }
 	public static Mine getCurMine(CommandSender sender) { return curMines.get(sender); }
 	public static Mine getCurMine() 					{ return getCurMine(CommandManager.getSender()); }
 	public static void setCurMine(Mine mine) 			{ setCurMine(CommandManager.getSender(), mine); }

@@ -173,10 +173,10 @@ public class InfoCommand  implements BaseCommand {
 		return false;
 	}
 	
-	public void getHelp() { getHelpLine(); }
-	
-	public void getHelpLine() {
+	public void getHelp() {
 		Message.formatHelp("info", "<name>", "Shows the basic mine information", "prison.mine.info.time");
 		if(Util.hasPermission("prison.mine.info.*")) Message.formatMessage("Displays information about mine composition and reset times");
 	}
+	
+	public void getHelpLine() { Message.formatHelp("info", "<name>", "Shows the basic mine information", "prison.mine.info.time"); }
 }

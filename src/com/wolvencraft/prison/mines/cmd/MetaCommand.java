@@ -6,9 +6,6 @@ import com.wolvencraft.prison.mines.util.Message;
 
 import org.bukkit.ChatColor;
 
-/**
- * @author jjkoletar
- */
 public class MetaCommand  implements BaseCommand {
     public boolean run(String[] args) {
         Message.formatHeader(20, PrisonMine.getLanguage().GENERAL_TITLE);
