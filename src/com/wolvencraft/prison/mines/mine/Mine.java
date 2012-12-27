@@ -285,8 +285,8 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @return true if successful, false if not
      */
     private boolean removePlayers() {
-    	if(!PrisonMine.getSettings().TPONRESET) return true;
-        for (Player p : world.getPlayers()) {
+    	if(!PrisonMine.getSettings().TPONRESET) return true;    	
+        for (Player p : Util.getLocalPlayers(world)) {
             if (region.isLocationInRegion(p.getLocation())) {
                 p.teleport(tpPoint, PlayerTeleportEvent.TeleportCause.PLUGIN);
                 Message.sendSuccess(p, Util.parseVars(PrisonMine.getLanguage().MISC_TELEPORT, this));

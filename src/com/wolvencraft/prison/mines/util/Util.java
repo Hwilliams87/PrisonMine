@@ -2,10 +2,12 @@ package com.wolvencraft.prison.mines.util;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
@@ -478,5 +480,16 @@ public class Util {
 	public static String round(double number) {
         NumberFormat formatter = new DecimalFormat("#0.0####%");
 		return formatter.format(number);
+	}
+	
+	/**
+	 * Returns the local copy of the list of players
+	 * @param world World to check
+	 * @return The list of players
+	 */
+	public static List<Player> getLocalPlayers(World world) {
+		List<Player> tempPlayers = new ArrayList<Player>();
+		for(Player p : world.getPlayers()) { tempPlayers.add(p); }
+		return tempPlayers;
 	}
 }
