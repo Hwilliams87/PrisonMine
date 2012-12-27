@@ -52,7 +52,7 @@ public class BlockBreakListener implements Listener {
 				
 			if(!mine.getProtection().contains(Protection.BLOCK_BREAK)) {
 				Message.debug("Mine has no block breaking protection enabled");
-				continue;
+				return;
 			}
 				
 			Message.debug("Mine has a block breaking protection enabled");
@@ -78,6 +78,8 @@ public class BlockBreakListener implements Listener {
 				Message.sendError(player, errorString);
 				event.setCancelled(true);
 			}
+			Message.debug("All checks passed, player is allowed to break blocks");
+			return;
 		}
 		Message.debug("Broken block was not in the mine region");
 		signCheck(event);

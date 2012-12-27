@@ -55,7 +55,7 @@ public class BlockPlaceListener implements Listener {
 				
 			if(!mine.getProtection().contains(Protection.BLOCK_PLACE)) {
 				Message.debug("Mine has no block placement protection enabled");
-				continue;
+				return;
 			}
 				
 			Message.debug("Mine has a block placement protection enabled");
@@ -81,6 +81,8 @@ public class BlockPlaceListener implements Listener {
 				Message.sendError(player, errorString);
 				event.setCancelled(true);
 			}
+			Message.debug("All checks passed, player is allowed to break blocks");
+			return;
 		}
 		Message.debug("Placed block was not in the mine region");
 		return;
