@@ -22,7 +22,6 @@ public class ExtensionLoader {
 	 * Invalid generators will be skipped.
 	 * @return
 	 */
-	@SuppressWarnings("resource")
 	public static List<BaseGenerator> loadAll() {
 		List<BaseGenerator> generators = new ArrayList<BaseGenerator>();
 		File dir = new File(CommandManager.getPlugin().getDataFolder() + "/extensions");
