@@ -12,5 +12,5 @@ public class HelpCommand implements BaseCommand {
 	}
 	
 	public void getHelp() {}
-	public void getHelpLine() {};
+	public void getHelpLine() { Message.formatHelp("help", "", "Shows PrisonMine help"); };
 }
