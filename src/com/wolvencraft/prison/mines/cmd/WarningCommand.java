@@ -96,5 +96,5 @@ public class WarningCommand  implements BaseCommand {
 		return;
 	}
 	
-	public void getHelpLine() { Message.formatHelp("timer", "", "Shows the automatic reset options", "prison.mine.edit"); }
+	public void getHelpLine() { Message.formatHelp("warning", "", "Shows reset warning options", "prison.mine.edit"); }
 }
