@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -268,7 +269,10 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @return true if successful, false if not
      */
     public boolean reset(String generator) {
-        removePlayers();
+    	try { removePlayers(); }
+    	catch(ConcurrentModificationException cme) {
+    		Message.log(Level.WARNING, "An error occured while removing players from the mine");
+    	}
         BaseGenerator gen = ExtensionLoader.get(generator);
         if(gen == null) {
         	if(CommandManager.getSender() != null) Message.send((Player) CommandManager.getSender(), "Invalid generator selected!");
@@ -283,8 +287,9 @@ public class Mine implements ConfigurationSerializable, Listener {
     /**
      * Teleport all the players from the region that is being reset
      * @return true if successful, false if not
+     * @throws ConcurrentModificationException Exception is thrown if a player is already being teleported
      */
-    private boolean removePlayers() {
+    private boolean removePlayers() throws ConcurrentModificationException {
     	if(!PrisonMine.getSettings().TPONRESET) return true;    	
         for (Player p : Util.getLocalPlayers(world)) {
             if (region.isLocationInRegion(p.getLocation())) {
