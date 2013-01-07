@@ -426,7 +426,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     
 	public List<Mine> getChildren() {
 		List<Mine> children = new ArrayList<Mine>();
-		for(Mine mine : PrisonMine.getMines()) {
+		for(Mine mine : PrisonMine.getLocalMines()) {
 			if(mine.hasParent() && mine.getParent().equalsIgnoreCase(getId())) { children.add(mine); }
 		}
 		return children;
@@ -492,7 +492,7 @@ public class Mine implements ConfigurationSerializable, Listener {
 	}
 	
 	public static Mine get(String id) {
-		for(Mine curMine : PrisonMine.getMines()) {
+		for(Mine curMine : PrisonMine.getLocalMines()) {
 			if(curMine.getId().equalsIgnoreCase(id)) return curMine;
 		}
 		return null;

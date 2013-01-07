@@ -10,9 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-
-import java.util.List;
-
 public class PVPListener implements Listener {
 	
 	public PVPListener(PrisonMine plugin) {
@@ -36,9 +33,7 @@ public class PVPListener implements Listener {
 		if (attacker.hasPermission("prison.mine.bypass.pvp")) { return; }
 		Player victim = (Player) event.getEntity();
 
-		List<Mine> mines = PrisonMine.getMines();
-
-		for (Mine mine : mines) {
+		for (Mine mine : PrisonMine.getLocalMines()) {
 			Message.debug("Checking mine " + mine.getId());
 			
 			if(!mine.getProtectionRegion().isLocationInRegion(victim.getLocation())) continue;

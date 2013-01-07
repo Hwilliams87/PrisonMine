@@ -199,7 +199,7 @@ public class EditCommand  implements BaseCommand {
 			
 			if(!ExtensionLoader.get(curMine.getGenerator()).remove(curMine)) return false;
 			
-			PrisonMine.getMines().remove(curMine);
+			PrisonMine.removeMine(curMine);
 			PrisonMine.setCurMine(null);
 			Message.sendCustom(curMine.getId(), "Mine successfully deleted");
 			curMine.delete();

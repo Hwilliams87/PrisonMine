@@ -3,6 +3,7 @@ package com.wolvencraft.prison.mines;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -137,9 +138,7 @@ public class PrisonMine extends PrisonPlugin {
 		try { languageData.save(languageDataFile); }
 		catch (IOException ex) { Message.log("Could not save config to " + languageDataFile); }
 	}
-
-	public static List<Mine> getMines() 				{ return mines; }
-	public static List<DisplaySign> getSigns() 			{ return signs; }
+	
 	public static List<BaseGenerator> getGenerators() 	{ return generators; }
 	public static Settings getSettings()				{ return settings; }
 	public static Language getLanguage()				{ return language; }
@@ -151,9 +150,25 @@ public class PrisonMine extends PrisonPlugin {
 	public void reloadSettings()						{ settings = null; settings = new Settings(this); }
 	public void reloadLanguage()						{ language = null; language = new Language(this); }
 	
+	public static List<Mine> getLocalMines() { 
+		List<Mine> temp = new ArrayList<Mine>();
+		for(Mine mine : mines) temp.add(mine);
+		return temp;
+	}
+	
 	public static void setMines(List<Mine> newMines) {
 		mines.clear();
 		for(Mine mine : newMines) mines.add(mine);
+	}
+	
+	public static void addMine(Mine mine) 				{ mines.add(mine); }
+	public static void addMine(List<Mine> newMines) 	{ for(Mine mine : newMines) mines.add(mine); }
+	public static void removeMine (Mine mine) 			{ mines.remove(mine); }
+	
+	public static List<DisplaySign> getLocalSigns() { 
+		List<DisplaySign> temp = new ArrayList<DisplaySign>();
+		for(DisplaySign sign : signs) temp.add(sign);
+		return temp;
 	}
 	
 	public static void setSigns(List<DisplaySign> newSigns) {
@@ -165,4 +180,8 @@ public class PrisonMine extends PrisonPlugin {
 		if(curMines.get(sender) != null) curMines.remove(sender);
 		if(mine != null) curMines.put(sender, mine);
 	}
+	
+	public static void addSign(DisplaySign sign) 				{ signs.add(sign); }
+	public static void addSign(List<DisplaySign> newSigns) 		{ for(DisplaySign sign : newSigns) signs.add(sign); }
+	public static void removeSign (DisplaySign sign) 			{ signs.remove(sign); }
 }

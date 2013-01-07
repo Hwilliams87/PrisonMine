@@ -19,10 +19,7 @@ public class SignData {
 	 * Saves all the sign data to disc
 	 */
 	public static void saveAll() {
-		List<DisplaySign> signs = PrisonMine.getSigns();
-		for (DisplaySign sign : signs) {
-			sign.save();
-        }
+		for (DisplaySign sign : PrisonMine.getLocalSigns()) sign.save();
 	}
 	
 	/**

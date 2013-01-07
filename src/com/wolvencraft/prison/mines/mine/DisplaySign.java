@@ -154,7 +154,7 @@ public class DisplaySign implements ConfigurationSerializable  {
 				String data = ((Sign) b).getLine(0);
 				if(data.startsWith("<M>")) {
 					Message.debug("Registering a new DisplaySign");
-					PrisonMine.getSigns().add(new DisplaySign((Sign) b, sign));
+					PrisonMine.addSign(new DisplaySign((Sign) b, sign));
 				}
     		}
     	}
@@ -184,7 +184,7 @@ public class DisplaySign implements ConfigurationSerializable  {
 		
 		for(File signFile : signFiles) {
 			if(signFile.getName().equals(id+ ".yml")) {
-				PrisonMine.getSigns().remove(PrisonMine.getSigns().indexOf(this));
+				PrisonMine.removeSign(this);
 				return signFile.delete();
 			}
 		}
@@ -196,27 +196,24 @@ public class DisplaySign implements ConfigurationSerializable  {
 	private static String generateId() { return Long.toString(Math.abs(new Random().nextLong()), 32); }
 	
 	public static boolean exists(Location loc) {
-		List<DisplaySign> signs = PrisonMine.getSigns();
-		for(DisplaySign sign : signs) { if(sign.getLocation().equals(loc)) return true; }
+		for(DisplaySign sign : PrisonMine.getLocalSigns()) { if(sign.getLocation().equals(loc)) return true; }
 		return false;
 	}
 	
 	public static DisplaySign get(Location loc) {
-		List<DisplaySign> signs = PrisonMine.getSigns();
-		for(DisplaySign sign : signs) { if(sign.getLocation().equals(loc)) return sign; }
+		for(DisplaySign sign : PrisonMine.getLocalSigns()) { if(sign.getLocation().equals(loc)) return sign; }
 		return null;
 	}
 	
 	public static DisplaySign get(Sign sign) { return get(sign.getLocation()); }
 	
 	public static DisplaySign get(String id) { 
-		List<DisplaySign> signs = PrisonMine.getSigns();
-		for(DisplaySign sign : signs) { if(sign.getId().equals(id)) return sign; }
+		for(DisplaySign sign : PrisonMine.getLocalSigns()) { if(sign.getId().equals(id)) return sign; }
 		return null;
 	}
 	
 	public static void updateAll() {
-		for(DisplaySign sign : PrisonMine.getSigns()) {
+		for(DisplaySign sign : PrisonMine.getLocalSigns()) {
 			if(sign.getLocation().getBlock() == null) continue;
 			BlockState b = sign.getLocation().getBlock().getState();
 			if(b instanceof Sign) {

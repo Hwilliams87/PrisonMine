@@ -1,7 +1,5 @@
 package com.wolvencraft.prison.mines.events;
 
-import java.util.List;
-
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,13 +31,12 @@ public class BlockPlaceListener implements Listener {
 		}
 
 		Message.debug("Retrieving the region list...");
-		List<Mine> mines = PrisonMine.getMines();
 		
 		Block b = event.getBlock();
 		String errorString = PrisonMine.getLanguage().PROTECTION_BREAK;
 		errorString.replaceAll("<BLOCK>", b.getType().name().toLowerCase().replace("_", " "));
 		
-		for(Mine mine : mines) {
+		for(Mine mine : PrisonMine.getLocalMines()) {
 			Message.debug("Checking mine " + mine.getId());
 			
 			if(!mine.getProtectionRegion().isLocationInRegion(b.getLocation())) continue;

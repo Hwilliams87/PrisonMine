@@ -85,7 +85,7 @@ public class SaveCommand implements BaseCommand {
 		
 		if(!ExtensionLoader.get(generator).init(newMine)) return false;
 		
-		PrisonMine.getMines().add(newMine);
+		PrisonMine.addMine(newMine);
 		newMine.save();
 
         Message.debug("Mine creation completed");

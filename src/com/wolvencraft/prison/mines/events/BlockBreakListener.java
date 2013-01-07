@@ -1,7 +1,5 @@
 package com.wolvencraft.prison.mines.events;
 
-import java.util.List;
-
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
@@ -28,14 +26,12 @@ public class BlockBreakListener implements Listener {
 		Message.debug("BlockBreakEvent caught");
 		
 		Player player = event.getPlayer();
-
-		List<Mine> mines = PrisonMine.getMines();
 		
 		Block b = event.getBlock();
 		String errorString = PrisonMine.getLanguage().PROTECTION_BREAK;
 		errorString.replaceAll("<BLOCK>", b.getType().name().toLowerCase().replace("_", " "));
 		
-		for(Mine mine : mines) {
+		for(Mine mine : PrisonMine.getLocalMines()) {
 			Message.debug("Checking mine " + mine.getId());
 			
 			if(mine.getRegion().isLocationInRegion(b.getLocation())) mine.recountBlocks();

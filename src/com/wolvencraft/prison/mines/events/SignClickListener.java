@@ -36,9 +36,9 @@ public class SignClickListener implements Listener {
 						Message.debug("Checking to see if the sign is valid");
 						Sign s = (Sign) block.getState();
 						String data = s.getLine(0);
-						if((data.startsWith("<M|") || data.startsWith("<M:")) && data.endsWith(">")) {
+						if(data.startsWith("<M:") && data.endsWith(">")) {
 							Message.debug("Registering a new DisplaySign");
-							PrisonMine.getSigns().add(new DisplaySign(s));
+							PrisonMine.addSign(new DisplaySign(s));
 						}
 						return;
 					}

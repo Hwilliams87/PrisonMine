@@ -19,7 +19,7 @@ public class ResetCommand implements BaseCommand {
 		} else if(args.length == 2) {
 			if(args[1].equalsIgnoreCase("all")) {
 				boolean success = true;
-				for(Mine mine : PrisonMine.getMines()) {
+				for(Mine mine : PrisonMine.getLocalMines()) {
 					if(!CommandHandler.RESET.run(mine.getId())) success = false;
 				}
 				return success;

@@ -41,7 +41,7 @@ public class DebugCommand implements BaseCommand {
 				Message.sendCustom("DEBUG", "Import folder not found");
 				return false;
 			}
-			for(Mine mine : newMines) { PrisonMine.getMines().add(mine); }
+			for(Mine mine : newMines) { PrisonMine.addMine(mine); }
 			Message.sendCustom("DEBUG", "Mines imported into the system. Check the server log for more info");
 			return true;
 		} else if(args[0].equalsIgnoreCase("setregion")) {
@@ -56,9 +56,7 @@ public class DebugCommand implements BaseCommand {
 			Message.sendCustom("DEBUG", "Teleported to: " + curMine.getId());
 			return true;
 		} else if(args[0].equalsIgnoreCase("unload")) {
-			List<Mine> mines = PrisonMine.getMines();
-			mines.remove(Mine.get(args[1]));
-			PrisonMine.setMines(mines);
+			PrisonMine.removeMine(Mine.get(args[1]));
 			Message.sendCustom("DEBUG", "Unloaded " + args[1] + " from memory");
 			return true;
 		} else if(args[0].equalsIgnoreCase("setwarp")) {
