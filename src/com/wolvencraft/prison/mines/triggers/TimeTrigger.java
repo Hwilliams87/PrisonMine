@@ -3,6 +3,7 @@ package com.wolvencraft.prison.mines.triggers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.bukkit.configuration.serialization.SerializableAs;
 
@@ -19,6 +20,7 @@ public class TimeTrigger implements BaseTrigger {
 	private long period;
 	private long next;
 	private String mine;
+	private Failsafe failsafe;
 	
 	private boolean canceled;
 	
@@ -28,6 +30,7 @@ public class TimeTrigger implements BaseTrigger {
 		this.next = this.period;
 		
 		canceled = false;
+		failsafe = new Failsafe();
 		
 		PrisonSuite.addTask(this);
 	}
@@ -38,6 +41,7 @@ public class TimeTrigger implements BaseTrigger {
 		next = Long.parseLong((String)map.get("next"));
 		
 		canceled = false;
+		failsafe = new Failsafe();
 		
 		PrisonSuite.addTask(this);
 	}
@@ -53,6 +57,14 @@ public class TimeTrigger implements BaseTrigger {
 	public void run() {
 		Mine mineObj = Mine.get(mine);
 		if(mineObj == null) return;
+		
+		if(!failsafe.check()) {
+			Message.log(Level.SEVERE, "Mne " + mineObj.getId() + " has crashed while resetting. Mine was saved and unloaded. Reload the plugin to load it back to the system.");
+			mineObj.save();
+			PrisonMine.removeMine(mineObj);
+			return;
+		}
+		
 		if(!mineObj.hasParent()) {
 			List<Integer> warnTimes = mineObj.getWarningTimes();
 			
@@ -70,6 +82,8 @@ public class TimeTrigger implements BaseTrigger {
 	
 		if(mineObj.getCooldown() && mineObj.getCooldownEndsIn() > 0)
 			mineObj.updateCooldown(PrisonMine.getSettings().TICKRATE);
+		
+		failsafe.tick();
 	}
 	
 	public void cancel() { canceled = true; }
