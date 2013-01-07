@@ -9,11 +9,11 @@ import org.bukkit.ChatColor;
 public class MetaCommand  implements BaseCommand {
     public boolean run(String[] args) {
         Message.formatHeader(20, PrisonMine.getLanguage().GENERAL_TITLE);
-        Message.send(ChatColor.GREEN + CommandManager.getPlugin().getName() + ChatColor.WHITE + " version " + ChatColor.BLUE + CommandManager.getPlugin().getVersion());
+        Message.send(ChatColor.GREEN + "PrisonMine version " + ChatColor.BLUE + CommandManager.getPlugin().getVersion());
         Message.send(ChatColor.YELLOW + "http://dev.bukkit.org/server-mods/prisonmine/");
         Message.send("Creator: " + ChatColor.AQUA + "bitWolfy");
         Message.send("Contributor: " + ChatColor.AQUA + "jjkoletar");
-        
+        Message.send("Tester: " + ChatColor.AQUA + "Ramo909");
         return true;
     }
     
