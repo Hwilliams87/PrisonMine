@@ -11,6 +11,7 @@ import com.wolvencraft.prison.mines.triggers.CompositionTrigger;
 import com.wolvencraft.prison.mines.triggers.TimeTrigger;
 import com.wolvencraft.prison.mines.util.ExtensionLoader;
 import com.wolvencraft.prison.mines.util.Message;
+import com.wolvencraft.prison.mines.util.ResetTrigger;
 import com.wolvencraft.prison.mines.util.Util;
 
 import org.bukkit.Bukkit;
@@ -266,7 +267,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     /**
      * Reset the mine according to the rules specified by the generator
      * @param generator Terrain generation rules
-     * @return true if successful, false if not
+     * @return <b>true</b> if successful, <b>false</b> if not
      */
     public boolean reset(String generator) {
     	try { removePlayers(); }
@@ -286,7 +287,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     /**
      * Teleport all the players from the region that is being reset
-     * @return true if successful, false if not
+     * @return <b>true</b> if successful, <b>false</b> if not
      * @throws ConcurrentModificationException Exception is thrown if a player is already being teleported
      */
     private boolean removePlayers() throws ConcurrentModificationException {
@@ -346,57 +347,162 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public void setWarned(boolean warned) 							{ this.warned = warned; }
     
-	
-    // Triggers
-    public List<BaseTrigger> getTriggers()			{ return resetTriggers; }
-    
-    public BaseTrigger getTrigger(String triggerId)		{
+    /**
+     * Returns the instance of the trigger with the specified ID, or <b>null</b> if it is not present
+     * @param triggerId ID of the requested trigger
+     * @return Instance of the trigger, or <b>null</b> if it is not present
+     */
+    private BaseTrigger getTrigger(ResetTrigger triggerId) {
     	for(BaseTrigger trigger : resetTriggers) {
-    		if(trigger.getId().equalsIgnoreCase(triggerId)) return trigger;
+    		if(trigger.getId().equals(triggerId)) return trigger;
     	}
     	return null;
     }
     
-    public boolean removeTrigger(String triggerId) {
-    	for(BaseTrigger trigger : resetTriggers) {
-    		if(trigger.getId().equalsIgnoreCase(triggerId)) return resetTriggers.remove(trigger);
-    	}
-    	return false;
+    /**
+     * Determines if the mine is reset by the timer.<br />
+     * Works by iterating through the list of triggers to determine if the TimeTrigger is present
+     * @return <b>true</b> if the TimeTrigger is present, <b>false</b> otherwise
+     */
+    public boolean getAutomaticReset() {
+    	return (getTrigger(ResetTrigger.TIME) != null);
     }
     
-    public boolean getAutomaticReset() { return (getTrigger("time") != null); }
+    /**
+     * Returns the reset period (i.e. how often should the mine reset) of the mine, in seconds
+     * @return <b>int</b> reset period of the mine, or <b>-1</b> if the trigger is absent
+     */
+    public int getResetPeriod() {
+    	if(getTrigger(ResetTrigger.TIME) == null) return -1;
+    	return ((TimeTrigger)(getTrigger(ResetTrigger.TIME))).getPeriod(); }
     
-    public int getResetPeriod() 	{ return ((TimeTrigger)(getTrigger("time"))).getPeriod(); }
-    public int getResetPeriodSafe() { return getResetPeriodSafe(this); }
-    public int getResetsIn() 		{ return ((TimeTrigger)(getTrigger("time"))).getNext(); }
-    public int getResetsInSafe() 	{ return getResetsInSafe(this); }
+    /**
+     * Returns the reset period (i.e. how often should the mine reset) of the mine's <b>superparent</b>, in seconds
+     * @return <b>int</b> reset period of the mine's superparent, or <b>-1</b> if the trigger is absent
+     */
+    public int getResetPeriodSafe() {
+		if(parent == null) return getResetPeriod();
+		return get(parent).getResetPeriodSafe();
+    }
     
-    public void setResetPeriod(int period)	{ ((TimeTrigger)(getTrigger("time"))).setPeriod(period); }
+    /**
+     * Returns the time until the mine resets, in seconds
+     * @return <b>int</b> time until the reset period ends
+     */
+    public int getResetsIn() {
+    	if(getTrigger(ResetTrigger.TIME) == null) return -1;
+    	return ((TimeTrigger)(getTrigger(ResetTrigger.TIME))).getNext();
+    }
+    
+    /**
+     * Returns the time until the mine's <b>superparent</b> resets, in seconds
+     * @return <b>int</b> time until the reset period ends
+     */
+    public int getResetsInSafe() {
+		if(parent == null) return getResetsIn();
+		return get(parent).getResetsInSafe();
+    }
+    
+    /**
+     * Toggles whether the mine should be reset by the timer
+     * @param state Should the mine be reset by the timer?
+     * @return <b>false</b> if an error has occurred, <b>true</b> otherwise.
+     */
     public boolean setAutomaticReset(boolean state) {
     	if(state) {
-    		if(getAutomaticReset()) return false;
+    		if(getTrigger(ResetTrigger.TIME) != null) return false;
     		resetTriggers.add(new TimeTrigger(this, 900));
     	} else {
-    		if(!getAutomaticReset()) return false;
-    		getTrigger("time").cancel();
-    		removeTrigger("time");
+    		if(getTrigger(ResetTrigger.TIME) == null) return false;
+    		getTrigger(ResetTrigger.TIME).cancel();
+    		resetTriggers.remove(getTrigger(ResetTrigger.TIME));
     	}
     	return true;
     }
-    public void resetTimer() { ((TimeTrigger)(getTrigger("time"))).resetTimer(); }
     
-    public boolean getCompositionReset() { return (getTrigger("composition") != null); }
+    /**
+     * Sets the reset period to the value specified
+     * @param period Time, in seconds, between resets
+     * @return <b>false</b> if the TimeTrigger is not present, <b>true</b> otherwise
+     */
+    public boolean setResetPeriod(int period) {
+		if(getTrigger(ResetTrigger.TIME) == null) return false;
+    	((TimeTrigger)(getTrigger(ResetTrigger.TIME))).setPeriod(period);
+    	return true;
+    }
     
-    public int getBlocksLeft() 		{ return blocksLeft; }
-    public int getTotalBlocks() 	{ return totalBlocks; }
-    public double getPercent()		{ return ((double)blocksLeft / (double)totalBlocks) * 100; }
+    /**
+     * Determines if the mine is reset by the composition.<br />
+     * Works by iterating through the list of triggers to determine if the CompositionTrigger is present
+     * @return <b>true</b> if the CompositionTrigger is present, <b>false</b> otherwise
+     */
+    public boolean getCompositionReset() {
+    	return (getTrigger(ResetTrigger.COMPOSITION) != null);
+    }
     
-    public void recountBlocks()		{ blocksLeft = region.getBlockCountSolid(); }
+    /**
+     * Returns the total number of blocks in the mine.<br />
+     * Calling this method triggers the immediate recount of blocks in the mine.<br />
+     * CompositionTrigger does not have to be active in order to count the blocks.
+     * @return <b>int</b> number of blocks
+     */
+    public int getTotalBlocks() {
+    	totalBlocks = region.getBlockCount();
+    	return totalBlocks;
+    }
     
-    public double getCompositionPercent() { return ((CompositionTrigger)(getTrigger("composition"))).getPercent() * 100; }
+    /**
+     * Returns the total number of blocks in the mine.<br />
+     * CompositionTrigger does not have to be active in order to count the blocks.
+     * @return <b>int</b> number of blocks
+     */
+    public int getTotalBlocksSafe() {
+    	return totalBlocks;
+    }
     
-    public void setCompositionPercent(double percent) { ((CompositionTrigger)(getTrigger("composition"))).setPercent(percent); }
+    /**
+     * Returns the number of non-air blocks remaining in the mine. This number might not reflect how full the mine is due to flooding, for example.<br />
+     * Calling this method triggers the immediate recount of blocks in the mine.<br />
+     * CompositionTrigger does not have to be active in order to count the blocks.
+     * @return <b>int</b> number of non-air blocks in the mine
+     */
+    public int getBlocksLeft() {
+    	blocksLeft = region.getBlockCountSolid();
+    	return blocksLeft;
+    }
     
+    /**
+     * Returns the number of non-air blocks remaining in the mine. This number might not reflect how full the mine is due to flooding, for example.<br />
+     * CompositionTrigger does not have to be active in order to count the blocks.
+     * @return <b>int</b> number of non-air blocks in the mine
+     */
+    public int getBlocksLeftSafe() {
+    	return blocksLeft;
+    } 
+    
+    /**
+     * Performs the following calculation and returns the result:<br />
+     * (<b>getBlocksLeft()</b> / <b>getTotalBlocks()</b>) * 100
+     * @return <b>double</b> Percent of the mine that is taken up by solid blocks
+     */
+    public double getCurrentPercent() {
+    	return ((double) getBlocksLeft() / (double) getTotalBlocks()) * 100;
+    }
+    
+    /**
+     * Returns the percent at which the mine shall be reset via CompositionTrigger
+     * @return <b>double</b> Percentage required for the reset
+     */
+    public double getRequiredPercent() {
+    	if(getTrigger(ResetTrigger.COMPOSITION) == null) return -1;
+    	return ((CompositionTrigger)(getTrigger(ResetTrigger.COMPOSITION))).getPercent() * 100;
+    }
+    
+    /**
+     * Toggles whether the mine should be reset due to its composition
+     * @param state Should the mine be reset because of its composition
+     * @return <b>false</b> if an error has occurred, <b>true</b> otherwise.
+     */
     public boolean setCompositionReset(boolean state) {
     	if(state) {
     		if(getCompositionReset()) return false;
@@ -404,13 +510,22 @@ public class Mine implements ConfigurationSerializable, Listener {
     	}
     	else {
     		if(!getCompositionReset()) return false;
-    		getTrigger("composition").cancel();
-    		removeTrigger("composition");
+    		getTrigger(ResetTrigger.COMPOSITION).cancel();
+    		resetTriggers.remove(getTrigger(ResetTrigger.COMPOSITION));
     	}
     	return true;
     }
     
-    // Everything else
+    /**
+     * Sets the required percent to the value specified
+     * @param Percent at which the mine should be reset
+     * @return <b>false</b> if the CompositionTrigger is not present, <b>true</b> otherwise
+     */
+    public boolean setCompositionPercent(double percent) {
+    	if(getTrigger(ResetTrigger.COMPOSITION) == null) return false;
+    	((CompositionTrigger)(getTrigger(ResetTrigger.COMPOSITION))).setPercent(percent);
+    	return true;
+    }
     
     public List<BaseFlag> getFlags() { return flags; }
     public boolean hasFlag(BaseFlag flag) { return flags.contains(flag); }
@@ -474,16 +589,6 @@ public class Mine implements ConfigurationSerializable, Listener {
 		}
 		
 		return finalList;
-	}
-	
-	private static int getResetsInSafe(Mine curMine) {
-		if(!curMine.hasParent()) return curMine.getResetsIn();
-		else return getResetsInSafe(get(curMine.getParent()));
-	}
-
-	private static int getResetPeriodSafe(Mine curMine) {
-		if(curMine.getParent() == null) return curMine.getResetPeriod();
-		else return getResetPeriodSafe(get(curMine.getParent()));
 	}
 	
 	private static Mine getSuperParent(Mine curMine) {

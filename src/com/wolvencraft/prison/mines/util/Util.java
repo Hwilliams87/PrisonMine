@@ -290,8 +290,8 @@ public class Util {
 		str = str.replaceAll("<PBLOCKS>", (curMine.getBlocksLeft() / curMine.getTotalBlocks()) * 100 + "");
 		
 		if(curMine.getCompositionReset()) {
-			str = str.replaceAll("<PPER>", curMine.getPercent() + "");
-			str = str.replaceAll("<NPER>", curMine.getCompositionPercent() + "");
+			str = str.replaceAll("<PPER>", curMine.getCurrentPercent() + "");
+			str = str.replaceAll("<NPER>", curMine.getRequiredPercent() + "");
 		}
 
 		if(CommandManager.getSender() == null) str = str.replaceAll("<PLAYER>", "CONSOLE");

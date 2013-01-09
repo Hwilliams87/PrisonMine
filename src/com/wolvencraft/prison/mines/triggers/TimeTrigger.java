@@ -3,7 +3,6 @@ package com.wolvencraft.prison.mines.triggers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.bukkit.configuration.serialization.SerializableAs;
 
@@ -12,6 +11,7 @@ import com.wolvencraft.prison.mines.CommandHandler;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
+import com.wolvencraft.prison.mines.util.ResetTrigger;
 import com.wolvencraft.prison.mines.util.Util;
 
 @SerializableAs("TimeTrigger")
@@ -20,7 +20,6 @@ public class TimeTrigger implements BaseTrigger {
 	private long period;
 	private long next;
 	private String mine;
-	private Failsafe failsafe;
 	
 	private boolean canceled;
 	
@@ -30,7 +29,6 @@ public class TimeTrigger implements BaseTrigger {
 		this.next = this.period;
 		
 		canceled = false;
-		failsafe = new Failsafe();
 		
 		PrisonSuite.addTask(this);
 	}
@@ -41,7 +39,6 @@ public class TimeTrigger implements BaseTrigger {
 		next = Long.parseLong((String)map.get("next"));
 		
 		canceled = false;
-		failsafe = new Failsafe();
 		
 		PrisonSuite.addTask(this);
 	}
@@ -58,13 +55,6 @@ public class TimeTrigger implements BaseTrigger {
 		Mine mineObj = Mine.get(mine);
 		if(mineObj == null) return;
 		
-		if(!failsafe.check()) {
-			Message.log(Level.SEVERE, "Mne " + mineObj.getId() + " has crashed while resetting. Mine was saved and unloaded. Reload the plugin to load it back to the system.");
-			mineObj.save();
-			PrisonMine.removeMine(mineObj);
-			return;
-		}
-		
 		if(!mineObj.hasParent()) {
 			List<Integer> warnTimes = mineObj.getWarningTimes();
 			
@@ -74,7 +64,7 @@ public class TimeTrigger implements BaseTrigger {
 			if(next <= 0) {
 				Message.debug("Resetting mine " + mineObj.getId() + " on a timer");
 				CommandHandler.RESET.run(mineObj.getId());
-				if(!PrisonMine.getSettings().RESETTIMER) next = period;
+				next = period;
 			} else {
 				next -= PrisonMine.getSettings().TICKRATE;
 			}
@@ -82,20 +72,16 @@ public class TimeTrigger implements BaseTrigger {
 	
 		if(mineObj.getCooldown() && mineObj.getCooldownEndsIn() > 0)
 			mineObj.updateCooldown(PrisonMine.getSettings().TICKRATE);
-		
-		failsafe.tick();
 	}
 	
 	public void cancel() { canceled = true; }
 	
 	public String getName() 	{ return "PrisonMine:TimeTrigger:" + mine; }
-	public String getId() 		{ return "time"; }
+	public ResetTrigger getId() 		{ return ResetTrigger.TIME; }
 	public boolean getExpired() { return canceled; }
 	
 	public int getPeriod() 		{ return (int)(period / 20); }
 	public int getNext() 		{ return (int)(next / 20); }
 	
 	public void setPeriod(int period) { this.period = period * 20; }
-	
-	public void resetTimer() { next = period; }
 }

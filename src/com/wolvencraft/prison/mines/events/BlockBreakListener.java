@@ -34,7 +34,6 @@ public class BlockBreakListener implements Listener {
 		for(Mine mine : PrisonMine.getLocalMines()) {
 			Message.debug("Checking mine " + mine.getId());
 			
-			if(mine.getRegion().isLocationInRegion(b.getLocation())) mine.recountBlocks();
 			if(!mine.getProtectionRegion().isLocationInRegion(b.getLocation())) continue;
 			
 			Message.debug("Location is in the mine protection region");

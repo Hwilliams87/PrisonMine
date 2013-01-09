@@ -4,9 +4,10 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 
 import com.wolvencraft.prison.hooks.TimedTask;
+import com.wolvencraft.prison.mines.util.ResetTrigger;
 
 @SerializableAs("BaseTrigger")
 public interface BaseTrigger extends TimedTask, ConfigurationSerializable {
-	public String getId();
+	public ResetTrigger getId();
 	
 }

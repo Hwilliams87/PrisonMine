@@ -63,8 +63,6 @@ public class ResetCommand implements BaseCommand {
 		
 		if(curMine.getCooldown()) curMine.resetCooldown();
 		
-		if(curMine.getAutomaticReset() && PrisonMine.getSettings().RESETTIMER) curMine.resetTimer();
-		
 		if(!(curMine.reset(generator))) return false;
 		
 		String broadcastMessage;
@@ -76,7 +74,7 @@ public class ResetCommand implements BaseCommand {
 			
 			if(curMine.getAutomaticReset() && curMine.getResetsIn() <= 0)
 				broadcastMessage = PrisonMine.getLanguage().RESET_TIMED;
-			else if(curMine.getCompositionReset() && curMine.getPercent() <= curMine.getCompositionPercent())
+			else if(curMine.getCompositionReset() && curMine.getCurrentPercent() <= curMine.getRequiredPercent())
 				broadcastMessage = PrisonMine.getLanguage().RESET_COMPOSITION;
 			else
 				broadcastMessage = PrisonMine.getLanguage().RESET_AUTOMATIC;
@@ -89,7 +87,6 @@ public class ResetCommand implements BaseCommand {
 			else if(!automatic) Message.sendSuccess(broadcastMessage);
 		}
 		
-		curMine.recountBlocks();
 		return true;
 	}
 	
