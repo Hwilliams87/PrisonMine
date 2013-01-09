@@ -57,6 +57,10 @@ public class ResetCommand implements BaseCommand {
 				Message.sendError(Util.parseVars(PrisonMine.getLanguage().RESET_COOLDOWN, curMine));
 				return false;
 			}
+			
+			if(curMine.getAutomaticReset() && PrisonMine.getSettings().MANUALTIMERRESET) {
+				curMine.resetTimer();
+			}
 		}
 
 		if(generator.equals("")) generator = curMine.getGenerator();

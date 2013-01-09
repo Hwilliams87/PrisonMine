@@ -82,6 +82,6 @@ public class TimeTrigger implements BaseTrigger {
 	
 	public int getPeriod() 		{ return (int)(period / 20); }
 	public int getNext() 		{ return (int)(next / 20); }
-	
+	public void resetTimer()	{ next = period; }
 	public void setPeriod(int period) { this.period = period * 20; }
 }

@@ -432,6 +432,17 @@ public class Mine implements ConfigurationSerializable, Listener {
     }
     
     /**
+     * Resets the timer to the default value.<br />
+     * This method should only be used to reset the timer if the mine was reset manually
+     * @return <b>false</b> if the TimeTrigger is not present, <b>true</b> otherwise.
+     */
+    public boolean resetTimer() {
+		if(getTrigger(ResetTrigger.TIME) == null) return false;
+		((TimeTrigger)getTrigger(ResetTrigger.TIME)).resetTimer();
+		return true;
+    }
+    
+    /**
      * Determines if the mine is reset by the composition.<br />
      * Works by iterating through the list of triggers to determine if the CompositionTrigger is present
      * @return <b>true</b> if the CompositionTrigger is present, <b>false</b> otherwise
