@@ -199,6 +199,8 @@ public class EditCommand  implements BaseCommand {
 			
 			if(!ExtensionLoader.get(curMine.getGenerator()).remove(curMine)) return false;
 			
+			for(Mine child : curMine.getChildren()) { child.setParent(null); }
+			
 			PrisonMine.removeMine(curMine);
 			PrisonMine.setCurMine(null);
 			Message.sendCustom(curMine.getId(), "Mine successfully deleted");
