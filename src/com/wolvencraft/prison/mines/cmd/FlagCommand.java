@@ -1,5 +1,6 @@
 package com.wolvencraft.prison.mines.cmd;
 
+import com.wolvencraft.prison.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.flags.BaseFlag;
 import com.wolvencraft.prison.mines.flags.FlagHandler;
@@ -53,6 +54,6 @@ public class FlagCommand implements BaseCommand {
 
 	@Override
 	public void getHelpLine() {
-		Message.formatHelp("flag", "", "Shows the help page on mine flags", "prison.mine.edit");
+		if(CommandManager.getPlugin().getVersion() > 1.2) Message.formatHelp("flag", "", "Shows the help page on mine flags", "prison.mine.edit");
 	}
 }
