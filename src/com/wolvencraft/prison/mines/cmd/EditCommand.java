@@ -313,8 +313,7 @@ public class EditCommand  implements BaseCommand {
 				return false;
 			}
 			
-			if(Mine.get(args[1]).getParent() != null
-					&& Mine.get(args[1]).getParent().equalsIgnoreCase(curMine.getId())) {
+			if(Mine.get(args[1]).getParent() != null && Mine.get(args[1]).getSuperParent().getId().equalsIgnoreCase(curMine.getId())) {
 				Message.sendError("Infinite loop detected in timers!");
 				return false;
 			}
