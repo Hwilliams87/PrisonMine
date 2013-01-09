@@ -1,6 +1,7 @@
 package com.wolvencraft.prison.mines.generation;
 
 import java.util.ConcurrentModificationException;
+import java.util.logging.Level;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -31,16 +32,19 @@ public class RandomGenerator implements BaseGenerator {
     			for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
 		            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
 		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-		                	Block original = world.getBlockAt(x, y, z);
-		                    MaterialData newBlock = pattern.next();
-		                    if(mine.getBlacklist().getBlocks().contains(original.getState().getData())) {
-		                    	try { original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false); }
-		                    	catch (ConcurrentModificationException cme) { Message.debug("ConcurrentModificationException thrown"); continue; }
-		                    	catch (Exception ex) { Message.debug("Unknown exceptiont thrown"); continue; }
+		                	try { 
+			                	Block original = world.getBlockAt(x, y, z);
+			                    MaterialData newBlock = pattern.next();
+			                    if(mine.getBlacklist().getBlocks().contains(original.getState().getData()))
+			                    	original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
 		                    }
+	                    	catch (ConcurrentModificationException cme) { Message.log(Level.SEVERE, "An error has occurred while running a generator [ConcurrentModificationException]"); continue; }
+	                    	catch (Exception ex) { Message.log(Level.SEVERE, "An error has occurred while running a generator [Exception]"); continue; }
+		                	catch (IllegalAccessError iae) { Message.log(Level.SEVERE, "An error has occurred while running a generator [IllegalAccessError]"); continue; }
+		                	catch (Error iae) { Message.log(Level.SEVERE, "An error has occurred while running a generator [Error]"); continue; }
 		                }
 		            }
-		        }
+		         }
     	        Message.debug("Reset complete! BL, WL");
     			return true;
     		}
@@ -48,13 +52,16 @@ public class RandomGenerator implements BaseGenerator {
     			for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
 		            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
 		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-		                	Block original = world.getBlockAt(x, y, z);
-		                    MaterialData newBlock = pattern.next();
-		                    if(!mine.getBlacklist().getBlocks().contains(original.getState().getData())) {
-		                    	try { original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false); }
-		                    	catch (ConcurrentModificationException cme) { Message.debug("ConcurrentModificationException thrown"); continue; }
-		                    	catch (Exception ex) { Message.debug("Unknown exceptiont thrown"); continue; }
-		                    }
+		                	try { 
+			                	Block original = world.getBlockAt(x, y, z);
+			                    MaterialData newBlock = pattern.next();
+			                    if(!mine.getBlacklist().getBlocks().contains(original.getState().getData()))
+			                    	original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
+		                	}
+	                    	catch (ConcurrentModificationException cme) { Message.log(Level.SEVERE, "An error has occurred while running a generator [ConcurrentModificationException]"); continue; }
+	                    	catch (Exception ex) { Message.log(Level.SEVERE, "An error has occurred while running a generator [Exception]"); continue; }
+		                	catch (IllegalAccessError iae) { Message.log(Level.SEVERE, "An error has occurred while running a generator [IllegalAccessError]"); continue; }
+		                	catch (Error iae) { Message.log(Level.SEVERE, "An error has occurred while running a generator [Error]"); continue; }
 		                }
 		            }
 		        }
@@ -66,11 +73,15 @@ public class RandomGenerator implements BaseGenerator {
 	        for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
 	            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
 	                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-	                	Block original = world.getBlockAt(x, y, z);
-	                    MaterialData newBlock = pattern.next();
-	                    try { original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false); }
-                    	catch (ConcurrentModificationException cme) { Message.debug("ConcurrentModificationException thrown"); continue; }
-                    	catch (Exception ex) { Message.debug("Unknown exceptiont thrown"); continue; }
+	                	try { 
+		                	Block original = world.getBlockAt(x, y, z);
+		                    MaterialData newBlock = pattern.next();
+		                    original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
+	                    }
+                    	catch (ConcurrentModificationException cme) { Message.log(Level.SEVERE, "An error has occurred while running a generator [ConcurrentModificationException]"); continue; }
+                    	catch (Exception ex) { Message.log(Level.SEVERE, "An error has occurred while running a generator [Exception]"); continue; }
+	                	catch (IllegalAccessError iae) { Message.log(Level.SEVERE, "An error has occurred while running a generator [IllegalAccessError]"); continue; }
+	                	catch (Error iae) { Message.log(Level.SEVERE, "An error has occurred while running a generator [Error]"); continue; }
 	                }
 	            }
 	        }
