@@ -1,5 +1,7 @@
 package com.wolvencraft.prison.mines.generation;
 
+import java.util.ConcurrentModificationException;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -31,8 +33,11 @@ public class RandomGenerator implements BaseGenerator {
 		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
 		                	Block original = world.getBlockAt(x, y, z);
 		                    MaterialData newBlock = pattern.next();
-		                    if(mine.getBlacklist().getBlocks().contains(original.getState().getData()))
-				                original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
+		                    if(mine.getBlacklist().getBlocks().contains(original.getState().getData())) {
+		                    	try { original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false); }
+		                    	catch (ConcurrentModificationException cme) { Message.debug("ConcurrentModificationException thrown"); continue; }
+		                    	catch (Exception ex) { Message.debug("Unknown exceptiont thrown"); continue; }
+		                    }
 		                }
 		            }
 		        }
@@ -45,8 +50,11 @@ public class RandomGenerator implements BaseGenerator {
 		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
 		                	Block original = world.getBlockAt(x, y, z);
 		                    MaterialData newBlock = pattern.next();
-		                    if(!mine.getBlacklist().getBlocks().contains(original.getState().getData()))
-				                original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
+		                    if(!mine.getBlacklist().getBlocks().contains(original.getState().getData())) {
+		                    	try { original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false); }
+		                    	catch (ConcurrentModificationException cme) { Message.debug("ConcurrentModificationException thrown"); continue; }
+		                    	catch (Exception ex) { Message.debug("Unknown exceptiont thrown"); continue; }
+		                    }
 		                }
 		            }
 		        }
@@ -60,7 +68,9 @@ public class RandomGenerator implements BaseGenerator {
 	                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
 	                	Block original = world.getBlockAt(x, y, z);
 	                    MaterialData newBlock = pattern.next();
-		                original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
+	                    try { original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false); }
+                    	catch (ConcurrentModificationException cme) { Message.debug("ConcurrentModificationException thrown"); continue; }
+                    	catch (Exception ex) { Message.debug("Unknown exceptiont thrown"); continue; }
 	                }
 	            }
 	        }
