@@ -10,7 +10,7 @@ public class DisplaySignTask implements TimedTask {
 	
 	public void run() { DisplaySign.updateAll(); }
 
-	public String getName() 	{ return "SignTask"; }
+	public String getName() 	{ return "PrisonMine:DisplaySignTask"; }
 	public boolean getExpired() { return canceled; }
 	public void cancel()		{ canceled = true; }
 }
