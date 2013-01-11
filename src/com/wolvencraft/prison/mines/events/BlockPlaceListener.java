@@ -3,6 +3,7 @@ package com.wolvencraft.prison.mines.events;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.material.MaterialData;
@@ -18,7 +19,7 @@ public class BlockPlaceListener implements Listener {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onBlockplace(BlockPlaceEvent event) {
 		if(event.isCancelled()) return;
 		Message.debug("BlockPlaceEvent caught");

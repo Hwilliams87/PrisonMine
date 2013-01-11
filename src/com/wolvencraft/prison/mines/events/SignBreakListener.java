@@ -2,6 +2,7 @@ package com.wolvencraft.prison.mines.events;
 
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
@@ -14,6 +15,7 @@ public class SignBreakListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
+	@EventHandler
 	public void onSignBreak(BlockBreakEvent event) {
 		if(event.isCancelled()) return;
         BlockState b = event.getBlock().getState();

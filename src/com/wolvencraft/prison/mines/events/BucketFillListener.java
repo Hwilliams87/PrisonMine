@@ -2,6 +2,7 @@ package com.wolvencraft.prison.mines.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.material.MaterialData;
@@ -17,7 +18,7 @@ public class BucketFillListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onBucketFill(PlayerBucketFillEvent event) {
 		if(event.isCancelled()) return;
         Message.debug("BucketFillEvent caught");
