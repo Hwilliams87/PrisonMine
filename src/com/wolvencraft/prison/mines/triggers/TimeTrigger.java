@@ -63,8 +63,10 @@ public class TimeTrigger implements BaseTrigger {
 			
 			if(next <= 0) {
 				Message.debug("Resetting mine " + mineObj.getId() + " on a timer");
+				Message.debug("Time reset. next = " + next + ", period = " + period);
 				CommandHandler.RESET.run(mineObj.getId());
 				next = period;
+				Message.debug("Time reset. next = " + next + ", period = " + period);
 			} else {
 				next -= PrisonMine.getSettings().TICKRATE;
 			}
