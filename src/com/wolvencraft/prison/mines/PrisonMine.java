@@ -93,6 +93,7 @@ public class PrisonMine extends PrisonPlugin {
 		new BucketEmptyListener(this);
 		new BucketFillListener(this);
 		new SignClickListener(this);
+		new SignBreakListener(this);
 		new PVPListener(this);
 		new ButtonPressListener(this);
 		Message.debug("6. Started up event listeners");

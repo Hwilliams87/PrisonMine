@@ -1,8 +1,6 @@
 package com.wolvencraft.prison.mines.events;
 
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,7 +8,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.prison.mines.PrisonMine;
-import com.wolvencraft.prison.mines.mine.DisplaySign;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.mine.Protection;
 import com.wolvencraft.prison.mines.util.Message;
@@ -77,25 +74,6 @@ public class BlockBreakListener implements Listener {
 			return;
 		}
 		Message.debug("Broken block was not in the mine region");
-		signCheck(event);
 		return;
-	}
-	
-	public void signCheck(BlockBreakEvent event) {
-		if(event.isCancelled()) return;
-        BlockState b = event.getBlock().getState();
-        if(b instanceof Sign) {
-        	Message.debug("Checking for defined signs...");
-        	DisplaySign sign = DisplaySign.get((Sign) b);
-        	if(sign == null) return;
-        	
-        	if(sign.delete()) Message.sendSuccess(event.getPlayer(), "Sign successfully removed");
-        	else {
-        		Message.sendError(event.getPlayer(), "Error removing sign!");
-        		event.setCancelled(true);
-        	}
-        	return;
-        }
-        else return;
 	}
 }
