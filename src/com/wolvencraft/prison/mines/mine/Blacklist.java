@@ -54,13 +54,9 @@ public class Blacklist implements ConfigurationSerializable {
 		return blocks;
 	}
 	
-	public boolean getWhitelist() {
-		return whitelist;
-	}
+	public boolean getWhitelist() { return whitelist; }
 	
-	public boolean getEnabled() {
-		return enabled;
-	}
+	public boolean getEnabled() { return enabled; }
 	
 	public void setBlocks(List<MaterialData> blocks) {
 		this.blocks = blocks;
