@@ -1,4 +1,4 @@
-<project name="MineReset" default="build">
+<project name="PrisonMine" default="build">
     <target name="build">
         <mkdir dir="build"/>
         <javac srcdir="src" destdir="build" debug="on">
@@ -13,7 +13,7 @@
                 <include name="*.yml"/>
             </fileset>
         </copy>
-        <jar jarfile="MineReset.jar" basedir="build"/>
+        <jar jarfile="PrisonMine.jar" basedir="build"/>
         <delete dir="build"/>
     </target>
 </project>
