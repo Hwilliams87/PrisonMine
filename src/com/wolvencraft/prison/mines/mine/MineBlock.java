@@ -23,18 +23,6 @@ public class MineBlock implements ConfigurationSerializable {
         block = new MaterialData((Integer) me.get("blockId"), ((Integer) me.get("blockData")).byteValue());
     }
 
-    public MaterialData getBlock() {
-        return block;
-    }
-
-    public double getChance() {
-        return chance;
-    }
-
-    public void setChance(double chance) {
-        this.chance = chance;
-    }
-
     public Map<String, Object> serialize() {
         Map<String, Object> me = new HashMap<String, Object>();
         me.put("chance", chance);
@@ -43,7 +31,10 @@ public class MineBlock implements ConfigurationSerializable {
         return me;
     }
     
-    public MineBlock clone() {
-    	return new MineBlock(block, chance);
-    }
+    public MaterialData getBlock() 	{ return block; }
+    public double getChance() 		{ return chance; }
+    
+    public void setChance(double chance) { this.chance = chance; }
+
+    public MineBlock clone() { return new MineBlock(block, chance); }
 }
