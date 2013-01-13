@@ -18,7 +18,7 @@ public class MineData {
 	 * Saves all the mine data to disc
 	 */
 	public static void saveAll() {
-		for (Mine mine : PrisonMine.getLocalMines()) mine.save();
+		for (Mine mine : PrisonMine.getLocalMines()) mine.saveFile();
 	}
 	
 	/**

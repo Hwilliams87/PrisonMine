@@ -138,7 +138,7 @@ public class MRMine implements ConfigurationSerializable, Listener {
         	mine.setResetPeriod(automaticSeconds);
     	}
         
-    	mine.save();
+    	mine.saveFile();
     	Message.log("Imported mine from MineReset: " + name);
     	return mine;
     }

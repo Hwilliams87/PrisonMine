@@ -155,7 +155,7 @@ public class MRLMine implements ConfigurationSerializable {
         	mine.getWarningTimes().add(warning);
         }
         
-        mine.save();
+        mine.saveFile();
         Message.log("Imported mine from MineResetLite: " + name);
     	return mine;
     }

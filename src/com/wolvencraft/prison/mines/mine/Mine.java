@@ -616,7 +616,11 @@ public class Mine implements ConfigurationSerializable, Listener {
 		return null;
 	}
 	
-	public boolean save() {
+	/**
+	 * Saves the mine data to file.
+	 * @return <b>true</b> if the save was successful, <b>false</b> if an error occurred
+	 */
+	public boolean saveFile() {
 		File mineFile = new File(new File(PrisonMine.getInstance().getDataFolder(), "mines"), id + ".pmine.yml");
         FileConfiguration mineConf =  YamlConfiguration.loadConfiguration(mineFile);
         mineConf.set("mine", this);
@@ -630,7 +634,12 @@ public class Mine implements ConfigurationSerializable, Listener {
         return true;
 	}
 	
-	public boolean delete() {
+	/**
+	 * Deletes the mine data file.<br />
+	 * <b>Warning:</b> invoking this method will not remove the mine from the list of active mines
+	 * @return <b>true</b> if the deletion was successful, <b>false</b> if an error occurred
+	 */
+	public boolean deleteFile() {
 		File mineFolder = new File(PrisonMine.getInstance().getDataFolder(), "mines");
 		if(!mineFolder.exists() || !mineFolder.isDirectory()) return false;
 		

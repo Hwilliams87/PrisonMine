@@ -49,7 +49,7 @@ public class DebugCommand implements BaseCommand {
 			PrisonSelection sel = PrisonSuite.getSelection((Player) player);
 			curMine.setRegion(sel);
 			Message.sendCustom("DEBUG", "Region set");
-			return curMine.save();
+			return curMine.saveFile();
 		} else if(args[0].equalsIgnoreCase("tp")) {
 			Mine curMine = Mine.get(args[1]);
 			((Player) player).teleport(curMine.getRegion().getMaximum());

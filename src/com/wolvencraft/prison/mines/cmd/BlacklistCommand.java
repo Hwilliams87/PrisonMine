@@ -91,7 +91,7 @@ public class BlacklistCommand implements BaseCommand {
 			return false;
 		}
 		
-		return curMine.save();
+		return curMine.saveFile();
 	}
 	
 	public void getHelp() {

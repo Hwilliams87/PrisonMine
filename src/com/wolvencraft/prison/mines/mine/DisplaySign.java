@@ -26,6 +26,11 @@ import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 
+/**
+ * A virtual representation of the dynamically-updated signs that are used to display information about mines
+ * @author bitWolfy
+ *
+ */
 @SerializableAs("DisplaySign")
 public class DisplaySign implements ConfigurationSerializable  {
 	private String id;
@@ -36,6 +41,10 @@ public class DisplaySign implements ConfigurationSerializable  {
 	private List<String> lines;
 	private double price;
 	
+	/**
+	 * Standard constructor for new signs
+	 * @param sign Sign object
+	 */
 	public DisplaySign(Sign sign) {
 		id = generateId();
 		loc = sign.getLocation();
@@ -71,9 +80,14 @@ public class DisplaySign implements ConfigurationSerializable  {
 		}
 		
 		Message.debug("Created a new sign: " + parent + " | " + reset);
-		save();
+		saveFile();
 	}
 	
+	/**
+	 * Constructor for mines that inherit information from their parents
+	 * @param sign Sign object
+	 * @param parentSignClass DisplaySign parent
+	 */
 	public DisplaySign(Sign sign, DisplaySign parentSignClass) {
 		id = generateId();
 		loc = sign.getLocation();
@@ -87,9 +101,13 @@ public class DisplaySign implements ConfigurationSerializable  {
 		reset = false;
 		price = -1;
 		Message.debug("Created a new sign: " + parent + " | " + reset);
-		save();
+		saveFile();
 	}
 	
+    /**
+     * Constructor for deserialization from a map
+     * @param map Map to deserialize from
+     */
 	@SuppressWarnings("unchecked")
 	public DisplaySign(Map<String, Object> me) {
 		id = (String) me.get("id");
@@ -103,6 +121,10 @@ public class DisplaySign implements ConfigurationSerializable  {
         Message.debug("Loaded a sign: " + parent + " | " + reset);
 	}
 	
+	/**
+	 * Serialization method for sign data storage
+	 * @return Serialization map
+	 */
     public Map<String, Object> serialize() {
         Map<String, Object> me = new HashMap<String, Object>();
         me.put("id", id);
@@ -124,6 +146,28 @@ public class DisplaySign implements ConfigurationSerializable  {
     public List<String> getLines() 	{ return lines; }
     public double getPrice()		{ return price; }
     
+    /**
+     * Updates the DisplaySign's lines with the appropriate variables
+     * @return <b>true</b> if the update was successful, <b>false</b> otherwise
+     */
+    public boolean update() {
+		BlockState b = loc.getBlock().getState();
+		if(b instanceof Sign) {
+			Sign signBlock = (Sign) b;
+			for(int i = 0; i < lines.size(); i++) { signBlock.setLine(i, Util.parseVars(lines.get(i), Mine.get(parent))); }
+			signBlock.update();
+			return true;
+		}
+		return false;
+    }
+    
+    /**
+     * Parses through surrounding blocks in search of children to initialize. The search is executed as follows:<br /><br />
+     * <b>positive Y — negative Y<br />
+     * positive X — negative X<br />
+     * positive Z — negative Z</b><br /><br />
+     * The initialization is executed via <b>initChild()</b>
+     */
     public void initChildren() {
     	Location locNearby = loc.clone();
     	locNearby.setY(loc.getBlockY() + 1);
@@ -146,6 +190,11 @@ public class DisplaySign implements ConfigurationSerializable  {
     	return;
     }
     
+    /**
+     * Initializes a child sign at the specified location
+     * @param location Location to check
+     * @param sign Parent sign
+     */
     private static void initChild(Location location, DisplaySign sign) {
     	if(!exists(location)) {
     		BlockState b = location.getBlock().getState();
@@ -159,7 +208,11 @@ public class DisplaySign implements ConfigurationSerializable  {
     	}
     }
     
-	public boolean save() {
+	/**
+	 * Saves the sign data to file.
+	 * @return <b>true</b> if the save was successful, <b>false</b> if an error occurred
+	 */
+	public boolean saveFile() {
 		File signFile = new File(new File(PrisonMine.getInstance().getDataFolder(), "signs"), id + ".yml");
         FileConfiguration signConf =  YamlConfiguration.loadConfiguration(signFile);
         signConf.set("signclass", this);
@@ -173,7 +226,12 @@ public class DisplaySign implements ConfigurationSerializable  {
         return true;
 	}
 	
-	public boolean delete() {
+	/**
+	 * Deletes the sign data file.<br />
+	 * <b>Warning:</b> invoking this method will not remove the sign from the list of active signs
+	 * @return <b>true</b> if the deletion was successful, <b>false</b> if an error occurred
+	 */
+	public boolean deleteFile() {
 		File signFolder = new File(PrisonMine.getInstance().getDataFolder(), "signs");
 		if(!signFolder.exists() || !signFolder.isDirectory()) return false;
 		
@@ -190,38 +248,73 @@ public class DisplaySign implements ConfigurationSerializable  {
 		return false;
 	}
 	
-
+	/**
+	 * Creates a pseudo-random ID with a 32-bit key. ID is guaranteed to be unique
+	 * @return <b>String</b> random ID
+	 */
+	private static String generateId() {
+		boolean unique = false;
+		String id = "";
+		do {
+			id = Long.toString(Math.abs(new Random().nextLong()), 32);
+			if(!exists(id)) unique = true;
+		} while (!unique);
+		return Long.toString(Math.abs(new Random().nextLong()), 32);
+	}
 	
-	private static String generateId() { return Long.toString(Math.abs(new Random().nextLong()), 32); }
-	
+	/**
+	 * Checks if a DisplaySign exists at the specified location
+	 * @param loc Location to check
+	 * @return <b>true</b> if there is an initialized DisplaySign at the location, <b>false</b> otherwise
+	 */
 	public static boolean exists(Location loc) {
 		for(DisplaySign sign : PrisonMine.getLocalSigns()) { if(sign.getLocation().equals(loc)) return true; }
 		return false;
 	}
 	
+	/**
+	 * Checks if a DisplaySign with the specified ID exists
+	 * @param id ID to check
+	 * @return <b>true</b> if there is a DisplaySign with the specified, <b>false</b> otherwise
+	 */
+	public static boolean exists(String id) {
+		for(DisplaySign sign : PrisonMine.getLocalSigns()) { if(sign.getId().equals(id)) return true; }
+		return false;
+	}
+	
+	/**
+	 * Returns the DisplaySign at the following location, if it exists
+	 * @param loc Location to check
+	 * @return <b>DisplaySign</b>, if there is one at the specified location, <b>null</b> otherwise
+	 */
 	public static DisplaySign get(Location loc) {
 		for(DisplaySign sign : PrisonMine.getLocalSigns()) { if(sign.getLocation().equals(loc)) return sign; }
 		return null;
 	}
 	
+	/**
+	 * Returns the DisplaySign associated with the specified Sign object
+	 * @param sign Sign to check
+	 * @return <b>DisplaySign</b>, if one is associated with the specified Sign, <b>null</b> otherwise
+	 */
 	public static DisplaySign get(Sign sign) { return get(sign.getLocation()); }
 	
+	/**
+	 * Returns the DisplaySign with the specified ID, if there is one
+	 * @param id ID to check
+	 * @return <b>DisplaySign</b>, if there is one with the specified ID, <b>null</b> otherwise
+	 */
 	public static DisplaySign get(String id) { 
 		for(DisplaySign sign : PrisonMine.getLocalSigns()) { if(sign.getId().equals(id)) return sign; }
 		return null;
 	}
 	
+	/**
+	 * Updates all the DisplaySigns with appropriate variables
+	 */
 	public static void updateAll() {
 		for(DisplaySign sign : PrisonMine.getLocalSigns()) {
-			if(sign.getLocation().getBlock() == null) continue;
-			BlockState b = sign.getLocation().getBlock().getState();
-			if(b instanceof Sign) {
-				Sign signBlock = (Sign) b;
-				List<String> lines = sign.getLines();
-				for(int i = 0; i < lines.size(); i++) { signBlock.setLine(i, Util.parseVars(lines.get(i), Mine.get(sign.getParent()))); }
-				signBlock.update();
-			}
+			sign.update();
 		}
-		return;
 	}
 }

@@ -120,7 +120,7 @@ public class EditCommand  implements BaseCommand {
 			Message.sendCustom(curMine.getId(), Util.round(percent) + " of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
 			Message.sendCustom(curMine.getId(), "Reset the mine for the changes to take effect");
 			
-			return curMine.save();
+			return curMine.saveFile();
 		}
 		else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-")) {
 			if(args.length != 2 && args.length != 3) {
@@ -174,7 +174,7 @@ public class EditCommand  implements BaseCommand {
 				Message.sendCustom(curMine.getId(), args[1] + " was successfully removed from the mine");
 			}
 			
-			return curMine.save();
+			return curMine.saveFile();
 		}
 		else if(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del")) {
 			if(args.length > 2) {
@@ -204,7 +204,7 @@ public class EditCommand  implements BaseCommand {
 			PrisonMine.removeMine(curMine);
 			PrisonMine.setCurMine(null);
 			Message.sendCustom(curMine.getId(), "Mine successfully deleted");
-			curMine.delete();
+			curMine.deleteFile();
 			MineData.saveAll();
 			return true;
 		}
@@ -220,7 +220,7 @@ public class EditCommand  implements BaseCommand {
 			curMine.setName(name);
 			Message.sendCustom(curMine.getId(), "Mine now has a display name '" + ChatColor.GOLD + name + ChatColor.WHITE + "'");
 			
-			return curMine.save();
+			return curMine.saveFile();
 		}
 		else if(args[0].equalsIgnoreCase("silent")) {
 			if(args.length != 1) {
@@ -237,7 +237,7 @@ public class EditCommand  implements BaseCommand {
 				Message.sendCustom(curMine.getId(), "Silent mode " + ChatColor.GREEN + "on");
 			}
 			
-			return curMine.save();
+			return curMine.saveFile();
 		}
 		else if(args[0].equalsIgnoreCase("cooldown")) {
 			if(args.length != 2) {
@@ -270,7 +270,7 @@ public class EditCommand  implements BaseCommand {
 				}
 			}
 			
-			return curMine.save();
+			return curMine.saveFile();
 		}
 		else if(args[0].equalsIgnoreCase("generator")) {
 			if(args.length == 1) {
@@ -288,7 +288,7 @@ public class EditCommand  implements BaseCommand {
 			
 			Message.sendCustom(curMine.getId(), "Mine generator has been set to " + ChatColor.GREEN + args[1].toUpperCase());
 
-			return curMine.save();
+			return curMine.saveFile();
 		}
 		else if(args[0].equalsIgnoreCase("setparent") || args[0].equalsIgnoreCase("link")) {
 			if(args.length != 2) {
@@ -300,7 +300,7 @@ public class EditCommand  implements BaseCommand {
 				Message.sendCustom(curMine.getId(), "Mine is no longer linked to " + ChatColor.RED + curMine.getParent());
 				curMine.setParent(null);
 				
-				return curMine.save();
+				return curMine.saveFile();
 			}
 			
 			if(Mine.get(args[1]) == null) {
@@ -321,7 +321,7 @@ public class EditCommand  implements BaseCommand {
 			curMine.setParent(args[1]);
 			Message.sendCustom(curMine.getId(), "Mine will is now linked to " + ChatColor.GREEN + args[1]);
 			
-			return curMine.save();
+			return curMine.saveFile();
 		}
 		else {
 			Message.sendError(language.ERROR_COMMAND);
