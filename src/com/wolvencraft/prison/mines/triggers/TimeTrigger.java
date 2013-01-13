@@ -70,7 +70,7 @@ public class TimeTrigger implements BaseTrigger {
 				Message.debug("| Mine " + mine + " is resetting. Reset report:");
 				Message.debug("| Reset cause: timer has expired (" + next +" / " + period + ")");
 				CommandHandler.RESET.run(mineObj.getId());
-				next = period;
+				resetTimer();
 				Message.debug("| Updated the timer (" + next +" / " + period + ")");
 				Message.debug("| Reached the end of the report for " + mine);
 				Message.debug("+---------------------------------------------");
@@ -83,7 +83,7 @@ public class TimeTrigger implements BaseTrigger {
 			mineObj.updateCooldown(PrisonMine.getSettings().TICKRATE);
 	}
 	
-	public void cancel() { canceled = true; }
+	public void cancel() { Message.debug("Cancelling task: " + getName()); canceled = true; }
 	
 	public String getName() 	{ return "PrisonMine:TimeTrigger:" + mine; }
 	public ResetTrigger getId() { return ResetTrigger.TIME; }

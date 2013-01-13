@@ -83,8 +83,8 @@ public class ResetCommand implements BaseCommand {
 				Message.debug("+---------------------------------------------");
 				Message.debug("| Mine " + childMine.getId() + " is resetting. Reset report:");
 				Message.debug("| Reset cause: parent mine is resetting (" + curMine.getId() + ")");
-				Message.debug("| Reached the end of the report for " + childMine.getId());
 				CommandHandler.RESET.run(childMine.getId());
+				Message.debug("| Reached the end of the report for " + childMine.getId());
 				Message.debug("+---------------------------------------------");
 			}
 			

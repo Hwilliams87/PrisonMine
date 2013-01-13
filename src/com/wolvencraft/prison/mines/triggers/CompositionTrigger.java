@@ -70,7 +70,7 @@ public class CompositionTrigger implements BaseTrigger, ConfigurationSerializabl
 		}
 	}
 
-	public void cancel() { canceled = true; }
+	public void cancel() { Message.debug("Cancelling task: " + getName()); canceled = true; }
 	
 	public boolean getExpired() { return canceled; }
 	public String getName() { return "PrisonMine:CompositionTrigger:" + mine; }
