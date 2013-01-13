@@ -100,7 +100,7 @@ public class ResetCommand implements BaseCommand {
 			Message.debug("+---------------------------------------------");
 		}
 		
-		if(curMine.getParent() == null) {
+		if(!automatic || curMine.getParent() == null) {
 			broadcastMessage = Util.parseVars(broadcastMessage, curMine);
 			
 			if(!curMine.getSilent()) Message.broadcast(broadcastMessage);
