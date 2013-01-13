@@ -1,6 +1,5 @@
 package com.wolvencraft.prison.mines.cmd;
 
-import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.settings.MineData;
 import com.wolvencraft.prison.mines.settings.SignData;
@@ -26,10 +25,10 @@ public class DataCommand implements BaseCommand {
 			return true;
 		}
 		else if(args[1].equalsIgnoreCase("load")) {
-			CommandManager.getPlugin().reloadConfig();
-			CommandManager.getPlugin().reloadSettings();
-			CommandManager.getPlugin().reloadLanguageData();
-			CommandManager.getPlugin().reloadLanguage();
+			PrisonMine.getInstance().reloadConfig();
+			PrisonMine.getInstance().reloadSettings();
+			PrisonMine.getInstance().reloadLanguageData();
+			PrisonMine.getInstance().reloadLanguage();
 			PrisonMine.setMines(MineData.loadAll());
 			PrisonMine.setSigns(SignData.loadAll());
 			Message.sendSuccess("Mine and sign data loaded from disc");

@@ -30,6 +30,7 @@ import com.wolvencraft.prison.region.PrisonRegion;
 
 public class PrisonMine extends PrisonPlugin {
 	private static PrisonSuite prisonSuite;
+	private static PrisonMine plugin;
 	
 	private static Settings settings;
 	private FileConfiguration languageData = null;
@@ -46,7 +47,8 @@ public class PrisonMine extends PrisonPlugin {
 	
 	public void onEnable() {
 		prisonSuite = PrisonSuite.addPlugin(this);
-
+		plugin = this;
+		
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 		settings = new Settings(this);
@@ -57,7 +59,7 @@ public class PrisonMine extends PrisonPlugin {
 		language = new Language(this);
 		Message.debug("2. Loaded plugin configuration");
 
-		commandManager = new CommandManager(this);
+		commandManager = new CommandManager();
 		getCommand("mine").setExecutor(commandManager);
 		Message.debug("3. Started up the CommandManager");
 		
@@ -140,6 +142,7 @@ public class PrisonMine extends PrisonPlugin {
 		catch (IOException ex) { Message.log("Could not save config to " + languageDataFile); }
 	}
 	
+	public static PrisonMine getInstance() 				{ return plugin; }
 	public static List<BaseGenerator> getGenerators() 	{ return generators; }
 	public static Settings getSettings()				{ return settings; }
 	public static Language getLanguage()				{ return language; }

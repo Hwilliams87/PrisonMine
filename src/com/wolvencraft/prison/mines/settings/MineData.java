@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
@@ -28,7 +27,7 @@ public class MineData {
 	 */
 	public static List<Mine> loadAll() {
 		List<Mine> mines = new ArrayList<Mine>();
-		File mineFolder = new File(CommandManager.getPlugin().getDataFolder(), "mines");
+		File mineFolder = new File(PrisonMine.getInstance().getDataFolder(), "mines");
         if (!mineFolder.exists() || !mineFolder.isDirectory()) {
             mineFolder.mkdir();
             return mines;

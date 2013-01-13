@@ -22,7 +22,6 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.util.Vector;
 
-import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
@@ -161,7 +160,7 @@ public class DisplaySign implements ConfigurationSerializable  {
     }
     
 	public boolean save() {
-		File signFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "signs"), id + ".yml");
+		File signFile = new File(new File(PrisonMine.getInstance().getDataFolder(), "signs"), id + ".yml");
         FileConfiguration signConf =  YamlConfiguration.loadConfiguration(signFile);
         signConf.set("signclass", this);
         try {
@@ -175,7 +174,7 @@ public class DisplaySign implements ConfigurationSerializable  {
 	}
 	
 	public boolean delete() {
-		File signFolder = new File(CommandManager.getPlugin().getDataFolder(), "signs");
+		File signFolder = new File(PrisonMine.getInstance().getDataFolder(), "signs");
 		if(!signFolder.exists() || !signFolder.isDirectory()) return false;
 		
 		File[] signFiles = signFolder.listFiles(new FileFilter() {

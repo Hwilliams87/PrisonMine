@@ -615,7 +615,7 @@ public class Mine implements ConfigurationSerializable, Listener {
 	}
 	
 	public boolean save() {
-		File mineFile = new File(new File(CommandManager.getPlugin().getDataFolder(), "mines"), id + ".pmine.yml");
+		File mineFile = new File(new File(PrisonMine.getInstance().getDataFolder(), "mines"), id + ".pmine.yml");
         FileConfiguration mineConf =  YamlConfiguration.loadConfiguration(mineFile);
         mineConf.set("mine", this);
         try {
@@ -629,7 +629,7 @@ public class Mine implements ConfigurationSerializable, Listener {
 	}
 	
 	public boolean delete() {
-		File mineFolder = new File(CommandManager.getPlugin().getDataFolder(), "mines");
+		File mineFolder = new File(PrisonMine.getInstance().getDataFolder(), "mines");
 		if(!mineFolder.exists() || !mineFolder.isDirectory()) return false;
 		
 		File[] mineFiles = mineFolder.listFiles(new FileFilter() {

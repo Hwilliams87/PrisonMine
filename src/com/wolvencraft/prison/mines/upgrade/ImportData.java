@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.wolvencraft.prison.mines.CommandManager;
+import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
 
@@ -29,7 +29,7 @@ public class ImportData {
 	public static List<Mine> loadAll() {
 		List<Mine> mines = new ArrayList<Mine>();
 		
-		File importFolder = new File(CommandManager.getPlugin().getDataFolder(), "import");
+		File importFolder = new File(PrisonMine.getInstance().getDataFolder(), "import");
         if (!importFolder.exists() || !importFolder.isDirectory()) { return null; }
         File[] mrFiles = importFolder.listFiles(new FileFilter() {
             public boolean accept(File file) {

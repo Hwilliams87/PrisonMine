@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.DisplaySign;
 import com.wolvencraft.prison.mines.util.Message;
@@ -28,7 +27,7 @@ public class SignData {
 	 */
 	public static List<DisplaySign> loadAll() {
 		List<DisplaySign> signs = new ArrayList<DisplaySign>();
-		File signFolder = new File(CommandManager.getPlugin().getDataFolder(), "signs");
+		File signFolder = new File(PrisonMine.getInstance().getDataFolder(), "signs");
         if (!signFolder.exists() || !signFolder.isDirectory()) {
             signFolder.mkdir();
             return signs;

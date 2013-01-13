@@ -7,11 +7,9 @@ import org.bukkit.command.CommandSender;
 import com.wolvencraft.prison.mines.util.Message;
 
 public class CommandManager implements CommandExecutor {
-	private static PrisonMine plugin;
 	private static CommandSender sender;
 	
-	public CommandManager(PrisonMine plugin) {
-		CommandManager.plugin = plugin;
+	public CommandManager() {
 		sender = null;
 	}
 
@@ -41,5 +39,4 @@ public class CommandManager implements CommandExecutor {
 	}
 	
 	public static CommandSender getSender() 	{ return sender; }
-	public static PrisonMine getPlugin() 		{ return plugin; }
 }

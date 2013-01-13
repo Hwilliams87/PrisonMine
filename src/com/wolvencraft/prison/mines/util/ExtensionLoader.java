@@ -10,7 +10,6 @@ import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 
-import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.generation.BaseGenerator;
 import com.wolvencraft.prison.mines.generation.RandomGenerator;
@@ -24,7 +23,7 @@ public class ExtensionLoader {
 	 */
 	public static List<BaseGenerator> loadAll() {
 		List<BaseGenerator> generators = new ArrayList<BaseGenerator>();
-		File dir = new File(CommandManager.getPlugin().getDataFolder() + "/extensions");
+		File dir = new File(PrisonMine.getInstance().getDataFolder() + "/extensions");
 
 		if (!dir.exists()) { dir.mkdir(); }
 
