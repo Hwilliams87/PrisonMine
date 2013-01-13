@@ -8,7 +8,6 @@ import com.wolvencraft.prison.mines.mine.MineBlock;
 
 import org.bukkit.material.MaterialData;
 
-
 public class RandomBlock {
  
     List<MineBlock> weightedBlocks;
@@ -20,12 +19,13 @@ public class RandomBlock {
     public RandomBlock(List<MineBlock> blocks) {
     	weightedBlocks = new ArrayList<MineBlock>();
         double tally = 0;
+        Message.debug("| Loading blocks from mine data");
         for (MineBlock block : blocks) {
             tally += block.getChance();
             weightedBlocks.add(new MineBlock(block.getBlock(), tally));
-            Message.debug( block.getBlock().getItemTypeId() + " : " + tally);
+            Message.debug("| Block added: " + block.getBlock().getItemTypeId() + " (" + block.getChance() + ")");
         }
-        Message.debug("RandomBlock initialized");
+        Message.debug("| RandomBlock initialized successfully");
     }
     
     /**

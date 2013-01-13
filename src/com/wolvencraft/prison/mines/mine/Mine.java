@@ -277,7 +277,9 @@ public class Mine implements ConfigurationSerializable, Listener {
         BaseGenerator gen = ExtensionLoader.get(generator);
         if(gen == null) {
         	if(CommandManager.getSender() != null) Message.send((Player) CommandManager.getSender(), "Invalid generator selected!");
-            else Message.log("Invalid generator selected!");
+            else Message.log("| Invalid generator specified for the mine. Cancelling...");
+			Message.debug("| Reached the end of the report for " + id);
+			Message.debug("+---------------------------------------------");
             return false;
         }
         else return gen.run(this);

@@ -68,7 +68,6 @@ public class ExtensionLoader {
 	 */
 	public static BaseGenerator get(String name) {
 		List<BaseGenerator> generators = PrisonMine.getGenerators();
-		Message.debug(generators.size() + " extensions found!");
 		for(BaseGenerator generator: generators)
 			if(generator.getName().equalsIgnoreCase(name)) return generator;
 		if(name.equalsIgnoreCase("")) return generators.get(0);

@@ -3,6 +3,7 @@ package com.wolvencraft.prison.mines.triggers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.bukkit.configuration.serialization.SerializableAs;
 
@@ -53,7 +54,10 @@ public class TimeTrigger implements BaseTrigger {
 	
 	public void run() {
 		Mine mineObj = Mine.get(mine);
-		if(mineObj == null) return;
+		if(mineObj == null) {
+			Message.log(Level.SEVERE, "Mine " + mine + " was not found, but its timer still exists");
+			return;
+		}
 		
 		if(!mineObj.hasParent()) {
 			List<Integer> warnTimes = mineObj.getWarningTimes();
@@ -62,15 +66,18 @@ public class TimeTrigger implements BaseTrigger {
 				Message.broadcast(Util.parseVars(PrisonMine.getLanguage().RESET_WARNING, mineObj));
 			
 			if(next <= 0) {
-				Message.debug("Resetting mine " + mineObj.getId() + " on a timer");
-				Message.debug("Time reset. next = " + next + ", period = " + period);
+				Message.debug("+---------------------------------------------");
+				Message.debug("| Mine " + mine + " is resetting. Reset report:");
+				Message.debug("| Reset cause: timer has expired (" + next +" / " + period + ")");
 				CommandHandler.RESET.run(mineObj.getId());
 				next = period;
-				Message.debug("Time reset. next = " + next + ", period = " + period);
+				Message.debug("| Updated the timer (" + next +" / " + period + ")");
+				Message.debug("| Reached the end of the report for " + mine);
+				Message.debug("+---------------------------------------------");
 			} else {
 				next -= PrisonMine.getSettings().TICKRATE;
 			}
-		}
+		} else if(next <= 0) Message.debug("Mine " + mine + " has a parent, ignoring it.");
 	
 		if(mineObj.getCooldown() && mineObj.getCooldownEndsIn() > 0)
 			mineObj.updateCooldown(PrisonMine.getSettings().TICKRATE);
@@ -79,7 +86,7 @@ public class TimeTrigger implements BaseTrigger {
 	public void cancel() { canceled = true; }
 	
 	public String getName() 	{ return "PrisonMine:TimeTrigger:" + mine; }
-	public ResetTrigger getId() 		{ return ResetTrigger.TIME; }
+	public ResetTrigger getId() { return ResetTrigger.TIME; }
 	public boolean getExpired() { return canceled; }
 	
 	public int getPeriod() 		{ return (int)(period / 20); }

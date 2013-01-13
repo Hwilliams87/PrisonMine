@@ -45,7 +45,7 @@ public class RandomGenerator implements BaseGenerator {
 		                }
 		            }
 		         }
-    	        Message.debug("Reset complete! BL, WL");
+    	        Message.debug("| Reset complete! BL, WL");
     			return true;
     		}
     		else {
@@ -65,7 +65,7 @@ public class RandomGenerator implements BaseGenerator {
 		                }
 		            }
 		        }
-    	        Message.debug("Reset complete! BL, No WL");
+    	        Message.debug("| Reset complete! BL, No WL");
     			return true;
     		}
     	}
@@ -85,7 +85,7 @@ public class RandomGenerator implements BaseGenerator {
 	                }
 	            }
 	        }
-	        Message.debug("Reset complete! No BL, No WL");
+	        Message.debug("| Reset complete! No BL, No WL");
 	        return true;
     	}
 	}
