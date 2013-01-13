@@ -2,6 +2,7 @@ package com.wolvencraft.prison.mines.triggers;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
@@ -52,10 +53,16 @@ public class CompositionTrigger implements BaseTrigger, ConfigurationSerializabl
 		counter = 0;
 		
 		Mine mineObj = Mine.get(mine);
-		if(mineObj == null) return;
-		if(percent == 0) return;
+		if(mineObj == null) {
+			Message.log(Level.SEVERE, "Mine " + mine + " was not found, but its CompositionTrigger still exists");
+			return;
+		}
+		if(percent == 0 || percent == 1) {
+			Message.log(Level.SEVERE, "[" + mine + "] Invalid percentage for the CompositionTrigger: " + percent);
+			return;
+		}
 		
-		if(((double) mineObj.getBlocksLeft() / (double) mineObj.getTotalBlocks()) < percent) {
+		if(((double) mineObj.getBlocksLeft() / (double) mineObj.getTotalBlocks()) <= percent) {
 			Message.debug("+---------------------------------------------");
 			Message.debug("| Mine " + mine + " is resetting. Reset report:");
 			Message.debug("| Reset cause: composition (" + ((double) mineObj.getBlocksLeft() / (double) mineObj.getTotalBlocks()) +" > " + percent + ")");

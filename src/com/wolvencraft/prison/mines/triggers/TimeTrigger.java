@@ -55,7 +55,7 @@ public class TimeTrigger implements BaseTrigger {
 	public void run() {
 		Mine mineObj = Mine.get(mine);
 		if(mineObj == null) {
-			Message.log(Level.SEVERE, "Mine " + mine + " was not found, but its timer still exists");
+			Message.log(Level.SEVERE, "Mine " + mine + " was not found, but its TimeTrigger still exists");
 			return;
 		}
 		
