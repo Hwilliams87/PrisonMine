@@ -3,7 +3,7 @@ package com.wolvencraft.prison.mines.settings;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wolvencraft.prison.mines.CommandHandler;
+import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 
 public class Settings extends com.wolvencraft.prison.settings.Settings {
@@ -16,7 +16,7 @@ public class Settings extends com.wolvencraft.prison.settings.Settings {
 		TPONRESET = plugin.getConfig().getBoolean("teleport-on-reset");
 		MANUALTIMERRESET = plugin.getConfig().getBoolean("reset-timer-on-manual");
 		BANNEDNAMES = new ArrayList<String>();
-		for(CommandHandler cmd : CommandHandler.values()) {
+		for(CommandManager cmd : CommandManager.values()) {
 			for(String alias : cmd.getLocalAlias()) {
 				BANNEDNAMES.add(alias);
 			}

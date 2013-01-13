@@ -1,7 +1,6 @@
 package com.wolvencraft.prison.mines.cmd;
 
 import com.wolvencraft.prison.mines.CommandManager;
-import com.wolvencraft.prison.mines.CommandHandler;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.ExtensionLoader;
@@ -20,7 +19,7 @@ public class ResetCommand implements BaseCommand {
 			if(args[1].equalsIgnoreCase("all")) {
 				boolean success = true;
 				for(Mine mine : PrisonMine.getLocalMines()) {
-					if(!CommandHandler.RESET.run(mine.getId())) success = false;
+					if(!CommandManager.RESET.run(mine.getId())) success = false;
 				}
 				return success;
 			} else curMine = Mine.get(args[1]);
@@ -83,7 +82,7 @@ public class ResetCommand implements BaseCommand {
 				Message.debug("+---------------------------------------------");
 				Message.debug("| Mine " + childMine.getId() + " is resetting. Reset report:");
 				Message.debug("| Reset cause: parent mine is resetting (" + curMine.getId() + ")");
-				CommandHandler.RESET.run(childMine.getId());
+				CommandManager.RESET.run(childMine.getId());
 				Message.debug("| Reached the end of the report for " + childMine.getId());
 				Message.debug("+---------------------------------------------");
 			}

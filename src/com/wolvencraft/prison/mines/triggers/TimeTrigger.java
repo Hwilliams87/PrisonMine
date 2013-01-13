@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import org.bukkit.configuration.serialization.SerializableAs;
 
 import com.wolvencraft.prison.PrisonSuite;
-import com.wolvencraft.prison.mines.CommandHandler;
+import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
@@ -69,7 +69,7 @@ public class TimeTrigger implements BaseTrigger {
 				Message.debug("+---------------------------------------------");
 				Message.debug("| Mine " + mine + " is resetting. Reset report:");
 				Message.debug("| Reset cause: timer has expired (" + next +" / " + period + ")");
-				CommandHandler.RESET.run(mineObj.getId());
+				CommandManager.RESET.run(mineObj.getId());
 				resetTimer();
 				Message.debug("| Updated the timer (" + next +" / " + period + ")");
 				Message.debug("| Reached the end of the report for " + mine);

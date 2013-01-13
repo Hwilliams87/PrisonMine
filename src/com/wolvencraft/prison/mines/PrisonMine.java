@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -37,14 +38,13 @@ public class PrisonMine extends PrisonPlugin {
 	private File languageDataFile = null;
 	private static Language language;
 	
-	private CommandManager commandManager;
-	
 	private static List<Mine> mines;
 	private static List<DisplaySign> signs;
 	private static List<BaseGenerator> generators;
 
 	private static Map<CommandSender, Mine> curMines;
 	
+	@Override
 	public void onEnable() {
 		prisonSuite = PrisonSuite.addPlugin(this);
 		plugin = this;
@@ -58,10 +58,6 @@ public class PrisonMine extends PrisonPlugin {
 		saveLanguageData();
 		language = new Language(this);
 		Message.debug("2. Loaded plugin configuration");
-
-		commandManager = new CommandManager();
-		getCommand("mine").setExecutor(commandManager);
-		Message.debug("3. Started up the CommandManager");
 		
 		ConfigurationSerialization.registerClass(Mine.class, "pMine");
 		ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");
@@ -80,7 +76,7 @@ public class PrisonMine extends PrisonPlugin {
 		
 		ConfigurationSerialization.registerClass(MRMine.class, "MRMine");
 		ConfigurationSerialization.registerClass(MRLMine.class, "MRLMine");
-		Message.debug("4. Registered serializable classes");
+		Message.debug("3. Registered serializable classes");
 		
 		mines = MineData.loadAll();
 		signs = SignData.loadAll();
@@ -88,7 +84,7 @@ public class PrisonMine extends PrisonPlugin {
 		
 		curMines = new HashMap<CommandSender, Mine>();
 		
-		Message.debug("5. Loaded data from file");
+		Message.debug("4. Loaded data from file");
 		
 		new BlockBreakListener(this);
 		new BlockPlaceListener(this);
@@ -98,15 +94,39 @@ public class PrisonMine extends PrisonPlugin {
 		new SignBreakListener(this);
 		new PVPListener(this);
 		new ButtonPressListener(this);
-		Message.debug("6. Started up event listeners");
+		Message.debug("5. Started up event listeners");
 		
 		Message.log("PrisonMine started [ " + mines.size() + " mine(s) found ]");
 		
-		Message.debug("7. Sending sign task to PrisonCore");
+		Message.debug("6. Sending sign task to PrisonCore");
 		PrisonSuite.addTask(new DisplaySignTask());
 	}
 	
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if(!command.getName().equalsIgnoreCase("mine")) return false;
+
+		CommandManager.setSender(sender);
+		
+		if(args.length == 0) {
+			CommandManager.HELP.run("");
+			return true;
+		}
+		
+		for(CommandManager cmd : CommandManager.values()) {
+			if(cmd.isCommand(args[0])) {
+				boolean result = cmd.run(args);
+				CommandManager.resetSender();
+				return result;
+			}
+		}
+		
+		Message.sendError(PrisonMine.getLanguage().ERROR_COMMAND);
+		CommandManager.resetSender();
+		return false;
+	}
 	
+	@Override
 	public void onDisable() {
 		MineData.saveAll();
 		SignData.saveAll();
