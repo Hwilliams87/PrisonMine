@@ -63,7 +63,6 @@ public class PrisonMine extends PrisonPlugin {
 		ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");
 		ConfigurationSerialization.registerClass(Blacklist.class, "Blacklist");
 		ConfigurationSerialization.registerClass(DisplaySign.class, "DisplaySign");
-		ConfigurationSerialization.registerClass(DataBlock.class, "DataBlock");
 		ConfigurationSerialization.registerClass(SimpleLoc.class, "SimpleLoc");
 		ConfigurationSerialization.registerClass(PrisonRegion.class, "PrisonRegion");
 		ConfigurationSerialization.registerClass(BaseTrigger.class, "BaseTrigger");
