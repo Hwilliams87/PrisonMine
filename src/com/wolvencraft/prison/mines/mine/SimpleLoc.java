@@ -11,6 +11,11 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.event.Listener;
 
+/**
+ * A simple solution to the problem of Locations not being serializable. Saves the <b>x</b>. <b>y</b>, <b>z</b> coordinates, along with the <b>yaw</b> and <b>pitch</b>
+ * @author bitDesctop
+ *
+ */
 @SerializableAs("SimpleLoc")
 public class SimpleLoc implements ConfigurationSerializable, Listener {
 	
@@ -52,7 +57,5 @@ public class SimpleLoc implements ConfigurationSerializable, Listener {
 		return me;
 	}
 	
-	public Location toLocation() {
-		return new Location(world, x, y, z, yaw, pitch);
-	}
+	public Location toLocation() { return new Location(world, x, y, z, yaw, pitch); }
 }

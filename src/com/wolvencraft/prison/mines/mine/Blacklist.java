@@ -10,6 +10,12 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.material.MaterialData;
 
+/**
+ * The Blacklist object is used as one of the three blacklists in a mine object.<br />
+ * The possible uses are: block-replace, block-break, block-place
+ * @author bitWolfy
+ *
+ */
 @SerializableAs("Blacklist")
 public class Blacklist implements ConfigurationSerializable {
 
@@ -50,23 +56,16 @@ public class Blacklist implements ConfigurationSerializable {
 		return me;
 	}
 	
-	public List<MaterialData> getBlocks() {
-		return blocks;
-	}
+	public boolean getEnabled() 	{ return enabled; }
+	public boolean getWhitelist() 	{ return whitelist; }
 	
-	public boolean getWhitelist() { return whitelist; }
+	public List<MaterialData> getBlocks() { return blocks; }
 	
-	public boolean getEnabled() { return enabled; }
+	public void setEnabled(boolean enabled) { this.enabled = enabled; }
+	public void setWhitelist(boolean whitelist) { this.whitelist = whitelist; }
 	
-	public void setBlocks(List<MaterialData> blocks) {
-		this.blocks = blocks;
-	}
-	
-	public void setWhitelist(boolean whitelist) {
-		this.whitelist = whitelist;
-	}
-	
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
+	public void setBlocks(List<MaterialData> newBlocks) {
+		blocks.clear();
+		for(MaterialData block : newBlocks) blocks.add(block);
 	}
 }

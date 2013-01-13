@@ -2,9 +2,9 @@ package com.wolvencraft.prison.mines.cmd;
 
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.flags.BaseFlag;
-import com.wolvencraft.prison.mines.flags.FlagHandler;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.settings.Language;
+import com.wolvencraft.prison.mines.util.FlagHandler;
 import com.wolvencraft.prison.mines.util.Message;
 
 public class FlagCommand implements BaseCommand {

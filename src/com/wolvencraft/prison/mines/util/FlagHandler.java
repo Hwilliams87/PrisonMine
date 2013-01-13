@@ -1,7 +1,10 @@
-package com.wolvencraft.prison.mines.flags;
+package com.wolvencraft.prison.mines.util;
 
 import java.util.logging.Level;
 
+import com.wolvencraft.prison.mines.flags.BaseFlag;
+import com.wolvencraft.prison.mines.flags.EffectFlag;
+import com.wolvencraft.prison.mines.flags.SurfaceOreFlag;
 import com.wolvencraft.prison.util.Message;
 
 public enum FlagHandler {
