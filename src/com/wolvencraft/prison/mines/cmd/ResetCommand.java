@@ -46,7 +46,7 @@ public class ResetCommand implements BaseCommand {
 			Message.debug("| Reset cause: MANUAL (command/sign)");
 		}
 		
-		String broadcastMessage;
+		String broadcastMessage = "";
 		
 		if(automatic) {
 			
