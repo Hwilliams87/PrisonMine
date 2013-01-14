@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolvencraft.prison.hooks.CommandHook;
@@ -32,7 +33,7 @@ public enum CommandManager implements CommandHook {
 	TRIGGER (TriggerCommand.class, "prison.mine.edit", true, "trigger"),
 	TIMER (WarningCommand.class, "prison.mine.edit", true, "warning");
 	
-	private static CommandSender sender;
+	private static CommandSender sender = null;
 	
 	CommandManager(Class<?> clazz, String permission, boolean allowConsole, String... args) {
 		try {
@@ -70,8 +71,9 @@ public enum CommandManager implements CommandHook {
 
 	public boolean run(String[] args) {
 		if(sender != null) {
-			if(sender instanceof Player) Message.debug("CommandSender is a player: " + sender.getName());
-			else Message.debug("CommandSender is not a player");
+			if(sender instanceof Player) Message.debug("Command issued by player: " + sender.getName());
+			else if(sender instanceof ConsoleCommandSender) Message.debug("Command issued by CONSOLE");
+			else Message.debug("Command issued by GHOSTS and WIZARDS");
 		}
 		if(!allowConsole && !(sender instanceof Player)) { Message.sendError(PrisonMine.getLanguage().ERROR_SENDERISNOTPLAYER); return false; }
 		if(permission != null && (sender instanceof Player) && !sender.hasPermission(permission)) { Message.sendError(PrisonMine.getLanguage().ERROR_ACCESS); return false; }
