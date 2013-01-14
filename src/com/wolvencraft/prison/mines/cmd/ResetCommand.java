@@ -46,7 +46,29 @@ public class ResetCommand implements BaseCommand {
 			Message.debug("| Reset cause: MANUAL (command/sign)");
 		}
 		
-		if(!automatic) {
+		String broadcastMessage;
+		
+		if(automatic) {
+			
+			for(Mine childMine : curMine.getChildren()) {
+				Message.debug("+---------------------------------------------");
+				Message.debug("| Mine " + childMine.getId() + " is resetting. Reset report:");
+				Message.debug("| Reset cause: parent mine is resetting (" + curMine.getId() + ")");
+				CommandManager.RESET.run(childMine.getId());
+				Message.debug("| Reached the end of the report for " + childMine.getId());
+				Message.debug("+---------------------------------------------");
+			}
+			
+			if(curMine.getAutomaticReset() && curMine.getResetsIn() <= 0)
+				broadcastMessage = PrisonMine.getLanguage().RESET_TIMED;
+			else if(curMine.getCompositionReset() && curMine.getCurrentPercent() <= curMine.getRequiredPercent())
+				broadcastMessage = PrisonMine.getLanguage().RESET_COMPOSITION;
+			else
+				broadcastMessage = PrisonMine.getLanguage().RESET_AUTOMATIC;
+			
+			curMine.resetTimer();
+			
+		} else {
 			if(!Util.hasPermission("prison.mine.reset.manual." + curMine.getId()) && !Util.hasPermission("prison.mine.reset.manual")) {
 				Message.sendError(PrisonMine.getLanguage().ERROR_ACCESS);
 				Message.debug("| Insufficient permissions. Cancelling...");
@@ -68,6 +90,8 @@ public class ResetCommand implements BaseCommand {
 				Message.debug("| Resetting the timer (config)");
 				curMine.resetTimer();
 			}
+
+			broadcastMessage = PrisonMine.getLanguage().RESET_MANUAL;
 		}
 
 		if(generator.equals("")) generator = curMine.getGenerator();
@@ -76,34 +100,16 @@ public class ResetCommand implements BaseCommand {
 		
 		if(!(curMine.reset(generator))) return false;
 		
-		String broadcastMessage;
-		if(automatic) {
-			for(Mine childMine : curMine.getChildren()) {
-				Message.debug("+---------------------------------------------");
-				Message.debug("| Mine " + childMine.getId() + " is resetting. Reset report:");
-				Message.debug("| Reset cause: parent mine is resetting (" + curMine.getId() + ")");
-				CommandManager.RESET.run(childMine.getId());
-				Message.debug("| Reached the end of the report for " + childMine.getId());
-				Message.debug("+---------------------------------------------");
-			}
-			
-			if(curMine.getAutomaticReset() && curMine.getResetsIn() <= 0)
-				broadcastMessage = PrisonMine.getLanguage().RESET_TIMED;
-			else if(curMine.getCompositionReset() && curMine.getCurrentPercent() <= curMine.getRequiredPercent())
-				broadcastMessage = PrisonMine.getLanguage().RESET_COMPOSITION;
-			else
-				broadcastMessage = PrisonMine.getLanguage().RESET_AUTOMATIC;
-		} else {
-			broadcastMessage = PrisonMine.getLanguage().RESET_MANUAL;
-			Message.debug("| Reached the end of the report for " + curMine.getId());
-			Message.debug("+---------------------------------------------");
-		}
-		
 		if(!automatic || curMine.getParent() == null) {
 			broadcastMessage = Util.parseVars(broadcastMessage, curMine);
 			
 			if(!curMine.getSilent()) Message.broadcast(broadcastMessage);
 			else if(!automatic) Message.sendSuccess(broadcastMessage);
+		}
+		
+		if(!automatic) {
+			Message.debug("| Reached the end of the report for " + curMine.getId());
+			Message.debug("+---------------------------------------------");
 		}
 		
 		return true;
