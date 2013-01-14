@@ -69,8 +69,10 @@ public enum CommandManager implements CommandHook {
 	}
 
 	public boolean run(String[] args) {
-		if(sender instanceof Player) Message.debug("CommandSender is a player: " + sender.getName());
-		else Message.debug("CommandSender is not a player");
+		if(sender != null) {
+			if(sender instanceof Player) Message.debug("CommandSender is a player: " + sender.getName());
+			else Message.debug("CommandSender is not a player");
+		}
 		if(!allowConsole && !(sender instanceof Player)) { Message.sendError(PrisonMine.getLanguage().ERROR_SENDERISNOTPLAYER); return false; }
 		if(permission != null && (sender instanceof Player) && !sender.hasPermission(permission)) { Message.sendError(PrisonMine.getLanguage().ERROR_ACCESS); return false; }
 		return clazz.run(args);
