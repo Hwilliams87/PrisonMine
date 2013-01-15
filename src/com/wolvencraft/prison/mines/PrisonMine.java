@@ -131,7 +131,6 @@ public class PrisonMine extends PrisonPlugin {
 		MineData.saveAll();
 		SignData.saveAll();
 		
-		getServer().getScheduler().cancelTasks(this);
 		Message.log("Plugin stopped");
 	}
 	

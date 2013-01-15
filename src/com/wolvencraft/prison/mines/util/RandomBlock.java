@@ -32,15 +32,13 @@ public class RandomBlock {
      * Returns a random block according to the mine's composition
      * @return Random block
      */
-    public MaterialData next()
-    {
+    public MaterialData next() {
     	double r = new Random().nextDouble();
     	for (MineBlock block : weightedBlocks) {
     	    if (r <= block.getChance()) {
     	        return block.getBlock();
     	    }
     	}
-    	//At this point, we've got a problem folks.
     	return null;
     }
 
