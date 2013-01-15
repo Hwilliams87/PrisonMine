@@ -43,6 +43,7 @@ public class ButtonPressListener implements Listener {
 					DisplaySign sign = DisplaySign.get(locationAbove);
 					if(sign != null && sign.getReset()) {
 						Mine curMine = Mine.get(sign.getParent());
+						if(curMine == null) return;
 						Player player = event.getPlayer();
 						
 						if(!player.hasPermission("prison.mine.reset.sign." + curMine.getId()) && !player.hasPermission("prison.mine.reset.sign")) {
