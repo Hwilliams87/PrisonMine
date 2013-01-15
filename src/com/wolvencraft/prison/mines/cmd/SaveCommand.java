@@ -46,7 +46,7 @@ public class SaveCommand implements BaseCommand {
 		
 		PrisonSelection sel = PrisonSuite.getSelection(player);
 		if(!sel.locationsSet()) {
-			if(!WorldEditHook.usingWorldEdit()) {
+			if(!PrisonSuite.usingWorldEdit()) {
 				Message.sendError("Make a selection first");
 				return false;
 			}
