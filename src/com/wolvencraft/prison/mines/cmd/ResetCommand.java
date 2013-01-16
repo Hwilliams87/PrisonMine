@@ -60,13 +60,15 @@ public class ResetCommand implements BaseCommand {
 			}
 			
 			if(curMine.getAutomaticReset() && curMine.getResetsIn() <= 0) {
-				curMine.resetTimer();
 				broadcastMessage = PrisonMine.getLanguage().RESET_TIMED;
 			} else if(curMine.getCompositionReset() && curMine.getCurrentPercent() <= curMine.getRequiredPercent()) {
 				broadcastMessage = PrisonMine.getLanguage().RESET_COMPOSITION;
 			} else
 				broadcastMessage = PrisonMine.getLanguage().RESET_AUTOMATIC;
 			
+			if(curMine.getAutomaticReset() && (curMine.getResetsIn() <= 0 || PrisonMine.getSettings().MANUALTIMERRESET)) {
+				curMine.resetTimer();
+			}
 		} else {
 			if(!Util.hasPermission("prison.mine.reset.manual." + curMine.getId()) && !Util.hasPermission("prison.mine.reset.manual")) {
 				Message.sendError(PrisonMine.getLanguage().ERROR_ACCESS);
