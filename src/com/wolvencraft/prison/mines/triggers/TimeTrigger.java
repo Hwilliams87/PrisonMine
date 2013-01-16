@@ -62,7 +62,7 @@ public class TimeTrigger implements BaseTrigger {
 		if(!mineObj.hasParent()) {
 			List<Integer> warnTimes = mineObj.getWarningTimes();
 			
-			if(!mineObj.getSilent() && mineObj.getWarned() && warnTimes.indexOf(next) != -1)
+			if(!mineObj.getSilent() && mineObj.getWarned() && warnTimes.indexOf((int)(next / 20)) != -1)
 				Message.broadcast(Util.parseVars(PrisonMine.getLanguage().RESET_WARNING, mineObj));
 
 			next -= PrisonMine.getSettings().TICKRATE;
