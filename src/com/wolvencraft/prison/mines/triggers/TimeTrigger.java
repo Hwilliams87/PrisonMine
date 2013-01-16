@@ -26,7 +26,7 @@ public class TimeTrigger implements BaseTrigger {
 	
 	public TimeTrigger(Mine mineObj, long period) {
 		mine = mineObj.getId();
-		this.period = period * 20;
+		this.period = period * 20L;
 		this.next = this.period;
 		
 		canceled = false;
@@ -64,19 +64,20 @@ public class TimeTrigger implements BaseTrigger {
 			
 			if(!mineObj.getSilent() && mineObj.getWarned() && warnTimes.indexOf(next) != -1)
 				Message.broadcast(Util.parseVars(PrisonMine.getLanguage().RESET_WARNING, mineObj));
+
+			next -= PrisonMine.getSettings().TICKRATE;
 			
-			if(next <= 0) {
+			if(next <= 0L) {
 				Message.debug("+---------------------------------------------");
 				Message.debug("| Mine " + mine + " is resetting. Reset report:");
 				Message.debug("| Reset cause: timer has expired (" + next +" / " + period + ")");
 				CommandManager.RESET.run(mineObj.getId());
+				resetTimer();
 				Message.debug("| Updated the timer (" + next +" / " + period + ")");
 				Message.debug("| Reached the end of the report for " + mine);
 				Message.debug("+---------------------------------------------");
-			} else {
-				next -= PrisonMine.getSettings().TICKRATE;
 			}
-		} else if(next <= 0) Message.debug("Mine " + mine + " has a parent, ignoring it.");
+		} else if(next <= 0L) Message.debug("Mine " + mine + " has a parent, ignoring it.");
 	
 		if(mineObj.getCooldown() && mineObj.getCooldownEndsIn() > 0)
 			mineObj.updateCooldown(PrisonMine.getSettings().TICKRATE);
@@ -91,5 +92,8 @@ public class TimeTrigger implements BaseTrigger {
 	public int getPeriod() 		{ return (int)(period / 20); }
 	public int getNext() 		{ return (int)(next / 20); }
 	public void resetTimer()	{ next = period; }
-	public void setPeriod(int period) { this.period = period * 20; }
+	public void setPeriod(int period) {
+		this.period = period * 20L;
+		if(this.next > period) this.next = this.period;
+	}
 }
