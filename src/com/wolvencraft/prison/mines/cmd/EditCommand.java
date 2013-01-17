@@ -7,6 +7,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.material.MaterialData;
 
+import com.wolvencraft.prison.PrisonSuite;
+import com.wolvencraft.prison.hooks.TimedTask;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.generation.BaseGenerator;
 import com.wolvencraft.prison.mines.mine.Mine;
@@ -200,6 +202,9 @@ public class EditCommand  implements BaseCommand {
 			if(!ExtensionLoader.get(curMine.getGenerator()).remove(curMine)) return false;
 			
 			for(Mine child : curMine.getChildren()) { child.setParent(null); }
+			for(TimedTask task : PrisonSuite.getLocalTasks()) {
+				if(task.getName().endsWith(curMine.getId())) task.cancel();
+			}
 			
 			PrisonMine.removeMine(curMine);
 			PrisonMine.setCurMine(null);
