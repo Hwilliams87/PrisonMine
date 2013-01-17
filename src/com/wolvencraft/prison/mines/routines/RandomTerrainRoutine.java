@@ -1,4 +1,4 @@
-package com.wolvencraft.prison.mines.generation;
+package com.wolvencraft.prison.mines.routines;
 
 import java.util.ConcurrentModificationException;
 import java.util.logging.Level;
@@ -12,16 +12,8 @@ import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.RandomBlock;
 
-public class RandomGenerator implements BaseGenerator {
-	public final String NAME;
-	public final String DESCRIPTION;
-	
-	public RandomGenerator() {
-		NAME = "RANDOM";
-		DESCRIPTION = "Resets the contents of the mine randomly according to the persentage set by the mine configuration";
-	}
-	
-	public boolean run(Mine mine) {
+public class RandomTerrainRoutine {	
+	public static boolean run(Mine mine) {
 		RandomBlock pattern = new RandomBlock(mine.getBlocks());
 		Location one = mine.getRegion().getMinimum();
 		Location two = mine.getRegion().getMaximum();
@@ -89,16 +81,4 @@ public class RandomGenerator implements BaseGenerator {
 	        return true;
     	}
 	}
-
-	@Override
-	public boolean init(Mine mine) { return true; }
-
-	@Override
-	public boolean remove(Mine mine) { return true; }
-
-	@Override
-	public String getName() { return NAME; }
-
-	@Override
-	public String getDescription() { return DESCRIPTION; }
 }

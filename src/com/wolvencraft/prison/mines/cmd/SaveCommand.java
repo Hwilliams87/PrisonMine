@@ -1,6 +1,5 @@
 package com.wolvencraft.prison.mines.cmd;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -11,7 +10,6 @@ import com.wolvencraft.prison.region.PrisonSelection;
 import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
-import com.wolvencraft.prison.mines.util.ExtensionLoader;
 import com.wolvencraft.prison.mines.util.Message;
 
 public class SaveCommand implements BaseCommand {
@@ -29,18 +27,6 @@ public class SaveCommand implements BaseCommand {
 			Message.sendError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
 			return false;
 		}
-		
-		String generator;
-		if(args.length == 3) {
-			if(ExtensionLoader.get(args[2]) != null) {
-				generator = args[2].toUpperCase();
-			}
-			else {
-				Message.sendError("Invalid generator provided!");
-				return false;
-			}
-		}
-		else generator = "RANDOM";
 		
 		Message.debug("Passed argument count check");
 		
@@ -81,9 +67,7 @@ public class SaveCommand implements BaseCommand {
 
         Message.debug("Passed mine existance check");
 		
-		Mine newMine = new Mine(args[1], new PrisonRegion(sel), sel.getPos1().getWorld(), player.getLocation(), generator);
-		
-		if(!ExtensionLoader.get(generator).init(newMine)) return false;
+		Mine newMine = new Mine(args[1], new PrisonRegion(sel), sel.getPos1().getWorld(), player.getLocation());
 		
 		PrisonMine.addMine(newMine);
 		newMine.saveFile();
@@ -95,14 +79,7 @@ public class SaveCommand implements BaseCommand {
 		return true;
 	}
 	
-	public void getHelp() {
-		Message.formatHeader(20, "Save");
-		Message.formatHelp("save", "<name> [generator]", "Saves the mine region");
-		Message.formatMessage("If no generator is specified, " + ChatColor.GOLD + "RANDOM" + ChatColor.WHITE + " will be used.");
-		Message.formatMessage("Available generators:");
-		Message.formatMessage(ExtensionLoader.list());
-		return;
-	}
+	public void getHelp() { getHelpLine(); }
 	
-	public void getHelpLine() { Message.formatHelp("save", "<name> [generator]", "Saves the mine region to file", "prison.mine.edit"); }
+	public void getHelpLine() { Message.formatHelp("save", "<name>", "Saves the mine region to file", "prison.mine.edit"); }
 }

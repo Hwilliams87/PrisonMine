@@ -17,7 +17,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import com.wolvencraft.prison.PrisonSuite;
 import com.wolvencraft.prison.hooks.PrisonPlugin;
 import com.wolvencraft.prison.mines.events.*;
-import com.wolvencraft.prison.mines.generation.BaseGenerator;
+import com.wolvencraft.prison.mines.extensions.BaseGenerator;
+import com.wolvencraft.prison.mines.extensions.ExtensionLoader;
 import com.wolvencraft.prison.mines.mine.*;
 import com.wolvencraft.prison.mines.settings.*;
 import com.wolvencraft.prison.mines.triggers.*;
@@ -25,7 +26,6 @@ import com.wolvencraft.prison.mines.upgrade.MRLMine;
 import com.wolvencraft.prison.mines.upgrade.MRMine;
 import com.wolvencraft.prison.mines.util.BlockSerializable;
 import com.wolvencraft.prison.mines.util.DisplaySignTask;
-import com.wolvencraft.prison.mines.util.ExtensionLoader;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.region.PrisonRegion;
 

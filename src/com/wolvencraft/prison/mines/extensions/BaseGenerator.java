@@ -1,4 +1,4 @@
-package com.wolvencraft.prison.mines.generation;
+package com.wolvencraft.prison.mines.extensions;
 
 import com.wolvencraft.prison.mines.mine.Mine;
 

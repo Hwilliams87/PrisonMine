@@ -2,13 +2,11 @@ package com.wolvencraft.prison.mines.mine;
 
 import com.wolvencraft.prison.region.PrisonRegion;
 import com.wolvencraft.prison.region.PrisonSelection;
-import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
-import com.wolvencraft.prison.mines.generation.BaseGenerator;
+import com.wolvencraft.prison.mines.routines.RandomTerrainRoutine;
 import com.wolvencraft.prison.mines.triggers.BaseTrigger;
 import com.wolvencraft.prison.mines.triggers.CompositionTrigger;
 import com.wolvencraft.prison.mines.triggers.TimeTrigger;
-import com.wolvencraft.prison.mines.util.ExtensionLoader;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.ResetTrigger;
 import com.wolvencraft.prison.mines.util.Util;
@@ -63,8 +61,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     private int cooldownPeriod;
     private long cooldownEndsIn;
     
-    private String generator;
-    
     private boolean silent;
     
     private boolean warned;
@@ -86,7 +82,7 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @param tpPoint Mine warp location
      * @param generator Generator for the mine
      */
-    public Mine(String id, PrisonRegion region, World world, Location tpPoint, String generator) {
+    public Mine(String id, PrisonRegion region, World world, Location tpPoint) {
     	this.id = id;
     	name = "";
     	
@@ -105,8 +101,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     	cooldownEnabled = false;
     	cooldownPeriod = 0;
     	cooldownEndsIn = 0;
-    	
-    	this.generator = generator;
     	
     	silent = false;
     	
@@ -163,8 +157,6 @@ public class Mine implements ConfigurationSerializable, Listener {
         this.cooldownPeriod = cooldownPeriod;
         this.cooldownEndsIn = cooldownPeriod * 20;
         
-        this.generator = generator;
-        
         this.silent = silent;
         
         this.warned = warned;
@@ -202,8 +194,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     	cooldownEnabled = ((Boolean) map.get("cooldownEnabled")).booleanValue();
     	cooldownPeriod = ((Integer) map.get("cooldownPeriod")).intValue();
     	cooldownEndsIn = 0;
-    	
-    	generator = (String) map.get("generator");
     	
     	silent = ((Boolean) map.get("silent")).booleanValue();
     	
@@ -245,8 +235,6 @@ public class Mine implements ConfigurationSerializable, Listener {
         map.put("cooldownEnabled", cooldownEnabled);
         map.put("cooldownPeriod", cooldownPeriod);
         
-        map.put("generator", generator);
-        
         map.put("silent", silent);
         
         map.put("warned", warned);
@@ -268,23 +256,13 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @param generator Terrain generation rules
      * @return <b>true</b> if successful, <b>false</b> if not
      */
-    public boolean reset(String generator) {
+    public boolean reset() {
     	try { removePlayers(); }
     	catch(ConcurrentModificationException cme) {
     		Message.log(Level.WARNING, "An error occured while removing players from the mine");
     	}
-        BaseGenerator gen = ExtensionLoader.get(generator);
-        if(gen == null) {
-        	if(CommandManager.getSender() != null) Message.send((Player) CommandManager.getSender(), "Invalid generator selected!");
-            else Message.log("| Invalid generator specified for the mine. Cancelling...");
-			Message.debug("| Reached the end of the report for " + id);
-			Message.debug("+---------------------------------------------");
-            return false;
-        }
-        else return gen.run(this);
+        return RandomTerrainRoutine.run(this);
     }
-    
-    public boolean reset() { return reset(generator); }
     
     /**
      * Teleport all the players from the region that is being reset
@@ -322,8 +300,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     public boolean getSilent() 						{ return silent; }
     
-    public String getGenerator() 					{ return generator.toUpperCase(); }
-    
     public boolean getWarned()						{ return warned; }
     public List<Integer> getWarningTimes()			{ return warningTimes; }
     
@@ -343,8 +319,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     public void setCooldownPeriod (int cooldownPeriod) 				{ this.cooldownPeriod = cooldownPeriod; }
     public void updateCooldown(long ticks) 							{ cooldownEndsIn -= ticks; }
     public void resetCooldown() 									{ cooldownEndsIn = cooldownPeriod * 20; }
-
-    public void setGenerator(String generator) 						{ this.generator = generator; }
     
     public void setWarned(boolean warned) 							{ this.warned = warned; }
     

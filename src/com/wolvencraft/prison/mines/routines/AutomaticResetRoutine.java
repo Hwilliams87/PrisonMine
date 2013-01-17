@@ -1,27 +1,19 @@
-package com.wolvencraft.prison.mines.util;
-
-import java.util.logging.Level;
+package com.wolvencraft.prison.mines.routines;
 
 import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.util.Message;
+import com.wolvencraft.prison.mines.util.Util;
 
 public class AutomaticResetRoutine {
 	public static void run(Mine mine) {
-
-		String generator = mine.getGenerator();
-		
-		if(ExtensionLoader.get(generator) == null) {
-			Message.log(Level.SEVERE, "Invalid generator specified!");
-			return;
-		}
-		
-		if(mine.getAutomaticReset() && (mine.getResetsIn() <= 0 || PrisonMine.getSettings().RESET_FORCE_TIMER_UPDATE)) {
+			if(mine.getAutomaticReset() && (mine.getResetsIn() <= 0 || PrisonMine.getSettings().RESET_FORCE_TIMER_UPDATE)) {
 			Message.debug("| Resetting the timer (config)");
 			mine.resetTimer();
 		}
 		
-		if(!(mine.reset(generator))) {
+		if(!(mine.reset())) {
 			Message.debug("| Error while executing the generator! Aborting.");
 			Message.debug("+---------------------------------------------");
 			return;

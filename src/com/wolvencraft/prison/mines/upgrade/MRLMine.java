@@ -128,7 +128,7 @@ public class MRLMine implements ConfigurationSerializable {
     	Location one = new Location(world, minX, minY, minZ);
     	Location two = new Location(world, maxX, maxY, maxZ);
     	PrisonRegion region = new PrisonRegion(one, two);
-    	Mine mine = new Mine(name, region, world, two, "RANDOM");
+    	Mine mine = new Mine(name, region, world, two);
     	
     	Iterator<Entry<SerializableBlock, Double>> it = composition.entrySet().iterator();
     	double totalValue = 0;

@@ -10,7 +10,7 @@ import org.bukkit.configuration.serialization.SerializableAs;
 import com.wolvencraft.prison.PrisonSuite;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
-import com.wolvencraft.prison.mines.util.AutomaticResetRoutine;
+import com.wolvencraft.prison.mines.routines.AutomaticResetRoutine;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.ResetTrigger;
 import com.wolvencraft.prison.mines.util.Util;

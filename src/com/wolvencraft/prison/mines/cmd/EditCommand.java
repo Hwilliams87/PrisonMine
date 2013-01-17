@@ -10,12 +10,12 @@ import org.bukkit.material.MaterialData;
 import com.wolvencraft.prison.PrisonSuite;
 import com.wolvencraft.prison.hooks.TimedTask;
 import com.wolvencraft.prison.mines.PrisonMine;
-import com.wolvencraft.prison.mines.generation.BaseGenerator;
+import com.wolvencraft.prison.mines.extensions.BaseGenerator;
+import com.wolvencraft.prison.mines.extensions.ExtensionLoader;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.mine.MineBlock;
 import com.wolvencraft.prison.mines.settings.Language;
 import com.wolvencraft.prison.mines.settings.MineData;
-import com.wolvencraft.prison.mines.util.ExtensionLoader;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 
@@ -62,8 +62,7 @@ public class EditCommand  implements BaseCommand {
 			PrisonMine.setCurMine(curMine);
 			Message.sendSuccess(Util.parseVars(language.MINE_SELECTED, curMine));
 			return true;
-		}
-		else if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+")) {
+		} else if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+")) {
 			if(args.length != 2 && args.length != 3) {
 				Message.sendError(language.ERROR_ARGUMENTS);
 				return false;
@@ -123,8 +122,7 @@ public class EditCommand  implements BaseCommand {
 			Message.sendCustom(curMine.getId(), "Reset the mine for the changes to take effect");
 			
 			return curMine.saveFile();
-		}
-		else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-")) {
+		} else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-")) {
 			if(args.length != 2 && args.length != 3) {
 				Message.sendError(language.ERROR_ARGUMENTS);
 				return false;
@@ -177,8 +175,7 @@ public class EditCommand  implements BaseCommand {
 			}
 			
 			return curMine.saveFile();
-		}
-		else if(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del")) {
+		} else if(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del")) {
 			if(args.length > 2) {
 				Message.sendError(language.ERROR_ARGUMENTS);
 				return false;
@@ -199,8 +196,6 @@ public class EditCommand  implements BaseCommand {
 				}
 			}
 			
-			if(!ExtensionLoader.get(curMine.getGenerator()).remove(curMine)) return false;
-			
 			for(Mine child : curMine.getChildren()) { child.setParent(null); }
 			for(TimedTask task : PrisonSuite.getLocalTasks()) {
 				if(task.getName().endsWith(curMine.getId())) task.cancel();
@@ -212,8 +207,7 @@ public class EditCommand  implements BaseCommand {
 			curMine.deleteFile();
 			MineData.saveAll();
 			return true;
-		}
-		else if(args[0].equalsIgnoreCase("name")) {
+		} else if(args[0].equalsIgnoreCase("name")) {
 			if(args.length < 2) {
 				Message.sendError(language.ERROR_ARGUMENTS);
 				return false;
@@ -226,8 +220,7 @@ public class EditCommand  implements BaseCommand {
 			Message.sendCustom(curMine.getId(), "Mine now has a display name '" + ChatColor.GOLD + name + ChatColor.WHITE + "'");
 			
 			return curMine.saveFile();
-		}
-		else if(args[0].equalsIgnoreCase("silent")) {
+		} else if(args[0].equalsIgnoreCase("silent")) {
 			if(args.length != 1) {
 				Message.sendError(language.ERROR_ARGUMENTS);
 				return false;
@@ -243,8 +236,7 @@ public class EditCommand  implements BaseCommand {
 			}
 			
 			return curMine.saveFile();
-		}
-		else if(args[0].equalsIgnoreCase("cooldown")) {
+		} else if(args[0].equalsIgnoreCase("cooldown")) {
 			if(args.length != 2) {
 				Message.sendError(language.ERROR_ARGUMENTS);
 				return false;
@@ -259,8 +251,7 @@ public class EditCommand  implements BaseCommand {
 					curMine.setCooldownEnabled(true);
 					Message.sendCustom(curMine.getId(), "Reset cooldown " + ChatColor.GREEN + "enabled");
 				}
-			}
-			else {
+			} else {
 				try {
 					int seconds = Util.parseTime(args[1]);
 					if(seconds == -1) {
@@ -276,26 +267,7 @@ public class EditCommand  implements BaseCommand {
 			}
 			
 			return curMine.saveFile();
-		}
-		else if(args[0].equalsIgnoreCase("generator")) {
-			if(args.length == 1) {
-				getGenerators();
-				return false;
-			}
-			
-			if(args.length != 2) {
-				Message.sendError(language.ERROR_ARGUMENTS);
-				return false;
-			}
-			
-			if(!ExtensionLoader.get(args[1]).init(curMine)) return false;
-			curMine.setGenerator(args[1].toUpperCase());
-			
-			Message.sendCustom(curMine.getId(), "Mine generator has been set to " + ChatColor.GREEN + args[1].toUpperCase());
-
-			return curMine.saveFile();
-		}
-		else if(args[0].equalsIgnoreCase("setparent") || args[0].equalsIgnoreCase("link")) {
+		} else if(args[0].equalsIgnoreCase("setparent") || args[0].equalsIgnoreCase("link")) {
 			if(args.length != 2) {
 				Message.sendError(language.ERROR_ARGUMENTS);
 				return false;

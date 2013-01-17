@@ -99,7 +99,7 @@ public class InfoCommand  implements BaseCommand {
 			}
 			
 			// Generator & parent mine
-			str = "    Generator: " + ChatColor.GOLD + curMine.getGenerator();
+			str = ChatColor.YELLOW + "   Composition:" + ChatColor.WHITE;
 			String parentName;
 			if(curMine.getParent() == null)
 				parentName = "none";

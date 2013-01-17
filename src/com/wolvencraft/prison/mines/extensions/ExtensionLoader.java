@@ -1,4 +1,4 @@
-package com.wolvencraft.prison.mines.util;
+package com.wolvencraft.prison.mines.extensions;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -11,8 +11,8 @@ import java.util.logging.Level;
 import org.bukkit.ChatColor;
 
 import com.wolvencraft.prison.mines.PrisonMine;
-import com.wolvencraft.prison.mines.generation.BaseGenerator;
-import com.wolvencraft.prison.mines.generation.RandomGenerator;
+import com.wolvencraft.prison.mines.routines.RandomTerrainRoutine;
+import com.wolvencraft.prison.mines.util.Message;
 
 public class ExtensionLoader {
 	
@@ -29,7 +29,7 @@ public class ExtensionLoader {
 
 	    String name = "";
 	    try {
-	    	generators.add((BaseGenerator) RandomGenerator.class.newInstance());
+	    	generators.add((BaseGenerator) RandomTerrainRoutine.class.newInstance());
 	    	name = "RandomGenerator";
 			Message.log("Loaded extension: " + name);
 
