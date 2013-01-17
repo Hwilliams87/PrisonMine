@@ -49,7 +49,7 @@ public class CompositionTrigger implements BaseTrigger, ConfigurationSerializabl
 	}
 	
 	public void run() {
-		if(counter != 60) { counter++; return; }
+		if(counter != 30) { counter++; return; }
 		counter = 0;
 		
 		Mine mineObj = Mine.get(mine);

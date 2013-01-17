@@ -82,11 +82,11 @@ public class TimeTrigger implements BaseTrigger {
 		
 		if(next <= 0L) {
 			Message.debug("+---------------------------------------------");
-			Message.debug("| Mine " + mine + " is resetting. Reset report:");
+			Message.debug("| Mine " + mine.getId() + " is resetting. Reset report:");
 			Message.debug("| Reset cause: timer has expired (" + next +" / " + period + ")");
 			AutomaticResetRoutine.run(mine);
 			Message.debug("| Updated the timer (" + next +" / " + period + ")");
-			Message.debug("| Reached the end of the report for " + mine);
+			Message.debug("| Reached the end of the report for " + mine.getId());
 			Message.debug("+---------------------------------------------");
 		}
 		
