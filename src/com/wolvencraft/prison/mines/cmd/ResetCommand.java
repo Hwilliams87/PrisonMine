@@ -10,45 +10,45 @@ import com.wolvencraft.prison.mines.util.Util;
 public class ResetCommand implements BaseCommand {	
 	public boolean run(String[] args) {
 		
-		Mine curMine = null;
-		String generator = "";
 		if(args.length == 1) {
 			getHelp();
 			return true;
-		} else if(args.length == 2) {
+		}
+
+		Mine curMine = null;
+		String generator = "";
+		
+		if(args.length == 2) {
+			
 			if(args[1].equalsIgnoreCase("all")) {
+				
 				boolean success = true;
 				for(Mine mine : PrisonMine.getLocalMines()) {
 					if(!CommandManager.RESET.run(mine.getId())) success = false;
 				}
 				return success;
-			} else curMine = Mine.get(args[1]);
-		} else if(args.length == 3) {
+				
+			}
+			
+			curMine = Mine.get(args[1]);
+			generator = curMine.getGenerator();
+			
+		} else {
 			curMine = Mine.get(args[1]);
 			generator = args[2];
-		} else {
-			Message.sendError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
-			return false;
-		}
+		} 
 				
-		if(curMine == null) {
+		if(curMine == null || ExtensionLoader.get(generator) == null) {
 			Message.sendError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
 			return false;
 		}
 		
 		boolean automatic;
-		if(CommandManager.getSender() == null) {
-			automatic = true;
-		} else {
-			automatic = false;
-			Message.debug("+---------------------------------------------");
-			Message.debug("| Mine " + curMine.getId() + " is resetting. Reset report:");
-			Message.debug("| Reset cause: MANUAL (command/sign)");
-		}
 		
 		String broadcastMessage = "";
 		
-		if(automatic) {
+		if(CommandManager.getSender() == null) {
+			automatic = true;
 			
 			for(Mine childMine : curMine.getChildren()) {
 				Message.debug("+---------------------------------------------");
@@ -59,17 +59,26 @@ public class ResetCommand implements BaseCommand {
 				Message.debug("+---------------------------------------------");
 			}
 			
-			if(curMine.getAutomaticReset() && curMine.getResetsIn() <= 0) {
-				broadcastMessage = PrisonMine.getLanguage().RESET_TIMED;
-			} else if(curMine.getCompositionReset() && curMine.getCurrentPercent() <= curMine.getRequiredPercent()) {
-				broadcastMessage = PrisonMine.getLanguage().RESET_COMPOSITION;
-			} else
-				broadcastMessage = PrisonMine.getLanguage().RESET_AUTOMATIC;
-			
 			if(curMine.getAutomaticReset() && (curMine.getResetsIn() <= 0 || PrisonMine.getSettings().RESET_FORCE_TIMER_UPDATE)) {
+				Message.debug("| Resetting the timer (config)");
 				curMine.resetTimer();
 			}
+			
+			broadcastMessage = PrisonMine.getLanguage().RESET_AUTOMATIC;
+			
+			if(curMine.getAutomaticReset() && curMine.getResetsIn() <= 0)
+				broadcastMessage = PrisonMine.getLanguage().RESET_TIMED;
+			
+			if(curMine.getCompositionReset() && curMine.getCurrentPercent() <= curMine.getRequiredPercent())
+				broadcastMessage = PrisonMine.getLanguage().RESET_COMPOSITION;
+				
+			
 		} else {
+			automatic = false;
+			Message.debug("+---------------------------------------------");
+			Message.debug("| Mine " + curMine.getId() + " is resetting. Reset report:");
+			Message.debug("| Reset cause: MANUAL (command/sign)");
+			
 			if(!Util.hasPermission("prison.mine.reset.manual." + curMine.getId()) && !Util.hasPermission("prison.mine.reset.manual")) {
 				Message.sendError(PrisonMine.getLanguage().ERROR_ACCESS);
 				Message.debug("| Insufficient permissions. Cancelling...");
@@ -94,12 +103,14 @@ public class ResetCommand implements BaseCommand {
 
 			broadcastMessage = PrisonMine.getLanguage().RESET_MANUAL;
 		}
-
-		if(generator.equals("")) generator = curMine.getGenerator();
 		
 		if(curMine.getCooldown()) curMine.resetCooldown();
 		
-		if(!(curMine.reset(generator))) return false;
+		if(!(curMine.reset(generator))) {
+			Message.debug("| Error while executing the generator! Aborting.");
+			Message.debug("+---------------------------------------------");
+			return false;
+		}
 		
 		if(!automatic || curMine.getParent() == null) {
 			broadcastMessage = Util.parseVars(broadcastMessage, curMine);
