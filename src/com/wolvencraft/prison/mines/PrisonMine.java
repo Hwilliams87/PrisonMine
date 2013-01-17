@@ -17,7 +17,6 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import com.wolvencraft.prison.PrisonSuite;
 import com.wolvencraft.prison.hooks.PrisonPlugin;
 import com.wolvencraft.prison.mines.events.*;
-import com.wolvencraft.prison.mines.flags.*;
 import com.wolvencraft.prison.mines.generation.BaseGenerator;
 import com.wolvencraft.prison.mines.mine.*;
 import com.wolvencraft.prison.mines.settings.*;
@@ -69,9 +68,6 @@ public class PrisonMine extends PrisonPlugin {
 		ConfigurationSerialization.registerClass(BaseTrigger.class, "BaseTrigger");
 		ConfigurationSerialization.registerClass(TimeTrigger.class, "TimeTrigger");
 		ConfigurationSerialization.registerClass(CompositionTrigger.class, "CompositionTrigger");
-		ConfigurationSerialization.registerClass(BaseFlag.class, "BaseFlag");
-		ConfigurationSerialization.registerClass(SurfaceOreFlag.class, "SurfaceOreFlag");
-		ConfigurationSerialization.registerClass(EffectFlag.class, "EffectFlag");
 		ConfigurationSerialization.registerClass(BlockSerializable.class, "BlockSerializable");
 		
 		ConfigurationSerialization.registerClass(MRMine.class, "MRMine");

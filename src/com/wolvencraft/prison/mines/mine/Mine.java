@@ -4,7 +4,6 @@ import com.wolvencraft.prison.region.PrisonRegion;
 import com.wolvencraft.prison.region.PrisonSelection;
 import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
-import com.wolvencraft.prison.mines.flags.BaseFlag;
 import com.wolvencraft.prison.mines.generation.BaseGenerator;
 import com.wolvencraft.prison.mines.triggers.BaseTrigger;
 import com.wolvencraft.prison.mines.triggers.CompositionTrigger;
@@ -58,7 +57,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     private Blacklist blockReplaceBlacklist;
     
     private List<BaseTrigger> resetTriggers;
-    private List<BaseFlag> flags;
+    private List<MineFlag> flags;
     
     private boolean cooldownEnabled;
     private int cooldownPeriod;
@@ -114,7 +113,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	warned = true;
     	warningTimes = new ArrayList<Integer>();
     	
-    	flags = new ArrayList<BaseFlag>();
+    	flags = new ArrayList<MineFlag>();
     	
     	enabledProtection = new ArrayList<Protection>();
     	protectionRegion = region.clone();
@@ -158,7 +157,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         this.blockReplaceBlacklist = blockReplaceBlacklist;
         
         this.resetTriggers = new ArrayList<BaseTrigger>();
-        this.flags = new ArrayList<BaseFlag>();
+        this.flags = new ArrayList<MineFlag>();
         
         this.cooldownEnabled = cooldownEnabled;
         this.cooldownPeriod = cooldownPeriod;
@@ -211,8 +210,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     	warned = ((Boolean) map.get("warned")).booleanValue();
     	warningTimes = (List<Integer>) map.get("warningTimes");
     	
-    	if(map.containsKey("flags")) flags = (List<BaseFlag>) map.get("flags");
-    	else flags = new ArrayList<BaseFlag>();
+    	if(map.containsKey("flags")) flags = MineFlag.toMineFlagList((List<String>) map.get("flags"));
+    	else flags = new ArrayList<MineFlag>();
     	
     	enabledProtection = Protection.toProtectionList((List<String>) map.get("enabledProtection"));
     	protectionRegion = (PrisonRegion) map.get("protectionRegion");
@@ -253,7 +252,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         map.put("warned", warned);
         map.put("warningTimes", warningTimes);
         
-        map.put("flags", flags);
+        map.put("flags", MineFlag.toStringList(flags));
         
         map.put("enabledProtection", Protection.toStringList(enabledProtection));
         map.put("protectionRegion", protectionRegion);
@@ -540,17 +539,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     	return true;
     }
     
-    public List<BaseFlag> getFlags() { return flags; }
-    public boolean hasFlag(BaseFlag flag) { return flags.contains(flag); }
-    public void addFlag(BaseFlag flag) { flags.add(flag); }
-    public void removeFlag(BaseFlag flag) { flags.remove(flag); }
-    
-    public BaseFlag getFlag(String alias) {
-    	for(BaseFlag flag : flags) {
-    		if(flag.getName().equalsIgnoreCase(alias)) return flag;
-    	}
-    	return null;
-    }
+    public List<MineFlag> getFlags() { return flags; }
+    public boolean hasFlag(MineFlag flag) { return flags.contains(flag); }
+    public void addFlag(MineFlag flag) { flags.add(flag); }
+    public void removeFlag(MineFlag flag) { flags.remove(flag); }
     
 	public List<Mine> getChildren() {
 		List<Mine> children = new ArrayList<Mine>();

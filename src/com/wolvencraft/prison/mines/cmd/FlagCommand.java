@@ -1,18 +1,22 @@
 package com.wolvencraft.prison.mines.cmd;
 
 import com.wolvencraft.prison.mines.PrisonMine;
-import com.wolvencraft.prison.mines.flags.BaseFlag;
 import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.mine.MineFlag;
 import com.wolvencraft.prison.mines.settings.Language;
-import com.wolvencraft.prison.mines.util.FlagHandler;
 import com.wolvencraft.prison.mines.util.Message;
 
 public class FlagCommand implements BaseCommand {
 
 	@Override
 	public boolean run(String[] args) {
+		if(args.length == 1) {
+			getHelp();
+			return true;
+		}
+		
 		Language language = PrisonMine.getLanguage();
-		if(args.length < 3 || !FlagHandler.exists(args[1])) {
+		if(args.length != 2) {
 			Message.sendError(language.ERROR_ARGUMENTS);
 			return false;
 		}
@@ -23,27 +27,28 @@ public class FlagCommand implements BaseCommand {
 			return false;
 		}
 		
-		BaseFlag flag = FlagHandler.get(args[1]).dispatch();
-		if(flag == null) return false;
-		if(!flag.checkValue(args[2])) {
-			String[] validValues = flag.getValidValues();
-			String valueString = validValues[0];
-			for(String temp : validValues) {
-				valueString += ", " + temp;
-			}
-			Message.sendError("This flag value is not valid. Valid values: " + valueString);
+		MineFlag flag = MineFlag.get(args[1]);
+		if(flag == null) {
+			Message.sendError("This flag does not exist");
+			return false;
 		}
-		if(!curMine.hasFlag(flag)) { curMine.addFlag(flag); }
-		curMine.getFlag(args[1]).setParam(args[2]);
-		Message.sendCustom(curMine.getId(), "A new flag has been added to the mine: " + flag.getName() + ":" + flag.getParam().toString());
+		
+		if(curMine.hasFlag(flag)) {
+			curMine.removeFlag(flag);
+			Message.sendCustom(curMine.getId(), "Flag " + flag + " has been removed");
+		} else {
+			curMine.addFlag(flag);
+			Message.sendCustom(curMine.getId(), "Flag " + flag + " has been added");
+		}
+		
 		return curMine.saveFile();
 	}
 
 	@Override
 	public void getHelp() {
 		Message.formatHeader(20, "Flags");
-		Message.formatHelp("flag", "<flag> <value>", "Adds a flag value to the mine");
-		FlagHandler[] validFlags = FlagHandler.values();
+		Message.formatHelp("flag", "<flag>", "Adds a flag value to the mine");
+		MineFlag[] validFlags = MineFlag.values();
 		String flagString = validFlags[0].getAlias();
 		for(int i = 1; i < validFlags.length; i++) {
 			flagString += ", " + validFlags[i].getAlias();
