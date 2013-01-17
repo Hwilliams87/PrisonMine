@@ -10,8 +10,6 @@ import org.bukkit.material.MaterialData;
 import com.wolvencraft.prison.PrisonSuite;
 import com.wolvencraft.prison.hooks.TimedTask;
 import com.wolvencraft.prison.mines.PrisonMine;
-import com.wolvencraft.prison.mines.extensions.BaseGenerator;
-import com.wolvencraft.prison.mines.extensions.ExtensionLoader;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.mine.MineBlock;
 import com.wolvencraft.prison.mines.settings.Language;
@@ -316,19 +314,8 @@ public class EditCommand  implements BaseCommand {
 		Message.formatHelp("delete", "[id]", "Deletes all the mine data");
 		Message.formatHelp("silent", "", "Toggles the public notifications");
 		Message.formatHelp("setparent", "<id>", "Links the timers of two mines");
-		Message.formatHelp("generator", "<generator>", "Changes the active generator");
-		Message.formatMessage("The following generators are supported: ");
-		Message.formatMessage(ExtensionLoader.list());
 		Message.formatHelp("cooldown toggle", "", "Toggles the reset cooldown");
 		Message.formatHelp("cooldown <time>", "", "Sets the cooldown time");
-		return;
-	}
-	
-	public void getGenerators() {
-		Message.formatHelp("generator", "<generator>", "Changes the active generator for the mine");
-		Message.formatMessage("The following generators are available:");
-		for(BaseGenerator gen : PrisonMine.getGenerators())
-			Message.formatMessage(ChatColor.GOLD + gen.getName() + ChatColor.WHITE + ": " + gen.getDescription());
 		return;
 	}
 	

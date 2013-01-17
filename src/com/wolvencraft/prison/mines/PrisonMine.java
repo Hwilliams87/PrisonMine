@@ -17,8 +17,6 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import com.wolvencraft.prison.PrisonSuite;
 import com.wolvencraft.prison.hooks.PrisonPlugin;
 import com.wolvencraft.prison.mines.events.*;
-import com.wolvencraft.prison.mines.extensions.BaseGenerator;
-import com.wolvencraft.prison.mines.extensions.ExtensionLoader;
 import com.wolvencraft.prison.mines.mine.*;
 import com.wolvencraft.prison.mines.settings.*;
 import com.wolvencraft.prison.mines.triggers.*;
@@ -40,7 +38,6 @@ public class PrisonMine extends PrisonPlugin {
 	
 	private static List<Mine> mines;
 	private static List<DisplaySign> signs;
-	private static List<BaseGenerator> generators;
 
 	private static Map<CommandSender, Mine> curMines;
 	
@@ -76,7 +73,6 @@ public class PrisonMine extends PrisonPlugin {
 		
 		mines = MineData.loadAll();
 		signs = SignData.loadAll();
-		generators = ExtensionLoader.loadAll();
 		
 		curMines = new HashMap<CommandSender, Mine>();
 		
@@ -163,7 +159,6 @@ public class PrisonMine extends PrisonPlugin {
 	}
 	
 	public static PrisonMine getInstance() 				{ return plugin; }
-	public static List<BaseGenerator> getGenerators() 	{ return generators; }
 	public static Settings getSettings()				{ return settings; }
 	public static Language getLanguage()				{ return language; }
 	public static PrisonSuite getPrisonSuite() 			{ return prisonSuite; }
