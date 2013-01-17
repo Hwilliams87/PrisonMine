@@ -3,6 +3,7 @@ package com.wolvencraft.prison.mines.mine;
 import com.wolvencraft.prison.region.PrisonRegion;
 import com.wolvencraft.prison.region.PrisonSelection;
 import com.wolvencraft.prison.mines.PrisonMine;
+import com.wolvencraft.prison.mines.routines.CustomTerrainRoutine;
 import com.wolvencraft.prison.mines.routines.RandomTerrainRoutine;
 import com.wolvencraft.prison.mines.triggers.BaseTrigger;
 import com.wolvencraft.prison.mines.triggers.CompositionTrigger;
@@ -261,7 +262,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     	catch(ConcurrentModificationException cme) {
     		Message.log(Level.WARNING, "An error occured while removing players from the mine");
     	}
-        return RandomTerrainRoutine.run(this);
+    	if(hasFlag(MineFlag.SurfaceOre)) return CustomTerrainRoutine.run(this);
+    	else return RandomTerrainRoutine.run(this);
     }
     
     /**
