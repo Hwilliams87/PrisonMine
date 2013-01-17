@@ -20,22 +20,30 @@ public class TimeTrigger implements BaseTrigger {
 	
 	private long period;
 	private long next;
-	private String mine;
+	private Mine mine;
 	
 	private boolean canceled;
 	
-	public TimeTrigger(Mine mineObj, long period) {
-		mine = mineObj.getId();
-		this.period = period * 20L;
-		this.next = this.period;
+	/**
+	 * Default constructor for the TimeTrigger
+	 * @param mine Mine object associated with the trigger
+	 * @param period Reset period, in seconds
+	 */
+	public TimeTrigger(Mine mine, int period) {
+		this.mine = mine;
+		this.period = this.next = period * 20L;
 		
 		canceled = false;
 		
 		PrisonSuite.addTask(this);
 	}
 	
+	/**
+	 * Deserializing constructor for TimeTrigger
+	 * @param map Map of trigger data
+	 */
 	public TimeTrigger(Map<String, Object> map) {
-		mine = (String)map.get("mine");
+		mine = Mine.get((String) map.get("mine"));
 		period = Long.parseLong((String)map.get("period"));
 		next = Long.parseLong((String)map.get("next"));
 		
@@ -44,56 +52,65 @@ public class TimeTrigger implements BaseTrigger {
 		PrisonSuite.addTask(this);
 	}
 	
+	/**
+	 * Serialization method for the trigger
+	 */
 	public Map<String, Object> serialize() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("mine", mine);
+		map.put("mine", mine.getId());
 		map.put("period", Long.toString(period));
 		map.put("next", Long.toString(next));
 		return map;
 	}
 	
+	/**
+	 * Main trigger method. Run every TICKRATE, defined in the config
+	 */
 	public void run() {
-		Mine mineObj = Mine.get(mine);
-		if(mineObj == null) {
+		if(mine == null) {
 			Message.log(Level.SEVERE, "Mine " + mine + " was not found, but its TimeTrigger still exists");
 			return;
 		}
 		
-		if(!mineObj.hasParent()) {
-			List<Integer> warnTimes = mineObj.getWarningTimes();
-			
-			if(!mineObj.getSilent() && mineObj.getWarned() && warnTimes.indexOf((int)(next / 20)) != -1)
-				Message.broadcast(Util.parseVars(PrisonMine.getLanguage().RESET_WARNING, mineObj));
+		if(mine.getCooldown() && mine.getCooldownEndsIn() > 0) {
+			mine.updateCooldown(PrisonMine.getSettings().TICKRATE);
+		}
+		
+		if(mine.hasParent()) return;
 
-			next -= PrisonMine.getSettings().TICKRATE;
-			
-			if(next <= 0L) {
-				Message.debug("+---------------------------------------------");
-				Message.debug("| Mine " + mine + " is resetting. Reset report:");
-				Message.debug("| Reset cause: timer has expired (" + next +" / " + period + ")");
-				CommandManager.RESET.run(mineObj.getId());
-				resetTimer();
-				Message.debug("| Updated the timer (" + next +" / " + period + ")");
-				Message.debug("| Reached the end of the report for " + mine);
-				Message.debug("+---------------------------------------------");
-			}
-		} else if(next <= 0L) Message.debug("Mine " + mine + " has a parent, ignoring it.");
-	
-		if(mineObj.getCooldown() && mineObj.getCooldownEndsIn() > 0)
-			mineObj.updateCooldown(PrisonMine.getSettings().TICKRATE);
+		next -= PrisonMine.getSettings().TICKRATE;
+		
+		if(next <= 0L) {
+			Message.debug("+---------------------------------------------");
+			Message.debug("| Mine " + mine + " is resetting. Reset report:");
+			Message.debug("| Reset cause: timer has expired (" + next +" / " + period + ")");
+			CommandManager.RESET.run(mine.getId());
+			resetTimer();
+			Message.debug("| Updated the timer (" + next +" / " + period + ")");
+			Message.debug("| Reached the end of the report for " + mine);
+			Message.debug("+---------------------------------------------");
+		}
+		
+		List<Integer> warnTimes = mine.getWarningTimes();
+		if(!mine.getSilent() && mine.getWarned() && warnTimes.indexOf((int)(next / 20)) != -1)
+			Message.broadcast(Util.parseVars(PrisonMine.getLanguage().RESET_WARNING, mine));
 	}
 	
-	public void cancel() { Message.debug("Cancelling task: " + getName()); canceled = true; }
+	/**
+	 * Tags the task to expire during the next run
+	 */
+	public void cancel() { canceled = true; }
 	
 	public String getName() 	{ return "PrisonMine:TimeTrigger:" + mine; }
 	public ResetTrigger getId() { return ResetTrigger.TIME; }
 	public boolean getExpired() { return canceled; }
 	
-	public int getPeriod() 		{ return (int)(period / 20); }
-	public int getNext() 		{ return (int)(next / 20); }
+	public int getPeriod() 		{ return (int)(period / 20L); }
+	public int getNext() 		{ return (int)(next / 20L); }
 	public void resetTimer()	{ next = period; }
+	
 	public void setPeriod(int period) {
 		this.period = period * 20L;
-		if(this.next > period) this.next = this.period;
+		if(this.next > period) this.next = period * 20L;
 	}
 }

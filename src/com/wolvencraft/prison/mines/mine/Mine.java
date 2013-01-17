@@ -413,7 +413,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     public boolean setAutomaticReset(boolean state) {
     	if(state) {
     		if(getTrigger(ResetTrigger.TIME) != null) return false;
-    		resetTriggers.add(new TimeTrigger(this, 900));
+    		resetTriggers.add(new TimeTrigger(this, PrisonMine.getSettings().DEFAULTTIME));
     	} else {
     		if(getTrigger(ResetTrigger.TIME) == null) return false;
     		getTrigger(ResetTrigger.TIME).cancel();

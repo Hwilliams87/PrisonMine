@@ -10,6 +10,7 @@ public class Settings extends com.wolvencraft.prison.settings.Settings {
 	public final boolean TPONRESET;
 	public final boolean MANUALTIMERRESET;
 	public final List<String> BANNEDNAMES;
+	public final int DEFAULTTIME;
 	
 	public Settings(PrisonMine plugin) {
 		super(PrisonMine.getPrisonSuite());
@@ -21,5 +22,6 @@ public class Settings extends com.wolvencraft.prison.settings.Settings {
 				BANNEDNAMES.add(alias);
 			}
 		}
+		DEFAULTTIME = 900;
 	}
 }
