@@ -98,6 +98,11 @@ public class PrisonMine extends PrisonPlugin {
 		
 		Message.log("PrisonMine started [ " + mines.size() + " mine(s) found ]");
 		
+		if(settings.RESET_ALL_MINES_ON_STARTUP) {
+			Message.log("Resetting all mines, as defined in the configuration");
+			CommandManager.RESET.run("all");
+		}
+		
 		Message.debug("6. Sending sign task to PrisonCore");
 		PrisonSuite.addTask(new DisplaySignTask());
 	}

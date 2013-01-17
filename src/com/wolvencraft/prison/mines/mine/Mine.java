@@ -293,7 +293,7 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @throws ConcurrentModificationException Exception is thrown if a player is already being teleported
      */
     private boolean removePlayers() throws ConcurrentModificationException {
-    	if(!PrisonMine.getSettings().TPONRESET) return true;    	
+    	if(!PrisonMine.getSettings().PLAYERS_TP_ON_RESET) return true;    	
         for (Player p : Util.getLocalPlayers(world)) {
             if (region.isLocationInRegion(p.getLocation())) {
                 p.teleport(tpPoint, PlayerTeleportEvent.TeleportCause.PLUGIN);

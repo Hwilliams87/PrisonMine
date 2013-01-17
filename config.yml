@@ -1,2 +1,5 @@
-teleport-on-reset: true
-reset-timer-on-manual: true
+players:
+  teleport-players-out-of-the-mine: false
+reset:
+  force-reset-timer-on-mine-reset: true
+  reset-all-mines-on-startup: false

@@ -66,7 +66,7 @@ public class ResetCommand implements BaseCommand {
 			} else
 				broadcastMessage = PrisonMine.getLanguage().RESET_AUTOMATIC;
 			
-			if(curMine.getAutomaticReset() && (curMine.getResetsIn() <= 0 || PrisonMine.getSettings().MANUALTIMERRESET)) {
+			if(curMine.getAutomaticReset() && (curMine.getResetsIn() <= 0 || PrisonMine.getSettings().RESET_FORCE_TIMER_UPDATE)) {
 				curMine.resetTimer();
 			}
 		} else {
@@ -87,7 +87,7 @@ public class ResetCommand implements BaseCommand {
 				return false;
 			}
 			
-			if(curMine.getAutomaticReset() && PrisonMine.getSettings().MANUALTIMERRESET) {
+			if(curMine.getAutomaticReset() && PrisonMine.getSettings().RESET_FORCE_TIMER_UPDATE) {
 				Message.debug("| Resetting the timer (config)");
 				curMine.resetTimer();
 			}
