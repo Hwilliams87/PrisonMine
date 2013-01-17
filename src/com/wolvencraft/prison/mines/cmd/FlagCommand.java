@@ -58,6 +58,6 @@ public class FlagCommand implements BaseCommand {
 
 	@Override
 	public void getHelpLine() {
-		if(PrisonMine.getInstance().getVersion() > 1.2) Message.formatHelp("flag", "", "Shows the help page on mine flags", "prison.mine.edit");
+		Message.formatHelp("flag", "", "Shows the help page on mine flags", "prison.mine.edit");
 	}
 }
