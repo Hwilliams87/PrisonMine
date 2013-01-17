@@ -20,7 +20,7 @@ public class TimeTrigger implements BaseTrigger {
 	
 	private long period;
 	private long next;
-	private Mine mine;
+	private String mine;
 	
 	private boolean canceled;
 	
@@ -29,8 +29,8 @@ public class TimeTrigger implements BaseTrigger {
 	 * @param mine Mine object associated with the trigger
 	 * @param period Reset period, in seconds
 	 */
-	public TimeTrigger(Mine mine, int period) {
-		this.mine = mine;
+	public TimeTrigger(Mine mineObj, int period) {
+		this.mine = mineObj.getId();
 		this.period = this.next = period * 20L;
 		
 		canceled = false;
@@ -43,7 +43,7 @@ public class TimeTrigger implements BaseTrigger {
 	 * @param map Map of trigger data
 	 */
 	public TimeTrigger(Map<String, Object> map) {
-		mine = Mine.get((String) map.get("mine"));
+		mine = (String) map.get("mine");
 		period = Long.parseLong((String)map.get("period"));
 		next = Long.parseLong((String)map.get("next"));
 		
@@ -57,7 +57,7 @@ public class TimeTrigger implements BaseTrigger {
 	 */
 	public Map<String, Object> serialize() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("mine", mine.getId());
+		map.put("mine", mine);
 		map.put("period", Long.toString(period));
 		map.put("next", Long.toString(next));
 		return map;
@@ -67,32 +67,33 @@ public class TimeTrigger implements BaseTrigger {
 	 * Main trigger method. Run every TICKRATE, defined in the config
 	 */
 	public void run() {
-		if(mine == null) {
-			Message.log(Level.SEVERE, "Mine " + mine + " was not found, but its TimeTrigger still exists");
+		Mine mineObj = Mine.get(mine);
+		if(mineObj == null) {
+			Message.log(Level.SEVERE, "mineObj " + mineObj + " was not found, but its TimeTrigger still exists");
 			return;
 		}
 		
-		if(mine.getCooldown() && mine.getCooldownEndsIn() > 0) {
-			mine.updateCooldown(PrisonMine.getSettings().TICKRATE);
+		if(mineObj.getCooldown() && mineObj.getCooldownEndsIn() > 0) {
+			mineObj.updateCooldown(PrisonMine.getSettings().TICKRATE);
 		}
 		
-		if(mine.hasParent()) return;
+		if(mineObj.hasParent()) return;
 
 		next -= PrisonMine.getSettings().TICKRATE;
 		
 		if(next <= 0L) {
 			Message.debug("+---------------------------------------------");
-			Message.debug("| Mine " + mine.getId() + " is resetting. Reset report:");
+			Message.debug("| mineObj " + mineObj.getId() + " is resetting. Reset report:");
 			Message.debug("| Reset cause: timer has expired (" + next +" / " + period + ")");
-			AutomaticResetRoutine.run(mine);
+			AutomaticResetRoutine.run(mineObj);
 			Message.debug("| Updated the timer (" + next +" / " + period + ")");
-			Message.debug("| Reached the end of the report for " + mine.getId());
+			Message.debug("| Reached the end of the report for " + mineObj.getId());
 			Message.debug("+---------------------------------------------");
 		}
 		
-		List<Integer> warnTimes = mine.getWarningTimes();
-		if(!mine.getSilent() && mine.getWarned() && warnTimes.indexOf((int)(next / 20)) != -1)
-			Message.broadcast(Util.parseVars(PrisonMine.getLanguage().RESET_WARNING, mine));
+		List<Integer> warnTimes = mineObj.getWarningTimes();
+		if(!mineObj.getSilent() && mineObj.getWarned() && warnTimes.indexOf((int)(next / 20)) != -1)
+			Message.broadcast(Util.parseVars(PrisonMine.getLanguage().RESET_WARNING, mineObj));
 	}
 	
 	/**
