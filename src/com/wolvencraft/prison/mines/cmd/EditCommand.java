@@ -130,7 +130,7 @@ public class EditCommand  implements BaseCommand {
 			
 			MineBlock blockData = curMine.getBlock(Util.getBlock(args[1]));
 			if(blockData == null) {
-				Message.sendError("There is no " + ChatColor.RED + args[1] + ChatColor.WHITE + " in mine '" + curMine + "'");
+				Message.sendError("There is no " + ChatColor.RED + args[1] + ChatColor.WHITE + " in mine '" + curMine.getId() + "'");
 				return false;
 			}
 
