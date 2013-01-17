@@ -67,7 +67,7 @@ public class ToolListener implements Listener {
 					Player player = event.getPlayer();
 					if(!player.hasPermission("prison.mine.flags.supertools." + mine.getId()) && !player.hasPermission("prison.mine.flags.supertools")) { continue; }
 					Message.debug("SuperTools flag is in effect");
-					b.breakNaturally();
+					b.breakNaturally(player.getItemInHand());
 				}
 			}
 	}
