@@ -24,7 +24,6 @@ public class InfoCommand  implements BaseCommand {
 				return true;
 			}
 		}
-		
 		else curMine = Mine.get(args[1]);
 		
 		if(args.length > 2) {
@@ -43,7 +42,7 @@ public class InfoCommand  implements BaseCommand {
 			Message.send("");
 			String displayString = "---==[ " + ChatColor.GREEN + ChatColor.BOLD + curMine.getName() + ChatColor.WHITE + " ]==---";
 			for(int i = 0; i < 25 - (curMine.getName().length() / 2); i++) displayString = " " + displayString;
-		Message.send(displayString);
+			Message.send(displayString);
 			Message.send("");
 			
 			// Block & PVP protection
@@ -163,7 +162,7 @@ public class InfoCommand  implements BaseCommand {
 			
 			if(parentMine.getAutomaticReset())
 				Message.send("    Resets every ->  " + ChatColor.GREEN + Util.parseSeconds(parentMine.getResetPeriodSafe()) + "    " + ChatColor.GOLD + Util.parseSeconds(parentMine.getResetsInSafe()) + ChatColor.WHITE + "  <- Next Reset");
-			else Message.send("   Mine has to be reset automatically");
+			else Message.send("   Mine has to be reset manually");
 			
 		} else {
 			Message.sendError(language.ERROR_ACCESS);
