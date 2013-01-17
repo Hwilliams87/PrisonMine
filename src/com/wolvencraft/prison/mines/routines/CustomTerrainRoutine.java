@@ -62,21 +62,18 @@ public class CustomTerrainRoutine {
     		}
     	}
     	else {
-    		boolean uniform = false;
 	        for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
-	        	if(Math.abs(one.getBlockX() - x) < 3) uniform = true;
 	            for (int y = one.getBlockY(); y <= two.getBlockY(); y++) {
-		        	if(Math.abs(one.getBlockY() - y) < 3) uniform = true;
 	                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
-	    	        	if(Math.abs(one.getBlockZ() - z) < 3) uniform = true;
+	                	
 	                	try {
 		                	Block original = world.getBlockAt(x, y, z);
 		                    MaterialData newBlock;
-		                    if(uniform) newBlock = mine.getMostCommonBlock().getBlock();
-		                    else newBlock = pattern.next();
+		                    if((Math.abs(one.getBlockX() - x) < 3 || Math.abs(two.getBlockX() - x) < 3) ||
+			    	        		(Math.abs(one.getBlockY() - y) < 3 || Math.abs(two.getBlockY() - y) < 3) ||
+			    	        			(Math.abs(one.getBlockZ() - z) < 3 || Math.abs(two.getBlockZ() - z) < 3)) { newBlock = mine.getMostCommonBlock().getBlock(); }
+		                    else { newBlock = pattern.next(); }
 		                    original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
-		                	
-		                	uniform = false;
 	                    }
                     	catch (ConcurrentModificationException cme) { Message.log(Level.SEVERE, "An error has occurred while running a generator [ConcurrentModificationException]"); continue; }
                     	catch (Exception ex) { Message.log(Level.SEVERE, "An error has occurred while running a generator [Exception]"); continue; }
