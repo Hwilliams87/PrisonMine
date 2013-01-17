@@ -8,8 +8,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 
 import com.wolvencraft.prison.PrisonSuite;
-import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.util.AutomaticResetRoutine;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.ResetTrigger;
 @SerializableAs("CompositionTrigger")
@@ -66,7 +66,7 @@ public class CompositionTrigger implements BaseTrigger, ConfigurationSerializabl
 			Message.debug("+---------------------------------------------");
 			Message.debug("| Mine " + mine + " is resetting. Reset report:");
 			Message.debug("| Reset cause: composition (" + ((double) mineObj.getBlocksLeft() / (double) mineObj.getTotalBlocks()) +" > " + percent + ")");
-			CommandManager.RESET.run(mineObj.getId());
+			AutomaticResetRoutine.run(mineObj);
 		}
 	}
 

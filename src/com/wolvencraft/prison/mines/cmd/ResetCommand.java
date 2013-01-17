@@ -19,20 +19,16 @@ public class ResetCommand implements BaseCommand {
 		String generator = "";
 		
 		if(args.length == 2) {
-			
 			if(args[1].equalsIgnoreCase("all")) {
-				
 				boolean success = true;
 				for(Mine mine : PrisonMine.getLocalMines()) {
 					if(!CommandManager.RESET.run(mine.getId())) success = false;
 				}
 				return success;
-				
 			}
 			
 			curMine = Mine.get(args[1]);
 			generator = curMine.getGenerator();
-			
 		} else {
 			curMine = Mine.get(args[1]);
 			generator = args[2];
@@ -43,66 +39,36 @@ public class ResetCommand implements BaseCommand {
 			return false;
 		}
 		
-		boolean automatic;
-		
 		String broadcastMessage = "";
 		
-		if(CommandManager.getSender() == null) {
-			automatic = true;
-			
-			for(Mine childMine : curMine.getChildren()) {
-				Message.debug("+---------------------------------------------");
-				Message.debug("| Mine " + childMine.getId() + " is resetting. Reset report:");
-				Message.debug("| Reset cause: parent mine is resetting (" + curMine.getId() + ")");
-				CommandManager.RESET.run(childMine.getId());
-				Message.debug("| Reached the end of the report for " + childMine.getId());
-				Message.debug("+---------------------------------------------");
-			}
-			
-			if(curMine.getAutomaticReset() && (curMine.getResetsIn() <= 0 || PrisonMine.getSettings().RESET_FORCE_TIMER_UPDATE)) {
-				Message.debug("| Resetting the timer (config)");
-				curMine.resetTimer();
-			}
-			
-			broadcastMessage = PrisonMine.getLanguage().RESET_AUTOMATIC;
-			
-			if(curMine.getAutomaticReset() && curMine.getResetsIn() <= 0)
-				broadcastMessage = PrisonMine.getLanguage().RESET_TIMED;
-			
-			if(curMine.getCompositionReset() && curMine.getCurrentPercent() <= curMine.getRequiredPercent())
-				broadcastMessage = PrisonMine.getLanguage().RESET_COMPOSITION;
-				
-			
-		} else {
-			automatic = false;
-			Message.debug("+---------------------------------------------");
-			Message.debug("| Mine " + curMine.getId() + " is resetting. Reset report:");
-			Message.debug("| Reset cause: MANUAL (command/sign)");
-			
-			if(!Util.hasPermission("prison.mine.reset.manual." + curMine.getId()) && !Util.hasPermission("prison.mine.reset.manual")) {
-				Message.sendError(PrisonMine.getLanguage().ERROR_ACCESS);
-				Message.debug("| Insufficient permissions. Cancelling...");
-				Message.debug("| Reached the end of the report for " + curMine.getId());
-				Message.debug("+---------------------------------------------");
-				return false;
-			}
-			
-			if(curMine.getCooldown() && curMine.getCooldownEndsIn() > 0 && !Util.hasPermission("prison.mine.bypass.cooldown")) {
-				Message.sendError(Util.parseVars(PrisonMine.getLanguage().RESET_COOLDOWN, curMine));
-				Message.debug("| Cooldown is in effect. Checking for bypass...");
-				Message.debug("| Failed. Cancelling...");
-				Message.debug("| Reached the end of the report for " + curMine.getId());
-				Message.debug("+---------------------------------------------");
-				return false;
-			}
-			
-			if(curMine.getAutomaticReset() && PrisonMine.getSettings().RESET_FORCE_TIMER_UPDATE) {
-				Message.debug("| Resetting the timer (config)");
-				curMine.resetTimer();
-			}
 
-			broadcastMessage = PrisonMine.getLanguage().RESET_MANUAL;
+		Message.debug("+---------------------------------------------");
+		Message.debug("| Mine " + curMine.getId() + " is resetting. Reset report:");
+		Message.debug("| Reset cause: MANUAL (command/sign)");
+		
+		if(!Util.hasPermission("prison.mine.reset.manual." + curMine.getId()) && !Util.hasPermission("prison.mine.reset.manual")) {
+			Message.sendError(PrisonMine.getLanguage().ERROR_ACCESS);
+			Message.debug("| Insufficient permissions. Cancelling...");
+			Message.debug("| Reached the end of the report for " + curMine.getId());
+			Message.debug("+---------------------------------------------");
+			return false;
 		}
+		
+		if(curMine.getCooldown() && curMine.getCooldownEndsIn() > 0 && !Util.hasPermission("prison.mine.bypass.cooldown")) {
+			Message.sendError(Util.parseVars(PrisonMine.getLanguage().RESET_COOLDOWN, curMine));
+			Message.debug("| Cooldown is in effect. Checking for bypass...");
+			Message.debug("| Failed. Cancelling...");
+			Message.debug("| Reached the end of the report for " + curMine.getId());
+			Message.debug("+---------------------------------------------");
+			return false;
+		}
+		
+		if(curMine.getAutomaticReset() && PrisonMine.getSettings().RESET_FORCE_TIMER_UPDATE) {
+			Message.debug("| Resetting the timer (config)");
+			curMine.resetTimer();
+		}
+		
+		broadcastMessage = PrisonMine.getLanguage().RESET_MANUAL;
 		
 		if(curMine.getCooldown()) curMine.resetCooldown();
 		
@@ -112,17 +78,13 @@ public class ResetCommand implements BaseCommand {
 			return false;
 		}
 		
-		if(!automatic || curMine.getParent() == null) {
-			broadcastMessage = Util.parseVars(broadcastMessage, curMine);
-			
-			if(!curMine.getSilent()) Message.broadcast(broadcastMessage);
-			else if(!automatic) Message.sendSuccess(broadcastMessage);
-		}
+		broadcastMessage = Util.parseVars(broadcastMessage, curMine);
 		
-		if(!automatic) {
-			Message.debug("| Reached the end of the report for " + curMine.getId());
-			Message.debug("+---------------------------------------------");
-		}
+		if(!curMine.getSilent()) Message.broadcast(broadcastMessage);
+		else Message.sendSuccess(broadcastMessage);
+		
+		Message.debug("| Reached the end of the report for " + curMine.getId());
+		Message.debug("+---------------------------------------------");
 		
 		return true;
 	}
