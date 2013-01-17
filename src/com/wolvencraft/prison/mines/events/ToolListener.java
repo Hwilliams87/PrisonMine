@@ -1,11 +1,13 @@
 package com.wolvencraft.prison.mines.events;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
@@ -18,6 +20,7 @@ public class ToolListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		if(event.isCancelled()) return;
@@ -32,8 +35,21 @@ public class ToolListener implements Listener {
 				if(!player.hasPermission("prison.mine.flags.notooldamage." + mine.getId()) && !player.hasPermission("prison.mine.flags.notooldamage")) { continue; }
 
 				Message.debug("NoToolDamage flag is in effect");
-				event.setCancelled(true);
-				b.breakNaturally();
+				ItemStack tool = player.getInventory().getItemInHand();
+				player.getInventory().remove(tool);
+				for(Material mat : PrisonMine.getSettings().TOOLS) {
+					if(mat.equals(tool.getType())) {
+						short durability = tool.getDurability();
+						if(durability != 0) {
+							Message.debug("Old durability: " + durability);
+							tool.setDurability((short)(durability - 1));
+							Message.debug("new durability: " + tool.getDurability());
+						} else tool.setDurability((short) 0);
+						break;
+					}
+				}
+				player.setItemInHand(tool);
+				player.updateInventory();
 			}
 		}
 	}
