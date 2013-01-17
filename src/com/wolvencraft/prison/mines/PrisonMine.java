@@ -86,6 +86,7 @@ public class PrisonMine extends PrisonPlugin {
 		new SignBreakListener(this);
 		new PVPListener(this);
 		new ButtonPressListener(this);
+		new ToolListener(this);
 		Message.debug("5. Started up event listeners");
 		
 		Message.log("PrisonMine started [ " + mines.size() + " mine(s) found ]");

@@ -51,3 +51,8 @@ permissions:
       prison.mine.reset.broadcast: true
       prison.mine.reset.manual: true
       prison.mine.reset.sign: true
+  prison.mine.flags.*:
+    default: true
+    children:
+      prison.mine.flags.supertools: true
+      prison.mine.flags.notooldamage: true

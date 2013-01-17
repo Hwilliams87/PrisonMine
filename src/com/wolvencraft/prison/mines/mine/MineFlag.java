@@ -6,7 +6,7 @@ import java.util.List;
 public enum MineFlag {
 	
 	SurfaceOre("surfaceore"),
-	SuperTools("supertool"),
+	SuperTools("supertools"),
 	NoToolDamage("notooldamage");
 	
 	MineFlag(String alias) {
