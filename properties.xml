@@ -1,6 +1,6 @@
 <plugin>
 	<name>PrisonMine</name>
-	<version>1.2</version>
+	<version>1.3</version>
 	<craftbukkit>CB 1.4.7-R0.1</craftbukkit>
-	<type>Recommended Build</type>
+	<type>Development Build</type>
 </plugin>
