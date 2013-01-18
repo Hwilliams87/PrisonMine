@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum MineFlag {
-	
-	SurfaceOre("surfaceore"),
+
+	NoToolDamage("notooldamage"),
+	Silent("silent"),
 	SuperTools("supertools"),
-	NoToolDamage("notooldamage");
+	SurfaceOre("surfaceore");
 	
 	MineFlag(String alias) {
 		this.alias = alias;

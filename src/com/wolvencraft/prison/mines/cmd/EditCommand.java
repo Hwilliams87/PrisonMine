@@ -218,22 +218,6 @@ public class EditCommand  implements BaseCommand {
 			Message.sendCustom(curMine.getId(), "Mine now has a display name '" + ChatColor.GOLD + name + ChatColor.WHITE + "'");
 			
 			return curMine.saveFile();
-		} else if(args[0].equalsIgnoreCase("silent")) {
-			if(args.length != 1) {
-				Message.sendError(language.ERROR_ARGUMENTS);
-				return false;
-			}
-			
-			if(curMine.getSilent()) {
-				curMine.setSilent(false);
-				Message.sendCustom(curMine.getId(), "Silent mode " + ChatColor.RED + "off");
-			}
-			else {
-				curMine.setSilent(true);
-				Message.sendCustom(curMine.getId(), "Silent mode " + ChatColor.GREEN + "on");
-			}
-			
-			return curMine.saveFile();
 		} else if(args[0].equalsIgnoreCase("cooldown")) {
 			if(args.length != 2) {
 				Message.sendError(language.ERROR_ARGUMENTS);
@@ -312,7 +296,6 @@ public class EditCommand  implements BaseCommand {
 		Message.formatHelp("+", "<block> [percentage]", "Adds a block type to the mine");
 		Message.formatHelp("-", "<block> [persentage]", "Removes the block from the mine");
 		Message.formatHelp("delete", "[id]", "Deletes all the mine data");
-		Message.formatHelp("silent", "", "Toggles the public notifications");
 		Message.formatHelp("setparent", "<id>", "Links the timers of two mines");
 		Message.formatHelp("cooldown toggle", "", "Toggles the reset cooldown");
 		Message.formatHelp("cooldown <time>", "", "Sets the cooldown time");

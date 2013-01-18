@@ -3,6 +3,7 @@ package com.wolvencraft.prison.mines.cmd;
 import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.mine.MineFlag;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 
@@ -77,7 +78,7 @@ public class ResetCommand implements BaseCommand {
 		
 		broadcastMessage = Util.parseVars(broadcastMessage, curMine);
 		
-		if(!curMine.getSilent()) Message.broadcast(broadcastMessage);
+		if(!curMine.hasFlag(MineFlag.Silent)) Message.broadcast(broadcastMessage);
 		else Message.sendSuccess(broadcastMessage);
 		
 		Message.debug("| Reached the end of the report for " + curMine.getId());

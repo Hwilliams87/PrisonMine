@@ -10,6 +10,7 @@ import org.bukkit.configuration.serialization.SerializableAs;
 import com.wolvencraft.prison.PrisonSuite;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.mine.MineFlag;
 import com.wolvencraft.prison.mines.routines.AutomaticResetRoutine;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.ResetTrigger;
@@ -92,7 +93,7 @@ public class TimeTrigger implements BaseTrigger {
 		}
 		
 		List<Integer> warnTimes = mineObj.getWarningTimes();
-		if(!mineObj.getSilent() && mineObj.getWarned() && warnTimes.indexOf((int)(next / 20)) != -1)
+		if(!mineObj.hasFlag(MineFlag.Silent) && mineObj.getWarned() && warnTimes.indexOf((int)(next / 20)) != -1)
 			Message.broadcast(Util.parseVars(PrisonMine.getLanguage().RESET_WARNING, mineObj));
 	}
 	

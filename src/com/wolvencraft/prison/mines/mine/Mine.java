@@ -62,8 +62,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     private int cooldownPeriod;
     private long cooldownEndsIn;
     
-    private boolean silent;
-    
     private boolean warned;
     private List<Integer> warningTimes;
     
@@ -102,8 +100,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     	cooldownEnabled = false;
     	cooldownPeriod = 0;
     	cooldownEndsIn = 0;
-    	
-    	silent = false;
     	
     	warned = true;
     	warningTimes = new ArrayList<Integer>();
@@ -158,7 +154,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         this.cooldownPeriod = cooldownPeriod;
         this.cooldownEndsIn = cooldownPeriod * 20;
         
-        this.silent = silent;
+        if(silent) flags.add(MineFlag.Silent);
         
         this.warned = warned;
         this.warningTimes = warningTimes;
@@ -196,13 +192,12 @@ public class Mine implements ConfigurationSerializable, Listener {
     	cooldownPeriod = ((Integer) map.get("cooldownPeriod")).intValue();
     	cooldownEndsIn = 0;
     	
-    	silent = ((Boolean) map.get("silent")).booleanValue();
-    	
     	warned = ((Boolean) map.get("warned")).booleanValue();
     	warningTimes = (List<Integer>) map.get("warningTimes");
     	
-    	if(map.containsKey("flags")) flags = MineFlag.toMineFlagList((List<String>) map.get("flags"));
-    	else flags = new ArrayList<MineFlag>();
+    	flags = MineFlag.toMineFlagList((List<String>) map.get("flags"));
+    	
+    	if(!hasFlag(MineFlag.Silent) && ((Boolean) map.get("silent")).booleanValue()) flags.add(MineFlag.Silent);
     	
     	enabledProtection = Protection.toProtectionList((List<String>) map.get("enabledProtection"));
     	protectionRegion = (PrisonRegion) map.get("protectionRegion");
@@ -235,8 +230,6 @@ public class Mine implements ConfigurationSerializable, Listener {
         
         map.put("cooldownEnabled", cooldownEnabled);
         map.put("cooldownPeriod", cooldownPeriod);
-        
-        map.put("silent", silent);
         
         map.put("warned", warned);
         map.put("warningTimes", warningTimes);
@@ -300,8 +293,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     public int getCooldownPeriod() 					{ return cooldownPeriod; }
     public int getCooldownEndsIn() 					{ return (int)(cooldownEndsIn / 20); }
     
-    public boolean getSilent() 						{ return silent; }
-    
     public boolean getWarned()						{ return warned; }
     public List<Integer> getWarningTimes()			{ return warningTimes; }
     
@@ -315,7 +306,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     public void setParent(String parent) 							{ this.parent = parent; }
     public void setRegion(PrisonSelection sel)						{ this.region = null; this.region = new PrisonRegion(sel); }
     public void setTpPoint(Location tpPoint) 						{ this.tpPoint = tpPoint; }
-    public void setSilent(boolean silent) 							{ this.silent = silent; }
     
     public void setCooldownEnabled(boolean cooldownEnabled) 		{ this.cooldownEnabled = cooldownEnabled; }
     public void setCooldownPeriod (int cooldownPeriod) 				{ this.cooldownPeriod = cooldownPeriod; }

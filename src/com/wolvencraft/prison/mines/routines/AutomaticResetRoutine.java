@@ -3,6 +3,7 @@ package com.wolvencraft.prison.mines.routines;
 import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.mine.MineFlag;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 
@@ -29,7 +30,7 @@ public class AutomaticResetRoutine {
 		if(mine.getCompositionReset() && mine.getCurrentPercent() <= mine.getRequiredPercent())
 			broadcastMessage = PrisonMine.getLanguage().RESET_COMPOSITION;
 		
-		if(mine.getParent() == null && !mine.getSilent()) {
+		if(mine.getParent() == null && !mine.hasFlag(MineFlag.Silent)) {
 			broadcastMessage = Util.parseVars(broadcastMessage, mine);
 			Message.broadcast(broadcastMessage);
 		}
