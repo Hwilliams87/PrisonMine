@@ -26,7 +26,11 @@ public class CustomTerrainRoutine {
 		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
 		                	try { 
 			                	Block original = world.getBlockAt(x, y, z);
-			                    MaterialData newBlock = pattern.next();
+			                	MaterialData newBlock;
+				                if((Math.abs(one.getBlockX() - x) < 3 || Math.abs(two.getBlockX() - x) < 3) ||
+				                		(Math.abs(one.getBlockY() - y) < 3 || Math.abs(two.getBlockY() - y) < 3) ||
+					    	        	(Math.abs(one.getBlockZ() - z) < 3 || Math.abs(two.getBlockZ() - z) < 3)) { newBlock = mine.getMostCommonBlock().getBlock(); }
+				                else { newBlock = pattern.next(); }
 			                    if(mine.getBlacklist().getBlocks().contains(original.getState().getData()))
 			                    	original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
 		                    }
@@ -46,7 +50,11 @@ public class CustomTerrainRoutine {
 		                for (int z = one.getBlockZ(); z <= two.getBlockZ(); z++) {
 		                	try { 
 			                	Block original = world.getBlockAt(x, y, z);
-			                    MaterialData newBlock = pattern.next();
+			                	MaterialData newBlock;
+			                    if((Math.abs(one.getBlockX() - x) < 3 || Math.abs(two.getBlockX() - x) < 3) ||
+				    	        	(Math.abs(one.getBlockY() - y) < 3 || Math.abs(two.getBlockY() - y) < 3) ||
+				    	        	(Math.abs(one.getBlockZ() - z) < 3 || Math.abs(two.getBlockZ() - z) < 3)) { newBlock = mine.getMostCommonBlock().getBlock(); }
+			                    else { newBlock = pattern.next(); }
 			                    if(!mine.getBlacklist().getBlocks().contains(original.getState().getData()))
 			                    	original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
 		                	}
