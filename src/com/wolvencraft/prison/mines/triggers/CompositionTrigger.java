@@ -55,6 +55,7 @@ public class CompositionTrigger implements BaseTrigger, ConfigurationSerializabl
 		Mine mineObj = Mine.get(mine);
 		if(mineObj == null) {
 			Message.log(Level.SEVERE, "Mine " + mine + " was not found, but its CompositionTrigger still exists");
+			cancel();
 			return;
 		}
 		if(percent == 0 || percent == 1) {

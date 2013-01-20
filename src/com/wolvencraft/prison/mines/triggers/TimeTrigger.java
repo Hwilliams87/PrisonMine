@@ -70,7 +70,8 @@ public class TimeTrigger implements BaseTrigger {
 	public void run() {
 		Mine mineObj = Mine.get(mine);
 		if(mineObj == null) {
-			Message.log(Level.SEVERE, "mineObj " + mineObj + " was not found, but its TimeTrigger still exists");
+			Message.log(Level.SEVERE, "mineObj " + mine + " was not found, but its TimeTrigger still exists");
+			cancel();
 			return;
 		}
 		
