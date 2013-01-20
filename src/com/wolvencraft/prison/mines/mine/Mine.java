@@ -197,7 +197,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	
     	flags = MineFlag.toMineFlagList((List<String>) map.get("flags"));
     	
-    	if(!hasFlag(MineFlag.Silent) && ((Boolean) map.get("silent")).booleanValue()) flags.add(MineFlag.Silent);
+    	if(map.containsValue("silent") && !hasFlag(MineFlag.Silent) && ((Boolean) map.get("silent")).booleanValue()) flags.add(MineFlag.Silent);
     	
     	enabledProtection = Protection.toProtectionList((List<String>) map.get("enabledProtection"));
     	protectionRegion = (PrisonRegion) map.get("protectionRegion");
