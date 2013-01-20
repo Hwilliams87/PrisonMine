@@ -32,9 +32,16 @@ public class SignData {
             signFolder.mkdir();
             return signs;
         }
-        File[] signFiles = signFolder.listFiles(new FileFilter() {
-            public boolean accept(File file) { return file.getName().contains(".psign.yml"); }
-        });
+        File[] signFiles;
+        if(PrisonMine.getInstance().getVersion() < 1.3) {
+            signFiles = signFolder.listFiles(new FileFilter() {
+                public boolean accept(File file) { return file.getName().contains(".yml"); }
+            });
+        } else {
+            signFiles = signFolder.listFiles(new FileFilter() {
+                public boolean accept(File file) { return file.getName().contains(".psign.yml"); }
+            });
+        }
         
         for (File signFile : signFiles) {
         	try {

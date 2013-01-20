@@ -213,9 +213,9 @@ public class DisplaySign implements ConfigurationSerializable  {
 	 * @return <b>true</b> if the save was successful, <b>false</b> if an error occurred
 	 */
 	public boolean saveFile() {
-		File signFile = new File(new File(PrisonMine.getInstance().getDataFolder(), "signs"), id + ".yml");
+		File signFile = new File(new File(PrisonMine.getInstance().getDataFolder(), "signs"), id + ".psign.yml");
         FileConfiguration signConf =  YamlConfiguration.loadConfiguration(signFile);
-        signConf.set("signclass", this);
+        signConf.set("displaysign", this);
         try {
             signConf.save(signFile);
         } catch (IOException e) {
@@ -236,11 +236,11 @@ public class DisplaySign implements ConfigurationSerializable  {
 		if(!signFolder.exists() || !signFolder.isDirectory()) return false;
 		
 		File[] signFiles = signFolder.listFiles(new FileFilter() {
-            public boolean accept(File file) { return file.getName().contains(".yml"); }
+            public boolean accept(File file) { return file.getName().contains(".psign.yml"); }
         });
 		
 		for(File signFile : signFiles) {
-			if(signFile.getName().equals(id+ ".yml")) {
+			if(signFile.getName().equals(id+ ".psign.yml")) {
 				PrisonMine.removeSign(this);
 				return signFile.delete();
 			}
@@ -313,6 +313,7 @@ public class DisplaySign implements ConfigurationSerializable  {
 	 * Updates all the DisplaySigns with appropriate variables
 	 */
 	public static void updateAll() {
+		Message.debug("Updating signs! (" + PrisonMine.getLocalSigns().size() + " found)");
 		for(DisplaySign sign : PrisonMine.getLocalSigns()) {
 			sign.update();
 		}
