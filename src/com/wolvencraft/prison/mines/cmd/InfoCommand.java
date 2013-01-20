@@ -7,6 +7,7 @@ import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.mine.MineFlag;
 import com.wolvencraft.prison.mines.mine.Protection;
 import com.wolvencraft.prison.mines.settings.Language;
 import com.wolvencraft.prison.mines.util.Message;
@@ -98,6 +99,33 @@ public class InfoCommand  implements BaseCommand {
 				Message.send("");
 			}
 			
+			// Children and flags
+			List<Mine> children = curMine.getChildren();
+			if(children.size() != 0) {
+				str = ChatColor.YELLOW + "   Children:" + ChatColor.WHITE;
+				str += " " + children.get(0);
+				if(children.size() > 1) {
+					for(int i = 1; i < children.size(); i++) {
+						str += ", " + children.get(i);
+					}
+				}
+				Message.send(str);
+				Message.send("");
+			}
+			
+			List<MineFlag> flags = curMine.getFlags();
+			if(flags.size() != 0) {
+				str = ChatColor.YELLOW + "   Flags:" + ChatColor.WHITE;
+				str += " " + flags.get(0);
+				if(flags.size() > 1) {
+					for(int i = 1; i < flags.size(); i++) {
+						str +=  ", " + flags.get(i);
+					}
+				}
+				Message.send(str);
+				Message.send("");
+			}
+			
 			// Generator & parent mine
 			str = ChatColor.YELLOW + "   Composition:" + ChatColor.WHITE;
 			String parentName;
@@ -107,13 +135,6 @@ public class InfoCommand  implements BaseCommand {
 			for(int i = 0; i < (25 - parentName.length()); i++) str += " ";
 			str += ChatColor.WHITE + "Linked to: " + ChatColor.GOLD + parentName;
 			Message.send(str);
-			
-			List<Mine> children = curMine.getChildren();
-			if(children.size() != 0) {
-				str = "    Children:" + ChatColor.GOLD;
-				for(Mine mine : children) { str += " " + mine.getId(); }
-				Message.send(str);
-			}
 			
 			// Mine composition
 			List<String> finalList = curMine.getBlocksSorted();
