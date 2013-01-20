@@ -313,7 +313,6 @@ public class DisplaySign implements ConfigurationSerializable  {
 	 * Updates all the DisplaySigns with appropriate variables
 	 */
 	public static void updateAll() {
-		Message.debug("Updating signs! (" + PrisonMine.getLocalSigns().size() + " found)");
 		for(DisplaySign sign : PrisonMine.getLocalSigns()) {
 			sign.update();
 		}
