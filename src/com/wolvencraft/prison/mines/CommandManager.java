@@ -20,7 +20,7 @@ import com.wolvencraft.prison.mines.util.Message;
 public enum CommandManager implements CommandHook {
 	BLACKLIST (BlacklistCommand.class, "prison.mine.edit", true, "blacklist", "bl"),
 	DATA (DataCommand.class, "prison.mine.admin", true, "data"),
-	DEBUG(DebugCommand.class, null, true, "import", "debug", "setregion", "tp", "unload", "setwarp"),
+	DEBUG(DebugCommand.class, "prison.mine.debug", true, "import", "debug", "setregion", "tp", "unload", "setwarp"),
 	EDIT (EditCommand.class, "prison.mine.edit", true, "edit", "add", "+", "remove", "-", "delete", "del", "name", "silent", "generator", "link", "setparent", "cooldown", "setregion"),
 	FLAG (FlagCommand.class, "prison.mine.edit", true, "flag"),
 	HELP (HelpCommand.class, null, true, "help"),
@@ -76,8 +76,8 @@ public enum CommandManager implements CommandHook {
 			else if(sender instanceof ConsoleCommandSender) Message.debug("Command issued by CONSOLE");
 			else Message.debug("Command issued by GHOSTS and WIZARDS");
 		}
-		if(!allowConsole && !(sender instanceof Player)) { Message.sendError(PrisonMine.getLanguage().ERROR_SENDERISNOTPLAYER); return false; }
-		if(permission != null && (sender instanceof Player) && !sender.hasPermission(permission)) { Message.sendError(PrisonMine.getLanguage().ERROR_ACCESS); return false; }
+		if(!allowConsole && !(sender instanceof Player)) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_SENDERISNOTPLAYER); return false; }
+		if(permission != null && (sender instanceof Player) && !sender.hasPermission(permission)) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ACCESS); return false; }
 		return clazz.run(args);
 	}
 
