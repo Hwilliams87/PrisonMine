@@ -2,4 +2,5 @@ players:
   teleport-players-out-of-the-mine: false
 reset:
   force-reset-timer-on-mine-reset: true
+  manual-resets-children: false
   reset-all-mines-on-startup: false
