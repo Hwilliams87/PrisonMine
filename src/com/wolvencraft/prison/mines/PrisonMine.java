@@ -18,6 +18,7 @@ import com.wolvencraft.prison.PrisonSuite;
 import com.wolvencraft.prison.hooks.PrisonPlugin;
 import com.wolvencraft.prison.mines.events.*;
 import com.wolvencraft.prison.mines.mine.*;
+import com.wolvencraft.prison.mines.routines.AutomaticResetRoutine;
 import com.wolvencraft.prison.mines.settings.*;
 import com.wolvencraft.prison.mines.triggers.*;
 import com.wolvencraft.prison.mines.upgrade.MRLMine;
@@ -93,7 +94,9 @@ public class PrisonMine extends PrisonPlugin {
 		
 		if(settings.RESET_ALL_MINES_ON_STARTUP) {
 			Message.log("Resetting all mines, as defined in the configuration");
-			CommandManager.RESET.run("all");
+			for(Mine mine : mines) {
+				AutomaticResetRoutine.run(mine);
+			}
 		}
 		
 		Message.debug("6. Sending sign task to PrisonCore");
@@ -119,7 +122,7 @@ public class PrisonMine extends PrisonPlugin {
 			}
 		}
 		
-		Message.sendError(PrisonMine.getLanguage().ERROR_COMMAND);
+		Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);
 		CommandManager.resetSender();
 		return false;
 	}
