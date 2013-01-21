@@ -1,6 +1,5 @@
 package com.wolvencraft.prison.mines.routines;
 
-import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.mine.MineFlag;
@@ -39,7 +38,7 @@ public class AutomaticResetRoutine {
 			Message.debug("+---------------------------------------------");
 			Message.debug("| Mine " + childMine.getId() + " is resetting. Reset report:");
 			Message.debug("| Reset cause: parent mine is resetting (" + mine.getId() + ")");
-			CommandManager.RESET.run(childMine.getId());
+			run(childMine);
 			Message.debug("| Reached the end of the report for " + childMine.getId());
 			Message.debug("+---------------------------------------------");
 		}
