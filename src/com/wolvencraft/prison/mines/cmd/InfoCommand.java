@@ -106,7 +106,7 @@ public class InfoCommand  implements BaseCommand {
 				str += " " + children.get(0);
 				if(children.size() > 1) {
 					for(int i = 1; i < children.size(); i++) {
-						str += ", " + children.get(i);
+						str += ", " + children.get(i).getId();
 					}
 				}
 				Message.send(str);
