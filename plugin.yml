@@ -13,7 +13,7 @@ permissions:
     children:
       prison.mine.admin: true
   prison.mine.normal:
-    default: op
+    default: true
     children:
       prison.mine.info.time: true
       prison.mine.reset.sign: true
