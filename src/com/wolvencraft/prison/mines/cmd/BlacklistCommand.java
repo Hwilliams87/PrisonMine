@@ -24,70 +24,70 @@ public class BlacklistCommand implements BaseCommand {
 		
 		Mine curMine = PrisonMine.getCurMine();
 		if(curMine == null) {
-			Message.sendError(language.ERROR_MINENOTSELECTED);
+			Message.sendFormattedError(language.ERROR_MINENOTSELECTED);
 			return false;
 		}
 		
 		if(args[1].equalsIgnoreCase("toggle")) {
 			if(args.length != 2) {
-				Message.sendError(language.ERROR_ARGUMENTS);
+				Message.sendFormattedError(language.ERROR_ARGUMENTS);
 				return false;
 			}
 			if(curMine.getBlacklist().getEnabled()) {
 				curMine.getBlacklist().setEnabled(false);
-				Message.sendCustom(curMine.getId(), "Blacklist turned " + ChatColor.RED + "off");
+				Message.sendFormatted(curMine.getId(), "Blacklist turned " + ChatColor.RED + "off");
 			}
 			else {
 				curMine.getBlacklist().setEnabled(true);
-				Message.sendCustom(curMine.getId(), "Blacklist turned " + ChatColor.GREEN + "on");
+				Message.sendFormatted(curMine.getId(), "Blacklist turned " + ChatColor.GREEN + "on");
 			}
 		}
 		else if(args[1].equalsIgnoreCase("whitelist")) {
 			if(curMine.getBlacklist().getWhitelist()) {
 				curMine.getBlacklist().setWhitelist(false);
-				Message.sendCustom(curMine.getId() + " Blacklist", "Whitelist mode " + ChatColor.RED + "off");
+				Message.sendFormatted(curMine.getId() + " Blacklist", "Whitelist mode " + ChatColor.RED + "off");
 			}
 			else {
 				curMine.getBlacklist().setWhitelist(true);
-				Message.sendCustom(curMine.getId() + " Blacklist", "Whitelist mode " + ChatColor.GREEN + "on");
+				Message.sendFormatted(curMine.getId() + " Blacklist", "Whitelist mode " + ChatColor.GREEN + "on");
 			}
 		}
 		else if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+")) {
 			if(args.length != 3) {
-				Message.sendError(language.ERROR_ARGUMENTS);
+				Message.sendFormattedError(language.ERROR_ARGUMENTS);
 				return false;
 			}
 			
 			MaterialData block = Util.getBlock(args[2]);
 			if(block == null) {
-				Message.sendError(language.ERROR_NOSUCHBLOCK.replaceAll("<BLOCK>", args[2]));
+				Message.sendFormattedError(language.ERROR_NOSUCHBLOCK.replaceAll("<BLOCK>", args[2]));
 				return false;
 			}
 			
 			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
 			blocks.add(block);
 			curMine.getBlacklist().setBlocks(blocks);
-			Message.sendCustom(curMine.getId(), ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been added to the blacklistlist");
+			Message.sendFormatted(curMine.getId(), ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been added to the blacklistlist");
 		}
 		else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-")) {
 			if(args.length != 3) {
-				Message.sendError(language.ERROR_ARGUMENTS);
+				Message.sendFormattedError(language.ERROR_ARGUMENTS);
 				return false;
 			}
 			
 			MaterialData block = Util.getBlock(args[2]);
 			if(block == null) {
-				Message.sendError(language.ERROR_NOSUCHBLOCK.replaceAll("<BLOCK>", args[2]));
+				Message.sendFormattedError(language.ERROR_NOSUCHBLOCK.replaceAll("<BLOCK>", args[2]));
 				return false;
 			}
 			
 			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
 			blocks.remove(block);
 			curMine.getBlacklist().setBlocks(blocks);
-			Message.sendCustom(curMine.getId(), ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been removed from the list");
+			Message.sendFormatted(curMine.getId(), ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been removed from the list");
 		}
 		else {
-			Message.sendError(language.ERROR_COMMAND);
+			Message.sendFormattedError(language.ERROR_COMMAND);
 			return false;
 		}
 		

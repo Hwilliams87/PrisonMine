@@ -46,7 +46,7 @@ public class BlockPlaceListener implements Listener {
 			
 			if(!player.hasPermission("prison.mine.protection.place." + mine.getId()) && !player.hasPermission("prison.mine.protection.place")) {
 				Message.debug("Player " + event.getPlayer().getName() + " does not have permission to place blocks in the mine");
-				Message.sendError(player, errorString);
+				Message.sendFormattedError(player, errorString);
 				event.setCancelled(true);
 				continue;
 			}
@@ -69,14 +69,14 @@ public class BlockPlaceListener implements Listener {
 				
 				if((mine.getPlaceBlacklist().getWhitelist() && !found) || (!mine.getPlaceBlacklist().getWhitelist() && found)) {
 					Message.debug("Player " + player.getName() + " broke a black/whitelisted block in the mine!");
-					Message.sendError(player, errorString);
+					Message.sendFormattedError(player, errorString);
 					event.setCancelled(true);
 					return;
 				}
 			}
 			else {
 				Message.debug("No block placement blacklist detected");
-				Message.sendError(player, errorString);
+				Message.sendFormattedError(player, errorString);
 				event.setCancelled(true);
 			}
 			Message.debug("All checks passed, player is allowed to break blocks");

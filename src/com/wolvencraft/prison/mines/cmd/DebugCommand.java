@@ -3,7 +3,6 @@ package com.wolvencraft.prison.mines.cmd;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolvencraft.prison.PrisonSuite;
@@ -19,16 +18,11 @@ public class DebugCommand implements BaseCommand {
 	@Override
 	public boolean run(String[] args) {
 		if(args.length == 1 && !args[0].equalsIgnoreCase("debug") && !args[0].equalsIgnoreCase("import")) {
-			Message.sendError(PrisonMine.getLanguage().ERROR_COMMAND);
+			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);
 			return false;
 		}
 
 		CommandSender player = CommandManager.getSender();
-		
-		if(!(player instanceof ConsoleCommandSender) && !player.isOp()) {
-			Message.sendError(PrisonMine.getLanguage().ERROR_COMMAND);
-			return false;
-		}
 		
 		Message.debug("Checks passed, parsing the command");
 		
@@ -38,34 +32,34 @@ public class DebugCommand implements BaseCommand {
 		} else if(args[0].equalsIgnoreCase("import")) {
 			List<Mine> newMines = ImportData.loadAll();
 			if(newMines == null) {
-				Message.sendCustom("DEBUG", "Import folder not found");
+				Message.sendFormatted("DEBUG", "Import folder not found", false);
 				return false;
 			}
 			for(Mine mine : newMines) { PrisonMine.addMine(mine); }
-			Message.sendCustom("DEBUG", "Mines imported into the system. Check the server log for more info");
+			Message.sendFormatted("DEBUG", "Mines imported into the system. Check the server log for more info", false);
 			return true;
 		} else if(args[0].equalsIgnoreCase("setregion")) {
 			Mine curMine = Mine.get(args[1]);
 			PrisonSelection sel = PrisonSuite.getSelection((Player) player);
 			curMine.setRegion(sel);
-			Message.sendCustom("DEBUG", "Region set");
+			Message.sendFormatted("DEBUG", "Region set", false);
 			return curMine.saveFile();
 		} else if(args[0].equalsIgnoreCase("tp")) {
 			Mine curMine = Mine.get(args[1]);
 			((Player) player).teleport(curMine.getRegion().getMaximum());
-			Message.sendCustom("DEBUG", "Teleported to: " + curMine.getId());
+			Message.sendFormatted("DEBUG", "Teleported to: " + curMine.getId(), false);
 			return true;
 		} else if(args[0].equalsIgnoreCase("unload")) {
 			PrisonMine.removeMine(Mine.get(args[1]));
-			Message.sendCustom("DEBUG", "Unloaded " + args[1] + " from memory");
+			Message.sendFormatted("DEBUG", "Unloaded " + args[1] + " from memory", false);
 			return true;
 		} else if(args[0].equalsIgnoreCase("setwarp")) {
 			Mine curMine = Mine.get(args[1]);
 			curMine.setTpPoint(((Player) CommandManager.getSender()).getLocation());
-			Message.sendCustom("DEBUG", "Mine tp point is set");
+			Message.sendFormatted("DEBUG", "Mine tp point is set", false);
 			return true;
 		} else {
-			Message.sendError(PrisonMine.getLanguage().ERROR_COMMAND);
+			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);
 			return false;
 		}
 	}

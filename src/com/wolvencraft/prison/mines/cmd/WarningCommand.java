@@ -20,68 +20,68 @@ public class WarningCommand  implements BaseCommand {
 
 		Mine curMine = PrisonMine.getCurMine();
 		if(curMine == null) {
-			Message.sendError(PrisonMine.getLanguage().ERROR_MINENOTSELECTED);
+			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_MINENOTSELECTED);
 			return false;
 		}
 		
 		if(args[1].equalsIgnoreCase("toggle")) {
 			if(args.length != 2) {
-				Message.sendError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
+				Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
 				return false;
 			}
 			
 			if(curMine.getWarned()) {
 				curMine.setWarned(false);
-				Message.sendCustom(curMine.getId(), "Reset warnings are " + ChatColor.RED + "off");
+				Message.sendFormatted(curMine.getId(), "Reset warnings are " + ChatColor.RED + "off");
 			}
 			else {
 				curMine.setWarned(true);
-				Message.sendCustom(curMine.getId(), "Reset warnings are " + ChatColor.GREEN + "on");
+				Message.sendFormatted(curMine.getId(), "Reset warnings are " + ChatColor.GREEN + "on");
 			}
 		} else if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+")) {
 			if(args.length != 3) {
-				Message.sendError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
+				Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
 				return false;
 			}
 			
 			int time = Util.parseTime(args[2]);
 			if(time <= 0) {
-				Message.sendError("Invalid time provided");
+				Message.sendFormattedError("Invalid time provided");
 				return false;
 			}
 			if(time > curMine.getResetPeriod()) {
-				Message.sendError("Time cannot be set to a value greater then the reset time");
+				Message.sendFormattedError("Time cannot be set to a value greater then the reset time");
 				return false;
 			}
 			
 			List<Integer> warnList = curMine.getWarningTimes();
 			warnList.add(time);
 			String parsedTime = Util.parseSeconds(time);
-			Message.sendSuccess(curMine.getId() + " will now send warnings " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s) before the reset");
+			Message.sendFormatted(curMine.getId(), "Mine will now send warnings " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s) before the reset");
 		} else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
 			if(args.length != 4) {
-				Message.sendError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
+				Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
 				return false;
 			}
 			
 			int time = Util.parseTime(args[3]);
 			if(time <= 0) {
-				Message.sendError("Invalid time provided");
+				Message.sendFormattedError("Invalid time provided");
 				return false;
 			}
 			
 			List<Integer> warnList = curMine.getWarningTimes();
 			int index = warnList.indexOf(time);
 			if(index == -1) {
-				Message.sendError("'" + curMine.getId() + "' does not send a warning " + ChatColor.GOLD + Util.parseSeconds(time) + ChatColor.WHITE + " minute(s) before the reset");
+				Message.sendFormattedError("'" + curMine.getId() + "' does not send a warning " + ChatColor.GOLD + Util.parseSeconds(time) + ChatColor.WHITE + " minute(s) before the reset");
 				return false;
 			}
 			
 			warnList.remove(index);
-			Message.sendSuccess(curMine.getId() + " will no longer send a warning " + ChatColor.GOLD + Util.parseSeconds(time) + ChatColor.WHITE + " minute(s) before the reset");
+			Message.sendFormatted(curMine.getId(), "Mine will no longer send a warning " + ChatColor.GOLD + Util.parseSeconds(time) + ChatColor.WHITE + " minute(s) before the reset");
 		}
 		else {
-			Message.sendError(PrisonMine.getLanguage().ERROR_COMMAND);
+			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);
 			return false;
 		}
 		

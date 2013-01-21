@@ -262,6 +262,8 @@ public class Util {
 	public static String parseVars(String str, Mine curMine) {
 		if(curMine == null) return parseColors(str);
 		
+		str = parseColors(str);
+		
 		String displayName = curMine.getName();
 		if(displayName.equals("")) displayName =  curMine.getId();
 		str = str.replaceAll("<ID>", curMine.getId());
@@ -353,19 +355,31 @@ public class Util {
 			str = str.replaceAll("<NTIME>", ntimeClock);
 		}
 		
-		if((str.startsWith("<M|") || str.startsWith("<M:")) && str.endsWith(">")) str = parseVars(PrisonMine.getLanguage().SIGN_TITLE, curMine);
-		str = str.replaceAll("<M>", "");
+		if(str.startsWith("<M:") && str.endsWith(">")) str = parseVars(PrisonMine.getLanguage().SIGN_TITLE, curMine);
+		if(str.startsWith("<M>")) str = str.replaceAll("<M>", "");
 		
 		return parseColors(str);
 	}
 	
+	public static String parseChatColors(String str) {
+		if(str == null) return "";
+		
+		for(ChatColor color : ChatColor.values()) {
+			str = str.replaceAll("&" + color.getChar(), color + "");
+		}
+		
+		return str;
+	}
+	
 	/**
 	 * Replaces the color codes with colors
+	 * @deprecated
 	 * @param msg String to be parsed
 	 * @return Parsed string
 	 */
 	public static String parseColors(String msg) {
 		if(msg == null) return "";
+		
 		msg = msg.replaceAll("&0", ChatColor.BLACK.toString());
 		msg = msg.replaceAll("&1", ChatColor.DARK_BLUE.toString());
 		msg = msg.replaceAll("&2", ChatColor.DARK_GREEN.toString());

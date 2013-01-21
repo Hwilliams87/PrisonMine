@@ -12,7 +12,7 @@ public class ListCommand implements BaseCommand {
 	public boolean run(String[] args) {
 		
 		if(args.length != 1) {
-			Message.sendError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
+			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
 			return false;
 		}
 		

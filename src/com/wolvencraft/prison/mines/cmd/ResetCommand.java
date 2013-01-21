@@ -28,12 +28,12 @@ public class ResetCommand implements BaseCommand {
 				return success;
 			}
 		} else {
-			Message.sendError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
+			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
 			return false;
 		}
 			
 		if(curMine == null) {
-			Message.sendError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
+			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
 			return false;
 		}
 		
@@ -45,7 +45,7 @@ public class ResetCommand implements BaseCommand {
 		Message.debug("| Reset cause: MANUAL (command/sign)");
 		
 		if(!Util.hasPermission("prison.mine.reset.manual." + curMine.getId()) && !Util.hasPermission("prison.mine.reset.manual")) {
-			Message.sendError(PrisonMine.getLanguage().ERROR_ACCESS);
+			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ACCESS);
 			Message.debug("| Insufficient permissions. Cancelling...");
 			Message.debug("| Reached the end of the report for " + curMine.getId());
 			Message.debug("+---------------------------------------------");
@@ -53,7 +53,7 @@ public class ResetCommand implements BaseCommand {
 		}
 		
 		if(curMine.getCooldown() && curMine.getCooldownEndsIn() > 0 && !Util.hasPermission("prison.mine.bypass.cooldown")) {
-			Message.sendError(Util.parseVars(PrisonMine.getLanguage().RESET_COOLDOWN, curMine));
+			Message.sendFormattedError(Util.parseVars(PrisonMine.getLanguage().RESET_COOLDOWN, curMine));
 			Message.debug("| Cooldown is in effect. Checking for bypass...");
 			Message.debug("| Failed. Cancelling...");
 			Message.debug("| Reached the end of the report for " + curMine.getId());
@@ -79,7 +79,18 @@ public class ResetCommand implements BaseCommand {
 		broadcastMessage = Util.parseVars(broadcastMessage, curMine);
 		
 		if(!curMine.hasFlag(MineFlag.Silent)) Message.broadcast(broadcastMessage);
-		else Message.sendSuccess(broadcastMessage);
+		else Message.sendFormattedSuccess(broadcastMessage);
+		
+		if(PrisonMine.getSettings().RESET_TRIGGERS_CHILDREN_RESETS) {
+			for(Mine childMine : curMine.getChildren()) {
+				Message.debug("+---------------------------------------------");
+				Message.debug("| Mine " + childMine.getId() + " is resetting. Reset report:");
+				Message.debug("| Reset cause: parent mine is resetting (" + curMine.getId() + ")");
+				CommandManager.RESET.run(childMine.getId());
+				Message.debug("| Reached the end of the report for " + childMine.getId());
+				Message.debug("+---------------------------------------------");
+			}
+		}
 		
 		Message.debug("| Reached the end of the report for " + curMine.getId());
 		Message.debug("+---------------------------------------------");

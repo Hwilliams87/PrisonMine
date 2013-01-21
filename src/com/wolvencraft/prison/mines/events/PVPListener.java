@@ -41,7 +41,7 @@ public class PVPListener implements Listener {
         	
 	        if(!attacker.hasPermission("prison.mine.protection.pvp." + mine.getId()) && !attacker.hasPermission("prison.mine.protection.pvp")) {
 	        	Message.debug("Player " + attacker.getName() + " does not have permission to PvP in the mine");
-	        	Message.sendError(attacker, "You are not in a No-PvP zone");
+	        	Message.sendFormattedError(attacker, "You are not in a No-PvP zone");
 	        	event.setCancelled(true);
 	          	return;
 	        }
@@ -51,7 +51,7 @@ public class PVPListener implements Listener {
 				continue;
 			}
 			
-			Message.sendError(attacker, PrisonMine.getLanguage().PROTECTION_PVP);
+			Message.sendFormattedError(attacker, PrisonMine.getLanguage().PROTECTION_PVP);
 			event.setCancelled(true);
 			return;
 		}

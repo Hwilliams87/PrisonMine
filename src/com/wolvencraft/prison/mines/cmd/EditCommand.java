@@ -35,34 +35,34 @@ public class EditCommand  implements BaseCommand {
 				&& !args[0].equalsIgnoreCase("edit")
 				&& !args[0].equalsIgnoreCase("delete")
 				&& !args[0].equalsIgnoreCase("generator")) {
-			Message.sendError(language.ERROR_MINENOTSELECTED);
+			Message.sendFormattedError(language.ERROR_MINENOTSELECTED);
 			return false;
 		}
 		
 		if(args[0].equalsIgnoreCase("edit")) {
 			if(args.length != 2) {
-				Message.sendError(language.ERROR_ARGUMENTS);
+				Message.sendFormattedError(language.ERROR_ARGUMENTS);
 				return false;
 			}
 			
 			if(args[1].equalsIgnoreCase("none")) {
-				Message.sendSuccess(Util.parseVars(language.MINE_DESELECTED, curMine));
+				Message.sendFormattedSuccess(language.MINE_DESELECTED);
 				PrisonMine.setCurMine(null);
 				return true;
 			}
 			
 			curMine = Mine.get(args[1]);
 			if(curMine == null) {
-				Message.sendError(language.ERROR_MINENAME.replace("<ID>", args[1]));
+				Message.sendFormattedError(language.ERROR_MINENAME.replace("<ID>", args[1]));
 				return false;
 			}
 
 			PrisonMine.setCurMine(curMine);
-			Message.sendSuccess(Util.parseVars(language.MINE_SELECTED, curMine));
+			Message.sendFormattedSuccess(language.MINE_SELECTED);
 			return true;
 		} else if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+")) {
 			if(args.length != 2 && args.length != 3) {
-				Message.sendError(language.ERROR_ARGUMENTS);
+				Message.sendFormattedError(language.ERROR_ARGUMENTS);
 				return false;
 			}
 			
@@ -73,11 +73,11 @@ public class EditCommand  implements BaseCommand {
 			MineBlock air = curMine.getBlock(new MaterialData(Material.AIR));
 			
 			if(block == null) {
-				Message.sendError(language.ERROR_NOSUCHBLOCK.replaceAll("<BLOCK>", args[1]));
+				Message.sendFormattedError(language.ERROR_NOSUCHBLOCK.replaceAll("<BLOCK>", args[1]));
 				return false;
 			}
 			if(block.equals(air.getBlock())) {
-				Message.sendError(language.ERROR_FUCKIGNNOOB);
+				Message.sendFormattedError(language.ERROR_FUCKIGNNOOB);
 				return false;
 			}
 
@@ -89,7 +89,7 @@ public class EditCommand  implements BaseCommand {
 					Message.debug("Argument is not numeric, attempting to parse");
 					try { percent = Double.parseDouble(args[2].replace("%", "")); }
 					catch(NumberFormatException nfe) {
-						Message.sendError(language.ERROR_ARGUMENTS);
+						Message.sendFormattedError(language.ERROR_ARGUMENTS);
 						return false;
 					}
 				}
@@ -100,12 +100,12 @@ public class EditCommand  implements BaseCommand {
 			else percent = percentAvailable;
 			
 			if(percent <= 0) {
-				Message.sendError(language.ERROR_ARGUMENTS);
+				Message.sendFormattedError(language.ERROR_ARGUMENTS);
 				return false;
 			}
 			
 			if((percentAvailable - percent) < 0) {
-				Message.sendError("Invalid percentage. Use /mine info " + curMine.getId() + " to review the percentages");
+				Message.sendFormattedError("Invalid percentage. Use /mine info " + curMine.getId() + " to review the percentages");
 				return false;
 			}
 			else percentAvailable -= percent;
@@ -116,25 +116,25 @@ public class EditCommand  implements BaseCommand {
 			if(index == null) blocks.add(new MineBlock(block, percent));
 			else index.setChance(index.getChance() + percent);
 			
-			Message.sendCustom(curMine.getId(), Util.round(percent) + " of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
-			Message.sendCustom(curMine.getId(), "Reset the mine for the changes to take effect");
+			Message.sendFormatted(curMine.getId(), Util.round(percent) + " of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
+			Message.sendFormatted(curMine.getId(), "Reset the mine for the changes to take effect");
 			
 			return curMine.saveFile();
 		} else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-")) {
 			if(args.length != 2 && args.length != 3) {
-				Message.sendError(language.ERROR_ARGUMENTS);
+				Message.sendFormattedError(language.ERROR_ARGUMENTS);
 				return false;
 			}
 			
 			MineBlock blockData = curMine.getBlock(Util.getBlock(args[1]));
 			if(blockData == null) {
-				Message.sendError("There is no " + ChatColor.RED + args[1] + ChatColor.WHITE + " in mine '" + curMine.getId() + "'");
+				Message.sendFormattedError("There is no " + ChatColor.RED + args[1] + ChatColor.WHITE + " in mine '" + curMine.getId() + "'");
 				return false;
 			}
 
 			MineBlock air = curMine.getBlock(new MaterialData(Material.AIR));
 			if(blockData.equals(air)) {
-				Message.sendError("This value is calculated automatically");
+				Message.sendFormattedError("This value is calculated automatically");
 				return false;
 			}
 			
@@ -148,7 +148,7 @@ public class EditCommand  implements BaseCommand {
 						percent = Double.parseDouble(args[2].replace("%", ""));
 					}
 					catch(NumberFormatException nfe) {
-						Message.sendError(language.ERROR_ARGUMENTS);
+						Message.sendFormattedError(language.ERROR_ARGUMENTS);
 						return false;
 					}
 				}
@@ -161,7 +161,7 @@ public class EditCommand  implements BaseCommand {
 				air.setChance(air.getChance() + percent);
 				blockData.setChance(blockData.getChance() - percent);
 				
-				Message.sendCustom(curMine.getId(), Util.round(percent) + " of " + args[1] + " was successfully removed from the mine");
+				Message.sendFormatted(curMine.getId(), Util.round(percent) + " of " + args[1] + " was successfully removed from the mine");
 			}
 			else {
 				List<MineBlock> blocks = curMine.getBlocks();
@@ -169,27 +169,27 @@ public class EditCommand  implements BaseCommand {
 				air.setChance(air.getChance() + blockData.getChance());
 				blocks.remove(blockData);
 				
-				Message.sendCustom(curMine.getId(), args[1] + " was successfully removed from the mine");
+				Message.sendFormatted(curMine.getId(), args[1] + " was successfully removed from the mine");
 			}
 			
 			return curMine.saveFile();
 		} else if(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del")) {
 			if(args.length > 2) {
-				Message.sendError(language.ERROR_ARGUMENTS);
+				Message.sendFormattedError(language.ERROR_ARGUMENTS);
 				return false;
 			}
 			
 			if(args.length == 1) {
 				curMine = PrisonMine.getCurMine();
 				if(curMine == null) {
-					Message.sendError(language.ERROR_MINENOTSELECTED);
+					Message.sendFormattedError(language.ERROR_MINENOTSELECTED);
 					return false;
 				}
 			}
 			else {
 				curMine = Mine.get(args[1]);
 				if(curMine == null) {
-					Message.sendError(language.ERROR_MINENAME);
+					Message.sendFormattedError(language.ERROR_MINENAME);
 					return false;
 				}
 			}
@@ -201,13 +201,13 @@ public class EditCommand  implements BaseCommand {
 			
 			PrisonMine.removeMine(curMine);
 			PrisonMine.setCurMine(null);
-			Message.sendCustom(curMine.getId(), "Mine successfully deleted");
+			Message.sendFormatted(curMine.getId(), "Mine successfully deleted");
 			curMine.deleteFile();
 			MineData.saveAll();
 			return true;
 		} else if(args[0].equalsIgnoreCase("name")) {
 			if(args.length < 2) {
-				Message.sendError(language.ERROR_ARGUMENTS);
+				Message.sendFormattedError(language.ERROR_ARGUMENTS);
 				return false;
 			}
 			
@@ -215,75 +215,75 @@ public class EditCommand  implements BaseCommand {
 			for(int i = 2; i < args.length; i++) name = name + " " + args[i];
 			
 			curMine.setName(name);
-			Message.sendCustom(curMine.getId(), "Mine now has a display name '" + ChatColor.GOLD + name + ChatColor.WHITE + "'");
+			Message.sendFormatted(curMine.getId(), "Mine now has a display name '" + ChatColor.GOLD + name + ChatColor.WHITE + "'");
 			
 			return curMine.saveFile();
 		} else if(args[0].equalsIgnoreCase("cooldown")) {
 			if(args.length != 2) {
-				Message.sendError(language.ERROR_ARGUMENTS);
+				Message.sendFormattedError(language.ERROR_ARGUMENTS);
 				return false;
 			}
 			
 			if(args[1].equalsIgnoreCase("toggle")) {
 				if(curMine.getCooldown()) {
 					curMine.setCooldownEnabled(false);
-					Message.sendCustom(curMine.getId(), "Reset cooldown " + ChatColor.RED + "disabled");
+					Message.sendFormatted(curMine.getId(), "Reset cooldown " + ChatColor.RED + "disabled");
 				}
 				else {
 					curMine.setCooldownEnabled(true);
-					Message.sendCustom(curMine.getId(), "Reset cooldown " + ChatColor.GREEN + "enabled");
+					Message.sendFormatted(curMine.getId(), "Reset cooldown " + ChatColor.GREEN + "enabled");
 				}
 			} else {
 				try {
 					int seconds = Util.parseTime(args[1]);
 					if(seconds == -1) {
-						Message.sendError(language.ERROR_ARGUMENTS);
+						Message.sendFormattedError(language.ERROR_ARGUMENTS);
 						return false;
 					}
 					curMine.setCooldownPeriod(seconds);
-					Message.sendCustom(curMine.getId(), "Reset cooldown set to " + ChatColor.GREEN + Util.parseSeconds(seconds));
+					Message.sendFormatted(curMine.getId(), "Reset cooldown set to " + ChatColor.GREEN + Util.parseSeconds(seconds));
 				}
 				catch (NumberFormatException nfe) {
-					Message.sendError(language.ERROR_ARGUMENTS);
+					Message.sendFormattedError(language.ERROR_ARGUMENTS);
 				}
 			}
 			
 			return curMine.saveFile();
 		} else if(args[0].equalsIgnoreCase("setparent") || args[0].equalsIgnoreCase("link")) {
 			if(args.length != 2) {
-				Message.sendError(language.ERROR_ARGUMENTS);
+				Message.sendFormattedError(language.ERROR_ARGUMENTS);
 				return false;
 			}
 			
 			if(args[1].equalsIgnoreCase("none")) {
-				Message.sendCustom(curMine.getId(), "Mine is no longer linked to " + ChatColor.RED + curMine.getParent());
+				Message.sendFormatted(curMine.getId(), "Mine is no longer linked to " + ChatColor.RED + curMine.getParent());
 				curMine.setParent(null);
 				
 				return curMine.saveFile();
 			}
 			
 			if(Mine.get(args[1]) == null) {
-				Message.sendError(language.ERROR_MINENAME);
+				Message.sendFormattedError(language.ERROR_MINENAME);
 				return false;
 			}
 			
 			if(args[1].equalsIgnoreCase(curMine.getId())) {
-				Message.sendError("You cannot set mine's parent to itself, silly");
+				Message.sendFormattedError("You cannot set mine's parent to itself, silly");
 				return false;
 			}
 			
 			if(Mine.get(args[1]).getParent() != null && Mine.get(args[1]).getSuperParent().getId().equalsIgnoreCase(curMine.getId())) {
-				Message.sendError("Infinite loop detected in timers!");
+				Message.sendFormattedError("Infinite loop detected in timers!");
 				return false;
 			}
 			
 			curMine.setParent(args[1]);
-			Message.sendCustom(curMine.getId(), "Mine will is now linked to " + ChatColor.GREEN + args[1]);
+			Message.sendFormatted(curMine.getId(), "Mine will is now linked to " + ChatColor.GREEN + args[1]);
 			
 			return curMine.saveFile();
 		}
 		else {
-			Message.sendError(language.ERROR_COMMAND);
+			Message.sendFormattedError(language.ERROR_COMMAND);
 			return false;
 		}
 	}

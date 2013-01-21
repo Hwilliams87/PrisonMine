@@ -38,7 +38,7 @@ public class BlockBreakListener implements Listener {
 			
 			if(!player.hasPermission("prison.mine.protection.break." + mine.getId()) && !player.hasPermission("prison.mine.protection.break") && !player.hasPermission("prison.mine.bypass.break")) {
 				Message.debug("Player " + event.getPlayer().getName() + " does not have permission to break blocks in the mine");
-				Message.sendError(player, errorString);
+				Message.sendFormattedError(player, errorString);
 				event.setCancelled(true);
 				return;
 			}
@@ -61,14 +61,14 @@ public class BlockBreakListener implements Listener {
 				
 				if((mine.getBreakBlacklist().getWhitelist() && !found) || (!mine.getBreakBlacklist().getWhitelist() && found)) {
 					Message.debug("Player " + player.getName() + " broke a black/whitelisted block in the mine!");
-					Message.sendError(player, errorString);
+					Message.sendFormattedError(player, errorString);
 					event.setCancelled(true);
 					return;
 				}
 			}
 			else {
 				Message.debug("No block breaking blacklist detected");
-				Message.sendError(player, errorString);
+				Message.sendFormattedError(player, errorString);
 				event.setCancelled(true);
 			}
 			Message.debug("All checks passed, player is allowed to break blocks");

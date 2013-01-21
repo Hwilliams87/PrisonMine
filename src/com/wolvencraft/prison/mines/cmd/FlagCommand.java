@@ -17,28 +17,28 @@ public class FlagCommand implements BaseCommand {
 		
 		Language language = PrisonMine.getLanguage();
 		if(args.length != 2) {
-			Message.sendError(language.ERROR_ARGUMENTS);
+			Message.sendFormattedError(language.ERROR_ARGUMENTS);
 			return false;
 		}
 		
 		Mine curMine = PrisonMine.getCurMine();
 		if(curMine == null) {
-			Message.sendError(language.ERROR_MINENOTSELECTED);
+			Message.sendFormattedError(language.ERROR_MINENOTSELECTED);
 			return false;
 		}
 		
 		MineFlag flag = MineFlag.get(args[1]);
 		if(flag == null) {
-			Message.sendError("This flag does not exist");
+			Message.sendFormattedError("This flag does not exist");
 			return false;
 		}
 		
 		if(curMine.hasFlag(flag)) {
 			curMine.removeFlag(flag);
-			Message.sendCustom(curMine.getId(), "Flag " + flag + " has been removed");
+			Message.sendFormatted(curMine.getId(), "Flag " + flag + " has been removed");
 		} else {
 			curMine.addFlag(flag);
-			Message.sendCustom(curMine.getId(), "Flag " + flag + " has been added");
+			Message.sendFormatted(curMine.getId(), "Flag " + flag + " has been added");
 		}
 		
 		return curMine.saveFile();

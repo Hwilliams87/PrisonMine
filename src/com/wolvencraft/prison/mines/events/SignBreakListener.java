@@ -26,10 +26,10 @@ public class SignBreakListener implements Listener {
         	
         	if(sign.deleteFile()) {
         		PrisonMine.removeSign(sign);
-        		Message.sendSuccess(event.getPlayer(), "Sign successfully removed");
+        		Message.sendFormattedSuccess(event.getPlayer(), "Sign successfully removed", false);
         	}
         	else {
-        		Message.sendError(event.getPlayer(), "Error removing sign!");
+        		Message.sendFormattedError(event.getPlayer(), "Error removing sign!", false);
         		event.setCancelled(true);
         	}
         	return;

@@ -14,14 +14,14 @@ public class DataCommand implements BaseCommand {
 		}
 		
 		if(args.length != 2) {
-			Message.sendError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
+			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
 			return false;
 		}
 		
 		if(args[1].equalsIgnoreCase("save")) {
 			MineData.saveAll();
 			SignData.saveAll();
-			Message.sendSuccess("Mine and sign data saved to disc");
+			Message.sendFormattedSuccess("Mine and sign data saved to disc", false);
 			return true;
 		}
 		else if(args[1].equalsIgnoreCase("load")) {
@@ -31,11 +31,11 @@ public class DataCommand implements BaseCommand {
 			PrisonMine.getInstance().reloadLanguage();
 			PrisonMine.setMines(MineData.loadAll());
 			PrisonMine.setSigns(SignData.loadAll());
-			Message.sendSuccess("Mine and sign data loaded from disc");
+			Message.sendFormattedSuccess("Mine and sign data loaded from disc", false);
 			return true;
 		}
 		else {
-			Message.sendError(PrisonMine.getLanguage().ERROR_COMMAND);
+			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);
 			return false;
 		}
 	}

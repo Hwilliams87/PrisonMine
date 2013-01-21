@@ -25,12 +25,12 @@ public class TimeCommand implements BaseCommand {
 		else curMine = Mine.get(args[1]);
 		
 		if(args.length > 2) {
-			Message.sendError(language.ERROR_ARGUMENTS);
+			Message.sendFormattedError(language.ERROR_ARGUMENTS);
 			return false;
 		}
 		
 		if(curMine == null) {
-			Message.sendError(language.ERROR_MINENAME.replaceAll("<ID>", args[1]));
+			Message.sendFormattedError(language.ERROR_MINENAME.replaceAll("<ID>", args[1]));
 			return false;
 		}
 		Mine parentMine = curMine.getSuperParent();

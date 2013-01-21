@@ -10,12 +10,11 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.wolvencraft.prison.hooks.EconomyHook;
-import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.DisplaySign;
 import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.routines.ButtonResetRoutine;
 import com.wolvencraft.prison.mines.util.Message;
-import com.wolvencraft.prison.mines.util.Util;
 
 public class ButtonPressListener implements Listener {
 
@@ -47,26 +46,26 @@ public class ButtonPressListener implements Listener {
 						Player player = event.getPlayer();
 						
 						if(!player.hasPermission("prison.mine.reset.sign." + curMine.getId()) && !player.hasPermission("prison.mine.reset.sign")) {
-							Message.sendError(player, PrisonMine.getLanguage().ERROR_ACCESS);
+							Message.sendFormattedError(player, PrisonMine.getLanguage().ERROR_ACCESS);
 							return;
 						}
 						
 						if(curMine.getCooldown() && curMine.getCooldownEndsIn() > 0 && !player.hasPermission("prison.mine.bypass.cooldown")) {
-							Message.sendError(player, Util.parseVars(PrisonMine.getLanguage().RESET_COOLDOWN, curMine));
+							Message.sendFormattedError(player, PrisonMine.getLanguage().RESET_COOLDOWN, true, curMine);
 							return;
 						}
 						
 						if(EconomyHook.usingVault() && sign.getPaid() && sign.getPrice() != -1) {
 							Message.debug("Withdrawing " + sign.getPrice() + " from " + player.getName());
 							if(!EconomyHook.withdraw(player, sign.getPrice())) {
-								Message.sendError(player, Util.parseColors(PrisonMine.getLanguage().SIGN_FUNDS.replaceAll("<PRICE>", sign.getPrice() + "")));
+								Message.sendFormattedError(player, PrisonMine.getLanguage().SIGN_FUNDS.replaceAll("<PRICE>", sign.getPrice() + ""));
 								return;
 							}
 							Message.debug("Successfully withdrawn the money. New balance: " + EconomyHook.getBalance(player));
-							Message.sendSuccess(player, Util.parseColors(PrisonMine.getLanguage().SIGN_WITHDRAW.replaceAll("<PRICE>", sign.getPrice() + "")));
+							Message.sendFormattedSuccess(player, PrisonMine.getLanguage().SIGN_WITHDRAW.replaceAll("<PRICE>", sign.getPrice() + ""));
 						} else Message.debug("Vault not found");
 						
-						CommandManager.RESET.run(curMine.getId());
+						ButtonResetRoutine.run(curMine, player);
 					}
 				}
 			}

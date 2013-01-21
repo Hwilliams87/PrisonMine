@@ -39,7 +39,7 @@ public class BucketEmptyListener implements Listener {
         	
 	        if(!player.hasPermission("prison.mine.protection.place." + mine.getId()) && !player.hasPermission("prison.mine.protection.place")) {
 	        	Message.debug("Player " + event.getPlayer().getName() + " does not have permission to empty buckets in the mine");
-	        	Message.sendError(player, "You are not allowed to empty buckets in this area");
+	        	Message.sendFormattedError(player, "You are not allowed to empty buckets in this area");
 	        	event.setCancelled(true);
 	          	return;
 	        }
@@ -62,14 +62,14 @@ public class BucketEmptyListener implements Listener {
 				
 				if((mine.getPlaceBlacklist().getWhitelist() && !found) || (!mine.getPlaceBlacklist().getWhitelist() && found)) {
 					Message.debug("Player " + player.getName() + " broke a black/whitelisted block in the mine!");
-					Message.sendError(player, "You are not allowed to empty buckets in the mine");
+					Message.sendFormattedError(player, "You are not allowed to empty buckets in the mine");
 					event.setCancelled(true);
 					return;
 				}
 			}
 			else {
 				Message.debug("No block placement blacklist detected");
-				Message.sendError(player, "You are not allowed to empty buckets in the mine");
+				Message.sendFormattedError(player, "You are not allowed to empty buckets in the mine");
 				event.setCancelled(true);
 			}
         }

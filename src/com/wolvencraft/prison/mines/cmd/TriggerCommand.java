@@ -17,13 +17,13 @@ public class TriggerCommand implements BaseCommand {
 		}
 		
 		if(args.length != 3) {
-			Message.sendError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
+			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
 			return false;
 		}
 		
 		Mine curMine = PrisonMine.getCurMine();
 		if(curMine == null) {
-			Message.sendError(PrisonMine.getLanguage().ERROR_MINENOTSELECTED);
+			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_MINENOTSELECTED);
 			return false;
 		}
 		
@@ -31,45 +31,45 @@ public class TriggerCommand implements BaseCommand {
 			if(args[2].equalsIgnoreCase("toggle")) {
 				if(curMine.getAutomaticReset()) {
 					curMine.setAutomaticReset(false);
-					Message.sendCustom(curMine.getId(), "Time trigger is " + ChatColor.RED + "off");
+					Message.sendFormatted(curMine.getId(), "Time trigger is " + ChatColor.RED + "off");
 				}
 				else {
 					curMine.setAutomaticReset(true);
-					Message.sendCustom(curMine.getId(), "Time trigger is " + ChatColor.GREEN + "on");
+					Message.sendFormatted(curMine.getId(), "Time trigger is " + ChatColor.GREEN + "on");
 				}
 			} else {
 				int time = Util.parseTime(args[2]);
 				if(time <= 0) {
-					Message.sendError("Invalid time provided");
+					Message.sendFormattedError("Invalid time provided");
 					return false;
 				}
 				curMine.setResetPeriod(time);
 				String parsedTime = Util.parseSeconds(time);
-				Message.sendCustom(curMine.getId(), "Mine will now reset every " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s)");
+				Message.sendFormatted(curMine.getId(), "Mine will now reset every " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s)");
 			}
 		} else if(args[1].equalsIgnoreCase("composition")) {
 			if(args[2].equalsIgnoreCase("toggle")) {
 				if(curMine.getCompositionReset()) {
 					curMine.setCompositionReset(false);
-					Message.sendCustom(curMine.getId(), "Composition trigger is " + ChatColor.RED + "off");
+					Message.sendFormatted(curMine.getId(), "Composition trigger is " + ChatColor.RED + "off");
 				}
 				else {
 					curMine.setCompositionReset(true);
-					Message.sendCustom(curMine.getId(), "Composition trigger is " + ChatColor.GREEN + "on");
+					Message.sendFormatted(curMine.getId(), "Composition trigger is " + ChatColor.GREEN + "on");
 				}
 			} else {
 				String percentString = args[2];
 				if(percentString.endsWith("%")) percentString.substring(0, percentString.length() - 1);
 				double percent = Double.parseDouble(percentString) / 100;
 				if(percent <= 0 || percent > 100) {
-					Message.sendError("Invalid percent value provided");
+					Message.sendFormattedError("Invalid percent value provided");
 					return false;
 				}
 				curMine.setCompositionPercent(percent);
-				Message.sendCustom(curMine.getId(), "Mine will reset once it is " + ChatColor.GOLD + percentString + "%" + ChatColor.WHITE + " empty");
+				Message.sendFormatted(curMine.getId(), "Mine will reset once it is " + ChatColor.GOLD + percentString + "%" + ChatColor.WHITE + " empty");
 			}
 		} else {
-			Message.sendError(PrisonMine.getLanguage().ERROR_COMMAND);
+			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);
 			return false;
 		}
 		

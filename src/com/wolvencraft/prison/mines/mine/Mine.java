@@ -269,7 +269,7 @@ public class Mine implements ConfigurationSerializable, Listener {
         for (Player p : Util.getLocalPlayers(world)) {
             if (region.isLocationInRegion(p.getLocation())) {
                 p.teleport(tpPoint, PlayerTeleportEvent.TeleportCause.PLUGIN);
-                Message.sendSuccess(p, Util.parseVars(PrisonMine.getLanguage().MISC_TELEPORT, this));
+                Message.sendFormattedSuccess(p, PrisonMine.getLanguage().MISC_TELEPORT, true, this);
             }
         }
         return true;

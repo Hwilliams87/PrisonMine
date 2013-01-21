@@ -39,7 +39,7 @@ public class BucketFillListener implements Listener {
         	
 	        if(!player.hasPermission("prison.mine.protection.break." + mine.getId()) && !player.hasPermission("prison.mine.protection.break")) {
 	        	Message.debug("Player " + event.getPlayer().getName() + " does not have permission to fill buckets in the mine");
-	        	Message.sendError(player, "You are not allowed to fill buckets in this area");
+	        	Message.sendFormattedError(player, "You are not allowed to fill buckets in this area");
 	        	event.setCancelled(true);
 	          	return;
 	        }
@@ -62,14 +62,14 @@ public class BucketFillListener implements Listener {
 				
 				if((mine.getBreakBlacklist().getWhitelist() && !found) || (!mine.getBreakBlacklist().getWhitelist() && found)) {
 					Message.debug("Player " + player.getName() + " broke a black/whitelisted block in the mine!");
-					Message.sendError(player, "You are not allowed to fill buckets in the mine");
+					Message.sendFormattedError(player, "You are not allowed to fill buckets in the mine");
 					event.setCancelled(true);
 					return;
 				}
 			}
 			else {
 				Message.debug("No block breaking blacklist detected");
-				Message.sendError(player, "You are not allowed to fill buckets in the mine");
+				Message.sendFormattedError(player, "You are not allowed to fill buckets in the mine");
 				event.setCancelled(true);
 			}
         }

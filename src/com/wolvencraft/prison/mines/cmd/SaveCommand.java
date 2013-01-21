@@ -24,7 +24,7 @@ public class SaveCommand implements BaseCommand {
 		}
 		
 		if(args.length != 2 && args.length != 3) {
-			Message.sendError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
+			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
 			return false;
 		}
 		
@@ -33,13 +33,13 @@ public class SaveCommand implements BaseCommand {
 		PrisonSelection sel = PrisonSuite.getSelection(player);
 		if(!sel.locationsSet()) {
 			if(!PrisonSuite.usingWorldEdit()) {
-				Message.sendError("Make a selection first");
+				Message.sendFormattedError("Make a selection first");
 				return false;
 			}
 			else {
 				Location[] loc = WorldEditHook.getPoints(player);
 				if(loc == null) {
-					Message.sendError("Make a selection first");
+					Message.sendFormattedError("Make a selection first");
 					return false;
 				}
 				sel.setCoordinates(loc);
@@ -49,18 +49,18 @@ public class SaveCommand implements BaseCommand {
 		Message.debug("Passed selection check");
 		
 		if(!sel.getPos1().getWorld().equals(sel.getPos2().getWorld())) {
-			Message.sendError("Your selection points are in different worlds");
+			Message.sendFormattedError("Your selection points are in different worlds");
 			return false;
 		}
 
 		if(Mine.get(args[1]) != null) {
-			Message.sendError("Mine '" + args[1] + "' already exists!");
+			Message.sendFormattedError("Mine '" + args[1] + "' already exists!");
 			return false;
 		}
 		
 		for(String bannedName : PrisonMine.getSettings().BANNEDNAMES) {
 			if(args[1].equalsIgnoreCase(bannedName)) {
-				Message.sendError("This name is not valid");
+				Message.sendFormattedError("This name is not valid");
 				return false;
 			}
 		}
@@ -75,7 +75,7 @@ public class SaveCommand implements BaseCommand {
         Message.debug("Mine creation completed");
 		
 		PrisonMine.setCurMine(newMine);
-		Message.sendCustom(newMine.getId(), "Mine created successfully!");
+		Message.sendFormatted(newMine.getId(), "Mine created successfully!");
 		return true;
 	}
 	
