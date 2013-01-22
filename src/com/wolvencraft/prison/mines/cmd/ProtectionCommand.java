@@ -75,7 +75,7 @@ public class ProtectionCommand  implements BaseCommand {
 			}
 			
 			curMine.getProtectionRegion().setCoordinates(sel);
-			Message.sendFormatted(curMine.getId(), "Protection region has been set!");
+			Message.sendFormattedMine("Protection region has been set!");
 		}
 		else if(args[1].equalsIgnoreCase("pvp")) {
 			if(args.length != 2) {
@@ -85,11 +85,11 @@ public class ProtectionCommand  implements BaseCommand {
 			
 			if(curMine.getProtection().contains(Protection.PVP)) {
 				curMine.getProtection().remove(Protection.PVP);
-				Message.sendFormatted(curMine.getId(), "PVP protection has been turned " + ChatColor.RED + "off");
+				Message.sendFormattedMine("PVP protection has been turned " + ChatColor.RED + "off");
 			}
 			else {
 				curMine.getProtection().add(Protection.PVP);
-				Message.sendFormatted(curMine.getId(), "PVP protection has been turned " + ChatColor.GREEN + "on");
+				Message.sendFormattedMine("PVP protection has been turned " + ChatColor.GREEN + "on");
 			}
 		}
 		else if(args[1].equalsIgnoreCase("breaking") || args[1].equalsIgnoreCase("break")) {
@@ -108,12 +108,12 @@ public class ProtectionCommand  implements BaseCommand {
 				if(curMine.getProtection().contains(Protection.BLOCK_BREAK)) {
 					curMine.getProtection().remove(Protection.BLOCK_BREAK);
 					curMine.getBreakBlacklist().setEnabled(false);
-					Message.sendFormatted(curMine.getId(), "Block breaking protection has been turned " + ChatColor.RED + "off");
+					Message.sendFormattedMine("Block breaking protection has been turned " + ChatColor.RED + "off");
 				}
 				else {
 					curMine.getProtection().add(Protection.BLOCK_BREAK);
 					curMine.getBreakBlacklist().setEnabled(true);
-					Message.sendFormatted(curMine.getId(), "Block breaking protection has been turned " + ChatColor.GREEN + "on");
+					Message.sendFormattedMine("Block breaking protection has been turned " + ChatColor.GREEN + "on");
 				}
 			}
 			else if(args[2].equalsIgnoreCase("whitelist")) {
@@ -123,11 +123,11 @@ public class ProtectionCommand  implements BaseCommand {
 				}
 				if(curMine.getBreakBlacklist().getWhitelist()) {
 					curMine.getBreakBlacklist().setWhitelist(false);
-					Message.sendFormatted(curMine.getId(), "Block breaking whitelist is now " + ChatColor.RED + "off");
+					Message.sendFormattedMine("Block breaking whitelist is now " + ChatColor.RED + "off");
 				}
 				else {
 					curMine.getBreakBlacklist().setWhitelist(true);
-					Message.sendFormatted(curMine.getId(), "Block breaking whitelist is now " + ChatColor.GREEN + "on");
+					Message.sendFormattedMine("Block breaking whitelist is now " + ChatColor.GREEN + "on");
 				}
 			}
 			else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
@@ -146,7 +146,7 @@ public class ProtectionCommand  implements BaseCommand {
 				blockList.add(block);
 				curMine.getBreakBlacklist().setBlocks(blockList);
 				
-				Message.sendFormatted(curMine.getId(), ChatColor.GREEN + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was added to the block breaking protection blacklist");
+				Message.sendFormattedMine(ChatColor.GREEN + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was added to the block breaking protection blacklist");
 			}
 			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
 				if(args.length != 4) {
@@ -169,7 +169,7 @@ public class ProtectionCommand  implements BaseCommand {
 				blockList.remove(block);
 				curMine.getBreakBlacklist().setBlocks(blockList);
 
-				Message.sendFormatted(curMine.getId(), ChatColor.RED + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was removed from the block breaking protection blacklist");
+				Message.sendFormattedMine(ChatColor.RED + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was removed from the block breaking protection blacklist");
 			}
 			else
 			{
@@ -193,12 +193,12 @@ public class ProtectionCommand  implements BaseCommand {
 				if(curMine.getProtection().contains(Protection.BLOCK_PLACE)) {
 					curMine.getProtection().remove(Protection.BLOCK_PLACE);
 					curMine.getPlaceBlacklist().setEnabled(false);
-					Message.sendFormatted(curMine.getId(), "Block placement protection has been turned " + ChatColor.RED + "off");
+					Message.sendFormattedMine("Block placement protection has been turned " + ChatColor.RED + "off");
 				}
 				else {
 					curMine.getProtection().add(Protection.BLOCK_PLACE);
 					curMine.getPlaceBlacklist().setEnabled(true);
-					Message.sendFormatted(curMine.getId(), "Block placement protection has been turned " + ChatColor.GREEN + "on");
+					Message.sendFormattedMine("Block placement protection has been turned " + ChatColor.GREEN + "on");
 				}
 			}
 			else if(args[2].equalsIgnoreCase("whitelist")) {
@@ -208,11 +208,11 @@ public class ProtectionCommand  implements BaseCommand {
 				}
 				if(curMine.getPlaceBlacklist().getWhitelist()) {
 					curMine.getPlaceBlacklist().setWhitelist(false);
-					Message.sendFormatted(curMine.getId(), "Block placement whitelist is now " + ChatColor.RED + "off");
+					Message.sendFormattedMine("Block placement whitelist is now " + ChatColor.RED + "off");
 				}
 				else {
 					curMine.getPlaceBlacklist().setWhitelist(true);
-					Message.sendFormatted(curMine.getId(), "Block placement whitelist is now " + ChatColor.GREEN + "on");
+					Message.sendFormattedMine("Block placement whitelist is now " + ChatColor.GREEN + "on");
 				}
 			}
 			else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
@@ -231,7 +231,7 @@ public class ProtectionCommand  implements BaseCommand {
 				blockList.add(block);
 				curMine.getPlaceBlacklist().setBlocks(blockList);
 				
-				Message.sendFormatted(curMine.getId(), ChatColor.GREEN + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was added to the block placement protection blacklist");
+				Message.sendFormattedMine(ChatColor.GREEN + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was added to the block placement protection blacklist");
 			}
 			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
 				if(args.length != 4) {
@@ -254,7 +254,7 @@ public class ProtectionCommand  implements BaseCommand {
 				blockList.remove(block);
 				curMine.getPlaceBlacklist().setBlocks(blockList);
 
-				Message.sendFormatted(curMine.getId(), ChatColor.RED + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was removed from the block placement protection blacklist");
+				Message.sendFormattedMine(ChatColor.RED + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was removed from the block placement protection blacklist");
 			}
 			else
 			{

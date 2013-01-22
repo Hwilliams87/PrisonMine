@@ -116,8 +116,8 @@ public class EditCommand  implements BaseCommand {
 			if(index == null) blocks.add(new MineBlock(block, percent));
 			else index.setChance(index.getChance() + percent);
 			
-			Message.sendFormatted(curMine.getId(), Util.round(percent) + " of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
-			Message.sendFormatted(curMine.getId(), "Reset the mine for the changes to take effect");
+			Message.sendFormattedMine(Util.round(percent) + " of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
+			Message.sendFormattedMine("Reset the mine for the changes to take effect");
 			
 			return curMine.saveFile();
 		} else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("-")) {
@@ -161,7 +161,7 @@ public class EditCommand  implements BaseCommand {
 				air.setChance(air.getChance() + percent);
 				blockData.setChance(blockData.getChance() - percent);
 				
-				Message.sendFormatted(curMine.getId(), Util.round(percent) + " of " + args[1] + " was successfully removed from the mine");
+				Message.sendFormattedMine(Util.round(percent) + " of " + args[1] + " was successfully removed from the mine");
 			}
 			else {
 				List<MineBlock> blocks = curMine.getBlocks();
@@ -169,7 +169,7 @@ public class EditCommand  implements BaseCommand {
 				air.setChance(air.getChance() + blockData.getChance());
 				blocks.remove(blockData);
 				
-				Message.sendFormatted(curMine.getId(), args[1] + " was successfully removed from the mine");
+				Message.sendFormattedMine(args[1] + " was successfully removed from the mine");
 			}
 			
 			return curMine.saveFile();
@@ -200,8 +200,8 @@ public class EditCommand  implements BaseCommand {
 			}
 			
 			PrisonMine.removeMine(curMine);
+			Message.sendFormattedMine("Mine successfully deleted");
 			PrisonMine.setCurMine(null);
-			Message.sendFormatted(curMine.getId(), "Mine successfully deleted");
 			curMine.deleteFile();
 			MineData.saveAll();
 			return true;
@@ -215,7 +215,7 @@ public class EditCommand  implements BaseCommand {
 			for(int i = 2; i < args.length; i++) name = name + " " + args[i];
 			
 			curMine.setName(name);
-			Message.sendFormatted(curMine.getId(), "Mine now has a display name '" + ChatColor.GOLD + name + ChatColor.WHITE + "'");
+			Message.sendFormattedMine("Mine now has a display name '" + ChatColor.GOLD + name + ChatColor.WHITE + "'");
 			
 			return curMine.saveFile();
 		} else if(args[0].equalsIgnoreCase("cooldown")) {
@@ -227,11 +227,11 @@ public class EditCommand  implements BaseCommand {
 			if(args[1].equalsIgnoreCase("toggle")) {
 				if(curMine.getCooldown()) {
 					curMine.setCooldownEnabled(false);
-					Message.sendFormatted(curMine.getId(), "Reset cooldown " + ChatColor.RED + "disabled");
+					Message.sendFormattedMine("Reset cooldown " + ChatColor.RED + "disabled");
 				}
 				else {
 					curMine.setCooldownEnabled(true);
-					Message.sendFormatted(curMine.getId(), "Reset cooldown " + ChatColor.GREEN + "enabled");
+					Message.sendFormattedMine("Reset cooldown " + ChatColor.GREEN + "enabled");
 				}
 			} else {
 				try {
@@ -241,7 +241,7 @@ public class EditCommand  implements BaseCommand {
 						return false;
 					}
 					curMine.setCooldownPeriod(seconds);
-					Message.sendFormatted(curMine.getId(), "Reset cooldown set to " + ChatColor.GREEN + Util.parseSeconds(seconds));
+					Message.sendFormattedMine("Reset cooldown set to " + ChatColor.GREEN + Util.parseSeconds(seconds));
 				}
 				catch (NumberFormatException nfe) {
 					Message.sendFormattedError(language.ERROR_ARGUMENTS);
@@ -256,7 +256,7 @@ public class EditCommand  implements BaseCommand {
 			}
 			
 			if(args[1].equalsIgnoreCase("none")) {
-				Message.sendFormatted(curMine.getId(), "Mine is no longer linked to " + ChatColor.RED + curMine.getParent());
+				Message.sendFormattedMine("Mine is no longer linked to " + ChatColor.RED + curMine.getParent());
 				curMine.setParent(null);
 				
 				return curMine.saveFile();
@@ -278,7 +278,7 @@ public class EditCommand  implements BaseCommand {
 			}
 			
 			curMine.setParent(args[1]);
-			Message.sendFormatted(curMine.getId(), "Mine will is now linked to " + ChatColor.GREEN + args[1]);
+			Message.sendFormattedMine("Mine will is now linked to " + ChatColor.GREEN + args[1]);
 			
 			return curMine.saveFile();
 		}

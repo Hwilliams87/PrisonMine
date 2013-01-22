@@ -41,7 +41,6 @@ public class Message extends com.wolvencraft.prison.util.Message {
 		send(sender, message, parseVars, curMine);
 	}
 	public static void sendFormatted(CommandSender sender, String title, String message, boolean parseVars) {
-		Message.debug("title = " + title);
 		message = title + " " + ChatColor.WHITE + message;
 		send(sender, message, parseVars);
 	}
@@ -91,7 +90,22 @@ public class Message extends com.wolvencraft.prison.util.Message {
 	public static void sendFormattedError(String message) {
 		sendFormatted(CommandManager.getSender(), PrisonMine.getLanguage().GENERAL_ERROR, message, false);
 	}
-
+	
+	
+	public static void sendFormattedMine(CommandSender sender, String message, Mine curMine) {
+		String title = ChatColor.GOLD + "[" + curMine.getId() + "]";
+		sendFormatted(sender, title, message, true, curMine);
+	}
+	public static void sendFormattedMine(CommandSender sender, String message) {
+		String title = ChatColor.GOLD + "[" + PrisonMine.getCurMine(sender).getId() + "]";
+		sendFormatted(sender, title, message, true);
+	}
+	public static void sendFormattedMine(String message) {
+		CommandSender sender = CommandManager.getSender();
+		String title = ChatColor.GOLD + "[" + PrisonMine.getCurMine(sender).getId() + "]";
+		sendFormatted(sender, title, message, true);
+	}
+	
     /**
      * Broadcasts a message to all players on the server
      * @param message Message to be sent

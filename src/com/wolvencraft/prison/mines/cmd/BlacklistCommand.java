@@ -35,21 +35,21 @@ public class BlacklistCommand implements BaseCommand {
 			}
 			if(curMine.getBlacklist().getEnabled()) {
 				curMine.getBlacklist().setEnabled(false);
-				Message.sendFormatted(curMine.getId(), "Blacklist turned " + ChatColor.RED + "off");
+				Message.sendFormattedMine("Blacklist turned " + ChatColor.RED + "off");
 			}
 			else {
 				curMine.getBlacklist().setEnabled(true);
-				Message.sendFormatted(curMine.getId(), "Blacklist turned " + ChatColor.GREEN + "on");
+				Message.sendFormattedMine("Blacklist turned " + ChatColor.GREEN + "on");
 			}
 		}
 		else if(args[1].equalsIgnoreCase("whitelist")) {
 			if(curMine.getBlacklist().getWhitelist()) {
 				curMine.getBlacklist().setWhitelist(false);
-				Message.sendFormatted(curMine.getId() + " Blacklist", "Whitelist mode " + ChatColor.RED + "off");
+				Message.sendFormattedMine("Whitelist mode " + ChatColor.RED + "off");
 			}
 			else {
 				curMine.getBlacklist().setWhitelist(true);
-				Message.sendFormatted(curMine.getId() + " Blacklist", "Whitelist mode " + ChatColor.GREEN + "on");
+				Message.sendFormattedMine("Whitelist mode " + ChatColor.GREEN + "on");
 			}
 		}
 		else if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+")) {
@@ -67,7 +67,7 @@ public class BlacklistCommand implements BaseCommand {
 			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
 			blocks.add(block);
 			curMine.getBlacklist().setBlocks(blocks);
-			Message.sendFormatted(curMine.getId(), ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been added to the blacklistlist");
+			Message.sendFormattedMine(ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been added to the blacklistlist");
 		}
 		else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-")) {
 			if(args.length != 3) {
@@ -84,7 +84,7 @@ public class BlacklistCommand implements BaseCommand {
 			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
 			blocks.remove(block);
 			curMine.getBlacklist().setBlocks(blocks);
-			Message.sendFormatted(curMine.getId(), ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been removed from the list");
+			Message.sendFormattedMine(ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been removed from the list");
 		}
 		else {
 			Message.sendFormattedError(language.ERROR_COMMAND);

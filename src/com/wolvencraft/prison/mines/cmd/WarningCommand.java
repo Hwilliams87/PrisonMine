@@ -32,11 +32,11 @@ public class WarningCommand  implements BaseCommand {
 			
 			if(curMine.getWarned()) {
 				curMine.setWarned(false);
-				Message.sendFormatted(curMine.getId(), "Reset warnings are " + ChatColor.RED + "off");
+				Message.sendFormattedMine("Reset warnings are " + ChatColor.RED + "off");
 			}
 			else {
 				curMine.setWarned(true);
-				Message.sendFormatted(curMine.getId(), "Reset warnings are " + ChatColor.GREEN + "on");
+				Message.sendFormattedMine("Reset warnings are " + ChatColor.GREEN + "on");
 			}
 		} else if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+")) {
 			if(args.length != 3) {
@@ -57,7 +57,7 @@ public class WarningCommand  implements BaseCommand {
 			List<Integer> warnList = curMine.getWarningTimes();
 			warnList.add(time);
 			String parsedTime = Util.parseSeconds(time);
-			Message.sendFormatted(curMine.getId(), "Mine will now send warnings " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s) before the reset");
+			Message.sendFormattedMine("Mine will now send warnings " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s) before the reset");
 		} else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
 			if(args.length != 4) {
 				Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
@@ -78,7 +78,7 @@ public class WarningCommand  implements BaseCommand {
 			}
 			
 			warnList.remove(index);
-			Message.sendFormatted(curMine.getId(), "Mine will no longer send a warning " + ChatColor.GOLD + Util.parseSeconds(time) + ChatColor.WHITE + " minute(s) before the reset");
+			Message.sendFormattedMine("Mine will no longer send a warning " + ChatColor.GOLD + Util.parseSeconds(time) + ChatColor.WHITE + " minute(s) before the reset");
 		}
 		else {
 			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);
