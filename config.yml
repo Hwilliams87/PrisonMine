@@ -1,5 +1,5 @@
 players:
-  teleport-players-out-of-the-mine: false
+  teleport-players-out-of-the-mine: true
 reset:
   force-reset-timer-on-mine-reset: true
   manual-resets-children: false
