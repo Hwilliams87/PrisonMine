@@ -14,7 +14,10 @@ public class Settings extends com.wolvencraft.prison.settings.Settings {
 	public final boolean RESET_ALL_MINES_ON_STARTUP;
 	public final boolean RESET_TRIGGERS_CHILDREN_RESETS;
 	public final List<String> BANNEDNAMES;
-	public final Material[] TOOLS = {Material.WOOD_PICKAXE, Material.STONE_PICKAXE, Material.IRON_PICKAXE, Material.GOLD_PICKAXE, Material.DIAMOND_PICKAXE};
+	public final Material[] TOOLS = {
+			Material.WOOD_PICKAXE, Material.STONE_PICKAXE, Material.IRON_PICKAXE, Material.GOLD_PICKAXE, Material.DIAMOND_PICKAXE,
+			Material.WOOD_SPADE, Material.STONE_SPADE, Material.IRON_SPADE, Material.GOLD_SPADE, Material.DIAMOND_SPADE,
+			Material.WOOD_AXE, Material.STONE_AXE, Material.IRON_AXE, Material.GOLD_AXE, Material.DIAMOND_AXE};
 	public final int DEFAULTTIME;
 	
 	public Settings(PrisonMine plugin) {
