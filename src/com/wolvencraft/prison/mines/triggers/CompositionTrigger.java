@@ -69,6 +69,8 @@ public class CompositionTrigger implements BaseTrigger, ConfigurationSerializabl
 			Message.debug("| Reset cause: composition (" + ((double) mineObj.getBlocksLeft() / (double) mineObj.getTotalBlocks()) +" > " + percent + ")");
 			AutomaticResetRoutine.run(mineObj);
 		}
+		
+		mineObj.setLastResetBy("COMPOSITION");
 	}
 
 	public void cancel() { Message.debug("Cancelling task: " + getName()); canceled = true; }

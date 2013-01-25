@@ -1,5 +1,8 @@
 package com.wolvencraft.prison.mines.cmd;
 
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+
 import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
@@ -94,6 +97,10 @@ public class ResetCommand implements BaseCommand {
 		
 		Message.debug("| Reached the end of the report for " + curMine.getId());
 		Message.debug("+---------------------------------------------");
+		
+		if(CommandManager.getSender() instanceof ConsoleCommandSender)
+			curMine.setLastResetBy("CONSOLE");
+		else curMine.setLastResetBy(((Player) CommandManager.getSender()).getPlayerListName());
 		
 		return true;
 	}

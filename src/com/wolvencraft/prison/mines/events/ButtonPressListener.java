@@ -66,6 +66,8 @@ public class ButtonPressListener implements Listener {
 						} else Message.debug("Vault not found");
 						
 						ButtonResetRoutine.run(curMine, player);
+						
+						curMine.setLastResetBy(player.getPlayerListName());
 					}
 				}
 			}

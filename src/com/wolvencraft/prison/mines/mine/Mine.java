@@ -72,6 +72,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     
     private int totalBlocks;
     private int blocksLeft;
+    
+    private String lastResetBy;
 
     /**
      * Standard constructor for new mines
@@ -112,6 +114,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     	placeBlacklist = new Blacklist();
     	
     	totalBlocks = blocksLeft = region.getBlockCount();
+    	
+    	lastResetBy = null;
     }
     
     /**
@@ -166,6 +170,8 @@ public class Mine implements ConfigurationSerializable, Listener {
         
         this.totalBlocks = region.getBlockCount();
         this.blocksLeft = region.getBlockCount();
+
+    	this.lastResetBy = null;
     }
     
     /**
@@ -206,6 +212,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     	
     	totalBlocks = region.getBlockCount();
     	blocksLeft = ((Integer) map.get("blocksLeft")).intValue();
+    	
+    	lastResetBy = null;
     }
 	
 	/**
@@ -301,6 +309,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     public Blacklist getBreakBlacklist() 			{ return breakBlacklist; }
     public Blacklist getPlaceBlacklist() 			{ return placeBlacklist; }
     
+    public String getLastResetBy()					{ return lastResetBy; }
     
     public void setName(String name) 								{ this.name = name; }
     public void setParent(String parent) 							{ this.parent = parent; }
@@ -313,6 +322,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     public void resetCooldown() 									{ cooldownEndsIn = cooldownPeriod * 20; }
     
     public void setWarned(boolean warned) 							{ this.warned = warned; }
+    
+    public void setLastResetBy(String issuer)						{ this.lastResetBy = issuer; }
     
     /**
      * Returns the instance of the trigger with the specified ID, or <b>null</b> if it is not present
