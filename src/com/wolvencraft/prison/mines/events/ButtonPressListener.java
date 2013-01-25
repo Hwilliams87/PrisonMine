@@ -33,13 +33,11 @@ public class ButtonPressListener implements Listener {
 			
 			if(block.getType() == Material.STONE_BUTTON || block.getType() == Material.WOOD_BUTTON) {
 		        Message.debug("ButtonPressEvent passed");
-		        
-				Location locationAbove = block.getLocation();
-				locationAbove.setY(block.getLocation().getBlockY() + 1);
-				Block blockAbove = block.getWorld().getBlockAt(locationAbove);
 				
-				if(blockAbove.getType() == Material.WALL_SIGN) {
-					DisplaySign sign = DisplaySign.get(locationAbove);
+		        Block signBlock = searchForSign(block.getLocation());
+		        
+				if(signBlock != null) {
+					DisplaySign sign = DisplaySign.get(signBlock.getLocation());
 					if(sign != null && sign.getReset()) {
 						Mine curMine = Mine.get(sign.getParent());
 						if(curMine == null) return;
@@ -74,5 +72,33 @@ public class ButtonPressListener implements Listener {
 		}
 		
 		return;
+	}
+	
+	private Block searchForSign(Location original) {
+		original.setY(original.getBlockY() + 1);
+		Block testBlock = original.getBlock();
+		if(testBlock.getType() == Material.WALL_SIGN) return testBlock;
+		
+		original.setY(original.getBlockY() - 1);
+		testBlock = original.getBlock();
+		if(testBlock.getType() == Material.WALL_SIGN) return testBlock;
+		
+		original.setX(original.getBlockX() + 1);
+		testBlock = original.getBlock();
+		if(testBlock.getType() == Material.WALL_SIGN) return testBlock;
+		
+		original.setX(original.getBlockX() - 1);
+		testBlock = original.getBlock();
+		if(testBlock.getType() == Material.WALL_SIGN) return testBlock;
+		
+		original.setZ(original.getBlockZ() + 1);
+		testBlock = original.getBlock();
+		if(testBlock.getType() == Material.WALL_SIGN) return testBlock;
+		
+		original.setZ(original.getBlockZ() - 1);
+		testBlock = original.getBlock();
+		if(testBlock.getType() == Material.WALL_SIGN) return testBlock;
+		
+		return null;
 	}
 }
