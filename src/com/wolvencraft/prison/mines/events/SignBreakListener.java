@@ -23,6 +23,12 @@ public class SignBreakListener implements Listener {
         	Message.debug("Checking for defined signs...");
         	DisplaySign sign = DisplaySign.get((Sign) b);
         	if(sign == null) return;
+
+    		if(!event.getPlayer().hasPermission("prison.mine.edit")) {
+    			event.setCancelled(true);
+        		Message.sendFormattedError(event.getPlayer(), PrisonMine.getLanguage().ERROR_ACCESS, false);
+    			return;
+    		}
         	
         	if(sign.deleteFile()) {
         		PrisonMine.removeSign(sign);
