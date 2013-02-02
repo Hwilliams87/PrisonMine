@@ -27,7 +27,9 @@ public class PlayerDamageListener implements Listener {
 		for(Mine mine : PrisonMine.getLocalMines()) {
 			if(!mine.getRegion().isLocationInRegion(player.getLocation())) continue;
 			
-			if(!mine.getFlags().contains(MineFlag.NoPlayerDamage)) continue;
+			if(!mine.hasFlag(MineFlag.NoPlayerDamage)) continue;
+			
+			if(!player.hasPermission("prison.mine.flags.noplayerdamage." + mine.getId()) && !player.hasPermission("prison.mine.flags.noplayerdamage")) { continue; }
 			
 			event.setCancelled(true);
 		}

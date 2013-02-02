@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
@@ -21,7 +22,7 @@ public class ToolListener implements Listener {
 	}
 	
 	@SuppressWarnings("deprecation")
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onBlockBreak(BlockBreakEvent event) {
 		if(event.isCancelled()) return;
 		
@@ -54,21 +55,21 @@ public class ToolListener implements Listener {
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onBlockDamage(BlockDamageEvent event) {
-			if(event.isCancelled()) return;
+		if(event.isCancelled()) return;
+		
+		Block b = event.getBlock();
+		
+		for(Mine mine : PrisonMine.getLocalMines()) {
+			if(!mine.getRegion().isLocationInRegion(b.getLocation())) continue;
 			
-			Block b = event.getBlock();
-			
-			for(Mine mine : PrisonMine.getLocalMines()) {
-				if(!mine.getRegion().isLocationInRegion(b.getLocation())) continue;
-				
-				if(mine.hasFlag(MineFlag.SuperTools)) {
-					Player player = event.getPlayer();
-					if(!player.hasPermission("prison.mine.flags.supertools." + mine.getId()) && !player.hasPermission("prison.mine.flags.supertools")) { continue; }
-					Message.debug("SuperTools flag is in effect");
-					b.breakNaturally(player.getItemInHand());
-				}
+			if(mine.hasFlag(MineFlag.SuperTools)) {
+				Player player = event.getPlayer();
+				if(!player.hasPermission("prison.mine.flags.supertools." + mine.getId()) && !player.hasPermission("prison.mine.flags.supertools")) { continue; }
+				Message.debug("SuperTools flag is in effect");
+				b.breakNaturally(player.getItemInHand());
 			}
+		}
 	}
 }
