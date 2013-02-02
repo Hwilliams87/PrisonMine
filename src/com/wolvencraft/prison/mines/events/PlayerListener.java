@@ -1,23 +1,24 @@
 package com.wolvencraft.prison.mines.events;
 
-import com.wolvencraft.prison.mines.PrisonMine;
-import com.wolvencraft.prison.mines.mine.Mine;
-import com.wolvencraft.prison.mines.mine.Protection;
-import com.wolvencraft.prison.mines.util.Message;
-
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-public class PVPListener implements Listener {
-	
-	public PVPListener(PrisonMine plugin) {
-		Message.debug("Initiating PVPListener");
-		plugin.getServer().getPluginManager().registerEvents(this, plugin);
-	}
 
+import com.wolvencraft.prison.mines.PrisonMine;
+import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.mine.Protection;
+import com.wolvencraft.prison.mines.util.Message;
+
+public class PlayerListener implements Listener {
+	
+	public PlayerListener(PrisonMine plugin) {
+		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+		Message.debug("| + PlayerListener Initialized");
+	}
+	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		if(event.isCancelled()) return;

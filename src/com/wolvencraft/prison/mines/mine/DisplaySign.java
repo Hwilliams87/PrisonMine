@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -316,5 +317,40 @@ public class DisplaySign implements ConfigurationSerializable  {
 		for(DisplaySign sign : PrisonMine.getLocalSigns()) {
 			sign.update();
 		}
+	}
+	
+	/**
+	 * Looks for initializable signs around the block
+	 * @param original Location to search around
+	 * @return
+	 */
+	public static List<Block> searchForSign(Location original) {
+		List<Block> signs = new ArrayList<Block>();
+		
+		original.setY(original.getBlockY() + 1);
+		Block testBlock = original.getBlock();
+		if(testBlock.getType() == Material.WALL_SIGN) signs.add(testBlock);
+		
+		original.setY(original.getBlockY() - 1);
+		testBlock = original.getBlock();
+		if(testBlock.getType() == Material.WALL_SIGN) signs.add(testBlock);
+		
+		original.setX(original.getBlockX() + 1);
+		testBlock = original.getBlock();
+		if(testBlock.getType() == Material.WALL_SIGN) signs.add(testBlock);
+		
+		original.setX(original.getBlockX() - 1);
+		testBlock = original.getBlock();
+		if(testBlock.getType() == Material.WALL_SIGN) signs.add(testBlock);
+		
+		original.setZ(original.getBlockZ() + 1);
+		testBlock = original.getBlock();
+		if(testBlock.getType() == Material.WALL_SIGN) signs.add(testBlock);
+		
+		original.setZ(original.getBlockZ() - 1);
+		testBlock = original.getBlock();
+		if(testBlock.getType() == Material.WALL_SIGN) signs.add(testBlock);
+		
+		return signs;
 	}
 }

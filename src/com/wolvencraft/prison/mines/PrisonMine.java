@@ -79,16 +79,11 @@ public class PrisonMine extends PrisonPlugin {
 		
 		Message.debug("4. Loaded data from file");
 		
-		new BlockBreakListener(this);
-		new BlockPlaceListener(this);
-		new BucketEmptyListener(this);
-		new BucketFillListener(this);
-		new SignClickListener(this);
-		new SignBreakListener(this);
-		new PlayerDamageListener(this);
-		new PVPListener(this);
-		new ButtonPressListener(this);
-		new ToolListener(this);
+		Message.debug("+ Event Listeners");
+		new BlockProtectionListener(this);
+		new DisplaySignListener(this);
+		new PlayerListener(this);
+		new FlagListener(this);
 		Message.debug("5. Started up event listeners");
 		
 		Message.log("PrisonMine started [ " + mines.size() + " mine(s) found ]");

@@ -1,12 +1,17 @@
 package com.wolvencraft.prison.mines.events;
 
-import org.bukkit.Location;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.wolvencraft.prison.hooks.EconomyHook;
@@ -16,14 +21,14 @@ import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.routines.ButtonResetRoutine;
 import com.wolvencraft.prison.mines.util.Message;
 
-public class ButtonPressListener implements Listener {
-
-	public ButtonPressListener(PrisonMine plugin) {
-		Message.debug("Initiating ButtonPressListener");
+public class DisplaySignListener implements Listener {
+	
+	public DisplaySignListener(PrisonMine plugin) {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+		Message.debug("| + DisplaySignListener Initialized");
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onButtonPress(PlayerInteractEvent event) {
 		if(event.isCancelled()) return;
 		
@@ -34,9 +39,9 @@ public class ButtonPressListener implements Listener {
 			if(block.getType() == Material.STONE_BUTTON || block.getType() == Material.WOOD_BUTTON) {
 		        Message.debug("ButtonPressEvent passed");
 				
-		        Block signBlock = searchForSign(block.getLocation());
+		        List<Block> signBlocks = DisplaySign.searchForSign(block.getLocation());
 		        
-				if(signBlock != null) {
+		        for(Block signBlock : signBlocks) {
 					DisplaySign sign = DisplaySign.get(signBlock.getLocation());
 					if(sign != null && sign.getReset()) {
 						Mine curMine = Mine.get(sign.getParent());
@@ -67,38 +72,70 @@ public class ButtonPressListener implements Listener {
 						
 						curMine.setLastResetBy(player.getPlayerListName());
 					}
-				}
+		        }
 			}
 		}
-		
 		return;
 	}
 	
-	private Block searchForSign(Location original) {
-		original.setY(original.getBlockY() + 1);
-		Block testBlock = original.getBlock();
-		if(testBlock.getType() == Material.WALL_SIGN) return testBlock;
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onPlayerInteract(PlayerInteractEvent event) {
+		if(event.isCancelled()) return;
+		if(!event.getPlayer().hasPermission("prison.mine.edit")) return;
 		
-		original.setY(original.getBlockY() - 1);
-		testBlock = original.getBlock();
-		if(testBlock.getType() == Material.WALL_SIGN) return testBlock;
-		
-		original.setX(original.getBlockX() + 1);
-		testBlock = original.getBlock();
-		if(testBlock.getType() == Material.WALL_SIGN) return testBlock;
-		
-		original.setX(original.getBlockX() - 1);
-		testBlock = original.getBlock();
-		if(testBlock.getType() == Material.WALL_SIGN) return testBlock;
-		
-		original.setZ(original.getBlockZ() + 1);
-		testBlock = original.getBlock();
-		if(testBlock.getType() == Material.WALL_SIGN) return testBlock;
-		
-		original.setZ(original.getBlockZ() - 1);
-		testBlock = original.getBlock();
-		if(testBlock.getType() == Material.WALL_SIGN) return testBlock;
-		
-		return null;
+		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			Block block = event.getClickedBlock();
+			
+			if(block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN_POST) {
+		        Message.debug("SignClickEvent passed");
+				
+		     	DisplaySign sign = DisplaySign.get(block.getLocation());
+				if(sign == null) {
+					Message.debug("No registered sign found at this location");
+					if(block.getState() instanceof Sign) {
+						Message.debug("Checking to see if the sign is valid");
+						Sign s = (Sign) block.getState();
+						String data = s.getLine(0);
+						if(data.startsWith("<M:") && data.endsWith(">")) {
+							Message.debug("Registering a new DisplaySign");
+							PrisonMine.addSign(new DisplaySign(s));
+						}
+						return;
+					}
+				} else {
+					sign.initChildren();
+				}
+			}
+			return;
+		}
+		else return;
+	}
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onSignBreak(BlockBreakEvent event) {
+		if(event.isCancelled()) return;
+        BlockState b = event.getBlock().getState();
+        if(b instanceof Sign) {
+        	Message.debug("Checking for defined signs...");
+        	DisplaySign sign = DisplaySign.get((Sign) b);
+        	if(sign == null) return;
+
+    		if(!event.getPlayer().hasPermission("prison.mine.edit")) {
+    			event.setCancelled(true);
+        		Message.sendFormattedError(event.getPlayer(), PrisonMine.getLanguage().ERROR_ACCESS, false);
+    			return;
+    		}
+        	
+        	if(sign.deleteFile()) {
+        		PrisonMine.removeSign(sign);
+        		Message.sendFormattedSuccess(event.getPlayer(), "Sign successfully removed", false);
+        	}
+        	else {
+        		Message.sendFormattedError(event.getPlayer(), "Error removing sign!", false);
+        		event.setCancelled(true);
+        	}
+        	return;
+        }
+        else return;
 	}
 }

@@ -8,6 +8,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,10 +17,29 @@ import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.mine.MineFlag;
 import com.wolvencraft.prison.mines.util.Message;
 
-public class ToolListener implements Listener {
+public class FlagListener implements Listener {
 	
-	public ToolListener(PrisonMine plugin) {
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+	public FlagListener(PrisonMine plugin) {
+		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+		Message.debug("| + FlagListener Initialized");
+	}
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onPlayerDamage(EntityDamageEvent event) {
+		if(event.isCancelled()) return;
+		if(!(event.getEntity() instanceof Player)) return;
+		
+		Player player = (Player) event.getEntity();
+		for(Mine mine : PrisonMine.getLocalMines()) {
+			if(!mine.getRegion().isLocationInRegion(player.getLocation())) continue;
+			
+			if(!mine.hasFlag(MineFlag.NoPlayerDamage)) continue;
+			
+			if(!player.hasPermission("prison.mine.flags.noplayerdamage." + mine.getId()) && !player.hasPermission("prison.mine.flags.noplayerdamage")) { continue; }
+			
+			event.setCancelled(true);
+			return;
+		}
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -79,7 +99,6 @@ public class ToolListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onToolBreak(PlayerItemBreakEvent event) {
 		
-
 		for(Mine mine : PrisonMine.getLocalMines()) {
 			if(!mine.getRegion().isLocationInRegion(event.getPlayer().getLocation())) continue;
 			
@@ -91,4 +110,5 @@ public class ToolListener implements Listener {
 			return;
 		}
 	}
+	
 }
