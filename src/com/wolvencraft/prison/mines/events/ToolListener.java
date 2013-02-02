@@ -8,6 +8,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.wolvencraft.prison.mines.PrisonMine;
@@ -51,6 +52,7 @@ public class ToolListener implements Listener {
 				}
 				player.setItemInHand(tool);
 				player.updateInventory();
+				return;
 			}
 		}
 	}
@@ -69,7 +71,24 @@ public class ToolListener implements Listener {
 				if(!player.hasPermission("prison.mine.flags.supertools." + mine.getId()) && !player.hasPermission("prison.mine.flags.supertools")) { continue; }
 				Message.debug("SuperTools flag is in effect");
 				b.breakNaturally(player.getItemInHand());
+				return;
 			}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onToolBreak(PlayerItemBreakEvent event) {
+		
+
+		for(Mine mine : PrisonMine.getLocalMines()) {
+			if(!mine.getRegion().isLocationInRegion(event.getPlayer().getLocation())) continue;
+			
+			Player player = event.getPlayer();
+			if(!player.hasPermission("prison.mine.flags.toolreplace." + mine.getId()) && !player.hasPermission("prison.mine.flags.toolreplace")) { continue; }
+			
+			ItemStack brokenItem = event.getBrokenItem();
+			player.getInventory().addItem(new ItemStack(brokenItem.getType()));
+			return;
 		}
 	}
 }

@@ -32,6 +32,7 @@ public class PlayerDamageListener implements Listener {
 			if(!player.hasPermission("prison.mine.flags.noplayerdamage." + mine.getId()) && !player.hasPermission("prison.mine.flags.noplayerdamage")) { continue; }
 			
 			event.setCancelled(true);
+			return;
 		}
 	}
 }
