@@ -50,12 +50,15 @@ public class PrisonMine extends PrisonPlugin {
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 		settings = new Settings(this);
-		Message.debug("1. Established connection with PrisonCore");
+		Message.debug("+---[ Starting up PrisonMine ]---");
+		Message.debug("| ");
+		Message.debug("+ Established connection with PrisonCore");
 		
 		getLanguageData().options().copyDefaults(true);
 		saveLanguageData();
 		language = new Language(this);
-		Message.debug("2. Loaded plugin configuration");
+		Message.debug("| ");
+		Message.debug("+ Loaded plugin configuration");
 		
 		ConfigurationSerialization.registerClass(Mine.class, "pMine");
 		ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");
@@ -70,21 +73,29 @@ public class PrisonMine extends PrisonPlugin {
 		
 		ConfigurationSerialization.registerClass(MRMine.class, "MRMine");
 		ConfigurationSerialization.registerClass(MRLMine.class, "MRLMine");
-		Message.debug("3. Registered serializable classes");
+		Message.debug("| ");
+		Message.debug("+ Registered serializable classes");
 		
 		mines = MineData.loadAll();
 		signs = SignData.loadAll();
 		
 		curMines = new HashMap<CommandSender, Mine>();
-		
-		Message.debug("4. Loaded data from file");
-		
-		Message.debug("+ Event Listeners");
+
+		Message.debug("| ");
+		Message.debug("+ Loaded data from file");
+
+		Message.debug("| ");
+		Message.debug("+ Initializing Event Listeners");
 		new BlockProtectionListener(this);
 		new DisplaySignListener(this);
 		new PlayerListener(this);
 		new FlagListener(this);
-		Message.debug("5. Started up event listeners");
+
+		Message.debug("| ");
+		Message.debug("+ Sending sign task to PrisonCore");
+		PrisonSuite.addTask(new DisplaySignTask());
+		
+		Message.debug("+---[ End of report ]---");
 		
 		Message.log("PrisonMine started [ " + mines.size() + " mine(s) found ]");
 		
@@ -95,8 +106,6 @@ public class PrisonMine extends PrisonPlugin {
 			}
 		}
 		
-		Message.debug("6. Sending sign task to PrisonCore");
-		PrisonSuite.addTask(new DisplaySignTask());
 	}
 	
 	@Override
