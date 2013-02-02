@@ -85,6 +85,7 @@ public class PrisonMine extends PrisonPlugin {
 		new BucketFillListener(this);
 		new SignClickListener(this);
 		new SignBreakListener(this);
+		new PlayerDamageListener(this);
 		new PVPListener(this);
 		new ButtonPressListener(this);
 		new ToolListener(this);
