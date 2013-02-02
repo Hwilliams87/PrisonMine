@@ -262,98 +262,11 @@ public class Util {
 	public static String parseVars(String str, Mine curMine) {
 		if(curMine == null) return parseChatColors(str);
 		
-		str = parseChatColors(str);
-		
-		String displayName = curMine.getName();
-		if(displayName.equals("")) displayName =  curMine.getId();
-		str = str.replaceAll("<ID>", curMine.getId());
-		str = str.replaceAll("<NAME>", displayName);
-		
-		List<Mine> children = curMine.getChildren();
-		String mineIds = curMine.getId();
-		String mineNames = displayName;
-		if(!children.isEmpty()) {
-			for(Mine childMine : children) {
-				mineIds += ", " + childMine.getId();
-				mineNames += ", " + childMine.getName();
-			}
-		}
-		str = str.replaceAll("<NAMES>", mineNames);
-		str = str.replaceAll("<IDS>", mineIds);
-		
-		
-		if(curMine.getCooldown()) {
-			str = str.replaceAll("<COOLTIME>", parseSeconds(curMine.getCooldownPeriod()));
-			str = str.replaceAll("<COOLENDS>", parseSeconds(curMine.getCooldownEndsIn()));
+		for(MineVariable var : MineVariable.values()) {
+			if(!str.contains(var.getName())) continue;
+			str.replaceAll("<" + var.getName() + ">", var.parse(curMine));
 		}
 		
-		str = str.replaceAll("<TBLOCKS>", curMine.getTotalBlocks() + "");
-		str = str.replaceAll("<RBLOCKS>", curMine.getBlocksLeft() + "");
-		str = str.replaceAll("<PBLOCKS>", (curMine.getBlocksLeft() / curMine.getTotalBlocks()) * 100 + "");
-		
-		if(curMine.getCompositionReset()) {
-			str = str.replaceAll("<PPER>", curMine.getCurrentPercent() + "");
-			str = str.replaceAll("<NPER>", curMine.getRequiredPercent() + "");
-		}
-		
-		if(curMine.getLastResetBy() == null) str = str.replaceAll("<PLAYER>", "none");
-		else str = str.replaceAll("<PLAYER>", curMine.getLastResetBy());
-		
-		if(curMine.getAutomaticReset()) {
-			// Reset period variable calculations
-			int ptime = curMine.getResetPeriod();
-			
-			int phour = ptime / 3600;										// Unformatted variables.
-			int pmin = ptime / 60;											// Contain exact values for hour, minutes, seconds.
-			int psec = ptime;												// Used in further calculations.
-			
-			int phourFormatted = phour;										// Formatted variables.
-			int pminFormatted = pmin - phour * 60;							// Values of higher-level variables have been subtracted.
-			int psecFormatted = psec - pmin * 60;							// Do not have a 0 in front if the value is < 10.
-			
-			String phourClock = phourFormatted + "";						// Extra-formatted variables.
-			if(phourFormatted < 10) phourClock = "0" + phourClock;			// Have an added 0 in front
-			String pminClock = pminFormatted + "";							// if the value of the variable
-			if(pminFormatted < 10) pminClock = "0" + pminClock;				// is single-digit.
-			String psecClock = psecFormatted + "";							// Used in the super-formatted variable.
-			if(psecFormatted < 10) psecClock = "0" + psecClock;
-			
-			String ptimeClock = pminClock + ":" + psecClock;				// Super-formatted variable.
-			if(phour != 0) ptimeClock = phourFormatted + ":" + ptimeClock;	// Displays time in HOUR:MINUTE:SECOND format.
-
-			// Next reset variable calculations
-			int ntime = curMine.getResetsIn();
-			
-			int nhour = ntime / 3600;										// Unformatted variables.
-			int nmin = ntime / 60;											// Contain exact values for hour, minutes, seconds.
-			int nsec = ntime;												// Used in further calculations.
-			
-			int nhourFormatted = nhour;										// Formatted variables.
-			int nminFormatted = nmin - nhour * 60;							// Values of higher-level variables have been subtracted.
-			int nsecFormatted = nsec - nmin * 60;							// Do not have a 0 in front if the value is < 10.
-			
-			String nhourClock = nhourFormatted + "";						// Extra-formatted variables.
-			if(nhourFormatted < 10) nhourClock = "0" + nhourClock;			// Have an added 0 in front
-			String nminClock = nminFormatted + "";							// if the value of the variable
-			if(nminFormatted < 10) nminClock = "0" + nminClock;				// is single-digit.
-			String nsecClock = nsecFormatted + "";							// Used in the super-formatted variable.
-			if(nsecFormatted < 10) nsecClock = "0" + nsecClock;
-			
-			String ntimeClock = nminClock + ":" + nsecClock;				// Super-formatted variable.
-			if(nhour != 0) ntimeClock = nhourFormatted + ":" + ntimeClock;	// Displays time in HOUR:MINUTE:SECOND format.
-			
-			// Reset Period variables
-			str = str.replaceAll("<PHOUR>", phourFormatted + "");
-			str = str.replaceAll("<PMIN>", pminFormatted + "");
-			str = str.replaceAll("<PSEC>", psecFormatted + "");
-			str = str.replaceAll("<PTIME>", ptimeClock);
-			
-			// Next Reset variables
-			str = str.replaceAll("<NHOUR>", nhourFormatted + "");
-			str = str.replaceAll("<NMIN>", nminFormatted + "");
-			str = str.replaceAll("<NSEC>", nsecFormatted + "");
-			str = str.replaceAll("<NTIME>", ntimeClock);
-		}
 		
 		if(str.startsWith("<M:") && str.endsWith(">")) str = parseVars(PrisonMine.getLanguage().SIGN_TITLE, curMine);
 		if(str.startsWith("<M>")) str = str.replaceAll("<M>", "");
