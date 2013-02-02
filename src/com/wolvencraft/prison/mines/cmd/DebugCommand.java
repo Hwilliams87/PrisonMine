@@ -53,11 +53,6 @@ public class DebugCommand implements BaseCommand {
 			PrisonMine.removeMine(Mine.get(args[1]));
 			Message.sendFormatted("DEBUG", "Unloaded " + args[1] + " from memory", false);
 			return true;
-		} else if(args[0].equalsIgnoreCase("setwarp")) {
-			Mine curMine = Mine.get(args[1]);
-			curMine.setTpPoint(((Player) CommandManager.getSender()).getLocation());
-			Message.sendFormatted("DEBUG", "Mine tp point is set", false);
-			return true;
 		} else {
 			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);
 			return false;
@@ -71,7 +66,6 @@ public class DebugCommand implements BaseCommand {
 		Message.formatHelp("setregion", "<id>", "Sets the reset region of a mine to the one specified");
 		Message.formatHelp("tp", "<id>", "Teleports the sender to the specified mine");
 		Message.formatHelp("unload", "<id>", "Unloads the mine from the memory. The mine will be loaded back on server restart");
-		Message.formatHelp("setwarp", "<id>", "Sets the tp point for the mine");
 	}
 
 	@Override

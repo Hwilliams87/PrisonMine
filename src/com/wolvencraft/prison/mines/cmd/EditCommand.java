@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.prison.PrisonSuite;
 import com.wolvencraft.prison.hooks.TimedTask;
+import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.mine.MineBlock;
@@ -280,8 +282,16 @@ public class EditCommand  implements BaseCommand {
 			Message.sendFormattedMine("Mine will is now linked to " + ChatColor.GREEN + args[1]);
 			
 			return curMine.saveFile();
-		}
-		else {
+		} else if(args[0].equalsIgnoreCase("setwarp")) {
+			if(args.length != 1) {
+				Message.sendFormattedError(language.ERROR_ARGUMENTS);
+				return false;
+			}
+			
+			curMine.setTpPoint(((Player) CommandManager.getSender()).getLocation());
+			Message.sendFormattedMine("Mine tp point is set to your current location");
+			return true;
+		} else {
 			Message.sendFormattedError(language.ERROR_COMMAND);
 			return false;
 		}
@@ -298,6 +308,7 @@ public class EditCommand  implements BaseCommand {
 		Message.formatHelp("setparent", "<id>", "Links the timers of two mines");
 		Message.formatHelp("cooldown toggle", "", "Toggles the reset cooldown");
 		Message.formatHelp("cooldown <time>", "", "Sets the cooldown time");
+		Message.formatHelp("setwarp", "", "Sets the teleportation point for the mine");
 		return;
 	}
 	
