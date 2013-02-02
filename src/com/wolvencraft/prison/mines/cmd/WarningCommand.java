@@ -59,7 +59,7 @@ public class WarningCommand  implements BaseCommand {
 			String parsedTime = Util.parseSeconds(time);
 			Message.sendFormattedMine("Mine will now send warnings " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s) before the reset");
 		} else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
-			if(args.length != 4) {
+			if(args.length != 3) {
 				Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
 				return false;
 			}
