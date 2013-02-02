@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.prison.mines.PrisonMine;
+import com.wolvencraft.prison.mines.mine.BlacklistState;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.settings.Language;
 import com.wolvencraft.prison.mines.util.Message;
@@ -28,66 +29,67 @@ public class BlacklistCommand implements BaseCommand {
 			return false;
 		}
 		
-		if(args[1].equalsIgnoreCase("toggle")) {
-			if(args.length != 2) {
-				Message.sendFormattedError(language.ERROR_ARGUMENTS);
-				return false;
+		if(args.length == 2) {
+			if(args[1].equalsIgnoreCase("blacklist")) {
+				if(curMine.getPlaceBlacklist().getState().equals(BlacklistState.BLACKLIST)) {
+					curMine.getBlacklist().setState(BlacklistState.DISABLED);
+					Message.sendFormattedError("The replacement rules are disabled");
+				} else {
+					curMine.getPlaceBlacklist().setState(BlacklistState.BLACKLIST);
+					Message.sendFormattedSuccess("The replacement rules are now in blacklist mode");
+					return true;
+				}
+			} else if(args[1].equalsIgnoreCase("whitelist")) {
+				if(curMine.getPlaceBlacklist().getState().equals(BlacklistState.WHITELIST)) {
+					curMine.getBlacklist().setState(BlacklistState.DISABLED);
+					Message.sendFormattedError("The replacement rules are disabled");
+				} else {
+					curMine.getPlaceBlacklist().setState(BlacklistState.WHITELIST);
+					Message.sendFormattedSuccess("The replacement rules are now in whitelist mode");
+					return true;
+				}
 			}
-			if(curMine.getBlacklist().getEnabled()) {
-				curMine.getBlacklist().setEnabled(false);
-				Message.sendFormattedMine("Blacklist turned " + ChatColor.RED + "off");
+		} else if(args.length == 3) {
+			if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+")) {
+				if(args.length != 3) {
+					Message.sendFormattedError(language.ERROR_ARGUMENTS);
+					return false;
+				}
+				
+				MaterialData block = Util.getBlock(args[2]);
+				if(block == null) {
+					Message.sendFormattedError(language.ERROR_NOSUCHBLOCK.replaceAll("<BLOCK>", args[2]));
+					return false;
+				}
+				
+				List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
+				blocks.add(block);
+				curMine.getBlacklist().setBlocks(blocks);
+				Message.sendFormattedMine(ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been added to the blacklistlist");
+			}
+			else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-")) {
+				if(args.length != 3) {
+					Message.sendFormattedError(language.ERROR_ARGUMENTS);
+					return false;
+				}
+				
+				MaterialData block = Util.getBlock(args[2]);
+				if(block == null) {
+					Message.sendFormattedError(language.ERROR_NOSUCHBLOCK.replaceAll("<BLOCK>", args[2]));
+					return false;
+				}
+				
+				List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
+				blocks.remove(block);
+				curMine.getBlacklist().setBlocks(blocks);
+				Message.sendFormattedMine(ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been removed from the list");
 			}
 			else {
-				curMine.getBlacklist().setEnabled(true);
-				Message.sendFormattedMine("Blacklist turned " + ChatColor.GREEN + "on");
-			}
-		}
-		else if(args[1].equalsIgnoreCase("whitelist")) {
-			if(curMine.getBlacklist().getWhitelist()) {
-				curMine.getBlacklist().setWhitelist(false);
-				Message.sendFormattedMine("Whitelist mode " + ChatColor.RED + "off");
-			}
-			else {
-				curMine.getBlacklist().setWhitelist(true);
-				Message.sendFormattedMine("Whitelist mode " + ChatColor.GREEN + "on");
-			}
-		}
-		else if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+")) {
-			if(args.length != 3) {
-				Message.sendFormattedError(language.ERROR_ARGUMENTS);
+				Message.sendFormattedError(language.ERROR_COMMAND);
 				return false;
 			}
-			
-			MaterialData block = Util.getBlock(args[2]);
-			if(block == null) {
-				Message.sendFormattedError(language.ERROR_NOSUCHBLOCK.replaceAll("<BLOCK>", args[2]));
-				return false;
-			}
-			
-			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
-			blocks.add(block);
-			curMine.getBlacklist().setBlocks(blocks);
-			Message.sendFormattedMine(ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been added to the blacklistlist");
-		}
-		else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-")) {
-			if(args.length != 3) {
-				Message.sendFormattedError(language.ERROR_ARGUMENTS);
-				return false;
-			}
-			
-			MaterialData block = Util.getBlock(args[2]);
-			if(block == null) {
-				Message.sendFormattedError(language.ERROR_NOSUCHBLOCK.replaceAll("<BLOCK>", args[2]));
-				return false;
-			}
-			
-			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
-			blocks.remove(block);
-			curMine.getBlacklist().setBlocks(blocks);
-			Message.sendFormattedMine(ChatColor.GREEN + Util.parseMaterialData(block) + ChatColor.WHITE + " has been removed from the list");
-		}
-		else {
-			Message.sendFormattedError(language.ERROR_COMMAND);
+		} else {
+			Message.sendFormattedError(language.ERROR_ARGUMENTS);
 			return false;
 		}
 		
@@ -96,8 +98,8 @@ public class BlacklistCommand implements BaseCommand {
 	
 	public void getHelp() {
 		Message.formatHeader(20, "Blacklist");
-		Message.formatHelp("blacklist", "toggle", "Enables the use of blacklist for the mine");
-		Message.formatHelp("blacklist", "whitelist", "Should the blacklist be treated as a whitelist?");
+		Message.formatHelp("blacklist", "", "Toggles the use of the blacklist for the mine");
+		Message.formatHelp("whitelist", "", "Toggles the use of the whitelist for the mine");
 		Message.formatHelp("blacklist", "+ <block>", "Add <block> to the list");
 		Message.formatHelp("blacklist", "- <block>", "Remove <block> from the list");
 		return;

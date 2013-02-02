@@ -12,6 +12,7 @@ import com.wolvencraft.prison.hooks.WorldEditHook;
 import com.wolvencraft.prison.region.PrisonSelection;
 import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
+import com.wolvencraft.prison.mines.mine.BlacklistState;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.mine.Protection;
 import com.wolvencraft.prison.mines.settings.Language;
@@ -98,39 +99,66 @@ public class ProtectionCommand  implements BaseCommand {
 				return false;
 			}
 			
-			if(args[2].equalsIgnoreCase("toggle")) {
-
+			if(args[2].equalsIgnoreCase("blacklist")) {
 				if(args.length != 3) {
 					Message.sendFormattedError(language.ERROR_ARGUMENTS);
 					return false;
 				}
 				
 				if(curMine.getProtection().contains(Protection.BLOCK_BREAK)) {
-					curMine.getProtection().remove(Protection.BLOCK_BREAK);
-					curMine.getBreakBlacklist().setEnabled(false);
-					Message.sendFormattedMine("Block breaking protection has been turned " + ChatColor.RED + "off");
-				}
-				else {
+					if(curMine.getBreakBlacklist().getState().equals(BlacklistState.BLACKLIST)) {
+						Message.sendFormattedError("The break protection is already in blacklist mode");
+						return false;
+					}
+					
+					curMine.getBreakBlacklist().setState(BlacklistState.BLACKLIST);
+					Message.sendFormattedSuccess("The break protection is now in blacklist mode");
+					return true;
+				} else {
+					curMine.getBreakBlacklist().setState(BlacklistState.BLACKLIST);
 					curMine.getProtection().add(Protection.BLOCK_BREAK);
-					curMine.getBreakBlacklist().setEnabled(true);
-					Message.sendFormattedMine("Block breaking protection has been turned " + ChatColor.GREEN + "on");
+					Message.sendFormattedSuccess("The break protection is now in blacklist mode");
+					return true;
 				}
-			}
-			else if(args[2].equalsIgnoreCase("whitelist")) {
+			} else if(args[2].equalsIgnoreCase("whitelist")) {
 				if(args.length != 3) {
 					Message.sendFormattedError(language.ERROR_ARGUMENTS);
 					return false;
 				}
-				if(curMine.getBreakBlacklist().getWhitelist()) {
-					curMine.getBreakBlacklist().setWhitelist(false);
-					Message.sendFormattedMine("Block breaking whitelist is now " + ChatColor.RED + "off");
+				
+				if(curMine.getProtection().contains(Protection.BLOCK_BREAK)) {
+					if(curMine.getBreakBlacklist().getState().equals(BlacklistState.WHITELIST)) {
+						Message.sendFormattedError("The break protection is already in whitelist mode");
+						return false;
+					}
+					
+					curMine.getBreakBlacklist().setState(BlacklistState.WHITELIST);
+					Message.sendFormattedSuccess("The break protection is now in whitelist mode");
+					return true;
+				} else {
+					curMine.getBreakBlacklist().setState(BlacklistState.WHITELIST);
+					curMine.getProtection().add(Protection.BLOCK_BREAK);
+					Message.sendFormattedSuccess("The break protection is now in whitelist mode");
+					return true;
 				}
-				else {
-					curMine.getBreakBlacklist().setWhitelist(true);
-					Message.sendFormattedMine("Block breaking whitelist is now " + ChatColor.GREEN + "on");
+			} else if(args[2].equalsIgnoreCase("disable")) {
+				if(args.length != 3) {
+					Message.sendFormattedError(language.ERROR_ARGUMENTS);
+					return false;
 				}
-			}
-			else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
+				
+				if(curMine.getProtection().contains(Protection.BLOCK_BREAK)) {
+					curMine.getBreakBlacklist().setState(BlacklistState.DISABLED);
+					curMine.getProtection().remove(Protection.BLOCK_BREAK);
+					Message.sendFormattedSuccess("The break protection is now disabled");
+					return true;
+				} else {
+					curMine.getBreakBlacklist().setState(BlacklistState.WHITELIST);
+					curMine.getProtection().remove(Protection.BLOCK_BREAK);
+					Message.sendFormattedError("The break protection is not enabled");
+					return false;
+				}
+			} else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
 				if(args.length != 4) {
 					Message.sendFormattedError(language.ERROR_ARGUMENTS);
 					return false;
@@ -183,39 +211,66 @@ public class ProtectionCommand  implements BaseCommand {
 				return false;
 			}
 			
-			if(args[2].equalsIgnoreCase("toggle")) {
-
+			if(args[2].equalsIgnoreCase("blacklist")) {
 				if(args.length != 3) {
 					Message.sendFormattedError(language.ERROR_ARGUMENTS);
 					return false;
 				}
 				
 				if(curMine.getProtection().contains(Protection.BLOCK_PLACE)) {
-					curMine.getProtection().remove(Protection.BLOCK_PLACE);
-					curMine.getPlaceBlacklist().setEnabled(false);
-					Message.sendFormattedMine("Block placement protection has been turned " + ChatColor.RED + "off");
-				}
-				else {
+					if(curMine.getPlaceBlacklist().getState().equals(BlacklistState.BLACKLIST)) {
+						Message.sendFormattedError("The place protection is already in blacklist mode");
+						return false;
+					}
+					
+					curMine.getPlaceBlacklist().setState(BlacklistState.BLACKLIST);
+					Message.sendFormattedSuccess("The place protection is now in blacklist mode");
+					return true;
+				} else {
+					curMine.getPlaceBlacklist().setState(BlacklistState.BLACKLIST);
 					curMine.getProtection().add(Protection.BLOCK_PLACE);
-					curMine.getPlaceBlacklist().setEnabled(true);
-					Message.sendFormattedMine("Block placement protection has been turned " + ChatColor.GREEN + "on");
+					Message.sendFormattedSuccess("The place protection is now in blacklist mode");
+					return true;
 				}
-			}
-			else if(args[2].equalsIgnoreCase("whitelist")) {
+			} else if(args[2].equalsIgnoreCase("whitelist")) {
 				if(args.length != 3) {
 					Message.sendFormattedError(language.ERROR_ARGUMENTS);
 					return false;
 				}
-				if(curMine.getPlaceBlacklist().getWhitelist()) {
-					curMine.getPlaceBlacklist().setWhitelist(false);
-					Message.sendFormattedMine("Block placement whitelist is now " + ChatColor.RED + "off");
+				
+				if(curMine.getProtection().contains(Protection.BLOCK_PLACE)) {
+					if(curMine.getPlaceBlacklist().getState().equals(BlacklistState.WHITELIST)) {
+						Message.sendFormattedError("The place protection is already in whitelist mode");
+						return false;
+					}
+					
+					curMine.getPlaceBlacklist().setState(BlacklistState.WHITELIST);
+					Message.sendFormattedSuccess("The place protection is now in whitelist mode");
+					return true;
+				} else {
+					curMine.getPlaceBlacklist().setState(BlacklistState.WHITELIST);
+					curMine.getProtection().add(Protection.BLOCK_PLACE);
+					Message.sendFormattedSuccess("The place protection is now in whitelist mode");
+					return true;
 				}
-				else {
-					curMine.getPlaceBlacklist().setWhitelist(true);
-					Message.sendFormattedMine("Block placement whitelist is now " + ChatColor.GREEN + "on");
+			} else if(args[2].equalsIgnoreCase("disable")) {
+				if(args.length != 3) {
+					Message.sendFormattedError(language.ERROR_ARGUMENTS);
+					return false;
 				}
-			}
-			else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
+				
+				if(curMine.getProtection().contains(Protection.BLOCK_PLACE)) {
+					curMine.getPlaceBlacklist().setState(BlacklistState.DISABLED);
+					curMine.getProtection().remove(Protection.BLOCK_PLACE);
+					Message.sendFormattedSuccess("The place protection is now disabled");
+					return true;
+				} else {
+					curMine.getPlaceBlacklist().setState(BlacklistState.WHITELIST);
+					curMine.getProtection().remove(Protection.BLOCK_PLACE);
+					Message.sendFormattedError("The place protection is not enabled");
+					return false;
+				}
+			} else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
 				if(args.length != 4) {
 					Message.sendFormattedError(language.ERROR_ARGUMENTS);
 					return false;
@@ -232,8 +287,7 @@ public class ProtectionCommand  implements BaseCommand {
 				curMine.getPlaceBlacklist().setBlocks(blockList);
 				
 				Message.sendFormattedMine(ChatColor.GREEN + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was added to the block placement protection blacklist");
-			}
-			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
+			} else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
 				if(args.length != 4) {
 					Message.sendFormattedError(language.ERROR_ARGUMENTS);
 					return false;
@@ -255,15 +309,11 @@ public class ProtectionCommand  implements BaseCommand {
 				curMine.getPlaceBlacklist().setBlocks(blockList);
 
 				Message.sendFormattedMine(ChatColor.RED + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was removed from the block placement protection blacklist");
-			}
-			else
-			{
+			} else {
 				Message.sendFormattedError(language.ERROR_ARGUMENTS);
 				return false;
 			}
-		}
-		else
-		{
+		} else {
 			Message.sendFormattedError(language.ERROR_COMMAND);
 			return false;
 		}
@@ -275,13 +325,15 @@ public class ProtectionCommand  implements BaseCommand {
 		Message.formatHeader(20, "Protection");
 		Message.formatHelp("prot", "pvp", "Toggles the PVP for the current mine");
 		Message.send(ChatColor.RED + " Block Breaking Protection:");
-		Message.formatHelp("prot", "break toggle", "Toggles the protection");
+		Message.formatHelp("prot", "break blacklist", "Toggles blackelist mode (default)");
 		Message.formatHelp("prot", "break whitelist", "Toggles whitelist mode");
+		Message.formatHelp("prot", "break disable", "Disables the protection");
 		Message.formatHelp("prot", "break + <block>", "Add <block> to the blacklist");
 		Message.formatHelp("prot", "break - <block>", "Remove <block> from theblacklist");
 		Message.send(ChatColor.RED + " Block Placement Protection:");
-		Message.formatHelp("prot", "place toggle", "Toggles the protection");
+		Message.formatHelp("prot", "break blacklist", "Toggles blackelist mode (default)");
 		Message.formatHelp("prot", "place whitelist", "Toggles whitelist mode");
+		Message.formatHelp("prot", "break disable", "Disables the protection");
 		Message.formatHelp("prot", "place + <block>", "Add <block> to the blacklist");
 		Message.formatHelp("prot", "place - <block>", "Remove <block> from theblacklist");
 		return;

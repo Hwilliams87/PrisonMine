@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.prison.mines.PrisonMine;
+import com.wolvencraft.prison.mines.mine.BlacklistState;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.mine.Protection;
 import com.wolvencraft.prison.mines.util.Message;
@@ -50,7 +51,7 @@ public class BucketFillListener implements Listener {
             }
 
             Message.debug("Mine has a block breaking protection enabled");
-			if(mine.getBreakBlacklist().getEnabled()) {
+			if(!mine.getBreakBlacklist().getState().equals(BlacklistState.DISABLED)) {
 				Message.debug("Block breaking blacklist detected");
 				boolean found = false;
 				for(MaterialData block : mine.getBreakBlacklist().getBlocks()) {
@@ -60,7 +61,7 @@ public class BucketFillListener implements Listener {
 					}
 				}
 				
-				if((mine.getBreakBlacklist().getWhitelist() && !found) || (!mine.getBreakBlacklist().getWhitelist() && found)) {
+				if((mine.getBreakBlacklist().getState().equals(BlacklistState.WHITELIST) && !found) || (!mine.getBreakBlacklist().getState().equals(BlacklistState.BLACKLIST) && found)) {
 					Message.debug("Player " + player.getName() + " broke a black/whitelisted block in the mine!");
 					Message.sendFormattedError(player, "You are not allowed to fill buckets in the mine");
 					event.setCancelled(true);

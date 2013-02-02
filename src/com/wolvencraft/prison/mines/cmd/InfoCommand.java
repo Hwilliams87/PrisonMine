@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.prison.mines.PrisonMine;
+import com.wolvencraft.prison.mines.mine.BlacklistState;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.mine.MineFlag;
 import com.wolvencraft.prison.mines.mine.Protection;
@@ -49,7 +50,7 @@ public class InfoCommand  implements BaseCommand {
 			// Block & PVP protection
 			String str = "    [ ";
 			if(curMine.getProtection().contains(Protection.BLOCK_BREAK)) {
-				if(curMine.getBreakBlacklist().getWhitelist()) str += ChatColor.YELLOW;
+				if(curMine.getBreakBlacklist().getState().equals(BlacklistState.WHITELIST)) str += ChatColor.YELLOW;
 				else str += ChatColor.GREEN;
 			}
 			else str += ChatColor.RED;
@@ -58,7 +59,7 @@ public class InfoCommand  implements BaseCommand {
 			else str += ChatColor.RED;
 			str += "PVP" + ChatColor.WHITE + " ]    [ ";
 			if(curMine.getProtection().contains(Protection.BLOCK_PLACE)) {
-				if(curMine.getPlaceBlacklist().getWhitelist()) str += ChatColor.YELLOW;
+				if(curMine.getPlaceBlacklist().getState().equals(BlacklistState.WHITELIST)) str += ChatColor.YELLOW;
 				else str += ChatColor.GREEN;
 			}
 			else str += ChatColor.RED;
@@ -152,15 +153,14 @@ public class InfoCommand  implements BaseCommand {
 			if(finalList.size() % 2 != 0) Message.send("        " + finalList.get(finalList.size() - 1));
 			
 			Message.send(" ");
-			boolean enabled = curMine.getBlacklist().getEnabled();
-			boolean whitelist = curMine.getBlacklist().getWhitelist();
+			BlacklistState blState = curMine.getBlacklist().getState();
 			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
 			
 			str = "                 [ ";
-			if(enabled) str += ChatColor.GREEN;
+			if(!blState.equals(BlacklistState.DISABLED)) str += ChatColor.GREEN;
 			else str += ChatColor.RED;
 			str += "Blacklist" + ChatColor.WHITE + " ]       [ ";
-			if(whitelist) str += ChatColor.GREEN;
+			if(blState.equals(BlacklistState.WHITELIST)) str += ChatColor.GREEN;
 			else str += ChatColor.RED;
 			str += "Whitelist" + ChatColor.WHITE + " ]";
 			Message.send(str);

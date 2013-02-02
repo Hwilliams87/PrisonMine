@@ -9,6 +9,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.prison.mines.PrisonMine;
+import com.wolvencraft.prison.mines.mine.BlacklistState;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.mine.Protection;
 import com.wolvencraft.prison.mines.util.Message;
@@ -57,7 +58,7 @@ public class BlockPlaceListener implements Listener {
 			}
 				
 			Message.debug("Mine has a block placement protection enabled");
-			if(mine.getPlaceBlacklist().getEnabled()) {
+			if(!mine.getPlaceBlacklist().getState().equals(BlacklistState.DISABLED)) {
 				Message.debug("Block placement blacklist detected");
 				boolean found = false;
 				for(MaterialData block : mine.getPlaceBlacklist().getBlocks()) {
@@ -67,7 +68,7 @@ public class BlockPlaceListener implements Listener {
 					}
 				}
 				
-				if((mine.getPlaceBlacklist().getWhitelist() && !found) || (!mine.getPlaceBlacklist().getWhitelist() && found)) {
+				if((mine.getPlaceBlacklist().getState().equals(BlacklistState.WHITELIST) && !found) || (!mine.getPlaceBlacklist().getState().equals(BlacklistState.BLACKLIST) && found)) {
 					Message.debug("Player " + player.getName() + " broke a black/whitelisted block in the mine!");
 					Message.sendFormattedError(player, errorString);
 					event.setCancelled(true);

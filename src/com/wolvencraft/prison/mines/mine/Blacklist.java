@@ -10,29 +10,23 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.material.MaterialData;
 
-/**
- * The Blacklist object is used as one of the three blacklists in a mine object.<br />
- * The possible uses are: block-replace, block-break, block-place
- * @author bitWolfy
- *
- */
 @SerializableAs("Blacklist")
 public class Blacklist implements ConfigurationSerializable {
-
+	private BlacklistState type;
 	private List<MaterialData> blocks;
-	private boolean whitelist;
-	private boolean enabled;
 	
 	public Blacklist() {
+		type = BlacklistState.DISABLED;
 		blocks = new ArrayList<MaterialData>();
-		whitelist = false;
-		enabled = false;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public Blacklist(Map<String, Object> me) {
-		whitelist = (Boolean) me.get("whitelist");
-		enabled = (Boolean) me.get("enabled");
+		type = BlacklistState.DISABLED;
+		if(me.containsKey("enabled") && ((Boolean) me.get("enabled"))) type = BlacklistState.BLACKLIST;
+		if(me.containsKey("whitelist") && ((Boolean) me.get("whitelist"))) type = BlacklistState.WHITELIST;
+		if(me.containsKey("type")) type = BlacklistState.fromId((Integer) me.get("type"));
+		
 		Map<Integer, Byte> materials = (Map<Integer, Byte>) me.get("blocks");
 		blocks = new ArrayList<MaterialData>();
 		for(Map.Entry<Integer, Byte> entry : materials.entrySet()) {
@@ -46,8 +40,7 @@ public class Blacklist implements ConfigurationSerializable {
 	
 	public Map<String, Object> serialize() {
 		Map<String, Object> me = new HashMap<String, Object>();
-		me.put("whitelist", whitelist);
-		me.put("enabled", enabled);
+		me.put("type", type.getId());
 		Map<Integer, Byte> materials = new HashMap<Integer, Byte>();
 		for(MaterialData block : blocks) {
 			materials.put(block.getItemTypeId(), block.getData());
@@ -56,13 +49,11 @@ public class Blacklist implements ConfigurationSerializable {
 		return me;
 	}
 	
-	public boolean getEnabled() 	{ return enabled; }
-	public boolean getWhitelist() 	{ return whitelist; }
+	public BlacklistState getState() 	{ return type; }
 	
 	public List<MaterialData> getBlocks() { return blocks; }
 	
-	public void setEnabled(boolean enabled) { this.enabled = enabled; }
-	public void setWhitelist(boolean whitelist) { this.whitelist = whitelist; }
+	public void setState(BlacklistState type) { this.type = type; }
 	
 	public void setBlocks(List<MaterialData> newBlocks) {
 		blocks.clear();
