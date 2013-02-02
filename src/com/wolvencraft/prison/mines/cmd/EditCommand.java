@@ -23,8 +23,7 @@ public class EditCommand  implements BaseCommand {
 		if(args.length == 1
 				&& !args[0].equalsIgnoreCase("none")
 				&& !args[0].equalsIgnoreCase("delete")
-				&& !args[0].equalsIgnoreCase("generator")
-				&& !args[0].equalsIgnoreCase("silent")) {
+				&& !args[0].equalsIgnoreCase("generator")) {
 			getHelp();
 			return true;
 		}

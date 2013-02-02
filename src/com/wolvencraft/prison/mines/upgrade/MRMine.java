@@ -131,7 +131,7 @@ public class MRMine implements ConfigurationSerializable, Listener {
     public Mine importMine() {
     	PrisonRegion region = new PrisonRegion(one, two);
     	
-    	Mine mine = new Mine(name, displayName, parent, region, world, tpPoint, blocks, blacklist, cooldownEnabled, cooldownSeconds, generator, silent, warned, warningTimes, enabledProtection, breakBlacklist, placeBlacklist);
+    	Mine mine = new Mine(name, displayName, parent, region, world, tpPoint, blocks, blacklist, cooldownEnabled, cooldownSeconds, silent, warned, warningTimes, enabledProtection, breakBlacklist, placeBlacklist);
     	
     	if(automatic) {
         	mine.setAutomaticReset(true);

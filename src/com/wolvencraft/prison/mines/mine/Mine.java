@@ -80,8 +80,7 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @param id Mine ID, specified by player. This will be the name of the mine configuration file.
      * @param region Mine region
      * @param world World where the mine is located
-     * @param tpPoint Mine warp location
-     * @param generator Generator for the mine
+     * @param tpPoint Mine warp location4
      */
     public Mine(String id, PrisonRegion region, World world, Location tpPoint) {
     	this.id = id;
@@ -130,7 +129,6 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @param blockReplaceBlacklist
      * @param cooldownEnabled
      * @param cooldownPeriod
-     * @param generator
      * @param silent
      * @param warned
      * @param warningTimes
@@ -138,7 +136,7 @@ public class Mine implements ConfigurationSerializable, Listener {
      * @param breakBlacklist
      * @param placeBlacklist
      */
-    public Mine(String id, String name, String parent, PrisonRegion region, World world, Location tpPoint, List<MineBlock> blocks, Blacklist blockReplaceBlacklist, boolean cooldownEnabled, int cooldownPeriod, String generator, boolean silent, boolean warned, List<Integer> warningTimes, List<Protection> enabledProtection, Blacklist breakBlacklist, Blacklist placeBlacklist) {
+    public Mine(String id, String name, String parent, PrisonRegion region, World world, Location tpPoint, List<MineBlock> blocks, Blacklist blockReplaceBlacklist, boolean cooldownEnabled, int cooldownPeriod, boolean silent, boolean warned, List<Integer> warningTimes, List<Protection> enabledProtection, Blacklist breakBlacklist, Blacklist placeBlacklist) {
         this.id = id;
         this.name = name;
 
@@ -254,8 +252,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     }
     
     /**
-     * Reset the mine according to the rules specified by the generator
-     * @param generator Terrain generation rules
+     * Reset the mine according
      * @return <b>true</b> if successful, <b>false</b> if not
      */
     public boolean reset() {
