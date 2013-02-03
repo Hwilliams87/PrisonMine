@@ -50,14 +50,13 @@ public class PrisonMine extends PrisonPlugin {
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 		settings = new Settings(this);
-		Message.debug("+---[ Starting up PrisonMine ]---");
+		Message.debug("+-----[ Starting up PrisonMine ]-----");
 		Message.debug("| ");
 		Message.debug("+ Established connection with PrisonCore");
 		
 		getLanguageData().options().copyDefaults(true);
 		saveLanguageData();
 		language = new Language(this);
-		Message.debug("| ");
 		Message.debug("+ Loaded plugin configuration");
 		
 		ConfigurationSerialization.registerClass(Mine.class, "pMine");
@@ -73,25 +72,20 @@ public class PrisonMine extends PrisonPlugin {
 		
 		ConfigurationSerialization.registerClass(MRMine.class, "MRMine");
 		ConfigurationSerialization.registerClass(MRLMine.class, "MRLMine");
-		Message.debug("| ");
 		Message.debug("+ Registered serializable classes");
 		
 		mines = MineData.loadAll();
 		signs = SignData.loadAll();
 		
 		curMines = new HashMap<CommandSender, Mine>();
-
-		Message.debug("| ");
 		Message.debug("+ Loaded data from file");
 
-		Message.debug("| ");
 		Message.debug("+ Initializing Event Listeners");
 		new BlockProtectionListener(this);
 		new DisplaySignListener(this);
 		new PlayerListener(this);
 		new FlagListener(this);
-
-		Message.debug("| ");
+		
 		Message.debug("+ Sending sign task to PrisonCore");
 		PrisonSuite.addTask(new DisplaySignTask());
 		
