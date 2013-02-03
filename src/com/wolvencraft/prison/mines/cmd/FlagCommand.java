@@ -16,7 +16,7 @@ public class FlagCommand implements BaseCommand {
 		}
 		
 		Language language = PrisonMine.getLanguage();
-		if(args.length != 2) {
+		if(args.length > 3) {
 			Message.sendFormattedError(language.ERROR_ARGUMENTS);
 			return false;
 		}
@@ -37,6 +37,13 @@ public class FlagCommand implements BaseCommand {
 			curMine.removeFlag(flag);
 			Message.sendFormattedMine("Flag " + flag + " has been removed");
 		} else {
+			if(flag.hasOptions()) {
+				if(args.length != 3) {
+					Message.sendFormattedError(language.ERROR_ARGUMENTS);
+					return false;
+				}
+				flag.setOptions(args[2]);
+			}
 			curMine.addFlag(flag);
 			Message.sendFormattedMine("Flag " + flag + " has been added");
 		}
