@@ -4,7 +4,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
@@ -25,7 +24,7 @@ public class FlagListener implements Listener {
 		Message.debug("| + FlagListener Initialized");
 	}
 	
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler
 	public void onPlayerDamage(EntityDamageEvent event) {
 		if(event.isCancelled()) return;
 		if(!(event.getEntity() instanceof Player)) return;
@@ -44,7 +43,7 @@ public class FlagListener implements Listener {
 	}
 	
 	@SuppressWarnings("deprecation")
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		if(event.isCancelled()) return;
 		
@@ -78,7 +77,7 @@ public class FlagListener implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler
 	public void onBlockDamage(BlockDamageEvent event) {
 		if(event.isCancelled()) return;
 		
@@ -97,7 +96,7 @@ public class FlagListener implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler
 	public void onToolBreak(PlayerItemBreakEvent event) {
 		
 		for(Mine mine : PrisonMine.getLocalMines()) {
@@ -112,16 +111,21 @@ public class FlagListener implements Listener {
 		}
 	}
 	
+	@EventHandler
 	public void onFoodLevelChange(FoodLevelChangeEvent event) {
 		if(event.isCancelled()) return;
 		Player player = (Player) event.getEntity();
+		Message.debug(player.getPlayerListName() + "'s hunger level changed to " + event.getFoodLevel());
+		
+		if(event.getFoodLevel() < player.getFoodLevel()) return;
 		
 		for(Mine mine : PrisonMine.getLocalMines()) {
-			if(mine.getRegion().isLocationInRegion(player.getLocation())) continue;
+			if(!mine.getRegion().isLocationInRegion(player.getLocation())) continue;
 			
-			if(!player.hasPermission("prison.mine.flags.noplayerdamage." + mine.getId()) && !player.hasPermission("prison.mine.flags.noplayerdamage")) { continue; }
+			if(!player.hasPermission("prison.mine.flags.nohungerchange." + mine.getId()) && !player.hasPermission("prison.mine.flags.nohungerchange")) { continue; }
 			
-			event.setCancelled(true);
+			if(player.getFoodLevel() < 20) event.setFoodLevel(player.getFoodLevel() + 3);
+			Message.debug(player.getPlayerListName() + "'s hunger level was reset to " + player.getFoodLevel());
 		}
 	}
 }
