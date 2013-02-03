@@ -1,6 +1,9 @@
 package com.wolvencraft.prison.mines.util.variables;
 
+import org.bukkit.ChatColor;
+
 import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.util.Message;
 
 public class TimeTriggerVariables implements BaseVar {
 
@@ -62,6 +65,23 @@ public class TimeTriggerVariables implements BaseVar {
 			if(nhour != 0) ntimeClock = nhourFormatted + ":" + ntimeClock;	// Displays time in HOUR:MINUTE:SECOND format.
 			return ntimeClock;
 		} else return "<...>";
+	}
+
+	@Override
+	public void getHelp() {
+		Message.send("+ Period at which the mine resets");
+		Message.send("|- " + ChatColor.GOLD + "<PTIME> " + ChatColor.WHITE + "Time in HH:MM:SS format");
+		Message.send("|- " + ChatColor.GOLD + "<PHOUR> " + ChatColor.WHITE + "Hours portion of the time");
+		Message.send("|- " + ChatColor.GOLD + "<PMIN> " + ChatColor.WHITE + "Minutes portion of the time");
+		Message.send("|- " + ChatColor.GOLD + "<PSEC> " + ChatColor.WHITE + "Seconds portion of the time");
+		Message.send("");
+		Message.send("+ Time until the next reset");
+		Message.send("|- " + ChatColor.GOLD + "<NTIME> " + ChatColor.WHITE + "Time in HH:MM:SS format");
+		Message.send("|- " + ChatColor.GOLD + "<NHOUR> " + ChatColor.WHITE + "Hours portion of the time");
+		Message.send("|- " + ChatColor.GOLD + "<NMIN> " + ChatColor.WHITE + "Minutes portion of the time");
+		Message.send("|- " + ChatColor.GOLD + "<NSEC> " + ChatColor.WHITE + "Seconds portion of the time");
+		Message.send("");
+		
 	}
 
 }

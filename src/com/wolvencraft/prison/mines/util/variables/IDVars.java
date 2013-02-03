@@ -2,7 +2,10 @@ package com.wolvencraft.prison.mines.util.variables;
 
 import java.util.List;
 
+import org.bukkit.ChatColor;
+
 import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.util.Message;
 
 public class IDVars implements BaseVar {
 
@@ -17,6 +20,14 @@ public class IDVars implements BaseVar {
 			}
 		}
 		return mineIds;
+	}
+
+	@Override
+	public void getHelp() {
+		Message.send("+ Mine unique IDs");
+		Message.send("|- " + ChatColor.GOLD + "<ID> " + ChatColor.WHITE + "Unique ID of the mine");
+		Message.send("|- " + ChatColor.GOLD + "<IDS> " + ChatColor.WHITE + "ID of the mine and all of its children");
+		Message.send("");
 	}
 
 }

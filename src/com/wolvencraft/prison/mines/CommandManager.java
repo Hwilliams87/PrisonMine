@@ -32,6 +32,7 @@ public enum CommandManager implements CommandHook {
 	SAVE (SaveCommand.class, "prison.mine.edit", false, "save", "create", "new"),
 	TIME (TimeCommand.class, "prison.mine.info.time", true, "time"),
 	TRIGGER (TriggerCommand.class, "prison.mine.edit", true, "trigger"),
+	VARIABLES (VariablesCommand.class, "prison.mine.edit", true, "variables"),
 	WARNING (WarningCommand.class, "prison.mine.edit", true, "warning");
 	
 	private static CommandSender sender = null;

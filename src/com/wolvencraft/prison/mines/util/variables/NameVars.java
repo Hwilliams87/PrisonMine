@@ -2,7 +2,10 @@ package com.wolvencraft.prison.mines.util.variables;
 
 import java.util.List;
 
+import org.bukkit.ChatColor;
+
 import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.util.Message;
 
 public class NameVars implements BaseVar {
 
@@ -17,6 +20,14 @@ public class NameVars implements BaseVar {
 			}
 		}
 		return mineNames;
+	}
+
+	@Override
+	public void getHelp() {
+		Message.send("+ Mine display names");
+		Message.send("|- " + ChatColor.GOLD + "<NAME> " + ChatColor.WHITE + "Display name of the mine");
+		Message.send("|- " + ChatColor.GOLD + "<NAMES> " + ChatColor.WHITE + " Display name of the mine and its children");
+		Message.send("");
 	}
 
 }
