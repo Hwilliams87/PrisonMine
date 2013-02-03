@@ -121,6 +121,7 @@ public class InfoCommand  implements BaseCommand {
 				if(flags.size() > 1) {
 					for(int i = 1; i < flags.size(); i++) {
 						str +=  ", " + flags.get(i);
+						if(flags.get(i).hasOptions()) str += " (" + flags.get(i).getOptions() + ")";
 					}
 				}
 				Message.send(str);
