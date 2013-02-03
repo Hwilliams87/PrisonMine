@@ -14,7 +14,7 @@ import com.wolvencraft.prison.mines.util.variables.TimeTriggerVariables;
 public enum MineVariable {
 	
 	ID (IDVars.class, "ID", null, true),
-	IDS (IDVars.class, "IDs", "", false),
+	IDS (IDVars.class, "IDS", "", false),
 	NAME (NameVars.class, "NAME", null, true),
 	NAMES (NameVars.class, "NAMES", "", false),
 	PLAYER (PlayerVar.class, "PLAYER", null, true),

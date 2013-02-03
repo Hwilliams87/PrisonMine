@@ -25,8 +25,8 @@ public class IDVars implements BaseVar {
 	@Override
 	public void getHelp() {
 		Message.send("+ Mine unique IDs");
-		Message.send("|- " + ChatColor.GOLD + "<ID> " + ChatColor.WHITE + "Unique ID of the mine");
-		Message.send("|- " + ChatColor.GOLD + "<IDS> " + ChatColor.WHITE + "ID of the mine and all of its children");
+		Message.send("|- " + ChatColor.GOLD + "<ID> " + ChatColor.WHITE + "Unique ID of the mine", false);
+		Message.send("|- " + ChatColor.GOLD + "<IDS> " + ChatColor.WHITE + "ID of the mine and all of its children", false);
 		Message.send("");
 	}
 

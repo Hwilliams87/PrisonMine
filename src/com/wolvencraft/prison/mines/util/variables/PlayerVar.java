@@ -15,7 +15,7 @@ public class PlayerVar implements BaseVar {
 	@Override
 	public void getHelp() {
 		Message.send("+ Player variables");
-		Message.send("|- " + ChatColor.GOLD + "<PLAYER> " + ChatColor.WHITE + "The name of the player who last rese the mine");
+		Message.send("|- " + ChatColor.GOLD + "<PLAYER> " + ChatColor.WHITE + "The name of the player who last rese the mine", false);
 		Message.send("");
 	}
 

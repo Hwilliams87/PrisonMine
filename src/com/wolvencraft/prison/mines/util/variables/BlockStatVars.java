@@ -30,9 +30,9 @@ public class BlockStatVars implements BaseVar {
 	@Override
 	public void getHelp() {
 		Message.send("+ Mine block statistics");
-		Message.send("|- " + ChatColor.GOLD + "<TBLOCKS> " + ChatColor.WHITE + "Total number of blocks in the mine");
-		Message.send("|- " + ChatColor.GOLD + "<RBLOCKS> " + ChatColor.WHITE + "Remaining blocks in the mine");
-		Message.send("|- " + ChatColor.GOLD + "<PBLOCKS> " + ChatColor.WHITE + "Percentage of the mine that is not air");
+		Message.send("|- " + ChatColor.GOLD + "<TBLOCKS> " + ChatColor.WHITE + "Total number of blocks in the mine", false);
+		Message.send("|- " + ChatColor.GOLD + "<RBLOCKS> " + ChatColor.WHITE + "Remaining blocks in the mine", false);
+		Message.send("|- " + ChatColor.GOLD + "<PBLOCKS> " + ChatColor.WHITE + "Percentage of the mine that is not air", false);
 		Message.send("");
 	}
 

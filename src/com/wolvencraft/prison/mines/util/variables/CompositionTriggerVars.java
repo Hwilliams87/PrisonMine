@@ -29,8 +29,8 @@ public class CompositionTriggerVars implements BaseVar {
 	@Override
 	public void getHelp() {
 		Message.send("+ Composition Trigger variables");
-		Message.send("|- " + ChatColor.GOLD + "<NPER> " + ChatColor.WHITE + "Percentage of the mine taken by non-air blocks");
-		Message.send("|- " + ChatColor.GOLD + "<PPER> " + ChatColor.WHITE + " Percentage of the mine that required for a reset");
+		Message.send("|- " + ChatColor.GOLD + "<NPER> " + ChatColor.WHITE + "Percentage of the mine taken by non-air blocks", false);
+		Message.send("|- " + ChatColor.GOLD + "<PPER> " + ChatColor.WHITE + " Percentage of the mine that required for a reset", false);
 		Message.send("");
 	}
 

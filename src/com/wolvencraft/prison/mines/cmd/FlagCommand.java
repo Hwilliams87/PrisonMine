@@ -56,13 +56,14 @@ public class FlagCommand implements BaseCommand {
 	@Override
 	public void getHelp() {
 		Message.formatHeader(20, "Flags");
-		Message.formatHelp("flag", "<flag>", "Adds a flag value to the mine");
+		Message.formatHelp("flag", "<flag> [option]", "Adds a flag value to the mine");
 		MineFlag[] validFlags = MineFlag.values();
 		String flagString = validFlags[0].getAlias();
 		for(int i = 1; i < validFlags.length; i++) {
 			flagString += ", " + validFlags[i].getAlias();
 		}
 		Message.send("Available flags: "+ flagString);
+		Message.send("Not all flags have options available");
 	}
 
 	@Override

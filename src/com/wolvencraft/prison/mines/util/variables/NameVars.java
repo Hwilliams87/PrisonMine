@@ -25,8 +25,8 @@ public class NameVars implements BaseVar {
 	@Override
 	public void getHelp() {
 		Message.send("+ Mine display names");
-		Message.send("|- " + ChatColor.GOLD + "<NAME> " + ChatColor.WHITE + "Display name of the mine");
-		Message.send("|- " + ChatColor.GOLD + "<NAMES> " + ChatColor.WHITE + " Display name of the mine and its children");
+		Message.send("|- " + ChatColor.GOLD + "<NAME> " + ChatColor.WHITE + "Display name of the mine", false);
+		Message.send("|- " + ChatColor.GOLD + "<NAMES> " + ChatColor.WHITE + " Display name of the mine and its children", false);
 		Message.send("");
 	}
 

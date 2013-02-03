@@ -70,16 +70,16 @@ public class TimeTriggerVariables implements BaseVar {
 	@Override
 	public void getHelp() {
 		Message.send("+ Period at which the mine resets");
-		Message.send("|- " + ChatColor.GOLD + "<PTIME> " + ChatColor.WHITE + "Time in HH:MM:SS format");
-		Message.send("|- " + ChatColor.GOLD + "<PHOUR> " + ChatColor.WHITE + "Hours portion of the time");
-		Message.send("|- " + ChatColor.GOLD + "<PMIN> " + ChatColor.WHITE + "Minutes portion of the time");
-		Message.send("|- " + ChatColor.GOLD + "<PSEC> " + ChatColor.WHITE + "Seconds portion of the time");
+		Message.send("|- " + ChatColor.GOLD + "<PTIME> " + ChatColor.WHITE + "Time in HH:MM:SS format", false);
+		Message.send("|- " + ChatColor.GOLD + "<PHOUR> " + ChatColor.WHITE + "Hours portion of the time", false);
+		Message.send("|- " + ChatColor.GOLD + "<PMIN> " + ChatColor.WHITE + "Minutes portion of the time", false);
+		Message.send("|- " + ChatColor.GOLD + "<PSEC> " + ChatColor.WHITE + "Seconds portion of the time", false);
 		Message.send("");
 		Message.send("+ Time until the next reset");
-		Message.send("|- " + ChatColor.GOLD + "<NTIME> " + ChatColor.WHITE + "Time in HH:MM:SS format");
-		Message.send("|- " + ChatColor.GOLD + "<NHOUR> " + ChatColor.WHITE + "Hours portion of the time");
-		Message.send("|- " + ChatColor.GOLD + "<NMIN> " + ChatColor.WHITE + "Minutes portion of the time");
-		Message.send("|- " + ChatColor.GOLD + "<NSEC> " + ChatColor.WHITE + "Seconds portion of the time");
+		Message.send("|- " + ChatColor.GOLD + "<NTIME> " + ChatColor.WHITE + "Time in HH:MM:SS format", false);
+		Message.send("|- " + ChatColor.GOLD + "<NHOUR> " + ChatColor.WHITE + "Hours portion of the time", false);
+		Message.send("|- " + ChatColor.GOLD + "<NMIN> " + ChatColor.WHITE + "Minutes portion of the time", false);
+		Message.send("|- " + ChatColor.GOLD + "<NSEC> " + ChatColor.WHITE + "Seconds portion of the time", false);
 		Message.send("");
 		
 	}
