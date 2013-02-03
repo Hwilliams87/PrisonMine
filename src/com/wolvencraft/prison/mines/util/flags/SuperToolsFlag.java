@@ -5,7 +5,7 @@ public class SuperToolsFlag implements BaseFlag {
 	private String option ="";
 	
 	@Override
-	public String getName() { return "supertools"; }
+	public String getName() { return "SuperTools"; }
 
 	@Override
 	public String getOption() { return option; }

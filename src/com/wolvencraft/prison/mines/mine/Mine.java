@@ -11,6 +11,7 @@ import com.wolvencraft.prison.mines.triggers.TimeTrigger;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.ResetTrigger;
 import com.wolvencraft.prison.mines.util.Util;
+import com.wolvencraft.prison.mines.util.flags.BaseFlag;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -56,7 +57,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     private Blacklist blockReplaceBlacklist;
     
     private List<BaseTrigger> resetTriggers;
-    private List<MineFlag> flags;
+    private List<BaseFlag> flags;
     
     private boolean cooldownEnabled;
     private int cooldownPeriod;
@@ -105,7 +106,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	warned = true;
     	warningTimes = new ArrayList<Integer>();
     	
-    	flags = new ArrayList<MineFlag>();
+    	flags = new ArrayList<BaseFlag>();
     	
     	enabledProtection = new ArrayList<Protection>();
     	protectionRegion = region.clone();
@@ -150,13 +151,13 @@ public class Mine implements ConfigurationSerializable, Listener {
         this.blockReplaceBlacklist = blockReplaceBlacklist;
         
         this.resetTriggers = new ArrayList<BaseTrigger>();
-        this.flags = new ArrayList<MineFlag>();
+        this.flags = new ArrayList<BaseFlag>();
         
         this.cooldownEnabled = cooldownEnabled;
         this.cooldownPeriod = cooldownPeriod;
         this.cooldownEndsIn = cooldownPeriod * 20;
         
-        if(silent) flags.add(MineFlag.Silent);
+        if(silent) flags.add(MineFlag.Silent.dispatch());
         
         this.warned = warned;
         this.warningTimes = warningTimes;
@@ -201,7 +202,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     	
     	flags = MineFlag.toMineFlagList((List<String>) map.get("flags"));
     	
-    	if(map.containsValue("silent") && !hasFlag(MineFlag.Silent) && ((Boolean) map.get("silent")).booleanValue()) flags.add(MineFlag.Silent);
+    	if(map.containsValue("silent") && !hasFlag(MineFlag.Silent) && ((Boolean) map.get("silent")).booleanValue()) flags.add(MineFlag.Silent.dispatch());
     	
     	enabledProtection = Protection.toProtectionList((List<String>) map.get("enabledProtection"));
     	protectionRegion = (PrisonRegion) map.get("protectionRegion");
@@ -513,10 +514,27 @@ public class Mine implements ConfigurationSerializable, Listener {
     	return true;
     }
     
-    public List<MineFlag> getFlags() { return flags; }
-    public boolean hasFlag(MineFlag flag) { return flags.contains(flag); }
-    public void addFlag(MineFlag flag) { flags.add(flag); }
-    public void removeFlag(MineFlag flag) { flags.remove(flag); }
+    public List<BaseFlag> getFlags() { return flags; }
+    public boolean hasFlag(MineFlag flag) {
+    	for(BaseFlag testFlag : flags) {
+    		if(testFlag.getName().equalsIgnoreCase(flag.getAlias())) return true;
+    	}
+    	return false;
+    }
+    public BaseFlag getFlag(MineFlag flag) {
+    	for(BaseFlag testFlag : flags) {
+    		if(testFlag.getName().equalsIgnoreCase(flag.getAlias())) return testFlag;
+    	}
+    	return null;
+    }
+    public void addFlag(MineFlag flag) {
+    	flags.add(flag.dispatch());
+    }
+    public void removeFlag(MineFlag flag) {
+    	for(BaseFlag testFlag : flags) {
+    		if(testFlag.getName().equalsIgnoreCase(flag.getAlias())) flags.remove(testFlag);
+    	}
+    }
     
 	public List<Mine> getChildren() {
 		List<Mine> children = new ArrayList<Mine>();

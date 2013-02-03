@@ -5,7 +5,7 @@ public class ToolReplaceFlag implements BaseFlag {
 	private String option ="";
 	
 	@Override
-	public String getName() { return "toolreplace"; }
+	public String getName() { return "ToolReplace"; }
 
 	@Override
 	public String getOption() { return option; }

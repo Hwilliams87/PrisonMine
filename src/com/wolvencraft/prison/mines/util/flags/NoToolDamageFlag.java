@@ -5,7 +5,7 @@ public class NoToolDamageFlag implements BaseFlag {
 	private String option ="";
 	
 	@Override
-	public String getName() { return "notooldamage"; }
+	public String getName() { return "NoToolDamage"; }
 
 	@Override
 	public String getOption() { return option; }

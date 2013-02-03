@@ -42,9 +42,11 @@ public class FlagCommand implements BaseCommand {
 					Message.sendFormattedError(language.ERROR_ARGUMENTS);
 					return false;
 				}
-				flag.setOptions(args[2]);
+				curMine.addFlag(flag);
+				curMine.getFlag(flag).setOption(args[2]);
+			} else {
+				curMine.addFlag(flag);
 			}
-			curMine.addFlag(flag);
 			Message.sendFormattedMine("Flag " + flag + " has been added");
 		}
 		

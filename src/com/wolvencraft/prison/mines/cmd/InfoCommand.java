@@ -13,6 +13,7 @@ import com.wolvencraft.prison.mines.mine.Protection;
 import com.wolvencraft.prison.mines.settings.Language;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
+import com.wolvencraft.prison.mines.util.flags.BaseFlag;
 
 public class InfoCommand  implements BaseCommand {
 	public boolean run(String[] args) {
@@ -114,14 +115,14 @@ public class InfoCommand  implements BaseCommand {
 				Message.send("");
 			}
 			
-			List<MineFlag> flags = curMine.getFlags();
+			List<BaseFlag> flags = curMine.getFlags();
 			if(flags.size() != 0) {
 				str = ChatColor.YELLOW + "   Flags:" + ChatColor.WHITE;
-				str += " " + flags.get(0);
+				str += " " + flags.get(0).getName();
 				if(flags.size() > 1) {
 					for(int i = 1; i < flags.size(); i++) {
-						str +=  ", " + flags.get(i);
-						if(flags.get(i).hasOptions()) str += " (" + flags.get(i).getOptions() + ")";
+						str +=  ", " + flags.get(i).getName();
+						if(MineFlag.get(flags.get(i).getName()).hasOptions()) str += " (" + flags.get(i).getOption() + ")";
 					}
 				}
 				Message.send(str);

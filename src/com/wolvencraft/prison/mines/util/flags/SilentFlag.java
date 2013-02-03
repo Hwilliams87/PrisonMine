@@ -5,7 +5,7 @@ public class SilentFlag implements BaseFlag {
 	private String option ="";
 	
 	@Override
-	public String getName() { return "silent"; }
+	public String getName() { return "Silent"; }
 
 	@Override
 	public String getOption() { return option; }

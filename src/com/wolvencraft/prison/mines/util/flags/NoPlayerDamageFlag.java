@@ -5,7 +5,7 @@ public class NoPlayerDamageFlag implements BaseFlag {
 	private String option ="";
 	
 	@Override
-	public String getName() { return "noplayerdamage"; }
+	public String getName() { return "NoPlayerDamage"; }
 
 	@Override
 	public String getOption() { return option; }

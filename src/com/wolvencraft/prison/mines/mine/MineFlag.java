@@ -9,35 +9,38 @@ import com.wolvencraft.prison.mines.util.flags.*;
 
 public enum MineFlag {
 	
-	NoHungerLoss(NoHungerLossFlag.class, false),
-	NoPlayerDamage(NoPlayerDamageFlag.class, false),
-	NoToolDamage(NoToolDamageFlag.class, false),
-	Silent(SilentFlag.class, false),
-	SuperTools(SuperToolsFlag.class, false),
-	SurfaceOre(SurfaceOreFlag.class, true),
-	ToolReplace(ToolReplaceFlag.class, false);
+	NoHungerLoss(NoHungerLossFlag.class, "nohungerloss", false),
+	NoPlayerDamage(NoPlayerDamageFlag.class, "noplayerdamage", false),
+	NoToolDamage(NoToolDamageFlag.class, "notooldamage", false),
+	Silent(SilentFlag.class, "silent", false),
+	SuperTools(SuperToolsFlag.class, "supertools", false),
+	SurfaceOre(SurfaceOreFlag.class, "surfaceore", true),
+	ToolReplace(ToolReplaceFlag.class, "toolreplace", false);
 	
-	MineFlag(Class<?> clazz, boolean hasOptions) {
-		try {
-			object = (BaseFlag) clazz.newInstance();
-			this.hasOptions = hasOptions;
-
+	MineFlag(Class<?> clazz, String alias, boolean hasOptions) {
+		this.clazz = clazz;
+		this.alias = alias;
+		this.hasOptions = hasOptions;
+	}
+	
+	Class<?> clazz;
+	String alias;
+	boolean hasOptions;
+	
+	public BaseFlag dispatch() {
+		try{
+			return (BaseFlag) clazz.newInstance();
 		} catch (InstantiationException e) {
 			Message.log(Level.SEVERE, "Error while instantiating a command! InstantiationException");
-			return;
+			return null;
 		} catch (IllegalAccessException e) {
 			Message.log(Level.SEVERE, "Error while instantiating a command! IllegalAccessException");
-			return;
+			return null;
 		}
 	}
 	
-	BaseFlag object;
-	boolean hasOptions;
-	
-	public String getAlias() { return object.getName(); }
 	public boolean hasOptions() { return hasOptions; }
-	public String getOptions() { if(hasOptions) return object.getOption(); else return null; }
-	public void setOptions(String newOption) { if(hasOptions) object.setOption(newOption); else return; }
+	public String getAlias() { return alias; }
 	
 	public static MineFlag get(String alias) {
 		for(MineFlag flag : MineFlag.values()) {
@@ -51,11 +54,11 @@ public enum MineFlag {
      * @param source List of Protection constants
      * @return List of Strings
      */
-	public static List<String> toStringList(List<MineFlag> source) {
+	public static List<String> toStringList(List<BaseFlag> source) {
 		List<String> list = new ArrayList<String>();
-		for(MineFlag flag : source) {
-			if(flag.hasOptions) list.add(flag.getAlias() + ":" + flag.getOptions());
-			else list.add(flag.getAlias());
+		for(BaseFlag flag : source) {
+			if(MineFlag.get(flag.getName()).hasOptions) list.add(flag.getName() + ":" + flag.getOption());
+			else list.add(flag.getName());
 		}
 		return list;
 	}
@@ -65,14 +68,14 @@ public enum MineFlag {
 	 * @param source List of String protection aliases
 	 * @return List of Protection constants
 	 */
-	public static List<MineFlag> toMineFlagList(List<String> source) {
-		List<MineFlag> list = new ArrayList<MineFlag>();
+	public static List<BaseFlag> toMineFlagList(List<String> source) {
+		List<BaseFlag> list = new ArrayList<BaseFlag>();
 		for(String string : source) {
 			String[] parts = string.split(":");
-			if(parts.length == 1) list.add(get(string));
+			if(parts.length == 1) list.add(get(string).dispatch());
 			else {
-				MineFlag flag = get(parts[0]);
-				flag.setOptions(parts[1]);
+				BaseFlag flag = get(parts[0]).dispatch();
+				flag.setOption(parts[1]);
 				list.add(flag);
 			}
 		}

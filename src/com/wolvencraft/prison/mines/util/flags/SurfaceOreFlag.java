@@ -5,7 +5,7 @@ public class SurfaceOreFlag implements BaseFlag {
 	private String option ="1";
 	
 	@Override
-	public String getName() { return "surfaceore"; }
+	public String getName() { return "SurfaceOre"; }
 
 	@Override
 	public String getOption() { return option; }
