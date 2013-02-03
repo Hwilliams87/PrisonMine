@@ -264,7 +264,7 @@ public class Util {
 		
 		for(MineVariable var : MineVariable.values()) {
 			if(!str.contains(var.getName())) continue;
-			str.replaceAll("<" + var.getName() + ">", var.parse(curMine));
+			str = str.replaceAll("<" + var.getName() + ">", var.parse(curMine));
 		}
 		
 		
