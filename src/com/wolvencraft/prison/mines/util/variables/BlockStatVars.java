@@ -9,9 +9,21 @@ public class BlockStatVars implements BaseVar {
 
 	@Override
 	public String parse(Mine mine, String option) {
-		if(option.equalsIgnoreCase("tblocks")) return mine.getTotalBlocks() + "";
-		else if(option.equalsIgnoreCase("rblocks")) return mine.getBlocksLeft() + "";
-		else if(option.equalsIgnoreCase("pblocks")) return mine.getCurrentPercent() + "";
+		if(option.equalsIgnoreCase("tblocks")) {
+			String tblocks = mine.getTotalBlocks() + "";
+			if(tblocks.length() > 5) tblocks = tblocks.substring(0, 5);
+			return tblocks;
+		}
+		else if(option.equalsIgnoreCase("rblocks")) {
+			String rblocks = mine.getBlocksLeft() + "";
+			if(rblocks.length() > 5) rblocks = rblocks.substring(0, 5);
+			return rblocks;
+		}
+		else if(option.equalsIgnoreCase("pblocks")) {
+			String pblocks = mine.getCurrentPercent() + "";
+			if(pblocks.length() > 5) pblocks = pblocks.substring(0, 5);
+			return pblocks;
+		}
 		return "";
 	}
 

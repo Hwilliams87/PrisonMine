@@ -13,8 +13,16 @@ public class CompositionTriggerVars implements BaseVar {
 		if(mine.hasParent()) curMine = Mine.get(mine.getParent());
 		else curMine = mine;
 		if(!mine.getCompositionReset()) return "<...>";
-		if(option.equalsIgnoreCase("nper")) return curMine.getCurrentPercent() + "";
-		else if(option.equalsIgnoreCase("pper")) return curMine.getRequiredPercent() + "";
+		if(option.equalsIgnoreCase("nper")) {
+			String nper = curMine.getCurrentPercent() + "";
+			if(nper.length() > 5) nper = nper.substring(0, 5);
+			return nper;
+		}
+		else if(option.equalsIgnoreCase("pper")) {
+			String pper = curMine.getRequiredPercent() + "";
+			if(pper.length() > 5) pper = pper.substring(0, 5);
+			return pper;
+		}
 		return "";
 	}
 
