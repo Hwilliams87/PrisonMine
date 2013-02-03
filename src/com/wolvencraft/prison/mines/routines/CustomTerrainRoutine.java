@@ -10,8 +10,10 @@ import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.prison.mines.mine.BlacklistState;
 import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.mine.MineFlag;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.RandomBlock;
+import com.wolvencraft.prison.util.Util;
 
 public class CustomTerrainRoutine {	
 	public static boolean run(Mine mine) {
@@ -21,6 +23,7 @@ public class CustomTerrainRoutine {
 		World world = mine.getWorld();
 		
 		BlacklistState blState = mine.getBlacklist().getState();
+		MaterialData borderBlock = Util.getBlock(mine.getFlag(MineFlag.SurfaceOre).getOption());
 		
 		if(blState.equals(BlacklistState.DISABLED)) {
 	        for (int x = one.getBlockX(); x <= two.getBlockX(); x++) {
@@ -32,7 +35,7 @@ public class CustomTerrainRoutine {
 		                    MaterialData newBlock;
 		                    if((Math.abs(one.getBlockX() - x) < 3 || Math.abs(two.getBlockX() - x) < 3) ||
 			    	        		(Math.abs(one.getBlockY() - y) < 3 || Math.abs(two.getBlockY() - y) < 3) ||
-			    	        			(Math.abs(one.getBlockZ() - z) < 3 || Math.abs(two.getBlockZ() - z) < 3)) { newBlock = mine.getMostCommonBlock().getBlock(); }
+			    	        			(Math.abs(one.getBlockZ() - z) < 3 || Math.abs(two.getBlockZ() - z) < 3)) { newBlock = borderBlock; }
 		                    else { newBlock = pattern.next(); }
 		                    original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
 	                    }
@@ -54,7 +57,7 @@ public class CustomTerrainRoutine {
 		                	MaterialData newBlock;
 		                    if((Math.abs(one.getBlockX() - x) < 3 || Math.abs(two.getBlockX() - x) < 3) ||
 			    	        	(Math.abs(one.getBlockY() - y) < 3 || Math.abs(two.getBlockY() - y) < 3) ||
-			    	        	(Math.abs(one.getBlockZ() - z) < 3 || Math.abs(two.getBlockZ() - z) < 3)) { newBlock = mine.getMostCommonBlock().getBlock(); }
+			    	        	(Math.abs(one.getBlockZ() - z) < 3 || Math.abs(two.getBlockZ() - z) < 3)) { newBlock = borderBlock; }
 		                    else { newBlock = pattern.next(); }
 		                    if(!mine.getBlacklist().getBlocks().contains(original.getState().getData()))
 		                    	original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);
@@ -77,7 +80,7 @@ public class CustomTerrainRoutine {
 		                	MaterialData newBlock;
 			                if((Math.abs(one.getBlockX() - x) < 3 || Math.abs(two.getBlockX() - x) < 3) ||
 			                		(Math.abs(one.getBlockY() - y) < 3 || Math.abs(two.getBlockY() - y) < 3) ||
-				    	        	(Math.abs(one.getBlockZ() - z) < 3 || Math.abs(two.getBlockZ() - z) < 3)) { newBlock = mine.getMostCommonBlock().getBlock(); }
+				    	        	(Math.abs(one.getBlockZ() - z) < 3 || Math.abs(two.getBlockZ() - z) < 3)) { newBlock = borderBlock; }
 			                else { newBlock = pattern.next(); }
 		                    if(mine.getBlacklist().getBlocks().contains(original.getState().getData()))
 		                    	original.setTypeIdAndData(newBlock.getItemTypeId(), newBlock.getData(), false);

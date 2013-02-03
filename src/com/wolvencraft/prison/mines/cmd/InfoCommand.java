@@ -115,7 +115,7 @@ public class InfoCommand  implements BaseCommand {
 				Message.send("");
 			}
 			
-			List<BaseFlag> flags = curMine.getFlags();
+			List<BaseFlag> flags = curMine.getLocalFlags();
 			if(flags.size() != 0) {
 				str = ChatColor.YELLOW + "   Flags:" + ChatColor.WHITE;
 				str += " " + flags.get(0).getName();

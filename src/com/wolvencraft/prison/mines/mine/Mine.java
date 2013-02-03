@@ -15,6 +15,7 @@ import com.wolvencraft.prison.mines.util.flags.BaseFlag;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -260,6 +261,9 @@ public class Mine implements ConfigurationSerializable, Listener {
     	try { removePlayers(); }
     	catch(ConcurrentModificationException cme) {
     		Message.log(Level.WARNING, "An error occured while removing players from the mine");
+    	}
+    	if(hasFlag(MineFlag.ResetSound)) {
+    		world.playEffect(tpPoint, Effect.RECORD_PLAY, 1);
     	}
     	if(hasFlag(MineFlag.SurfaceOre)) return CustomTerrainRoutine.run(this);
     	else return RandomTerrainRoutine.run(this);
@@ -514,7 +518,11 @@ public class Mine implements ConfigurationSerializable, Listener {
     	return true;
     }
     
-    public List<BaseFlag> getFlags() { return flags; }
+    public List<BaseFlag> getLocalFlags() {
+    	List<BaseFlag> localFlags = new ArrayList<BaseFlag>();
+    	for(BaseFlag flag : flags) localFlags.add(flag);
+    	return localFlags;
+    }
     public boolean hasFlag(MineFlag flag) {
     	for(BaseFlag testFlag : flags) {
     		if(testFlag.getName().equalsIgnoreCase(flag.getAlias())) return true;
@@ -531,9 +539,8 @@ public class Mine implements ConfigurationSerializable, Listener {
     	flags.add(flag.dispatch());
     }
     public void removeFlag(MineFlag flag) {
-    	for(BaseFlag testFlag : flags) {
-    		if(testFlag.getName().equalsIgnoreCase(flag.getAlias())) flags.remove(testFlag);
-    	}
+    	BaseFlag flagToRemove = getFlag(flag);
+    	flags.remove(flagToRemove);
     }
     
 	public List<Mine> getChildren() {
