@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -111,4 +112,16 @@ public class FlagListener implements Listener {
 		}
 	}
 	
+	public void onFoodLevelChange(FoodLevelChangeEvent event) {
+		if(event.isCancelled()) return;
+		Player player = (Player) event.getEntity();
+		
+		for(Mine mine : PrisonMine.getLocalMines()) {
+			if(mine.getRegion().isLocationInRegion(player.getLocation())) continue;
+			
+			if(!player.hasPermission("prison.mine.flags.noplayerdamage." + mine.getId()) && !player.hasPermission("prison.mine.flags.noplayerdamage")) { continue; }
+			
+			event.setCancelled(true);
+		}
+	}
 }
