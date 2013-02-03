@@ -8,12 +8,12 @@ import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.event.Listener;
 import org.bukkit.util.Vector;
 
-import com.wolvencraft.prison.mines.mine.Blacklist;
 import com.wolvencraft.prison.mines.mine.Mine;
-import com.wolvencraft.prison.mines.mine.MineBlock;
-import com.wolvencraft.prison.mines.mine.Protection;
-import com.wolvencraft.prison.mines.mine.SimpleLoc;
 import com.wolvencraft.prison.mines.util.Message;
+import com.wolvencraft.prison.mines.util.constants.Protection;
+import com.wolvencraft.prison.mines.util.data.Blacklist;
+import com.wolvencraft.prison.mines.util.data.MineBlock;
+import com.wolvencraft.prison.mines.util.data.SimpleLoc;
 import com.wolvencraft.prison.region.PrisonRegion;
  
 import java.util.ArrayList;

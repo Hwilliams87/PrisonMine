@@ -6,9 +6,9 @@ import org.bukkit.entity.Player;
 import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
-import com.wolvencraft.prison.mines.mine.MineFlag;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
+import com.wolvencraft.prison.mines.util.constants.MineFlag;
 
 public class ResetCommand implements BaseCommand {	
 	public boolean run(String[] args) {

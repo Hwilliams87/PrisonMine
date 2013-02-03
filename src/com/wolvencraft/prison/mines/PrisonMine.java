@@ -23,9 +23,12 @@ import com.wolvencraft.prison.mines.settings.*;
 import com.wolvencraft.prison.mines.triggers.*;
 import com.wolvencraft.prison.mines.upgrade.MRLMine;
 import com.wolvencraft.prison.mines.upgrade.MRMine;
-import com.wolvencraft.prison.mines.util.BlockSerializable;
 import com.wolvencraft.prison.mines.util.DisplaySignTask;
 import com.wolvencraft.prison.mines.util.Message;
+import com.wolvencraft.prison.mines.util.data.Blacklist;
+import com.wolvencraft.prison.mines.util.data.BlockSerializable;
+import com.wolvencraft.prison.mines.util.data.MineBlock;
+import com.wolvencraft.prison.mines.util.data.SimpleLoc;
 import com.wolvencraft.prison.region.PrisonRegion;
 
 public class PrisonMine extends PrisonPlugin {

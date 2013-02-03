@@ -2,9 +2,9 @@ package com.wolvencraft.prison.mines.routines;
 
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
-import com.wolvencraft.prison.mines.mine.MineFlag;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
+import com.wolvencraft.prison.mines.util.constants.MineFlag;
 
 public class AutomaticResetRoutine {
 	public static void run(Mine mine) {

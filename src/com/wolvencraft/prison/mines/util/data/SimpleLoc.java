@@ -1,4 +1,4 @@
-package com.wolvencraft.prison.mines.mine;
+package com.wolvencraft.prison.mines.util.data;
 
 import java.util.HashMap;
 import java.util.Map;

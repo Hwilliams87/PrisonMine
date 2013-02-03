@@ -12,10 +12,10 @@ import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.prison.mines.PrisonMine;
-import com.wolvencraft.prison.mines.mine.BlacklistState;
 import com.wolvencraft.prison.mines.mine.Mine;
-import com.wolvencraft.prison.mines.mine.Protection;
 import com.wolvencraft.prison.mines.util.Message;
+import com.wolvencraft.prison.mines.util.constants.BlacklistState;
+import com.wolvencraft.prison.mines.util.constants.Protection;
 
 public class BlockProtectionListener implements Listener {
 	

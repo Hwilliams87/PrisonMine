@@ -14,8 +14,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
-import com.wolvencraft.prison.mines.mine.MineFlag;
 import com.wolvencraft.prison.mines.util.Message;
+import com.wolvencraft.prison.mines.util.constants.MineFlag;
 
 public class FlagListener implements Listener {
 	

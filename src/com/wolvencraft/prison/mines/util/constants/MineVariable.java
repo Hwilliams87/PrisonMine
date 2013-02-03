@@ -1,8 +1,9 @@
-package com.wolvencraft.prison.mines.util;
+package com.wolvencraft.prison.mines.util.constants;
 
 import java.util.logging.Level;
 
 import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.variables.BaseVar;
 import com.wolvencraft.prison.mines.util.variables.BlockStatVars;
 import com.wolvencraft.prison.mines.util.variables.CompositionTriggerVars;

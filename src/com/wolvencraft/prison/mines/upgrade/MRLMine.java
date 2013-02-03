@@ -9,7 +9,7 @@ import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.prison.mines.mine.Mine;
-import com.wolvencraft.prison.mines.mine.MineBlock;
+import com.wolvencraft.prison.mines.util.data.MineBlock;
 import com.wolvencraft.prison.region.PrisonRegion;
 import com.wolvencraft.prison.util.Message;
  

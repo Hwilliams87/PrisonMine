@@ -1,10 +1,10 @@
-package com.wolvencraft.prison.mines.util;
+package com.wolvencraft.prison.mines.util.data;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.wolvencraft.prison.mines.mine.MineBlock;
+import com.wolvencraft.prison.mines.util.Message;
 
 import org.bukkit.material.MaterialData;
 

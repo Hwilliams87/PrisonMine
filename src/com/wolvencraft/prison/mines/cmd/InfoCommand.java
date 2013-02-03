@@ -6,13 +6,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.prison.mines.PrisonMine;
-import com.wolvencraft.prison.mines.mine.BlacklistState;
 import com.wolvencraft.prison.mines.mine.Mine;
-import com.wolvencraft.prison.mines.mine.MineFlag;
-import com.wolvencraft.prison.mines.mine.Protection;
 import com.wolvencraft.prison.mines.settings.Language;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
+import com.wolvencraft.prison.mines.util.constants.BlacklistState;
+import com.wolvencraft.prison.mines.util.constants.MineFlag;
+import com.wolvencraft.prison.mines.util.constants.Protection;
 import com.wolvencraft.prison.mines.util.flags.BaseFlag;
 
 public class InfoCommand  implements BaseCommand {

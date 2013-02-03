@@ -1,4 +1,4 @@
-package com.wolvencraft.prison.mines.mine;
+package com.wolvencraft.prison.mines.util.constants;
 
 import java.util.ArrayList;
 import java.util.List;

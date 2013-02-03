@@ -16,6 +16,7 @@ import com.wolvencraft.prison.hooks.MaterialHook;
 import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.util.constants.MineVariable;
  
 public class Util {
 	

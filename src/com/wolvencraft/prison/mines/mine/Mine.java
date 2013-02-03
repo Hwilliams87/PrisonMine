@@ -9,8 +9,13 @@ import com.wolvencraft.prison.mines.triggers.BaseTrigger;
 import com.wolvencraft.prison.mines.triggers.CompositionTrigger;
 import com.wolvencraft.prison.mines.triggers.TimeTrigger;
 import com.wolvencraft.prison.mines.util.Message;
-import com.wolvencraft.prison.mines.util.ResetTrigger;
 import com.wolvencraft.prison.mines.util.Util;
+import com.wolvencraft.prison.mines.util.constants.MineFlag;
+import com.wolvencraft.prison.mines.util.constants.Protection;
+import com.wolvencraft.prison.mines.util.constants.ResetTrigger;
+import com.wolvencraft.prison.mines.util.data.Blacklist;
+import com.wolvencraft.prison.mines.util.data.MineBlock;
+import com.wolvencraft.prison.mines.util.data.SimpleLoc;
 import com.wolvencraft.prison.mines.util.flags.BaseFlag;
 
 import org.bukkit.Bukkit;

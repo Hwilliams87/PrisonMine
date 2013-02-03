@@ -4,9 +4,9 @@ import org.bukkit.command.CommandSender;
 
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
-import com.wolvencraft.prison.mines.mine.MineFlag;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
+import com.wolvencraft.prison.mines.util.constants.MineFlag;
 
 public class ButtonResetRoutine {
 	public static void run(Mine mine, CommandSender sender) {

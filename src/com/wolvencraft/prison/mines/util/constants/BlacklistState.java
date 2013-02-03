@@ -1,4 +1,4 @@
-package com.wolvencraft.prison.mines.mine;
+package com.wolvencraft.prison.mines.util.constants;
 
 public enum BlacklistState {
 	DISABLED (0),

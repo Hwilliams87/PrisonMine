@@ -1,7 +1,7 @@
 package com.wolvencraft.prison.mines.cmd;
 
-import com.wolvencraft.prison.mines.util.MineVariable;
 import com.wolvencraft.prison.mines.util.Message;
+import com.wolvencraft.prison.mines.util.constants.MineVariable;
 
 public class VariablesCommand implements BaseCommand {
 

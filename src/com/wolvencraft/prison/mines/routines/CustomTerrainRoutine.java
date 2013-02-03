@@ -8,11 +8,11 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.material.MaterialData;
 
-import com.wolvencraft.prison.mines.mine.BlacklistState;
 import com.wolvencraft.prison.mines.mine.Mine;
-import com.wolvencraft.prison.mines.mine.MineFlag;
 import com.wolvencraft.prison.mines.util.Message;
-import com.wolvencraft.prison.mines.util.RandomBlock;
+import com.wolvencraft.prison.mines.util.constants.BlacklistState;
+import com.wolvencraft.prison.mines.util.constants.MineFlag;
+import com.wolvencraft.prison.mines.util.data.RandomBlock;
 import com.wolvencraft.prison.util.Util;
 
 public class CustomTerrainRoutine {	

@@ -8,10 +8,10 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.material.MaterialData;
 
-import com.wolvencraft.prison.mines.mine.BlacklistState;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
-import com.wolvencraft.prison.mines.util.RandomBlock;
+import com.wolvencraft.prison.mines.util.constants.BlacklistState;
+import com.wolvencraft.prison.mines.util.data.RandomBlock;
 
 public class RandomTerrainRoutine {	
 	public static boolean run(Mine mine) {

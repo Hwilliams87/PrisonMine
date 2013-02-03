@@ -1,4 +1,4 @@
-package com.wolvencraft.prison.mines.mine;
+package com.wolvencraft.prison.mines.util.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +9,8 @@ import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.material.MaterialData;
+
+import com.wolvencraft.prison.mines.util.constants.BlacklistState;
 
 @SerializableAs("Blacklist")
 public class Blacklist implements ConfigurationSerializable {

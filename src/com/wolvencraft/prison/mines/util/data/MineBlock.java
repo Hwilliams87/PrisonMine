@@ -1,4 +1,4 @@
-package com.wolvencraft.prison.mines.mine;
+package com.wolvencraft.prison.mines.util.data;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
