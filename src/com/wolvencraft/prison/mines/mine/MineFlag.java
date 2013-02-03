@@ -60,7 +60,7 @@ public enum MineFlag {
 	public static List<String> toStringList(List<BaseFlag> source) {
 		List<String> list = new ArrayList<String>();
 		for(BaseFlag flag : source) {
-			if(MineFlag.get(flag.getName()).hasOptions) list.add(flag.getName() + "|" + flag.getOption());
+			if(MineFlag.get(flag.getName()).hasOptions) list.add(flag.getName() + "," + flag.getOption());
 			else list.add(flag.getName());
 		}
 		return list;
@@ -74,9 +74,11 @@ public enum MineFlag {
 	public static List<BaseFlag> toMineFlagList(List<String> source) {
 		List<BaseFlag> list = new ArrayList<BaseFlag>();
 		for(String string : source) {
-			String[] parts = string.split("|");
-			if(parts.length == 1) list.add(get(string).dispatch());
-			else {
+			String[] parts = string.split(",");
+			if(parts.length == 1) { 
+				list.add(get(string).dispatch());
+			} else {
+				Message.debug("'" + parts[0] + "' :: '" + parts[1] + "'");
 				BaseFlag flag = get(parts[0]).dispatch();
 				flag.setOption(parts[1]);
 				list.add(flag);

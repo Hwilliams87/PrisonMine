@@ -263,7 +263,7 @@ public class Mine implements ConfigurationSerializable, Listener {
     		Message.log(Level.WARNING, "An error occured while removing players from the mine");
     	}
     	if(hasFlag(MineFlag.ResetSound)) {
-    		world.playEffect(tpPoint, Effect.RECORD_PLAY, 1);
+    		world.playEffect(tpPoint, Effect.GHAST_SHRIEK, 1);
     	}
     	if(hasFlag(MineFlag.SurfaceOre)) return CustomTerrainRoutine.run(this);
     	else return RandomTerrainRoutine.run(this);
