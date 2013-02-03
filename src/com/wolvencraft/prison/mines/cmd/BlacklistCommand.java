@@ -30,25 +30,23 @@ public class BlacklistCommand implements BaseCommand {
 		}
 		
 		if(args.length == 2) {
-			if(args[1].equalsIgnoreCase("blacklist")) {
-				if(curMine.getPlaceBlacklist().getState().equals(BlacklistState.BLACKLIST)) {
+			if(args[2].equalsIgnoreCase("blacklist")) {				
+				if(curMine.getBlacklist().getState().equals(BlacklistState.BLACKLIST)) {
 					curMine.getBlacklist().setState(BlacklistState.DISABLED);
-					Message.sendFormattedError("The replacement rules are disabled");
+					Message.sendFormattedSuccess("The replacement rules are now disabled");
 				} else {
-					curMine.getPlaceBlacklist().setState(BlacklistState.BLACKLIST);
+					curMine.getBlacklist().setState(BlacklistState.BLACKLIST);
 					Message.sendFormattedSuccess("The replacement rules are now in blacklist mode");
-					return true;
 				}
-			} else if(args[1].equalsIgnoreCase("whitelist")) {
-				if(curMine.getPlaceBlacklist().getState().equals(BlacklistState.WHITELIST)) {
+			} else if(args[2].equalsIgnoreCase("whitelist")) {				
+				if(curMine.getBlacklist().getState().equals(BlacklistState.WHITELIST)) {
 					curMine.getBlacklist().setState(BlacklistState.DISABLED);
-					Message.sendFormattedError("The replacement rules are disabled");
+					Message.sendFormattedSuccess("The replacement rules are now disabled");
 				} else {
-					curMine.getPlaceBlacklist().setState(BlacklistState.WHITELIST);
+					curMine.getBlacklist().setState(BlacklistState.WHITELIST);
 					Message.sendFormattedSuccess("The replacement rules are now in whitelist mode");
-					return true;
 				}
-			}
+			} 
 		} else if(args.length == 3) {
 			if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+")) {
 				if(args.length != 3) {
