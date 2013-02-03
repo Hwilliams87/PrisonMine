@@ -12,11 +12,6 @@ import com.wolvencraft.prison.hooks.CommandHook;
 import com.wolvencraft.prison.mines.cmd.*;
 import com.wolvencraft.prison.mines.util.Message;
 
-/**
- * bitWolfy's awkward way of registering all the subcommands.<br />
- * Wolfy <3 subcommands. They are kinky.
- * @author bitWolfy
- */
 public enum CommandManager implements CommandHook {
 	BLACKLIST (BlacklistCommand.class, "prison.mine.edit", true, "blacklist", "bl", "whitelist", "wl"),
 	DATA (DataCommand.class, "prison.mine.admin", true, "data"),
@@ -38,27 +33,20 @@ public enum CommandManager implements CommandHook {
 	private static CommandSender sender = null;
 	
 	CommandManager(Class<?> clazz, String permission, boolean allowConsole, String... args) {
-		try {
-			this.clazz = (BaseCommand) clazz.newInstance();
-			this.permission = permission;
-			this.allowConsole = allowConsole;
-			alias = new ArrayList<String>();
-			for(String arg : args) {
-				alias.add(arg);
-			}
-		} catch (InstantiationException e) {
-			Message.log(Level.SEVERE, "Error while instantiating a command! InstantiationException");
-			return;
-		} catch (IllegalAccessException e) {
-			Message.log(Level.SEVERE, "Error while instantiating a command! IllegalAccessException");
-			return;
-		}
+		try { this.clazz = (BaseCommand) clazz.newInstance(); }
+		catch (InstantiationException e) { Message.log(Level.SEVERE, "Error while instantiating a command! InstantiationException"); return; }
+		catch (IllegalAccessException e) { Message.log(Level.SEVERE, "Error while instantiating a command! IllegalAccessException"); return; }
+		
+		this.permission = permission;
+		this.allowConsole = allowConsole;
+		alias = new ArrayList<String>();
+		for(String arg : args) alias.add(arg);
 	}
 	
 	private BaseCommand clazz;
-	private List<String> alias;
 	private String permission;
 	private boolean allowConsole;
+	private List<String> alias;
 	
 	public BaseCommand get() { return clazz; }
 	public boolean isCommand(String arg) { return alias.contains(arg); }
@@ -90,5 +78,4 @@ public enum CommandManager implements CommandHook {
 	public static CommandSender getSender() { return sender; }
 	public static void setSender(CommandSender sender) { CommandManager.sender = sender; }
 	public static void resetSender() { sender = null; }
-	
 }
