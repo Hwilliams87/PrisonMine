@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockExpEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
@@ -150,6 +151,15 @@ public class FlagListener implements Listener {
 			List<BaseFlag> effects = mine.getFlagsByType(MineFlag.PlayerEffect);
 			for(BaseFlag effect : effects)
 				player.addPotionEffect(new PotionEffect(Util.getEffect(effect.getOption()), 100, 1));
+		}
+	}
+	
+	@EventHandler
+	public void onExpGainFromMining(BlockExpEvent event) {
+		for(Mine mine : PrisonMine.getLocalMines()) {
+			if(!mine.hasFlag(MineFlag.NoExpDrop)) continue;
+			if(!mine.getRegion().isLocationInRegion(event.getBlock().getLocation())) continue;
+			event.setExpToDrop(0);
 		}
 	}
 }
