@@ -28,7 +28,6 @@ public class ProtectionCommand  implements BaseCommand {
 
 		Language language = PrisonMine.getLanguage();
 		Mine curMine = PrisonMine.getCurMine();
-		if(curMine == null) { Message.sendFormattedError(language.ERROR_MINENOTSELECTED); return false; }
 		
 		if(args[1].equalsIgnoreCase("save")) {
 			Player player;

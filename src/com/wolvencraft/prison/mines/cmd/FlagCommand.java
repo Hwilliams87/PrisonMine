@@ -16,7 +16,6 @@ public class FlagCommand implements BaseCommand {
 		if(args.length > 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 		
 		Mine curMine = PrisonMine.getCurMine();
-		if(curMine == null) { Message.sendFormattedError(language.ERROR_MINENOTSELECTED); return false; }
 		
 		MineFlag flag = MineFlag.get(args[1]);
 		if(flag == null) { Message.sendFormattedError("The specified flag does not exist"); return false; }
