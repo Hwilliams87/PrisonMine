@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -368,5 +370,51 @@ public class Util {
 		List<Player> tempPlayers = new ArrayList<Player>();
 		for(Player p : world.getPlayers()) { tempPlayers.add(p); }
 		return tempPlayers;
+	}
+	
+	public static boolean soundExists(String soundName) {
+		try { Sound.valueOf(soundName); }
+		catch (IllegalArgumentException iae) { return false; }
+		catch (NullPointerException npe) { return false; }
+		catch (Exception ex) { return false; }
+		return true;
+	}
+	
+	public static Sound getSound(String soundName) {
+		Sound sound;
+		try { sound = Sound.valueOf(soundName); }
+		catch (IllegalArgumentException iae) { return null; }
+		catch (NullPointerException npe) { return null; }
+		catch (Exception ex) { return null; }
+		return sound;
+	}
+	
+	/**
+	 * Plays the specified sound for all the players around a specific point
+	 * @param loc Location to play sound from
+	 * @param radius Hearing radius
+	 * @param sound Sound to play
+	 */
+	public static void playSound(Location loc, double radius, Sound sound) {
+		List<Player> players = getNearbyPlayers(loc, radius);
+		for(Player player : players) 
+			player.playSound(loc, sound, 20, 0);
+	}
+	
+	/**
+	 * Returns a list of players that are located within the specified radius of a location
+	 * @param loc Location to check
+	 * @param radius Radius
+	 * @return List of players
+	 */
+	public static List<Player> getNearbyPlayers(Location loc, double radius) {
+		List<Player> players = getLocalPlayers(loc.getWorld());
+		List<Player> nearbyPlayers = new ArrayList<Player>();
+		double radiusSquared = radius*radius;
+		
+		for (Player player : players) {
+			if(player.getLocation().distanceSquared(loc) <= radiusSquared) nearbyPlayers.add(player);
+		}
+		return nearbyPlayers;
 	}
 }

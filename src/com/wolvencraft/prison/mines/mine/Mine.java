@@ -20,7 +20,6 @@ import com.wolvencraft.prison.mines.util.flags.BaseFlag;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -268,7 +267,10 @@ public class Mine implements ConfigurationSerializable, Listener {
     		Message.log(Level.WARNING, "An error occured while removing players from the mine");
     	}
     	if(hasFlag(MineFlag.ResetSound)) {
-    		world.playEffect(tpPoint, Effect.GHAST_SHRIEK, 1);
+    		String soundName = getFlag(MineFlag.ResetSound).getOption();
+    		if(Util.soundExists(soundName)) {
+    			world.playSound(tpPoint, Util.getSound(soundName), 20, 0);
+    		}
     	}
     	if(hasFlag(MineFlag.SurfaceOre)) return CustomTerrainRoutine.run(this);
     	else return RandomTerrainRoutine.run(this);
