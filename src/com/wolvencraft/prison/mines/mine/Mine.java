@@ -303,7 +303,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     public World getWorld() 						{ return world; }
     public Location getTpPoint() 					{ return tpPoint; }
 
-    public List<MineBlock> getBlocks()				{ return blocks; }
     public Blacklist getBlacklist() 				{ return blockReplaceBlacklist; }
     
     public boolean getCooldown() 					{ return cooldownEnabled; }
@@ -333,6 +332,43 @@ public class Mine implements ConfigurationSerializable, Listener {
     public void setWarned(boolean warned) 							{ this.warned = warned; }
     
     public void setLastResetBy(String issuer)						{ this.lastResetBy = issuer; }
+    
+
+    public List<MineBlock> getLocalBlocks() {
+    	List<MineBlock> tempBlocks = new ArrayList<MineBlock>();
+    	for(MineBlock block : blocks) tempBlocks.add(block);
+    	return tempBlocks;
+    }
+    
+    public void addBlock(MineBlock block) {
+    	blocks.add(block);
+    }
+    
+    public void addBlock(MaterialData material, double percent) {
+    	blocks.add(new MineBlock(material, percent));
+    }
+    
+    public void removeBlock(MineBlock block) {
+    	blocks.remove(block);
+    }
+    
+    public void removeBlock(MaterialData material) {
+    	blocks.remove(getBlock(material));
+    }
+    
+	public MineBlock getBlock(MaterialData block) {
+		if(block == null) return null;
+		for(MineBlock thisBlock : blocks) { if(thisBlock.getBlock().equals(block)) return thisBlock; }
+		return null;
+	}
+    
+	public MineBlock getMostCommonBlock() {
+		MineBlock mostCommon = blocks.get(0);
+		for(MineBlock curBlock : blocks) {
+			if(curBlock.getChance() > mostCommon.getChance()) mostCommon = curBlock;
+		}
+		return mostCommon;
+	}
     
     /**
      * Returns the instance of the trigger with the specified ID, or <b>null</b> if it is not present
@@ -593,20 +629,6 @@ public class Mine implements ConfigurationSerializable, Listener {
 			if(mine.hasParent() && mine.getParent().equalsIgnoreCase(getId())) { children.add(mine); }
 		}
 		return children;
-	}
-	
-	public MineBlock getMostCommonBlock() {
-		MineBlock mostCommon = blocks.get(0);
-		for(MineBlock curBlock : blocks) {
-			if(curBlock.getChance() > mostCommon.getChance()) mostCommon = curBlock;
-		}
-		return mostCommon;
-	}
-	
-	public MineBlock getBlock(MaterialData block) {
-		if(block == null) return null;
-		for(MineBlock thisBlock : blocks) { if(thisBlock.getBlock().equals(block)) return thisBlock; }
-		return null;
 	}
 	
 	public List<String> getBlocksSorted() {

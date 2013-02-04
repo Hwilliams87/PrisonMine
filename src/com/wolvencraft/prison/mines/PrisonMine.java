@@ -68,6 +68,7 @@ public class PrisonMine extends PrisonPlugin {
 		prisonSuite = PrisonSuite.addPlugin(this);
 		plugin = this;
 		
+		
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 		settings = new Settings(this);
