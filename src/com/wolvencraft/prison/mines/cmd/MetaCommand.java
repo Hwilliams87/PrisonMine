@@ -12,7 +12,7 @@ public class MetaCommand  implements BaseCommand {
         Message.send(ChatColor.YELLOW + "http://dev.bukkit.org/server-mods/prisonmine/");
         Message.send("Creator: " + ChatColor.AQUA + "bitWolfy");
         Message.send("Contributor: " + ChatColor.AQUA + "jjkoletar");
-        Message.send("Tester: " + ChatColor.AQUA + "Ramo909");
+        Message.send("Testers: " + ChatColor.AQUA + "theangrytomato" + ChatColor.WHITE + ", " + ChatColor.AQUA + "Ramo909");
         return true;
     }
     
