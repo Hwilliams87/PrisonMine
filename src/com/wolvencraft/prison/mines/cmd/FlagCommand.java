@@ -10,7 +10,7 @@ public class FlagCommand implements BaseCommand {
 
 	@Override
 	public boolean run(String[] args) {
-		if(args.length == 1) { getHelp(); return true; }
+		if(args.length == 1 || (args.length == 2 && args[1].equalsIgnoreCase("help"))) { getHelp(); return true; }
 		
 		Language language = PrisonMine.getLanguage();
 		if(args.length > 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
@@ -62,6 +62,6 @@ public class FlagCommand implements BaseCommand {
 
 	@Override
 	public void getHelpLine() {
-		Message.formatHelp("flag", "", "Shows the help page on mine flags", "prison.mine.edit");
+		Message.formatHelp("flag help", "", "Shows the help page on mine flags", "prison.mine.edit");
 	}
 }

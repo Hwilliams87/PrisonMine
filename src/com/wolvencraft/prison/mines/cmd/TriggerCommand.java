@@ -12,7 +12,7 @@ public class TriggerCommand implements BaseCommand {
 	@Override
 	public boolean run(String[] args) {
 		
-		if(args.length == 1) { getHelp(); return true; }
+		if(args.length == 1 || (args.length == 2 && args[1].equalsIgnoreCase("help"))) { getHelp(); return true; }
 		
 		if(args.length != 3) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS); return false; }
 		
@@ -69,6 +69,6 @@ public class TriggerCommand implements BaseCommand {
 	}
 	
 	@Override
-	public void getHelpLine() { Message.formatHelp("trigger", "", "Shows the reset trigger help page", "prison.mine.edit"); }
+	public void getHelpLine() { Message.formatHelp("trigger help", "", "Shows the reset trigger help page", "prison.mine.edit"); }
 
 }

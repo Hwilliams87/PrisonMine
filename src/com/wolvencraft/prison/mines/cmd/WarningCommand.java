@@ -12,7 +12,7 @@ public class WarningCommand  implements BaseCommand {
 	@Override
 	public boolean run(String[] args) {
 		
-		if(args.length == 1) { getHelp(); return true; }
+		if(args.length == 1 || (args.length == 2 && args[1].equalsIgnoreCase("help"))) { getHelp(); return true; }
 
 		Mine curMine = PrisonMine.getCurMine();
 		if(curMine == null) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_MINENOTSELECTED); return false; }
@@ -54,5 +54,5 @@ public class WarningCommand  implements BaseCommand {
 	}
 	
 	@Override
-	public void getHelpLine() { Message.formatHelp("warning", "", "Shows reset warning options", "prison.mine.edit"); }
+	public void getHelpLine() { Message.formatHelp("warning help", "", "Shows reset warning options", "prison.mine.edit"); }
 }

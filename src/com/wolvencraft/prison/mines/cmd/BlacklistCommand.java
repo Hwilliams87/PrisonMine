@@ -17,15 +17,13 @@ public class BlacklistCommand implements BaseCommand {
 	@Override
 	public boolean run(String[] args) {
 
-		if(args.length == 1) { getHelp(); return true; }
-
 		Language language = PrisonMine.getLanguage();
 		
 		Mine curMine = PrisonMine.getCurMine();
-		if(curMine == null) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_MINENOTSELECTED); return false; }
+		if(curMine == null && !(args.length == 2 && args[1].equalsIgnoreCase("help"))) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_MINENOTSELECTED); return false; }
 		
-		if(args.length == 2) {
-			if(args[2].equalsIgnoreCase("blacklist")) {				
+		if(args.length == 1) {
+			if(args[0].equalsIgnoreCase("blacklist")) {				
 				if(curMine.getBlacklist().getState().equals(BlacklistState.BLACKLIST)) {
 					curMine.getBlacklist().setState(BlacklistState.DISABLED);
 					Message.sendFormattedSuccess("The replacement rules are now disabled");
@@ -33,7 +31,7 @@ public class BlacklistCommand implements BaseCommand {
 					curMine.getBlacklist().setState(BlacklistState.BLACKLIST);
 					Message.sendFormattedSuccess("The replacement rules are now in blacklist mode");
 				}
-			} else if(args[2].equalsIgnoreCase("whitelist")) {				
+			} else if(args[0].equalsIgnoreCase("whitelist")) {				
 				if(curMine.getBlacklist().getState().equals(BlacklistState.WHITELIST)) {
 					curMine.getBlacklist().setState(BlacklistState.DISABLED);
 					Message.sendFormattedSuccess("The replacement rules are now disabled");
@@ -41,7 +39,12 @@ public class BlacklistCommand implements BaseCommand {
 					curMine.getBlacklist().setState(BlacklistState.WHITELIST);
 					Message.sendFormattedSuccess("The replacement rules are now in whitelist mode");
 				}
-			} 
+			} else { Message.sendFormattedError(language.ERROR_COMMAND); return false; }
+		} else if(args.length == 2) {
+			if(args[1].equalsIgnoreCase("help")) {
+				getHelp();
+				return true;
+			} else { Message.sendFormattedError(language.ERROR_COMMAND); return false; }
 		} else if(args.length == 3) {
 			if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+")) {
 				if(args.length != 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
@@ -82,5 +85,5 @@ public class BlacklistCommand implements BaseCommand {
 	}
 	
 	@Override
-	public void getHelpLine() { Message.formatHelp("blacklist", "", "More information on the reset blacklist", "prison.mine.edit"); }
+	public void getHelpLine() { Message.formatHelp("blacklist help", "", "More information on the reset blacklist", "prison.mine.edit"); }
 }

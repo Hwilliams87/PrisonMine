@@ -24,7 +24,7 @@ public class ProtectionCommand  implements BaseCommand {
 	@Override
 	public boolean run(String[] args) {
 		
-		if(args.length == 1) { getHelp(); return true; }
+		if(args.length == 1 || (args.length == 2 && args[1].equalsIgnoreCase("help"))) { getHelp(); return true; }
 
 		Language language = PrisonMine.getLanguage();
 		Mine curMine = PrisonMine.getCurMine();
@@ -197,5 +197,5 @@ public class ProtectionCommand  implements BaseCommand {
 	}
 	
 	@Override
-	public void getHelpLine() { Message.formatHelp("prot", "", "Shows the help page for mine protection options", "prison.mine.edit"); }
+	public void getHelpLine() { Message.formatHelp("prot help", "", "Shows the help page for mine protection options", "prison.mine.edit"); }
 }

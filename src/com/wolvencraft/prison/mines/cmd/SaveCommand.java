@@ -17,7 +17,7 @@ public class SaveCommand implements BaseCommand {
 	@Override
 	public boolean run(String[] args) {
 		
-		if(args.length == 1) { getHelp(); return true; }
+		if(args.length == 1 || (args.length == 2 && args[1].equalsIgnoreCase("help"))) { getHelp(); return true; }
 		if(args.length > 3) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS); return false; }
 		
 		Player player = (Player) CommandManager.getSender();

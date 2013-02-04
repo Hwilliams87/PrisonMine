@@ -27,7 +27,7 @@ public class ResetCommand implements BaseCommand {
 					if(!CommandManager.RESET.run(mine.getId())) success = false;
 				}
 				return success;
-			}
+			} else if(args[1].equalsIgnoreCase("help")) { getHelp(); return true; }
 			curMine = Mine.get(args[1]);
 			if(curMine == null) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS); return false; }
 		} else { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS); return false; }

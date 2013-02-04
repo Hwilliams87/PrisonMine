@@ -35,6 +35,7 @@ public class Settings extends com.wolvencraft.prison.settings.Settings {
 		BANNEDNAMES.add("all");
 		BANNEDNAMES.add("none");
 		BANNEDNAMES.add("super");
+		BANNEDNAMES.add("help");
 		DEFAULTTIME = 900;
 	}
 }

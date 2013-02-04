@@ -17,5 +17,5 @@ public class HelpCommand implements BaseCommand {
 	public void getHelp() {}
 	
 	@Override
-	public void getHelpLine() { Message.formatHelp("help", "", "Shows PrisonMine help"); };
+	public void getHelpLine() {};
 }

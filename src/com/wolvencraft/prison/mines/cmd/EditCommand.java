@@ -41,14 +41,15 @@ public class EditCommand  implements BaseCommand {
 					PrisonMine.setCurMine(null);
 					return true;
 				} else { getHelp(); return true; }
-			}
-			if(args.length != 2) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
-			
-			curMine = Mine.get(args[1]);
-			if(curMine == null) { Message.sendFormattedError(language.ERROR_MINENAME.replace("<ID>", args[1])); return false; }
-			PrisonMine.setCurMine(curMine);
-			Message.sendFormattedSuccess(language.MINE_SELECTED);
-			return true;
+			} else if(args.length == 2) {
+				if(args[1].equalsIgnoreCase("help")) { getHelp(); return true; }
+				
+				curMine = Mine.get(args[1]);
+				if(curMine == null) { Message.sendFormattedError(language.ERROR_MINENAME.replace("<ID>", args[1])); return false; }
+				PrisonMine.setCurMine(curMine);
+				Message.sendFormattedSuccess(language.MINE_SELECTED);
+				return true;
+			} else { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 		} else if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("+")) {
 			if(args.length == 1) { getHelp(); return true; }
 			if(args.length > 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
@@ -207,7 +208,7 @@ public class EditCommand  implements BaseCommand {
 		Message.formatHelp("edit", "", "Deselects the current mine");
 		Message.formatHelp("+", "<block> [percentage]", "Adds a block type to the mine");
 		Message.formatHelp("-", "<block> [percentage]", "Removes the block from the mine");
-		Message.formatHelp("name", "<name>", "Sets a display name for a mine. Spaces allowed.");
+		Message.formatHelp("name", "<name>", "Sets a display name for a mine. Spaces allowed");
 		Message.formatHelp("cooldown", "", "Toggles the reset cooldown");
 		Message.formatHelp("cooldown <time>", "", "Sets the cooldown time");
 		Message.formatHelp("setparent", "<id>", "Links the timers of two mines");
@@ -217,5 +218,5 @@ public class EditCommand  implements BaseCommand {
 	}
 	
 	@Override
-	public void getHelpLine() { Message.formatHelp("edit", "", "Shows a help page on mine atribute editing", "prison.mine.edit"); }
+	public void getHelpLine() { Message.formatHelp("edit help", "", "Shows a help page on mine atribute editing", "prison.mine.edit"); }
 }
