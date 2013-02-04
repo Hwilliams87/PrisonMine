@@ -11,7 +11,6 @@ import com.wolvencraft.prison.mines.settings.Language;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 import com.wolvencraft.prison.mines.util.constants.BlacklistState;
-import com.wolvencraft.prison.mines.util.constants.MineFlag;
 import com.wolvencraft.prison.mines.util.constants.Protection;
 import com.wolvencraft.prison.mines.util.flags.BaseFlag;
 
@@ -118,14 +117,26 @@ public class InfoCommand  implements BaseCommand {
 			List<BaseFlag> flags = curMine.getAllFlags();
 			if(flags.size() != 0) {
 				str = ChatColor.YELLOW + "   Flags:" + ChatColor.WHITE;
-				str += " " + flags.get(0).getName();
-				if(flags.size() > 1) {
-					for(int i = 1; i < flags.size(); i++) {
-						str +=  ", " + flags.get(i).getName();
-						if(MineFlag.get(flags.get(i).getName()).hasOptions()) str += " (" + flags.get(i).getOption() + ")";
-					}
-				}
 				Message.send(str);
+				
+				for(int i = 0; i < (flags.size() - 1); i += 2) {
+					int spaces = 4;
+					String line = flags.get(i).getName();
+					if(!flags.get(i).getOption().equals("")) line += " (" + flags.get(i).getOption() + ")";
+					if(line.length() > 25) spaces -= (line.length() - 25);
+					else if(line.length() < 25) spaces += (25 - line.length());
+					
+					str = "        " + line;
+					for(int j = 0; j < spaces; j++) str += " ";
+					str += flags.get(i + 1).getName();
+					if(!flags.get(i + 1).getOption().equals("")) str += " (" + flags.get(i + 1).getOption() + ")";
+					Message.send(str);
+				}
+				if(flags.size() % 2 != 0) {
+					String line = "        " + flags.get(flags.size() - 1).getName();
+					if(!flags.get(flags.size() - 1).getOption().equals("")) line += " (" + flags.get(flags.size() - 1).getOption() + ")";
+					Message.send(line);
+				}
 				Message.send("");
 			}
 			
