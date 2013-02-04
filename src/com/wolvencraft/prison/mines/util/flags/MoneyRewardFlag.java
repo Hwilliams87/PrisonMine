@@ -13,4 +13,13 @@ public class MoneyRewardFlag implements BaseFlag {
 	@Override
 	public void setOption(String option) { this.option = option; }
 
+	@Override
+	public boolean isOptionValid(String option) {
+		double value = 0;
+		try { value = Double.parseDouble(option); }
+		catch (Exception ex) { return false; }
+		if(value > 0) return true;
+		return false;
+	}
+
 }

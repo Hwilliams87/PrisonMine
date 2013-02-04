@@ -38,7 +38,12 @@ public class FlagCommand implements BaseCommand {
 				Message.sendFormattedError(language.ERROR_ARGUMENTS);
 				return false;
 			}
-
+			
+			if(!flag.isOptionValid(args[2])) {
+				Message.sendFormattedError("This option is not valid");
+				return false;
+			}
+			
 			if(curMine.hasFlag(flag)) {
 				if(flag.acceptDuplicates() && !curMine.hasFlag(flag, args[2])) {
 					curMine.addFlag(flag, args[2]);

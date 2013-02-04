@@ -49,6 +49,7 @@ public enum MineFlag {
 	public boolean hasOptions() { return hasOptions; }
 	public boolean acceptDuplicates() { return acceptDuplicates; }
 	public String getAlias() { return alias; }
+	public boolean isOptionValid (String option) { return this.dispatch().isOptionValid(option); }
 	
 	public static MineFlag get(String alias) {
 		for(MineFlag flag : MineFlag.values()) {

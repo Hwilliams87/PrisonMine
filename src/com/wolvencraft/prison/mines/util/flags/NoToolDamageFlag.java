@@ -13,4 +13,7 @@ public class NoToolDamageFlag implements BaseFlag {
 	@Override
 	public void setOption(String option) { this.option = option; }
 
+	@Override
+	public boolean isOptionValid(String option) { return true; }
+
 }
