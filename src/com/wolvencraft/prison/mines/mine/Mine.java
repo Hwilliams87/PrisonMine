@@ -68,7 +68,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     private int cooldownPeriod;
     private long cooldownEndsIn;
     
-    private boolean warned;
     private List<Integer> warningTimes;
     
     private List<Protection> enabledProtection;
@@ -108,7 +107,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     	cooldownPeriod = 0;
     	cooldownEndsIn = 0;
     	
-    	warned = true;
     	warningTimes = new ArrayList<Integer>();
     	
     	flags = new ArrayList<BaseFlag>();
@@ -164,7 +162,6 @@ public class Mine implements ConfigurationSerializable, Listener {
         
         if(silent) flags.add(MineFlag.Silent.dispatch());
         
-        this.warned = warned;
         this.warningTimes = warningTimes;
         
         this.enabledProtection = enabledProtection;
@@ -202,7 +199,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     	cooldownPeriod = ((Integer) map.get("cooldownPeriod")).intValue();
     	cooldownEndsIn = 0;
     	
-    	warned = ((Boolean) map.get("warned")).booleanValue();
     	warningTimes = (List<Integer>) map.get("warningTimes");
     	
     	flags = MineFlag.toMineFlagList((List<String>) map.get("flags"));
@@ -243,7 +239,6 @@ public class Mine implements ConfigurationSerializable, Listener {
         map.put("cooldownEnabled", cooldownEnabled);
         map.put("cooldownPeriod", cooldownPeriod);
         
-        map.put("warned", warned);
         map.put("warningTimes", warningTimes);
         
         map.put("flags", MineFlag.toStringList(flags));
@@ -309,9 +304,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     public int getCooldownPeriod() 					{ return cooldownPeriod; }
     public int getCooldownEndsIn() 					{ return (int)(cooldownEndsIn / 20); }
     
-    public boolean getWarned()						{ return warned; }
-    public List<Integer> getWarningTimes()			{ return warningTimes; }
-    
     public List<Protection> getProtection() 		{ return enabledProtection; }
     public PrisonRegion getProtectionRegion() 		{ return protectionRegion; }
     public Blacklist getBreakBlacklist() 			{ return breakBlacklist; }
@@ -328,8 +320,6 @@ public class Mine implements ConfigurationSerializable, Listener {
     public void setCooldownPeriod (int cooldownPeriod) 				{ this.cooldownPeriod = cooldownPeriod; }
     public void updateCooldown(long ticks) 							{ cooldownEndsIn -= ticks; }
     public void resetCooldown() 									{ cooldownEndsIn = cooldownPeriod * 20; }
-    
-    public void setWarned(boolean warned) 							{ this.warned = warned; }
     
     public void setLastResetBy(String issuer)						{ this.lastResetBy = issuer; }
     
@@ -369,7 +359,29 @@ public class Mine implements ConfigurationSerializable, Listener {
 		}
 		return mostCommon;
 	}
+        
+    public List<Integer> getLocalWarningTimes()		{
+    	List<Integer> localWarningTimes = new ArrayList<Integer>();
+    	for(Integer time : warningTimes) localWarningTimes.add(time);
+    	return localWarningTimes;
+    }
     
+    public boolean hasWarnings() {
+    	return warningTimes.isEmpty();
+    }
+    
+    public boolean hasWarningTime(Integer time) {
+    	return warningTimes.contains(time);
+    }
+    
+    public void addWarningTime(Integer time) {
+    	warningTimes.add(time);
+    }
+    
+    public void removeWarningTime(Integer time) {
+    	warningTimes.remove(time);
+    }
+	
     /**
      * Returns the instance of the trigger with the specified ID, or <b>null</b> if it is not present
      * @param triggerId ID of the requested trigger

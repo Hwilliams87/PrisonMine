@@ -150,7 +150,7 @@ public class MRLMine implements ConfigurationSerializable {
         }
         
         for(Integer warning : resetWarnings) {
-        	mine.getWarningTimes().add(warning);
+        	mine.addWarningTime(warning);
         }
         
         mine.saveFile();

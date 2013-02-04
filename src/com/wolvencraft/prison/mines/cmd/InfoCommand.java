@@ -89,9 +89,9 @@ public class InfoCommand  implements BaseCommand {
 				Message.send("");
 			}
 			
-			if(parentMine.getWarned() && !parentMine.getWarningTimes().isEmpty()) {
+			if(parentMine.hasWarnings()) {
 				String fillerString = "";
-				for(Integer warning : parentMine.getWarningTimes()) {
+				for(Integer warning : parentMine.getLocalWarningTimes()) {
 					if(!fillerString.equals("")) fillerString += ",";
 					fillerString += " " + Util.parseSeconds(warning);
 				}
