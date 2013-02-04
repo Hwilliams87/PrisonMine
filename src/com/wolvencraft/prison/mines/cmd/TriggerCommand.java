@@ -17,6 +17,7 @@ public class TriggerCommand implements BaseCommand {
 		if(args.length != 3) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS); return false; }
 		
 		Mine curMine = PrisonMine.getCurMine();
+		if(curMine == null) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_MINENOTSELECTED); return false; }
 		
 		if(args[1].equalsIgnoreCase("time")) {
 			if(args[2].equalsIgnoreCase("toggle")) {

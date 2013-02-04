@@ -22,6 +22,7 @@ public class BlacklistCommand implements BaseCommand {
 		Language language = PrisonMine.getLanguage();
 		
 		Mine curMine = PrisonMine.getCurMine();
+		if(curMine == null) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_MINENOTSELECTED); return false; }
 		
 		if(args.length == 2) {
 			if(args[2].equalsIgnoreCase("blacklist")) {				
