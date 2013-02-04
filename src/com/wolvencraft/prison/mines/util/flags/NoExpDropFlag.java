@@ -1,11 +1,11 @@
 package com.wolvencraft.prison.mines.util.flags;
 
-public class NoExpDropsFlag implements BaseFlag {
+public class NoExpDropFlag implements BaseFlag {
 	
 	private String option ="";
 	
 	@Override
-	public String getName() { return "NoExpDrops"; }
+	public String getName() { return "NoExpDrop"; }
 
 	@Override
 	public String getOption() { return option; }

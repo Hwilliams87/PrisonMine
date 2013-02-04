@@ -11,7 +11,7 @@ public enum MineFlag {
 	
 	MoneyReward(MoneyRewardFlag.class, "moneyreward", true, false),
 	MoneyRewardPlus(MoneyRewardPlusFlag.class, "moneyrewardpluss", true, false),
-	NoExpDrop(NoExpDropsFlag.class, "noexpdrop", false, false),
+	NoExpDrop(NoExpDropFlag.class, "noexpdrop", false, false),
 	NoHungerLoss(NoHungerLossFlag.class, "nohungerloss", false, false),
 	NoPlayerDamage(NoPlayerDamageFlag.class, "noplayerdamage", false, false),
 	NoToolDamage(NoToolDamageFlag.class, "notooldamage", false, false),
@@ -65,7 +65,7 @@ public enum MineFlag {
 	public static List<String> toStringList(List<BaseFlag> source) {
 		List<String> list = new ArrayList<String>();
 		for(BaseFlag flag : source) {
-			if(MineFlag.get(flag.getName()).hasOptions) list.add(flag.getName() + "," + flag.getOption());
+			if(MineFlag.get(flag.getName()).hasOptions()) list.add(flag.getName() + "," + flag.getOption());
 			else list.add(flag.getName());
 		}
 		return list;
