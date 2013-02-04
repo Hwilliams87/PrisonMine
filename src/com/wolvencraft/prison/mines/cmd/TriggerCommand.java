@@ -14,13 +14,13 @@ public class TriggerCommand implements BaseCommand {
 		
 		if(args.length == 1 || (args.length == 2 && args[1].equalsIgnoreCase("help"))) { getHelp(); return true; }
 		
-		if(args.length != 3) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS); return false; }
+		if(args.length > 3) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS); return false; }
 		
 		Mine curMine = PrisonMine.getCurMine();
 		if(curMine == null) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_MINENOTSELECTED); return false; }
 		
 		if(args[1].equalsIgnoreCase("time")) {
-			if(args[2].equalsIgnoreCase("toggle")) {
+			if(args.length == 2) {
 				if(curMine.getAutomaticReset()) {
 					curMine.setAutomaticReset(false);
 					Message.sendFormattedMine("Time trigger is " + ChatColor.RED + "off");
@@ -37,7 +37,7 @@ public class TriggerCommand implements BaseCommand {
 				Message.sendFormattedMine("Mine will now reset every " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s)");
 			}
 		} else if(args[1].equalsIgnoreCase("composition")) {
-			if(args[2].equalsIgnoreCase("toggle")) {
+			if(args.length == 2) {
 				if(curMine.getCompositionReset()) {
 					curMine.setCompositionReset(false);
 					Message.sendFormattedMine("Composition trigger is " + ChatColor.RED + "off");
