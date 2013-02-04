@@ -10,7 +10,7 @@ public class TimeTriggerVariables implements BaseVar {
 	@Override
 	public String parse(Mine mine, String option) {
 		Mine curMine;
-		if(mine.hasParent()) curMine = Mine.get(mine.getParent());
+		if(mine.hasParent()) curMine = mine.getSuperParent();
 		else curMine = mine;
 		if(!mine.getAutomaticReset()) return "<...>";
 		
