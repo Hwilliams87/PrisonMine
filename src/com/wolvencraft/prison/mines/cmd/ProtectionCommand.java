@@ -22,73 +22,42 @@ import com.wolvencraft.prison.mines.util.constants.Protection;
 public class ProtectionCommand  implements BaseCommand {
 	public boolean run(String[] args) {
 		
-		if(args.length == 1) {
-			getHelp();
-			return true;
-		}
+		if(args.length == 1) { getHelp(); return true; }
 
 		Language language = PrisonMine.getLanguage();
 		Mine curMine = PrisonMine.getCurMine();
-		if(curMine == null) {
-			Message.sendFormattedError(language.ERROR_MINENOTSELECTED);
-			return false;
-		}
+		if(curMine == null) { Message.sendFormattedError(language.ERROR_MINENOTSELECTED); return false; }
 		
 		if(args[1].equalsIgnoreCase("save")) {
 			Player player;
-			if(CommandManager.getSender() instanceof Player) {
-				player = (Player) CommandManager.getSender();
-			}
-			else {
-				Message.sendFormattedError("This command cannot be executed via console");
-				return false;
-			}
+			if(CommandManager.getSender() instanceof Player) player = (Player) CommandManager.getSender();
+			else { Message.sendFormattedError(language.ERROR_SENDERISNOTPLAYER); return false; }
 			
-			if(args.length != 2) {
-				Message.sendFormattedError(language.ERROR_ARGUMENTS);
-				return false;
-			}
+			if(args.length != 2) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 			
 			PrisonSelection sel = PrisonSuite.getSelection(player);
 			if(!sel.locationsSet()) {
-				if(!PrisonSuite.usingWorldEdit()) {
-					Message.sendFormattedError("Make a selection first");
-					return false;
-				}
+				if(!PrisonSuite.usingWorldEdit()) { Message.sendFormattedError("Make a selection first"); return false; }
 				else {
 					Location[] loc = WorldEditHook.getPoints(player);
-					if(loc == null) {
-						Message.sendFormattedError("Make a selection first");
-						return false;
-					}
+					if(loc == null) { Message.sendFormattedError("Make a selection first"); return false; }
 					sel.setCoordinates(loc);
 				}
 			}
 			
-			if(!sel.getPos1().getWorld().equals(sel.getPos2().getWorld())) {
-				Message.sendFormattedError("Your selection points are in different worlds");
-				return false;
-			}
-			
-			if(!sel.getPos1().getWorld().equals(curMine.getWorld())) {
-				Message.sendFormattedError("Mine and protection regions are in different worlds");
-				return false;
-			}
+			if(!sel.getPos1().getWorld().equals(sel.getPos2().getWorld())) { Message.sendFormattedError("Your selection points are in different worlds"); return false; }
+			if(!sel.getPos1().getWorld().equals(curMine.getWorld())) { Message.sendFormattedError("Mine and protection regions are in different worlds"); return false; }
 			
 			curMine.getProtectionRegion().setCoordinates(sel);
 			Message.sendFormattedMine("Protection region has been set!");
 		}
 		else if(args[1].equalsIgnoreCase("pvp")) {
-			if(args.length != 2) {
-				Message.sendFormattedError(language.ERROR_ARGUMENTS);
-				return false;
-			}
+			if(args.length != 2) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 			
 			if(curMine.getProtection().contains(Protection.PVP)) {
 				curMine.getProtection().remove(Protection.PVP);
 				Message.sendFormattedMine("PVP protection has been turned " + ChatColor.RED + "off");
-			}
-			else {
+			} else {
 				curMine.getProtection().add(Protection.PVP);
 				Message.sendFormattedMine("PVP protection has been turned " + ChatColor.GREEN + "on");
 			}
@@ -115,10 +84,7 @@ public class ProtectionCommand  implements BaseCommand {
 					Message.sendFormattedSuccess("The block breaking protection is now in blacklist mode");
 				}
 			} else if(args[2].equalsIgnoreCase("whitelist")) {
-				if(args.length != 3) {
-					Message.sendFormattedError(language.ERROR_ARGUMENTS);
-					return false;
-				}
+				if(args.length != 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 				
 				if(curMine.getProtection().contains(Protection.BLOCK_BREAK) && curMine.getBreakBlacklist().getState().equals(BlacklistState.WHITELIST)) {
 					curMine.getBreakBlacklist().setState(BlacklistState.DISABLED);
@@ -130,16 +96,9 @@ public class ProtectionCommand  implements BaseCommand {
 					Message.sendFormattedSuccess("The block breaking protection is now in whitelist mode");
 				}
 			} else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
-				if(args.length != 4) {
-					Message.sendFormattedError(language.ERROR_ARGUMENTS);
-					return false;
-				}
+				if(args.length != 4) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 				MaterialData block = Util.getBlock(args[3]);
-				
-				if(block == null) {
-					Message.sendFormattedError(language.ERROR_NOSUCHBLOCK);
-					return false;
-				}
+				if(block == null) { Message.sendFormattedError(language.ERROR_NOSUCHBLOCK); return false; }
 				
 				List<MaterialData> blockList = curMine.getBreakBlacklist().getBlocks();
 				blockList.add(block);
@@ -148,45 +107,24 @@ public class ProtectionCommand  implements BaseCommand {
 				Message.sendFormattedMine(ChatColor.GREEN + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was added to the block breaking protection blacklist");
 			}
 			else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
-				if(args.length != 4) {
-					Message.sendFormattedError(language.ERROR_ARGUMENTS);
-					return false;
-				}
+				if(args.length != 4) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 				MaterialData block = Util.getBlock(args[3]);
-				
-				if(block == null) {
-					Message.sendFormattedError(language.ERROR_NOSUCHBLOCK);
-					return false;
-				}
+				if(block == null) { Message.sendFormattedError(language.ERROR_NOSUCHBLOCK); return false; }
 				
 				List<MaterialData> blockList = curMine.getBreakBlacklist().getBlocks();
 				
-				if(blockList.indexOf(block) == -1) {
-					Message.sendFormattedError("There is no '" + args[3] + "' in break protection blacklist of mine '" + curMine.getId() + "'");
-					return false;
-				}
+				if(blockList.indexOf(block) == -1) { Message.sendFormattedError("There is no '" + args[3] + "' in break protection blacklist of mine '" + curMine.getId() + "'"); return false; }
 				blockList.remove(block);
 				curMine.getBreakBlacklist().setBlocks(blockList);
 
 				Message.sendFormattedMine(ChatColor.RED + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was removed from the block breaking protection blacklist");
-			}
-			else
-			{
-				Message.sendFormattedError(language.ERROR_ARGUMENTS);
-				return false;
-			}
+			} else { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 		}
 		else if(args[1].equalsIgnoreCase("placement") || args[1].equalsIgnoreCase("place")) {
-			if(args.length < 3) {
-				Message.sendFormattedError("Invalid parameters. Check your argument count!");
-				return false;
-			}
+			if(args.length < 3) { Message.sendFormattedError("Invalid parameters. Check your argument count!"); return false; }
 			
 			if(args[2].equalsIgnoreCase("blacklist")) {
-				if(args.length != 3) {
-					Message.sendFormattedError(language.ERROR_ARGUMENTS);
-					return false;
-				}
+				if(args.length != 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 				
 				if(curMine.getProtection().contains(Protection.BLOCK_PLACE) && curMine.getPlaceBlacklist().getState().equals(BlacklistState.BLACKLIST)) {
 					curMine.getPlaceBlacklist().setState(BlacklistState.DISABLED);
@@ -198,10 +136,7 @@ public class ProtectionCommand  implements BaseCommand {
 					Message.sendFormattedSuccess("The block placement protection is now in blacklist mode");
 				}
 			} else if(args[2].equalsIgnoreCase("whitelist")) {
-				if(args.length != 3) {
-					Message.sendFormattedError(language.ERROR_ARGUMENTS);
-					return false;
-				}
+				if(args.length != 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 				
 				if(curMine.getProtection().contains(Protection.BLOCK_PLACE) && curMine.getPlaceBlacklist().getState().equals(BlacklistState.WHITELIST)) {
 					curMine.getPlaceBlacklist().setState(BlacklistState.DISABLED);
@@ -213,16 +148,10 @@ public class ProtectionCommand  implements BaseCommand {
 					Message.sendFormattedSuccess("The block placement protection is now in whitelist mode");
 				}
 			} else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
-				if(args.length != 4) {
-					Message.sendFormattedError(language.ERROR_ARGUMENTS);
-					return false;
-				}
+				if(args.length != 4) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 				MaterialData block = Util.getBlock(args[3]);
 				
-				if(block == null) {
-					Message.sendFormattedError(language.ERROR_NOSUCHBLOCK);
-					return false;
-				}
+				if(block == null) { Message.sendFormattedError(language.ERROR_NOSUCHBLOCK); return false; }
 				
 				List<MaterialData> blockList = curMine.getPlaceBlacklist().getBlocks();
 				blockList.add(block);
@@ -230,35 +159,20 @@ public class ProtectionCommand  implements BaseCommand {
 				
 				Message.sendFormattedMine(ChatColor.GREEN + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was added to the block placement protection blacklist");
 			} else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
-				if(args.length != 4) {
-					Message.sendFormattedError(language.ERROR_ARGUMENTS);
-					return false;
-				}
+				if(args.length != 4) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 				MaterialData block = Util.getBlock(args[3]);
 				
-				if(block == null) {
-					Message.sendFormattedError(language.ERROR_NOSUCHBLOCK);
-					return false;
-				}
+				if(block == null) { Message.sendFormattedError(language.ERROR_NOSUCHBLOCK); return false; }
 				
 				List<MaterialData> blockList = curMine.getPlaceBlacklist().getBlocks();
 				
-				if(blockList.indexOf(block) == -1) {
-					Message.sendFormattedError("There is no '" + args[3] + "' in place protection blacklist of mine '" + curMine.getId() + "'");
-					return false;
-				}
+				if(blockList.indexOf(block) == -1) { Message.sendFormattedError("There is no '" + args[3] + "' in place protection blacklist of mine '" + curMine.getId() + "'"); return false; }
 				blockList.remove(block);
 				curMine.getPlaceBlacklist().setBlocks(blockList);
 
 				Message.sendFormattedMine(ChatColor.RED + block.getItemType().toString().toLowerCase().replace("_", " ") + ChatColor.WHITE + " was removed from the block placement protection blacklist");
-			} else {
-				Message.sendFormattedError(language.ERROR_ARGUMENTS);
-				return false;
-			}
-		} else {
-			Message.sendFormattedError(language.ERROR_COMMAND);
-			return false;
-		}
+			} else { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
+		} else { Message.sendFormattedError(language.ERROR_COMMAND); return false; }
 		
 		return curMine.saveFile();
 	}

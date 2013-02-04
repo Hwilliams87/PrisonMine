@@ -10,39 +10,20 @@ public class FlagCommand implements BaseCommand {
 
 	@Override
 	public boolean run(String[] args) {
-		if(args.length == 1) {
-			getHelp();
-			return true;
-		}
+		if(args.length == 1) { getHelp(); return true; }
 		
 		Language language = PrisonMine.getLanguage();
-		if(args.length > 3) {
-			Message.sendFormattedError(language.ERROR_ARGUMENTS);
-			return false;
-		}
+		if(args.length > 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 		
 		Mine curMine = PrisonMine.getCurMine();
-		if(curMine == null) {
-			Message.sendFormattedError(language.ERROR_MINENOTSELECTED);
-			return false;
-		}
+		if(curMine == null) { Message.sendFormattedError(language.ERROR_MINENOTSELECTED); return false; }
 		
 		MineFlag flag = MineFlag.get(args[1]);
-		if(flag == null) {
-			Message.sendFormattedError("This flag does not exist");
-			return false;
-		}
+		if(flag == null) { Message.sendFormattedError("The specified flag does not exist"); return false; }
 		
 		if(flag.hasOptions()) {
-			if(args.length != 3) {
-				Message.sendFormattedError(language.ERROR_ARGUMENTS);
-				return false;
-			}
-			
-			if(!flag.isOptionValid(args[2])) {
-				Message.sendFormattedError("This option is not valid");
-				return false;
-			}
+			if(args.length != 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
+			if(!flag.isOptionValid(args[2])) { Message.sendFormattedError("This option is not valid"); return false; }
 			
 			if(curMine.hasFlag(flag)) {
 				if(flag.acceptDuplicates() && !curMine.hasFlag(flag, args[2])) {
