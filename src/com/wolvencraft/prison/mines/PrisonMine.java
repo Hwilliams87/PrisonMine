@@ -68,12 +68,10 @@ public class PrisonMine extends PrisonPlugin {
 		prisonSuite = PrisonSuite.addPlugin(this);
 		plugin = this;
 		
-		
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 		settings = new Settings(this);
 		Message.debug("+-----[ Starting up PrisonMine ]-----");
-		Message.debug("| ");
 		Message.debug("+ Established connection with PrisonCore");
 		
 		getLanguageData().options().copyDefaults(true);
