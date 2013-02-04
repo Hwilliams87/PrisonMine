@@ -173,7 +173,7 @@ public class FlagListener implements Listener {
 			Player player = event.getPlayer();
 			if(!player.hasPermission("prison.mine.flags.moneyreward." + mine.getId()) && !player.hasPermission("prison.mine.flags.moneyreward")) { continue; }
 			
-			if(!mine.hasFlag(MineFlag.MoneyReward)) {
+			if(mine.hasFlag(MineFlag.MoneyReward)) {
 				EconomyHook.deposit(player, Double.parseDouble(mine.getFlag(MineFlag.MoneyReward).getOption()));
 			} else if(mine.hasFlag(MineFlag.MoneyRewardPlus)) {
 				if(event.getBlock().getType().equals(mine.getMostCommonBlock().getBlock().getItemType())) continue;
