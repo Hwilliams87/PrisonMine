@@ -28,7 +28,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.material.MaterialData;
 
@@ -48,7 +47,7 @@ import java.util.logging.Level;
  *
  */
 @SerializableAs("pMine")
-public class Mine implements ConfigurationSerializable, Listener {
+public class Mine implements ConfigurationSerializable {
     private String id;
     private String name;
 
