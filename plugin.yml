@@ -54,5 +54,12 @@ permissions:
   prison.mine.flags.*:
     default: true
     children:
-      prison.mine.flags.supertools: true
+      prison.mine.flags.moneyreward: true
+      prison.mine.flags.moneyrewardplus: true
+      prison.mine.flags.nohungerloss: true
+      prison.mine.flags.noplayerdamage: true
       prison.mine.flags.notooldamage: true
+      prison.mine.flags.playereffect: true
+      prison.mine.flags.resetsound: true
+      prison.mine.flags.supertools: true
+      prison.mine.flags.toolreplace: true
