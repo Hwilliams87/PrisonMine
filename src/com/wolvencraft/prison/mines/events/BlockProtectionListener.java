@@ -33,7 +33,7 @@ public class BlockProtectionListener implements Listener {
 		
 		Block b = event.getBlock();
 		String errorString = PrisonMine.getLanguage().PROTECTION_BREAK;
-		errorString.replaceAll("<BLOCK>", b.getType().name().toLowerCase().replace("_", " "));
+		errorString = errorString.replaceAll("<BLOCK>", b.getType().name().toLowerCase().replace("_", " "));
 		
 		for(Mine mine : PrisonMine.getLocalMines()) {
 			Message.debug("Checking mine " + mine.getId());
@@ -100,7 +100,7 @@ public class BlockProtectionListener implements Listener {
 		
 		Block b = event.getBlock();
 		String errorString = PrisonMine.getLanguage().PROTECTION_BREAK;
-		errorString.replaceAll("<BLOCK>", b.getType().name().toLowerCase().replace("_", " "));
+		errorString = errorString.replaceAll("<BLOCK>", b.getType().name().toLowerCase().replace("_", " "));
 		
 		for(Mine mine : PrisonMine.getLocalMines()) {
 			Message.debug("Checking mine " + mine.getId());
