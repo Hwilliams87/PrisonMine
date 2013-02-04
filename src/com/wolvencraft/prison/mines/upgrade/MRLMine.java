@@ -9,7 +9,6 @@ import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.prison.mines.mine.Mine;
-import com.wolvencraft.prison.mines.util.data.MineBlock;
 import com.wolvencraft.prison.region.PrisonRegion;
 import com.wolvencraft.prison.util.Message;
  
@@ -132,17 +131,16 @@ public class MRLMine implements ConfigurationSerializable {
     	
     	Iterator<Entry<SerializableBlock, Double>> it = composition.entrySet().iterator();
     	double totalValue = 0;
-        List<MineBlock> blocks = mine.getBlocks();
-        blocks.remove(new MineBlock(new MaterialData(Material.AIR), 1.0));
+        mine.removeBlock(new MaterialData(Material.AIR));
         while (it.hasNext()) {
 			Map.Entry<SerializableBlock, Double> pairs = (Map.Entry<SerializableBlock, Double>) it.next();
-            blocks.add(new MineBlock(new MaterialData(pairs.getKey().getBlockId()), pairs.getValue()));
+            mine.addBlock(new MaterialData(pairs.getKey().getBlockId()), pairs.getValue());
             totalValue += pairs.getValue().doubleValue();
             it.remove();
         }
         
         if(totalValue < 1) {
-        	blocks.add(new MineBlock(new MaterialData(Material.AIR), (1.0 - totalValue)));
+        	mine.addBlock(new MaterialData(Material.AIR), (1.0 - totalValue));
         }
         
         

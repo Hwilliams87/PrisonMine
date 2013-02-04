@@ -15,7 +15,7 @@ import com.wolvencraft.prison.mines.util.data.RandomBlock;
 
 public class RandomTerrainRoutine {	
 	public static boolean run(Mine mine) {
-		RandomBlock pattern = new RandomBlock(mine.getBlocks());
+		RandomBlock pattern = new RandomBlock(mine.getLocalBlocks());
 		Location one = mine.getRegion().getMinimum();
 		Location two = mine.getRegion().getMaximum();
 		World world = mine.getWorld();
