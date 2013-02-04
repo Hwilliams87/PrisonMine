@@ -13,29 +13,38 @@ public class DataCommand implements BaseCommand {
 			return true;
 		}
 		
-		if(args.length != 2) {
-			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
-			return false;
-		}
-		
-		if(args[1].equalsIgnoreCase("save")) {
-			MineData.saveAll();
-			SignData.saveAll();
-			Message.sendFormattedSuccess("Mine and sign data saved to disc", false);
-			return true;
-		}
-		else if(args[1].equalsIgnoreCase("load")) {
+		if(args.length == 1 && args[0].equalsIgnoreCase("reload")) {
 			PrisonMine.getInstance().reloadConfig();
 			PrisonMine.getInstance().reloadSettings();
 			PrisonMine.getInstance().reloadLanguageData();
 			PrisonMine.getInstance().reloadLanguage();
 			PrisonMine.setMines(MineData.loadAll());
 			PrisonMine.setSigns(SignData.loadAll());
-			Message.sendFormattedSuccess("Mine and sign data loaded from disc", false);
+			Message.sendFormattedSuccess("Mine and sign data loaded from disk", false);
 			return true;
-		}
-		else {
-			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);
+		} else if(args.length == 2 && args[0].equalsIgnoreCase("data")) {
+			if(args[1].equalsIgnoreCase("save")) {
+				MineData.saveAll();
+				SignData.saveAll();
+				Message.sendFormattedSuccess("Mine and sign data saved to disk", false);
+				return true;
+			}
+			else if(args[1].equalsIgnoreCase("load")) {
+				PrisonMine.getInstance().reloadConfig();
+				PrisonMine.getInstance().reloadSettings();
+				PrisonMine.getInstance().reloadLanguageData();
+				PrisonMine.getInstance().reloadLanguage();
+				PrisonMine.setMines(MineData.loadAll());
+				PrisonMine.setSigns(SignData.loadAll());
+				Message.sendFormattedSuccess("Mine and sign data loaded from disk", false);
+				return true;
+			}
+			else {
+				Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);
+				return false;
+			}
+		} else {
+			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
 			return false;
 		}
 	}

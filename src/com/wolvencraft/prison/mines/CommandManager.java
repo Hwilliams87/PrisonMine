@@ -14,7 +14,7 @@ import com.wolvencraft.prison.mines.util.Message;
 
 public enum CommandManager implements CommandHook {
 	BLACKLIST (BlacklistCommand.class, "prison.mine.edit", true, "blacklist", "bl", "whitelist", "wl"),
-	DATA (DataCommand.class, "prison.mine.admin", true, "data"),
+	DATA (DataCommand.class, "prison.mine.admin", true, "data", "reload"),
 	DEBUG(DebugCommand.class, "prison.mine.debug", true, "import", "debug", "setregion", "tp", "unload"),
 	EDIT (EditCommand.class, "prison.mine.edit", true, "edit", "add", "+", "remove", "-", "delete", "del", "name", "link", "setparent", "cooldown", "setwarp"),
 	FLAG (FlagCommand.class, "prison.mine.edit", true, "flag"),
