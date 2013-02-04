@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
+import com.wolvencraft.prison.hooks.EconomyHook;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
@@ -160,6 +161,24 @@ public class FlagListener implements Listener {
 			if(!mine.hasFlag(MineFlag.NoExpDrop)) continue;
 			if(!mine.getRegion().isLocationInRegion(event.getBlock().getLocation())) continue;
 			event.setExpToDrop(0);
+		}
+	}
+	
+	@EventHandler
+	public void MoneyRewardListener (BlockBreakEvent event) {
+		if(event.isCancelled()) return;
+		if(!EconomyHook.usingVault()) return;
+		
+		for(Mine mine : PrisonMine.getLocalMines()) {
+			Player player = event.getPlayer();
+			if(!player.hasPermission("prison.mine.flags.moneyreward." + mine.getId()) && !player.hasPermission("prison.mine.flags.moneyreward")) { continue; }
+			
+			if(!mine.hasFlag(MineFlag.MoneyReward)) {
+				EconomyHook.deposit(player, Double.parseDouble(mine.getFlag(MineFlag.MoneyReward).getOption()));
+			} else if(mine.hasFlag(MineFlag.MoneyRewardPlus)) {
+				if(event.getBlock().getType().equals(mine.getMostCommonBlock().getBlock().getItemType())) continue;
+				EconomyHook.deposit(player, Double.parseDouble(mine.getFlag(MineFlag.MoneyReward).getOption()));
+			} else continue;
 		}
 	}
 }
