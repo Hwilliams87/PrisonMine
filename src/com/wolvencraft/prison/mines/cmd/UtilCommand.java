@@ -29,5 +29,5 @@ public class UtilCommand implements BaseCommand {
 	public void getHelp() {}
 	
 	@Override
-	public void getHelpLine() { Message.formatHelp("reload", "", "Reloads configuration, language, mine and sign data from file", "prison.mine.admin"); }
+	public void getHelpLine() { Message.formatHelp("reload", "", "Reloads all data from file", "prison.mine.admin"); }
 }
