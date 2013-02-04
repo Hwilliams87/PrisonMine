@@ -7,7 +7,6 @@ import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 
-
 public class WarningCommand  implements BaseCommand {
 	
 	@Override
