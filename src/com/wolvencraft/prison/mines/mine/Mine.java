@@ -525,26 +525,63 @@ public class Mine implements ConfigurationSerializable, Listener {
     	return true;
     }
     
-    public List<BaseFlag> getLocalFlags() {
+    public List<BaseFlag> getAllFlags() {
     	List<BaseFlag> localFlags = new ArrayList<BaseFlag>();
     	for(BaseFlag flag : flags) localFlags.add(flag);
     	return localFlags;
     }
-    public boolean hasFlag(MineFlag flag) {
+    
+    public List<BaseFlag> getFlagsByType(MineFlag flag) {
+    	List<BaseFlag> demFlags = new ArrayList<BaseFlag>();
     	for(BaseFlag testFlag : flags) {
-    		if(testFlag.getName().equalsIgnoreCase(flag.getAlias())) return true;
+    		if(testFlag.getName().equalsIgnoreCase(flag.getAlias())) demFlags.add(testFlag);
     	}
-    	return false;
+    	return demFlags;
     }
+    
     public BaseFlag getFlag(MineFlag flag) {
     	for(BaseFlag testFlag : flags) {
     		if(testFlag.getName().equalsIgnoreCase(flag.getAlias())) return testFlag;
     	}
     	return null;
     }
+    
+    public BaseFlag getFlag(MineFlag flag, String option) {
+    	for(BaseFlag testFlag : flags) {
+    		if(testFlag.getName().equalsIgnoreCase(flag.getAlias()) && testFlag.getOption().equalsIgnoreCase(option)) return testFlag;
+    	}
+    	return null;
+    }
+    
+    public boolean hasFlag(MineFlag flag) {
+    	for(BaseFlag testFlag : flags) {
+    		if(testFlag.getName().equalsIgnoreCase(flag.getAlias())) return true;
+    	}
+    	return false;
+    }
+    
+    public boolean hasFlag(MineFlag flag, String option) {
+    	for(BaseFlag testFlag : flags) {
+    		if(testFlag.getName().equalsIgnoreCase(flag.getAlias()) && testFlag.getOption().equalsIgnoreCase(option)) return true;
+    	}
+    	return false;
+    }
+    
+    public void addFlag(MineFlag flag, String option) {
+    	BaseFlag flagObj = flag.dispatch();
+    	flagObj.setOption(option);
+    	flags.add(flagObj);
+    }
+    
     public void addFlag(MineFlag flag) {
     	flags.add(flag.dispatch());
     }
+    
+    public void removeFlag(MineFlag flag, String option) {
+    	BaseFlag flagToRemove = getFlag(flag, option);
+    	flags.remove(flagToRemove);
+    }
+    
     public void removeFlag(MineFlag flag) {
     	BaseFlag flagToRemove = getFlag(flag);
     	flags.remove(flagToRemove);

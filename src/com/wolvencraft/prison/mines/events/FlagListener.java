@@ -1,5 +1,7 @@
 package com.wolvencraft.prison.mines.events;
 
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -19,6 +21,7 @@ import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 import com.wolvencraft.prison.mines.util.constants.MineFlag;
+import com.wolvencraft.prison.mines.util.flags.BaseFlag;
 
 public class FlagListener implements Listener {
 	
@@ -144,7 +147,9 @@ public class FlagListener implements Listener {
 			
 			if(!player.hasPermission("prison.mine.flags.playereffect." + mine.getId()) && !player.hasPermission("prison.mine.flags.playereffect")) { continue; }
 			
-			player.addPotionEffect(new PotionEffect(Util.getEffect(mine.getFlag(MineFlag.PlayerEffect).getOption()), 100, 1));
+			List<BaseFlag> effects = mine.getFlagsByType(MineFlag.PlayerEffect);
+			for(BaseFlag effect : effects)
+				player.addPotionEffect(new PotionEffect(Util.getEffect(effect.getOption()), 100, 1));
 		}
 	}
 }

@@ -33,21 +33,29 @@ public class FlagCommand implements BaseCommand {
 			return false;
 		}
 		
-		if(curMine.hasFlag(flag)) {
-			curMine.removeFlag(flag);
-			Message.sendFormattedMine("Flag " + flag + " has been removed");
-		} else {
-			if(flag.hasOptions()) {
-				if(args.length != 3) {
-					Message.sendFormattedError(language.ERROR_ARGUMENTS);
-					return false;
+		if(flag.hasOptions()) {
+			if(args.length != 3) {
+				Message.sendFormattedError(language.ERROR_ARGUMENTS);
+				return false;
+			}
+
+			if(curMine.hasFlag(flag)) {
+				if(flag.acceptDuplicates() && !curMine.hasFlag(flag, args[2])) {
+					curMine.addFlag(flag, args[2]);
+					Message.sendFormattedMine("Flag " + flag + " has been added");
+				} else {
+					curMine.removeFlag(flag, args[2]);
+					Message.sendFormattedMine("Flag " + flag + " has been removed");
 				}
-				curMine.addFlag(flag);
-				curMine.getFlag(flag).setOption(args[2]);
+			}
+		} else {
+			if(curMine.hasFlag(flag)) {
+				curMine.removeFlag(flag);
+				Message.sendFormattedMine("Flag " + flag + " has been removed");
 			} else {
 				curMine.addFlag(flag);
+				Message.sendFormattedMine("Flag " + flag + " has been added");
 			}
-			Message.sendFormattedMine("Flag " + flag + " has been added");
 		}
 		
 		return curMine.saveFile();

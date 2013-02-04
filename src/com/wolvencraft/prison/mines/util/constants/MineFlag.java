@@ -9,27 +9,30 @@ import com.wolvencraft.prison.mines.util.flags.*;
 
 public enum MineFlag {
 	
-	MoneyReward(MoneyRewardFlag.class, "moneyreward", true),
-	MoneyRewardPlus(MoneyRewardPlusFlag.class, "moneyrewardpluss", true),
-	NoHungerLoss(NoHungerLossFlag.class, "nohungerloss", false),
-	NoPlayerDamage(NoPlayerDamageFlag.class, "noplayerdamage", false),
-	NoToolDamage(NoToolDamageFlag.class, "notooldamage", false),
-	PlayerEffect(PlayerEffectFlag.class, "playereffect", true),
-	ResetSound(ResetSoundFlag.class, "resetsound", true),
-	Silent(SilentFlag.class, "silent", false),
-	SuperTools(SuperToolsFlag.class, "supertools", false),
-	SurfaceOre(SurfaceOreFlag.class, "surfaceore", true),
-	ToolReplace(ToolReplaceFlag.class, "toolreplace", false);
+	MoneyReward(MoneyRewardFlag.class, "moneyreward", true, false),
+	MoneyRewardPlus(MoneyRewardPlusFlag.class, "moneyrewardpluss", true, false),
+	NoExpDrop(NoExpDropsFlag.class, "noexpdrop", false, false),
+	NoHungerLoss(NoHungerLossFlag.class, "nohungerloss", false, false),
+	NoPlayerDamage(NoPlayerDamageFlag.class, "noplayerdamage", false, false),
+	NoToolDamage(NoToolDamageFlag.class, "notooldamage", false, false),
+	PlayerEffect(PlayerEffectFlag.class, "playereffect", true, true),
+	ResetSound(ResetSoundFlag.class, "resetsound", true, false),
+	Silent(SilentFlag.class, "silent", false, false),
+	SuperTools(SuperToolsFlag.class, "supertools", false, false),
+	SurfaceOre(SurfaceOreFlag.class, "surfaceore", true, false),
+	ToolReplace(ToolReplaceFlag.class, "toolreplace", false, false);
 	
-	MineFlag(Class<?> clazz, String alias, boolean hasOptions) {
+	MineFlag(Class<?> clazz, String alias, boolean hasOptions, boolean acceptDuplicates) {
 		this.clazz = clazz;
 		this.alias = alias;
 		this.hasOptions = hasOptions;
+		this.acceptDuplicates = acceptDuplicates;
 	}
 	
 	Class<?> clazz;
 	String alias;
 	boolean hasOptions;
+	boolean acceptDuplicates;
 	
 	public BaseFlag dispatch() {
 		try{
@@ -44,6 +47,7 @@ public enum MineFlag {
 	}
 	
 	public boolean hasOptions() { return hasOptions; }
+	public boolean acceptDuplicates() { return acceptDuplicates; }
 	public String getAlias() { return alias; }
 	
 	public static MineFlag get(String alias) {
