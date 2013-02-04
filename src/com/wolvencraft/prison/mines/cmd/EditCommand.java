@@ -279,7 +279,7 @@ public class EditCommand  implements BaseCommand {
 			}
 			
 			curMine.setParent(args[1]);
-			Message.sendFormattedMine("Mine will is now linked to " + ChatColor.GREEN + args[1]);
+			Message.sendFormattedMine("Mine is now linked to " + ChatColor.GREEN + args[1]);
 			
 			return curMine.saveFile();
 		} else if(args[0].equalsIgnoreCase("setwarp")) {
