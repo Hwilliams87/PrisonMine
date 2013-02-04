@@ -11,6 +11,7 @@ import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.material.MaterialData;
 
 import com.wolvencraft.prison.mines.util.constants.BlacklistState;
+import com.wolvencraft.prison.util.Message;
 
 @SerializableAs("Blacklist")
 public class Blacklist implements ConfigurationSerializable {
@@ -53,12 +54,19 @@ public class Blacklist implements ConfigurationSerializable {
 	
 	public BlacklistState getState() 	{ return type; }
 	
-	public List<MaterialData> getBlocks() { return blocks; }
+	public List<MaterialData> getBlocks() { 
+		List<MaterialData> tempBlocks = new ArrayList<MaterialData>();
+		for(MaterialData block : blocks) tempBlocks.add(block);
+		return tempBlocks;
+	}
 	
 	public void setState(BlacklistState type) { this.type = type; }
 	
 	public void setBlocks(List<MaterialData> newBlocks) {
 		blocks.clear();
-		for(MaterialData block : newBlocks) blocks.add(block);
+		for(MaterialData block : newBlocks) {
+			blocks.add(block);
+			Message.debug("Block added to the blacklist = " + block.getItemType());
+		}
 	}
 }

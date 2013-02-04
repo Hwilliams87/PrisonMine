@@ -16,6 +16,7 @@ import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.constants.BlacklistState;
 import com.wolvencraft.prison.mines.util.constants.Protection;
+import com.wolvencraft.prison.mines.util.data.Blacklist;
 
 public class BlockProtectionListener implements Listener {
 	
@@ -55,17 +56,18 @@ public class BlockProtectionListener implements Listener {
 			}
 				
 			Message.debug("Mine has a block breaking protection enabled");
-			if(!mine.getBreakBlacklist().getState().equals(BlacklistState.DISABLED)) {
+			Blacklist breakBlacklist = mine.getBreakBlacklist();
+			if(!breakBlacklist.getState().equals(BlacklistState.DISABLED)) {
 				Message.debug("Block breaking blacklist detected");
 				boolean found = false;
-				for(MaterialData block : mine.getBreakBlacklist().getBlocks()) {
+				for(MaterialData block : breakBlacklist.getBlocks()) {
 					if(block.getItemType().equals(b.getType())) {
 						found = true;
 						break;
 					}
 				}
 				
-				if((mine.getBreakBlacklist().getState().equals(BlacklistState.WHITELIST) && !found) || (mine.getBreakBlacklist().getState().equals(BlacklistState.BLACKLIST) && found)) {
+				if((breakBlacklist.equals(BlacklistState.BLACKLIST) && found) || (breakBlacklist.getState().equals(BlacklistState.WHITELIST) && !found)) {
 					Message.debug("Player " + player.getName() + " broke a black/whitelisted block in the mine!");
 					Message.sendFormattedError(player, errorString);
 					event.setCancelled(true);
@@ -85,7 +87,7 @@ public class BlockProtectionListener implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onBlockplace(BlockPlaceEvent event) {
+	public void onBlockPlace(BlockPlaceEvent event) {
 		if(event.isCancelled()) return;
 		Message.debug("BlockPlaceEvent caught");
 		
@@ -99,7 +101,7 @@ public class BlockProtectionListener implements Listener {
 		Message.debug("Retrieving the region list...");
 		
 		Block b = event.getBlock();
-		String errorString = PrisonMine.getLanguage().PROTECTION_BREAK;
+		String errorString = PrisonMine.getLanguage().PROTECTION_PLACE;
 		errorString = errorString.replaceAll("<BLOCK>", b.getType().name().toLowerCase().replace("_", " "));
 		
 		for(Mine mine : PrisonMine.getLocalMines()) {
@@ -122,18 +124,19 @@ public class BlockProtectionListener implements Listener {
 			}
 				
 			Message.debug("Mine has a block placement protection enabled");
-			if(!mine.getPlaceBlacklist().getState().equals(BlacklistState.DISABLED)) {
+			Blacklist placeBlacklist = mine.getPlaceBlacklist();
+			if(!placeBlacklist.getState().equals(BlacklistState.DISABLED)) {
 				Message.debug("Block placement blacklist detected");
 				boolean found = false;
-				for(MaterialData block : mine.getPlaceBlacklist().getBlocks()) {
+				for(MaterialData block : placeBlacklist.getBlocks()) {
 					if(block.getItemType().equals(b.getType())) {
 						found = true;
 						break;
 					}
 				}
 				
-				if((mine.getPlaceBlacklist().getState().equals(BlacklistState.WHITELIST) && !found) || (!mine.getPlaceBlacklist().getState().equals(BlacklistState.BLACKLIST) && found)) {
-					Message.debug("Player " + player.getName() + " broke a black/whitelisted block in the mine!");
+				if((placeBlacklist.getState().equals(BlacklistState.BLACKLIST) && found) || (placeBlacklist.getState().equals(BlacklistState.WHITELIST) && !found)) {
+					Message.debug("Player " + player.getName() + " placed a black/whitelisted block in the mine (" + b.getType().name() + ")!");
 					Message.sendFormattedError(player, errorString);
 					event.setCancelled(true);
 					return;

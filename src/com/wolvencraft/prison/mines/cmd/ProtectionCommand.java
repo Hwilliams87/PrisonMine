@@ -109,12 +109,10 @@ public class ProtectionCommand  implements BaseCommand {
 					curMine.getBreakBlacklist().setState(BlacklistState.DISABLED);
 					curMine.getProtection().remove(Protection.BLOCK_BREAK);
 					Message.sendFormattedSuccess("The block breaking protection is now disabled");
-					return true;
 				} else {
 					curMine.getBreakBlacklist().setState(BlacklistState.BLACKLIST);
 					curMine.getProtection().add(Protection.BLOCK_BREAK);
 					Message.sendFormattedSuccess("The block breaking protection is now in blacklist mode");
-					return true;
 				}
 			} else if(args[2].equalsIgnoreCase("whitelist")) {
 				if(args.length != 3) {
@@ -126,12 +124,10 @@ public class ProtectionCommand  implements BaseCommand {
 					curMine.getBreakBlacklist().setState(BlacklistState.DISABLED);
 					curMine.getProtection().remove(Protection.BLOCK_BREAK);
 					Message.sendFormattedSuccess("The block breaking protection is now disabled");
-					return true;
 				} else {
 					curMine.getBreakBlacklist().setState(BlacklistState.WHITELIST);
 					curMine.getProtection().add(Protection.BLOCK_BREAK);
 					Message.sendFormattedSuccess("The block breaking protection is now in whitelist mode");
-					return true;
 				}
 			} else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
 				if(args.length != 4) {
@@ -196,12 +192,10 @@ public class ProtectionCommand  implements BaseCommand {
 					curMine.getPlaceBlacklist().setState(BlacklistState.DISABLED);
 					curMine.getProtection().remove(Protection.BLOCK_PLACE);
 					Message.sendFormattedSuccess("The place protection is now disabled");
-					return true;
 				} else {
 					curMine.getPlaceBlacklist().setState(BlacklistState.BLACKLIST);
 					curMine.getProtection().add(Protection.BLOCK_PLACE);
 					Message.sendFormattedSuccess("The block placement protection is now in blacklist mode");
-					return true;
 				}
 			} else if(args[2].equalsIgnoreCase("whitelist")) {
 				if(args.length != 3) {
@@ -213,12 +207,10 @@ public class ProtectionCommand  implements BaseCommand {
 					curMine.getPlaceBlacklist().setState(BlacklistState.DISABLED);
 					curMine.getProtection().remove(Protection.BLOCK_PLACE);
 					Message.sendFormattedSuccess("The block placement protection is now disabled");
-					return true;
 				} else {
 					curMine.getPlaceBlacklist().setState(BlacklistState.WHITELIST);
 					curMine.getProtection().add(Protection.BLOCK_PLACE);
 					Message.sendFormattedSuccess("The block placement protection is now in whitelist mode");
-					return true;
 				}
 			} else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
 				if(args.length != 4) {
