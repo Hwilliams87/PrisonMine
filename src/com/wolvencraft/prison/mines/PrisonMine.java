@@ -34,6 +34,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
 import com.wolvencraft.prison.PrisonSuite;
 import com.wolvencraft.prison.hooks.PrisonPlugin;
+import com.wolvencraft.prison.hooks.TimedTask;
 import com.wolvencraft.prison.mines.events.*;
 import com.wolvencraft.prison.mines.mine.*;
 import com.wolvencraft.prison.mines.routines.AutomaticResetRoutine;
@@ -62,6 +63,8 @@ public class PrisonMine extends PrisonPlugin {
 	private static List<DisplaySign> signs;
 
 	private static Map<CommandSender, Mine> curMines;
+	
+	private static TimedTask signTask;
 	
 	@Override
 	public void onEnable() {
@@ -107,7 +110,7 @@ public class PrisonMine extends PrisonPlugin {
 		new FlagListener(this);
 		
 		Message.debug("+ Sending sign task to PrisonCore");
-		PrisonSuite.addTask(new DisplaySignTask());
+		PrisonSuite.addTask(signTask = new DisplaySignTask());
 		
 		Message.debug("+---[ End of report ]---");
 		
@@ -115,11 +118,8 @@ public class PrisonMine extends PrisonPlugin {
 		
 		if(settings.RESET_ALL_MINES_ON_STARTUP) {
 			Message.log("Resetting all mines, as defined in the configuration");
-			for(Mine mine : mines) {
-				AutomaticResetRoutine.run(mine);
-			}
+			for(Mine mine : mines) AutomaticResetRoutine.run(mine);
 		}
-		
 	}
 	
 	@Override
@@ -128,10 +128,7 @@ public class PrisonMine extends PrisonPlugin {
 
 		CommandManager.setSender(sender);
 		
-		if(args.length == 0) {
-			CommandManager.HELP.run("");
-			return true;
-		}
+		if(args.length == 0) { CommandManager.HELP.run(""); return true; }
 		
 		for(CommandManager cmd : CommandManager.values()) {
 			if(cmd.isCommand(args[0])) {
@@ -151,6 +148,15 @@ public class PrisonMine extends PrisonPlugin {
 		MineData.saveAll();
 		SignData.saveAll();
 		
+		for(Mine mine : mines) {
+			if(!mine.getAutomaticReset()) continue;
+			for(TimedTask task : PrisonSuite.getLocalTasks()) {
+				if(task.getName().endsWith(mine.getId())) task.cancel();
+			}
+		}
+		
+		signTask.cancel();
+		
 		Message.log("Plugin stopped");
 	}
 	
@@ -158,7 +164,6 @@ public class PrisonMine extends PrisonPlugin {
 		String lang = settings.LANGUAGE;
 		if(lang == null) lang = "english";
 		lang = lang + ".yml";
-		Message.log("Language file used: " + lang);
 		
 		if (languageDataFile == null) languageDataFile = new File(getDataFolder(), lang);
 		languageData = YamlConfiguration.loadConfiguration(languageDataFile);
