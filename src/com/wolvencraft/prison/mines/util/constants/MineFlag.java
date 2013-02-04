@@ -9,11 +9,12 @@ import com.wolvencraft.prison.mines.util.flags.*;
 
 public enum MineFlag {
 	
+	MoneyReward(MoneyRewardFlag.class, "moneyreward", true),
+	MoneyRewardPlus(MoneyRewardPlusFlag.class, "moneyrewardpluss", true),
 	NoHungerLoss(NoHungerLossFlag.class, "nohungerloss", false),
 	NoPlayerDamage(NoPlayerDamageFlag.class, "noplayerdamage", false),
 	NoToolDamage(NoToolDamageFlag.class, "notooldamage", false),
 	PlayerEffect(PlayerEffectFlag.class, "playereffect", true),
-	PlayerPotionEffect(PlayerPotionEffectFlag.class, "playerpotioneffect", true),
 	ResetSound(ResetSoundFlag.class, "resetsound", true),
 	Silent(SilentFlag.class, "silent", false),
 	SuperTools(SuperToolsFlag.class, "supertools", false),
