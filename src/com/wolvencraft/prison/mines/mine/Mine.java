@@ -117,7 +117,7 @@ public class Mine implements ConfigurationSerializable {
     	
     	totalBlocks = blocksLeft = region.getBlockCount();
     	
-    	lastResetBy = null;
+    	lastResetBy = "None";
     }
     
     /**
@@ -171,7 +171,7 @@ public class Mine implements ConfigurationSerializable {
         this.totalBlocks = region.getBlockCount();
         this.blocksLeft = region.getBlockCount();
 
-    	this.lastResetBy = null;
+    	this.lastResetBy = "None";
     }
     
     /**
@@ -212,7 +212,7 @@ public class Mine implements ConfigurationSerializable {
     	totalBlocks = region.getBlockCount();
     	blocksLeft = ((Integer) map.get("blocksLeft")).intValue();
     	
-    	lastResetBy = null;
+    	lastResetBy = "None";
     }
 	
 	/**
