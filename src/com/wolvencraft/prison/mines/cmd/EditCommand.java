@@ -21,6 +21,8 @@ import com.wolvencraft.prison.mines.util.Util;
 import com.wolvencraft.prison.mines.util.data.MineBlock;
 
 public class EditCommand  implements BaseCommand {
+	
+	@Override
 	public boolean run(String[] args) {
 		
 		Language language = PrisonMine.getLanguage();
@@ -198,7 +200,7 @@ public class EditCommand  implements BaseCommand {
 		}
 	}
 	
-
+	@Override
 	public void getHelp() {
 		Message.formatHeader(20, "Editing");
 		Message.formatHelp("edit", "<id>", "Selects a mine to edit its properties");
@@ -214,5 +216,6 @@ public class EditCommand  implements BaseCommand {
 		return;
 	}
 	
+	@Override
 	public void getHelpLine() { Message.formatHelp("edit", "", "Shows a help page on mine atribute editing", "prison.mine.edit"); }
 }

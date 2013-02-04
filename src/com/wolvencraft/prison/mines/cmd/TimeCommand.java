@@ -17,22 +17,15 @@ public class TimeCommand implements BaseCommand {
 		
 		if(args.length == 1) {
 			curMine = PrisonMine.getCurMine();
-			if(curMine == null) {
-				getHelp();
-				return true;
-			}
+			if(curMine == null) { getHelp(); return true; }
 		}
-		else curMine = Mine.get(args[1]);
-		
-		if(args.length > 2) {
-			Message.sendFormattedError(language.ERROR_ARGUMENTS);
-			return false;
+		else {
+			curMine = Mine.get(args[1]);
+			if(curMine == null) { Message.sendFormattedError(language.ERROR_MINENAME.replaceAll("<ID>", args[1]), false); return false; }
 		}
 		
-		if(curMine == null) {
-			Message.sendFormattedError(language.ERROR_MINENAME.replaceAll("<ID>", args[1]));
-			return false;
-		}
+		if(args.length > 2) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
+		
 		Mine parentMine = curMine.getSuperParent();
 		
 		String displayString = "---==[ " + ChatColor.GREEN + ChatColor.BOLD + curMine.getName() + ChatColor.WHITE + " ]==---";
@@ -40,20 +33,16 @@ public class TimeCommand implements BaseCommand {
 		Message.send(displayString);
 		Message.send("");
 		
-		if(parentMine.getAutomaticReset())
-			Message.send("    Resets every ->  " + ChatColor.GREEN + Util.parseSeconds(parentMine.getResetPeriodSafe()) + "    " + ChatColor.GOLD + Util.parseSeconds(parentMine.getResetsInSafe()) + ChatColor.WHITE + "  <- Next Reset");
+		if(parentMine.getAutomaticReset()) Message.send("    Resets every ->  " + ChatColor.GREEN + Util.parseSeconds(parentMine.getResetPeriodSafe()) + "    " + ChatColor.GOLD + Util.parseSeconds(parentMine.getResetsInSafe()) + ChatColor.WHITE + "  <- Next Reset");
 		else Message.send("   Mine has to be reset manually");
 		
-		return false;
+		return true;
 	}
 
 	@Override
-	public void getHelp() {
-		Message.formatHelp("time", "<name>", "Shows the time until the timed reset", "prison.mine.info.time");
-		
-	}
+	public void getHelp() { getHelpLine(); }
 
 	@Override
-	public void getHelpLine() { getHelp(); }
+	public void getHelpLine() { Message.formatHelp("time", "<name>", "Shows the time until the timed reset", "prison.mine.info.time"); }
 
 }

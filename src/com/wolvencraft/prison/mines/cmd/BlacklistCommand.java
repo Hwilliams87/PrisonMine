@@ -14,6 +14,7 @@ import com.wolvencraft.prison.mines.util.constants.BlacklistState;
 
 public class BlacklistCommand implements BaseCommand {
 	
+	@Override
 	public boolean run(String[] args) {
 
 		if(args.length == 1) {
@@ -94,6 +95,7 @@ public class BlacklistCommand implements BaseCommand {
 		return curMine.saveFile();
 	}
 	
+	@Override
 	public void getHelp() {
 		Message.formatHeader(20, "Blacklist");
 		Message.formatHelp("blacklist", "", "Toggles the use of the blacklist for the mine");
@@ -103,5 +105,6 @@ public class BlacklistCommand implements BaseCommand {
 		return;
 	}
 	
+	@Override
 	public void getHelpLine() { Message.formatHelp("blacklist", "", "More information on the reset blacklist", "prison.mine.edit"); }
 }

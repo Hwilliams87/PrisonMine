@@ -20,6 +20,8 @@ import com.wolvencraft.prison.mines.util.constants.BlacklistState;
 import com.wolvencraft.prison.mines.util.constants.Protection;
 
 public class ProtectionCommand  implements BaseCommand {
+	
+	@Override
 	public boolean run(String[] args) {
 		
 		if(args.length == 1) { getHelp(); return true; }
@@ -177,6 +179,7 @@ public class ProtectionCommand  implements BaseCommand {
 		return curMine.saveFile();
 	}
 	
+	@Override
 	public void getHelp() {
 		Message.formatHeader(20, "Protection");
 		Message.formatHelp("prot", "pvp", "Toggles the PVP for the current mine");
@@ -193,5 +196,6 @@ public class ProtectionCommand  implements BaseCommand {
 		return;
 	}
 	
+	@Override
 	public void getHelpLine() { Message.formatHelp("prot", "", "Shows the help page for mine protection options", "prison.mine.edit"); }
 }

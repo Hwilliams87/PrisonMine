@@ -6,6 +6,8 @@ import com.wolvencraft.prison.mines.settings.SignData;
 import com.wolvencraft.prison.mines.util.Message;
 
 public class UtilCommand implements BaseCommand {
+	
+	@Override
 	public boolean run(String[] args) {
 		
 		if(args[0].equalsIgnoreCase("reload")) {
@@ -23,7 +25,9 @@ public class UtilCommand implements BaseCommand {
 		}
 	}
 	
+	@Override
 	public void getHelp() {}
 	
+	@Override
 	public void getHelpLine() { Message.formatHelp("reload", "", "Reloads configuration, language, mine and sign data from file", "prison.mine.admin"); }
 }

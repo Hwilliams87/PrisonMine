@@ -9,6 +9,8 @@ import com.wolvencraft.prison.mines.util.Util;
 
 
 public class WarningCommand  implements BaseCommand {
+	
+	@Override
 	public boolean run(String[] args) {
 		
 		if(args.length == 1) { getHelp(); return true; }
@@ -43,7 +45,8 @@ public class WarningCommand  implements BaseCommand {
 		
 		return curMine.saveFile();
 	}
-
+	
+	@Override
 	public void getHelp() {
 		Message.formatHeader(20, "Timer");
 		Message.formatHelp("warning", "add <time>", "Adds a warning at time specified");
@@ -51,5 +54,6 @@ public class WarningCommand  implements BaseCommand {
 		return;
 	}
 	
+	@Override
 	public void getHelpLine() { Message.formatHelp("warning", "", "Shows reset warning options", "prison.mine.edit"); }
 }

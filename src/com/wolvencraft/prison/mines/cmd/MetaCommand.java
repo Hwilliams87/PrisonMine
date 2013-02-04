@@ -6,6 +6,8 @@ import com.wolvencraft.prison.mines.util.Message;
 import org.bukkit.ChatColor;
 
 public class MetaCommand  implements BaseCommand {
+	
+	@Override
     public boolean run(String[] args) {
         Message.formatHeader(20, PrisonMine.getLanguage().GENERAL_TITLE);
         Message.send(ChatColor.GREEN + "PrisonMine version " + ChatColor.BLUE + PrisonMine.getInstance().getVersion());
@@ -16,6 +18,9 @@ public class MetaCommand  implements BaseCommand {
         return true;
     }
     
+	@Override
     public void getHelp() {}
+	
+	@Override
     public void getHelpLine() { Message.formatHelp("about", "", "Shows the basic information about the plugin"); }
 }

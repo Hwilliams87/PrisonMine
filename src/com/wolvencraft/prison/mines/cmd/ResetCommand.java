@@ -10,19 +10,17 @@ import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 import com.wolvencraft.prison.mines.util.constants.MineFlag;
 
-public class ResetCommand implements BaseCommand {	
+public class ResetCommand implements BaseCommand {
+	
+	@Override
 	public boolean run(String[] args) {
 		
-		Mine curMine = PrisonMine.getCurMine();
+		Mine curMine = null;
 		
 		if(args.length == 1) {
-			if(curMine == null) {
-				getHelp();
-				return true;
-			}
+			curMine = PrisonMine.getCurMine();
+			if(curMine == null) { getHelp(); return true; }
 		} else if(args.length == 2) {
-			curMine = Mine.get(args[1]);
-			
 			if(args[1].equalsIgnoreCase("all")) {
 				boolean success = true;
 				for(Mine mine : PrisonMine.getLocalMines()) {
@@ -30,18 +28,11 @@ public class ResetCommand implements BaseCommand {
 				}
 				return success;
 			}
-		} else {
-			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
-			return false;
-		}
-			
-		if(curMine == null) {
-			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS);
-			return false;
-		}
+			curMine = Mine.get(args[1]);
+			if(curMine == null) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS); return false; }
+		} else { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS); return false; }
 		
 		String broadcastMessage = "";
-		
 
 		Message.debug("+---------------------------------------------");
 		Message.debug("| Mine " + curMine.getId() + " is resetting. Reset report:");
@@ -98,14 +89,15 @@ public class ResetCommand implements BaseCommand {
 		Message.debug("| Reached the end of the report for " + curMine.getId());
 		Message.debug("+---------------------------------------------");
 		
-		if(CommandManager.getSender() instanceof ConsoleCommandSender)
-			curMine.setLastResetBy("CONSOLE");
+		if(CommandManager.getSender() instanceof ConsoleCommandSender) curMine.setLastResetBy("CONSOLE");
 		else curMine.setLastResetBy(((Player) CommandManager.getSender()).getPlayerListName());
 		
 		return true;
 	}
 	
-	public void getHelp() { getHelpLine(); }
+	@Override
+	public void getHelp() { Message.formatHeader(20, "Manual Reset"); getHelpLine(); }
 	
+	@Override
 	public void getHelpLine() { Message.formatHelp("reset", "<name>", "Resets the mine manually", "prison.mine.reset.manual"); }
 }
