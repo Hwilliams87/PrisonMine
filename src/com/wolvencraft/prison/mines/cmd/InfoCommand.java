@@ -118,25 +118,13 @@ public class InfoCommand  implements BaseCommand {
 			if(flags.size() != 0) {
 				str = ChatColor.YELLOW + "   Flags:" + ChatColor.WHITE;
 				Message.send(str);
+				for(BaseFlag flag : flags) {
+					String line = flag.getName();
+					if(!flag.getOption().equals("")) line += " (" + flag.getOption() + ")";
+					Message.send("        " + line);
+				}
 				
-				for(int i = 0; i < (flags.size() - 1); i += 2) {
-					int spaces = 4;
-					String line = flags.get(i).getName();
-					if(!flags.get(i).getOption().equals("")) line += " (" + flags.get(i).getOption() + ")";
-					if(line.length() > 25) spaces -= (line.length() - 25);
-					else if(line.length() < 25) spaces += (25 - line.length());
-					
-					str = "        " + line;
-					for(int j = 0; j < spaces; j++) str += " ";
-					str += flags.get(i + 1).getName();
-					if(!flags.get(i + 1).getOption().equals("")) str += " (" + flags.get(i + 1).getOption() + ")";
-					Message.send(str);
-				}
-				if(flags.size() % 2 != 0) {
-					String line = "        " + flags.get(flags.size() - 1).getName();
-					if(!flags.get(flags.size() - 1).getOption().equals("")) line += " (" + flags.get(flags.size() - 1).getOption() + ")";
-					Message.send(line);
-				}
+
 				Message.send("");
 			}
 			
