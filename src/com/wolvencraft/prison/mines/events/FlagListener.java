@@ -32,7 +32,7 @@ public class FlagListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onPlayerDamage(EntityDamageEvent event) {
+	public void NoPlayerDamageListener (EntityDamageEvent event) {
 		if(event.isCancelled()) return;
 		if(!(event.getEntity() instanceof Player)) return;
 		
@@ -51,7 +51,7 @@ public class FlagListener implements Listener {
 	
 	@SuppressWarnings("deprecation")
 	@EventHandler
-	public void onBlockBreak(BlockBreakEvent event) {
+	public void NoToolDamageListener (BlockBreakEvent event) {
 		if(event.isCancelled()) return;
 		
 		Block b = event.getBlock();
@@ -85,7 +85,7 @@ public class FlagListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onBlockDamage(BlockDamageEvent event) {
+	public void SuperToolsListener (BlockDamageEvent event) {
 		if(event.isCancelled()) return;
 		
 		Block b = event.getBlock();
@@ -104,7 +104,7 @@ public class FlagListener implements Listener {
 	}
 
 	@EventHandler
-	public void onToolBreak(PlayerItemBreakEvent event) {
+	public void ToolReplaceListener (PlayerItemBreakEvent event) {
 		
 		for(Mine mine : PrisonMine.getLocalMines()) {
 			if(!mine.getRegion().isLocationInRegion(event.getPlayer().getLocation())) continue;
@@ -119,7 +119,7 @@ public class FlagListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onFoodLevelChange(FoodLevelChangeEvent event) {
+	public void NoHungerChangeListener (FoodLevelChangeEvent event) {
 		if(event.isCancelled()) return;
 		Player player = (Player) event.getEntity();
 		Message.debug(player.getPlayerListName() + "'s hunger level changed to " + event.getFoodLevel());
@@ -137,7 +137,7 @@ public class FlagListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent event) {
+	public void PlayerEffectListener (PlayerMoveEvent event) {
 		if(event.isCancelled()) return;
 		
 		for(Mine mine : PrisonMine.getLocalMines()) {
@@ -155,7 +155,7 @@ public class FlagListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onExpGainFromMining(BlockExpEvent event) {
+	public void NoExpDropListener (BlockExpEvent event) {
 		for(Mine mine : PrisonMine.getLocalMines()) {
 			if(!mine.hasFlag(MineFlag.NoExpDrop)) continue;
 			if(!mine.getRegion().isLocationInRegion(event.getBlock().getLocation())) continue;
