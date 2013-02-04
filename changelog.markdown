@@ -39,6 +39,8 @@
         + `/mine warning toggle` was deprecated. Remove warnings with `/mine warning remove <time>` instead
     + Information:
         + Replaced the messy flag list with a cleaner one
+    + Debug:
+        + `/mine data save` is now listed as a debugging command, available as `/mine savedata`
     + About:
         + Credited `theangrytomato` for his participation in the development of the plugin
 + New flags:
