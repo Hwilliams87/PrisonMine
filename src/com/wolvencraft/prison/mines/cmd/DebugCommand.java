@@ -9,6 +9,8 @@ import com.wolvencraft.prison.PrisonSuite;
 import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.settings.MineData;
+import com.wolvencraft.prison.mines.settings.SignData;
 import com.wolvencraft.prison.mines.upgrade.ImportData;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.region.PrisonSelection;
@@ -52,6 +54,11 @@ public class DebugCommand implements BaseCommand {
 		} else if(args[0].equalsIgnoreCase("unload")) {
 			PrisonMine.removeMine(Mine.get(args[1]));
 			Message.sendFormatted("DEBUG", "Unloaded " + args[1] + " from memory", false);
+			return true;
+		} else if(args[0].equalsIgnoreCase("savedata")) {
+			MineData.saveAll();
+			SignData.saveAll();
+			Message.sendFormatted("DEBUG", "Mine and sign data saved to disk", false);
 			return true;
 		} else {
 			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);
