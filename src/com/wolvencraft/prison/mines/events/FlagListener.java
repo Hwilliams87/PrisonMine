@@ -10,11 +10,14 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
+import com.wolvencraft.prison.mines.util.Util;
 import com.wolvencraft.prison.mines.util.constants.MineFlag;
 
 public class FlagListener implements Listener {
@@ -126,6 +129,22 @@ public class FlagListener implements Listener {
 			
 			if(player.getFoodLevel() < 20) event.setFoodLevel(player.getFoodLevel() + 3);
 			Message.debug(player.getPlayerListName() + "'s hunger level was reset to " + player.getFoodLevel());
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerMove(PlayerMoveEvent event) {
+		if(event.isCancelled()) return;
+		
+		for(Mine mine : PrisonMine.getLocalMines()) {
+			if(!mine.hasFlag(MineFlag.PlayerEffect)) continue;
+			
+			Player player = event.getPlayer();
+			if(!mine.getRegion().isLocationInRegion(player.getLocation())) continue;
+			
+			if(!player.hasPermission("prison.mine.flags.playereffect." + mine.getId()) && !player.hasPermission("prison.mine.flags.playereffect")) { continue; }
+			
+			player.addPotionEffect(new PotionEffect(Util.getEffect(mine.getFlag(MineFlag.PlayerEffect).getOption()), 100, 1));
 		}
 	}
 }

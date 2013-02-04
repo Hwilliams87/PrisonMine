@@ -13,6 +13,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
+import org.bukkit.potion.PotionEffectType;
 
 import com.wolvencraft.prison.hooks.MaterialHook;
 import com.wolvencraft.prison.mines.CommandManager;
@@ -372,6 +373,11 @@ public class Util {
 		return tempPlayers;
 	}
 	
+	/**
+	 * Checks if the sound with the specified name exists
+	 * @param soundName Name of the sound
+	 * @return <b>true</b> if the sound exists, <b>false</b> otherwise
+	 */
 	public static boolean soundExists(String soundName) {
 		try { Sound.valueOf(soundName); }
 		catch (IllegalArgumentException iae) { return false; }
@@ -380,6 +386,11 @@ public class Util {
 		return true;
 	}
 	
+	/**
+	 * Returns the sound enum value
+	 * @param soundName Name of the sound
+	 * @return Sound
+	 */
 	public static Sound getSound(String soundName) {
 		Sound sound;
 		try { sound = Sound.valueOf(soundName); }
@@ -387,6 +398,26 @@ public class Util {
 		catch (NullPointerException npe) { return null; }
 		catch (Exception ex) { return null; }
 		return sound;
+	}
+	
+	/**
+	 * Checks if the effect with the specified name exists
+	 * @param effectName Name of the effect
+	 * @return <b>true</b> if the effect exists, <b>false</b> otherwise
+	 */
+	public static boolean effectExists(String effectName) {
+		if(PotionEffectType.getByName(effectName) == null) return false;
+		return true;
+	}
+	
+	/**
+	 * Returns the effect enum value
+	 * @param soundName Name of the effect
+	 * @return Effect
+	 */
+	public static PotionEffectType getEffect(String effectName) {
+		PotionEffectType effect = PotionEffectType.getByName(effectName);
+		return effect;
 	}
 	
 	/**
