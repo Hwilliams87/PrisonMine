@@ -190,6 +190,7 @@ public class EditCommand  implements BaseCommand {
 			}
 			
 			PrisonMine.removeMine(curMine);
+			PrisonMine.setCurMine(curMine);
 			Message.sendFormattedMine("Mine successfully deleted");
 			PrisonMine.setCurMine(null);
 			curMine.deleteFile();
