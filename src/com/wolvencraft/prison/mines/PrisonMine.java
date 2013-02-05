@@ -74,13 +74,10 @@ public class PrisonMine extends PrisonPlugin {
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 		settings = new Settings(this);
-		Message.debug("+-----[ Starting up PrisonMine ]-----");
-		Message.debug("+ Established connection with PrisonCore");
 		
 		getLanguageData().options().copyDefaults(true);
 		saveLanguageData();
 		language = new Language(this);
-		Message.debug("+ Loaded plugin configuration");
 		
 		ConfigurationSerialization.registerClass(Mine.class, "pMine");
 		ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");
@@ -101,20 +98,13 @@ public class PrisonMine extends PrisonPlugin {
 		signs = SignData.loadAll();
 		
 		curMines = new HashMap<CommandSender, Mine>();
-		Message.debug("+ Loaded data from file");
 
-		Message.debug("+ Initializing Event Listeners");
 		new BlockProtectionListener(this);
 		new DisplaySignListener(this);
 		new PlayerListener(this);
 		new FlagListener(this);
 		
-		Message.debug("+ Sending sign task to PrisonCore");
 		PrisonSuite.addTask(signTask = new DisplaySignTask());
-		
-		Message.debug("+---[ End of report ]---");
-		
-		Message.log("PrisonMine started [ " + mines.size() + " mine(s) found ]");
 		
 		if(settings.RESET_ALL_MINES_ON_STARTUP) {
 			Message.log("Resetting all mines, as defined in the configuration");
@@ -156,8 +146,6 @@ public class PrisonMine extends PrisonPlugin {
 		}
 		
 		signTask.cancel();
-		
-		Message.log("Plugin stopped");
 	}
 	
 	public void reloadLanguageData() {

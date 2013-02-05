@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolvencraft.prison.hooks.CommandHook;
@@ -60,11 +59,6 @@ public enum CommandManager implements CommandHook {
 	}
 
 	public boolean run(String[] args) {
-		if(sender != null) {
-			if(sender instanceof Player) Message.debug("Command issued by player: " + sender.getName());
-			else if(sender instanceof ConsoleCommandSender) Message.debug("Command issued by CONSOLE");
-			else Message.debug("Command issued by GHOSTS and WIZARDS");
-		}
 		if(!allowConsole && !(sender instanceof Player)) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_SENDERISNOTPLAYER); return false; }
 		if(permission != null && (sender instanceof Player) && !sender.hasPermission(permission)) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ACCESS); return false; }
 		return clazz.run(args);
