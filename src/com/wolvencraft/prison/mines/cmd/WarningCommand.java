@@ -28,10 +28,10 @@ public class WarningCommand  implements BaseCommand {
 			if(curMine.hasWarningTime(time)) { Message.sendFormattedError("Mine already sends a warning at " + ChatColor.GOLD + parsedTime, false); return false; }
 			curMine.addWarningTime(time);
 			Message.sendFormattedMine("Mine will now send warnings at " + ChatColor.GOLD + parsedTime);
-		} else if(args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("-")) {
+		} else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-")) {
 			if(args.length != 3) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS); return false; }
 			
-			int time = Util.parseTime(args[3]);
+			int time = Util.parseTime(args[2]);
 			if(time <= 0) { Message.sendFormattedError("Invalid time provided"); return false; }
 			
 			String parsedTime = Util.parseSeconds(time);
