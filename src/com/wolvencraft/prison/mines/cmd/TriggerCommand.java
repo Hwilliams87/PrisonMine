@@ -30,6 +30,12 @@ public class TriggerCommand implements BaseCommand {
 					Message.sendFormattedMine("Time trigger is " + ChatColor.GREEN + "on");
 				}
 			} else {
+				
+				if(!curMine.getAutomaticReset()) {
+					curMine.setAutomaticReset(true);
+					Message.sendFormattedMine("Time trigger is " + ChatColor.GREEN + "on");
+				}
+				
 				int time = Util.parseTime(args[2]);
 				if(time <= 0) { Message.sendFormattedError("Invalid time provided"); return false; }
 				curMine.setResetPeriod(time);
@@ -47,6 +53,12 @@ public class TriggerCommand implements BaseCommand {
 					Message.sendFormattedMine("Composition trigger is " + ChatColor.GREEN + "on");
 				}
 			} else {
+				
+				if(!curMine.getCompositionReset()) {
+					curMine.setCompositionReset(true);
+					Message.sendFormattedMine("Composition trigger is " + ChatColor.GREEN + "on");
+				}
+				
 				String percentString = args[2];
 				if(percentString.endsWith("%")) percentString.substring(0, percentString.length() - 1);
 				double percent = Double.parseDouble(percentString) / 100;
@@ -62,9 +74,9 @@ public class TriggerCommand implements BaseCommand {
 	@Override
 	public void getHelp() {
 		Message.formatHeader(20, "Trigger");
-		Message.formatHelp("trigger", "time toggle", "Toggles the timer on and off");
+		Message.formatHelp("trigger", "time", "Toggles the timer on and off");
 		Message.formatHelp("trigger", "time <time>", "Sets the timer to the specified value");
-		Message.formatHelp("trigger", "composition toggle", "Toggles the composition trigger");
+		Message.formatHelp("trigger", "composition", "Toggles the composition trigger");
 		Message.formatHelp("trigger", "composition <percent>", "Sets the composition percent");
 	}
 	
