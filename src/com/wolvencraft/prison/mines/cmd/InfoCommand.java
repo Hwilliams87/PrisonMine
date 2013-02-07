@@ -1,6 +1,8 @@
 package com.wolvencraft.prison.mines.cmd;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.material.MaterialData;
@@ -43,138 +45,155 @@ public class InfoCommand  implements BaseCommand {
 		Mine parentMine = curMine.getSuperParent();
 		if(Util.hasPermission("prison.mine.info.*")) {
 			
-			Message.send("");
-			String displayString = "---==[ " + ChatColor.GREEN + ChatColor.BOLD + curMine.getName() + ChatColor.WHITE + " ]==---";
-			for(int i = 0; i < 25 - (curMine.getName().length() / 2); i++) displayString = " " + displayString;
-			Message.send(displayString);
-			Message.send("");
-			
-			// Block & PVP protection
-			String str = "    [ ";
-			if(curMine.getProtection().contains(Protection.BLOCK_BREAK)) {
-				if(curMine.getBreakBlacklist().getState().equals(BlacklistState.WHITELIST)) str += ChatColor.YELLOW;
-				else str += ChatColor.GREEN;
-			}
-			else str += ChatColor.RED;
-			str += "Block Breaking" + ChatColor.WHITE + " ]     [ ";
-			if(curMine.getProtection().contains(Protection.PVP)) str += ChatColor.GREEN;
-			else str += ChatColor.RED;
-			str += "PVP" + ChatColor.WHITE + " ]    [ ";
-			if(curMine.getProtection().contains(Protection.BLOCK_PLACE)) {
-				if(curMine.getPlaceBlacklist().getState().equals(BlacklistState.WHITELIST)) str += ChatColor.YELLOW;
-				else str += ChatColor.GREEN;
-			}
-			else str += ChatColor.RED;
-			str += "Block Placement" + ChatColor.WHITE + " ]";
-			Message.send(str);
-			Message.send("");
-			
-			// Timer and Composition triggers information
-			boolean automaticReset = parentMine.getAutomaticReset();
-			boolean compositionReset = curMine.getCompositionReset();
-			
-			if(automaticReset || compositionReset) {
-				String fillerString = "";
+			List<String> text = new ArrayList<String>();
+			text.add("");
+			try {
+				String title = ""+ ChatColor.GREEN + ChatColor.BOLD + curMine.getName() + ChatColor.WHITE;
+				if(curMine.getParent() != null) title += " (" + ChatColor.GREEN + curMine.getParent() + ChatColor.WHITE + ") ";
 				
-				if(automaticReset) {
-					if(!compositionReset) fillerString += "               ";
-					fillerString += "       [ " + ChatColor.GREEN + Util.parseSeconds(parentMine.getResetsInSafe()) + ChatColor.WHITE + " | " + ChatColor.RED + Util.parseSeconds(parentMine.getResetPeriodSafe()) + ChatColor.WHITE + " ]";
-				} else {
-					fillerString += "               ";
+				text.add("!c---===[ " + title + " ]===---");
+				text.add("");
+			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the title"); }
+			
+			// Protection
+			
+			try {				
+				String line = "";
+				
+				if(curMine.getProtection().contains(Protection.BLOCK_BREAK)) {
+					if(curMine.getBreakBlacklist().getState().equals(BlacklistState.WHITELIST)) line += "[ " + ChatColor.YELLOW + "Block Breaking" + ChatColor.WHITE + "]";
+					else line += "[ " + ChatColor.GREEN + "Block Breaking" + ChatColor.WHITE + "]";
+					line += "   ";
 				}
 				
-				if(compositionReset) {
-					fillerString += "       [ " + ChatColor.GREEN + Util.round(curMine.getCurrentPercent()) + "%" + ChatColor.WHITE + " | " + ChatColor.RED + curMine.getRequiredPercent() + "%" + ChatColor.WHITE + " ]";
+				if(curMine.getProtection().contains(Protection.PVP)) {
+					line += "[ " + ChatColor.GREEN + "PVP" + ChatColor.WHITE + " ]";
+					line += "   ";
 				}
 				
-				Message.send(fillerString);
-				Message.send("");
-			}
-			
-			if(parentMine.hasWarnings()) {
-				String fillerString = "";
-				for(Integer warning : parentMine.getLocalWarningTimes()) {
-					if(!fillerString.equals("")) fillerString += ",";
-					fillerString += " " + Util.parseSeconds(warning);
+				if(curMine.getProtection().contains(Protection.BLOCK_PLACE)) {
+					if(curMine.getPlaceBlacklist().getState().equals(BlacklistState.WHITELIST)) line += "[ " + ChatColor.YELLOW + "Block Placement" + ChatColor.WHITE + " ]";
+					else line += "[ " + ChatColor.GREEN + "Block Placement" + ChatColor.WHITE + " ]";
 				}
-				fillerString = ChatColor.YELLOW + "   Warnings: " + ChatColor.WHITE + fillerString;
-				Message.send(fillerString);
-				Message.send("");
-			}
+				
+				if(!line.equals("")) {
+					text.add("!c" + line);
+					text.add("");
+				}
+			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the protection information"); }
 			
-			// Children and flags
-			List<Mine> children = curMine.getChildren();
-			if(children.size() != 0) {
-				str = ChatColor.YELLOW + "   Children:" + ChatColor.WHITE;
-				str += " " + children.get(0);
-				if(children.size() > 1) {
-					for(int i = 1; i < children.size(); i++) {
-						str += ", " + children.get(i).getId();
+			// Triggers
+			try {
+				boolean automaticReset = parentMine.getAutomaticReset();
+				boolean compositionReset = curMine.getCompositionReset();
+				
+				String line = "";
+				
+				if(automaticReset) line += "[ " + ChatColor.GREEN + Util.parseSeconds(parentMine.getResetsInSafe()) + ChatColor.WHITE + " | " + ChatColor.RED + Util.parseSeconds(parentMine.getResetPeriodSafe()) + ChatColor.WHITE + " ]";
+				if(automaticReset && compositionReset) line += "      ";
+				if(compositionReset) line += "[ " + ChatColor.GREEN + Util.round(curMine.getCurrentPercent()) + "%" + ChatColor.WHITE + " | " + ChatColor.RED + curMine.getRequiredPercent() + "%" + ChatColor.WHITE + " ]";
+				
+				text.add("!c" + line);
+				text.add("");
+			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the trigger information"); }
+			
+			// Warnings
+			try {
+				if(parentMine.hasWarnings()) {
+					String line = "";
+					for(Integer warning : parentMine.getLocalWarningTimes()) {
+						if(!line.equals("")) line += ",";
+						line += " " + Util.parseSeconds(warning);
 					}
+					line = ChatColor.YELLOW + "Warnings: " + ChatColor.WHITE + line;
+					text.add("!c" + line);
+					text.add("");
 				}
-				Message.send(str);
-				Message.send("");
-			}
+			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the warning information"); }
 			
-			List<BaseFlag> flags = curMine.getAllFlags();
-			if(flags.size() != 0) {
-				str = ChatColor.YELLOW + "   Flags:" + ChatColor.WHITE;
-				Message.send(str);
-				for(BaseFlag flag : flags) {
-					String line = flag.getName();
-					if(!flag.getOption().equals("")) line += " (" + flag.getOption() + ")";
-					Message.send("        " + line);
+			// Children
+			try {
+				List<Mine> children = curMine.getChildren();
+				if(children.size() != 0) {
+					String line = "";
+					line = ChatColor.YELLOW + "   Children:" + ChatColor.WHITE;
+					line += " " + children.get(0);
+					if(children.size() > 1) {
+						for(int i = 1; i < children.size(); i++) {
+							line += ", " + children.get(i).getId();
+						}
+					}
+					text.add("!c" + line);
+					text.add("");
 				}
-				
-
-				Message.send("");
-			}
+			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the children"); }
 			
-			// Generator & parent mine
-			str = ChatColor.YELLOW + "   Composition:" + ChatColor.WHITE;
-			String parentName;
-			if(curMine.getParent() == null)
-				parentName = "none";
-			else parentName = curMine.getParent();
-			for(int i = 0; i < (25 - parentName.length()); i++) str += " ";
-			str += ChatColor.WHITE + "Linked to: " + ChatColor.GOLD + parentName;
-			Message.send(str);
+			// Flags
+			try {
+				List<BaseFlag> flags = curMine.getAllFlags();
+				if(flags.size() != 0) {
+					text.add(ChatColor.YELLOW + "   Flags:" + ChatColor.WHITE);
+					for(BaseFlag flag : flags) {
+						String str = flag.getName();
+						if(!flag.getOption().equals("")) str += " (" + flag.getOption() + ")";
+						text.add("    " + str);
+					}
+					text.add("");
+				}
+			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the flags"); }
 			
 			// Mine composition
-			List<String> finalList = curMine.getBlocksSorted();
-			for(int i = 0; i < (finalList.size() - 1); i += 2) {
-				int spaces = 10;
-				String line = finalList.get(i);
-				if(line.length() > 25) spaces -= (line.length() - 25);
-				else if(line.length() < 25) spaces += (25 - line.length());
-				
-				str = "        " + line;
-				for(int j = 0; j < spaces; j++) str += " ";
-				str += finalList.get(i + 1);
-				Message.send(str);
-			}
-			if(finalList.size() % 2 != 0) Message.send("        " + finalList.get(finalList.size() - 1));
-			
-			Message.send(" ");
-			BlacklistState blState = curMine.getBlacklist().getState();
-			List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
-			
-			str = "                 [ ";
-			if(!blState.equals(BlacklistState.DISABLED)) str += ChatColor.GREEN;
-			else str += ChatColor.RED;
-			str += "Blacklist" + ChatColor.WHITE + " ]       [ ";
-			if(blState.equals(BlacklistState.WHITELIST)) str += ChatColor.GREEN;
-			else str += ChatColor.RED;
-			str += "Whitelist" + ChatColor.WHITE + " ]";
-			Message.send(str);
-			if(!blocks.isEmpty()) {
-				Message.send(ChatColor.BLUE + "    Blacklist Composition: ");
-				for(MaterialData block : blocks) {
-					String[] parts = {block.getItemTypeId() + "", block.getData() + ""};
-					Message.send("        - " + Util.parseMetadata(parts, true) + " " + block.getItemType().toString().toLowerCase().replace("_", " "));
+			try {
+				text.add(ChatColor.YELLOW + "   Composition:" + ChatColor.WHITE);
+				List<String> finalList = curMine.getBlocksSorted();
+				for(int i = 0; i < (finalList.size() - 1); i += 2) {
+					int spaces = 10;
+					String line = finalList.get(i);
+					if(line.length() > 25) spaces -= (line.length() - 25);
+					else if(line.length() < 25) spaces += (25 - line.length());
+					
+					line = "        " + line;
+					for(int j = 0; j < spaces; j++) line += " ";
+					line += finalList.get(i + 1);
+					text.add(line);
 				}
+				if(finalList.size() % 2 != 0) text.add("        " + finalList.get(finalList.size() - 1));
+				text.add("");
+			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the mine composition"); }
+
+			try {
+				text.add("");
+				BlacklistState blState = curMine.getBlacklist().getState();
+				List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
+				
+				String line = "[ ";
+				if(!blState.equals(BlacklistState.DISABLED)) line += "[ " + ChatColor.GREEN + "Blacklist" + ChatColor.WHITE + " ]";
+				else line += ChatColor.RED + "Blacklist" + ChatColor.WHITE + " ]";
+				
+				line += "     ";
+				
+				if(blState.equals(BlacklistState.WHITELIST)) line += "[ " + ChatColor.GREEN + "Whitelist" + ChatColor.WHITE + " ]";
+				else line += "[ " + ChatColor.RED + "Whitelist" + ChatColor.WHITE + " ]";
+				
+				text.add("!c" + line);
+				if(!blocks.isEmpty()) {
+					text.add(ChatColor.BLUE + "    Blacklist Composition: ");
+					for(MaterialData block : blocks) {
+						String[] parts = {block.getItemTypeId() + "", block.getData() + ""};
+						text.add("        - " + Util.parseMetadata(parts, true) + " " + block.getItemType().toString().toLowerCase().replace("_", " "));
+					}
+				}
+				text.add("");
+			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the blacklist status"); }
+			
+			for(String line : text) {
+				if(line.startsWith("!c")) {
+					line = line.substring(2);
+					int spacing = (55 - line.length()) / 2;
+					for(int i = 0; i < spacing; i++) line = " " + line;
+				}
+				Message.send(line);
 			}
-			Message.send(" ");
 			
 			return true;
 			
