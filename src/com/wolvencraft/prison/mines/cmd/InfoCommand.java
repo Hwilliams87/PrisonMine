@@ -84,7 +84,7 @@ public class InfoCommand  implements BaseCommand {
 				}
 				
 				if(compositionReset) {
-					fillerString += "       [ " + ChatColor.GREEN + curMine.getCurrentPercent() + "%" + ChatColor.WHITE + " | " + ChatColor.RED + curMine.getRequiredPercent() + "%" + ChatColor.WHITE + " ]";
+					fillerString += "       [ " + ChatColor.GREEN + Util.round(curMine.getCurrentPercent()) + "%" + ChatColor.WHITE + " | " + ChatColor.RED + curMine.getRequiredPercent() + "%" + ChatColor.WHITE + " ]";
 				}
 				
 				Message.send(fillerString);
