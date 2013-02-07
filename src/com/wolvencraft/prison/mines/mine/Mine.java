@@ -366,7 +366,7 @@ public class Mine implements ConfigurationSerializable {
     }
     
     public boolean hasWarnings() {
-    	return warningTimes.isEmpty();
+    	return !warningTimes.isEmpty();
     }
     
     public boolean hasWarningTime(Integer time) {
