@@ -124,7 +124,11 @@ public class EditCommand  implements BaseCommand {
 			
 			return curMine.saveFile();
 		} else if(args[0].equalsIgnoreCase("name")) {
-			if(args.length == 1) { getHelp(); return true; }
+			if(args.length == 1) {
+				curMine.setName("");
+				Message.sendFormattedMine("Mine display name has been cleared");
+				return true;
+			}
 			if(args.length < 2) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 			
 			String name = args[1];
