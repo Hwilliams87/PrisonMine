@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import net.minecraft.server.v1_4_R1.SharedConstants;
 
@@ -73,21 +74,10 @@ public class PrisonMine extends PrisonPlugin {
 	
 	@Override
 	public void onEnable() {
-		try {
-			ModifyAllowedCharacters();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		try { ModifyAllowedCharacters(); }
+		catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while loading custom fonts"); }
+		
 		prisonSuite = PrisonSuite.addPlugin(this);
 		plugin = this;
 		

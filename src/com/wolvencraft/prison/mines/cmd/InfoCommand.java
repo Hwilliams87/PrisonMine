@@ -49,25 +49,15 @@ public class InfoCommand  implements BaseCommand {
 			List<String> text = new ArrayList<String>();
 			text.add("");
 			try {
-				String title = "[ ";
-				if(!curMine.getName().equals(curMine.getId()) && !curMine.getName().equals("")) title += "\"" + ChatColor.GREEN + curMine.getName() + ChatColor.WHITE + "\" (" + ChatColor.RED + ChatColor.BOLD + curMine.getId() + ChatColor.WHITE + ")";
-				else title += "" + ChatColor.RED + ChatColor.BOLD + curMine.getId() + ChatColor.WHITE;
-				title += " ]";
-				
-				int width = 55;
-				
-				while (title.length() < width) { title = DrawingTools.LineHorizontal + title + DrawingTools.LineHorizontal; }
-				if(title.length() > width) title = title.substring(1);
-				
-				text.add(DrawingTools.CornerTopLeft + title + DrawingTools.CornerTopRight);
-				
 				String line = "";
-				if(curMine.hasParent()) line += "Extends " + ChatColor.RED + curMine.getParent() + ChatColor.WHITE;
-				if(!line.equals("")) {
-					while (line.length() < width) { line = DrawingTools.WhiteSpace + line + DrawingTools.WhiteSpace; }
-					if(line.length() > width) line = line.substring(1);
-					text.add(line);
-				}
+				if(!curMine.getName().equals(curMine.getId()) && !curMine.getName().equals("")) line = "[ \"" + ChatColor.GREEN + curMine.getName() + ChatColor.WHITE + "\" (" + ChatColor.RED + ChatColor.BOLD + curMine.getId() + ChatColor.WHITE + ") ]";
+				else line = "[ " + ChatColor.RED + ChatColor.BOLD + curMine.getId() + ChatColor.WHITE + " ]";
+				
+				int padding = (45 - DrawingTools.getTrueLength(line)) / 2;
+				
+				for(int i = 0; i < padding; i++) { line = DrawingTools.LineHorizontal + line + DrawingTools.LineHorizontal; }
+				
+				text.add(DrawingTools.CornerTopLeft + line + DrawingTools.CornerTopRight);
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the title"); }
 			
 			// Protection and exceptions
@@ -98,12 +88,8 @@ public class InfoCommand  implements BaseCommand {
 				if(!blState.equals(BlacklistState.DISABLED)) line += "[ " + ChatColor.GREEN + "Exc." + ChatColor.WHITE + " ]";
 				else line += "[ " + ChatColor.RED + "Blacklist" + ChatColor.WHITE + " ]";
 
-				int width = 65;
-				
-				while (line.length() < width) {
-					line = DrawingTools.WhiteSpace + line + DrawingTools.WhiteSpace;
-				}
-				if(line.length() > width) line = line.substring(1);
+				int padding = (60 - DrawingTools.getTrueLength(line)) / 2;
+				for(int i = 0; i < padding; i++) { line = DrawingTools.WhiteSpace + line + DrawingTools.WhiteSpace; }
 				
 				text.add(line);
 				
@@ -120,14 +106,22 @@ public class InfoCommand  implements BaseCommand {
 				if(automaticReset && compositionReset) line += "     ";
 				if(compositionReset) line += "[ " + ChatColor.GREEN + Util.round(curMine.getCurrentPercent() / 100) + ChatColor.WHITE + " / " + ChatColor.RED + curMine.getRequiredPercent() + "%" + ChatColor.WHITE + " ]";
 				
-				int width = 65;
-				
-				while (line.length() < width) { line = DrawingTools.WhiteSpace + line + DrawingTools.WhiteSpace; }
-				if(line.length() > width) line = line.substring(1);
+				int padding = (60 - DrawingTools.getTrueLength(line)) / 2;
+				for(int i = 0; i < padding; i++) { line = DrawingTools.WhiteSpace + line + DrawingTools.WhiteSpace; }
 				
 				text.add(line);
 					
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the trigger information"); }
+			
+			// Parent
+			try {
+				if(curMine.hasParent()) {
+					String line = "Extends " + ChatColor.RED + curMine.getParent();
+					int padding = (60 - DrawingTools.getTrueLength(line)) / 2;
+					for(int i = 0; i < padding; i++) { line = DrawingTools.WhiteSpace + line + DrawingTools.WhiteSpace; }
+					text.add(line);
+				}
+			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the protection information"); }
 			
 			// Warnings
 			try {
@@ -168,9 +162,8 @@ public class InfoCommand  implements BaseCommand {
 					for(BaseFlag flag : flags) {
 						String str = flag.getName();
 						if(!flag.getOption().equals("")) str += " (" + flag.getOption() + ")";
-						text.add("    " + str);
+						text.add("        " + str);
 					}
-					text.add("");
 				}
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the flags"); }
 			
@@ -204,15 +197,7 @@ public class InfoCommand  implements BaseCommand {
 					}
 				}
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the blacklist status"); }
-			
-			try {
-				String line = "";
-				for(int i = 0; i < 46; i++) {
-					line += DrawingTools.LineHorizontal;
-				}
-				text.add(DrawingTools.CornerBottomLeft + line + DrawingTools.CornerBottomRight);
-			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the closing bracket"); }
-			
+						
 			for(String line : text) {
 				if(line.startsWith("!c")) {
 					line = line.substring(2);

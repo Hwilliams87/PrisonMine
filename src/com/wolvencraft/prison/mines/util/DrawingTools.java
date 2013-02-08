@@ -1,13 +1,13 @@
 package com.wolvencraft.prison.mines.util;
 
 public enum DrawingTools {
-	CornerTopLeft("\u250F"),
-	CornerTopRight("\u2513"),
-	CornerBottomLeft("\u2517"),
-	CornerBottomRight("\u251B"),
-	LineHorizontal("\u2501"),
-	LineVertical("\u2503"),
-	WhiteSpace("\u0020");
+	CornerTopLeft("+"),
+	CornerTopRight("+"),
+	CornerBottomLeft("+"),
+	CornerBottomRight("+"),
+	LineHorizontal("-"),
+	LineVertical("|"),
+	WhiteSpace(" ");
 	
 	DrawingTools(String character) {
 		this.character = character;
@@ -29,5 +29,25 @@ public enum DrawingTools {
 			if(tool.toString().equals(ch)) return true;
 		}
 		return false;
+	}
+	
+	public static int getTrueLength(String str) {
+		boolean skipNext = false;
+		int length = 0;
+		
+		for(char ch : str.toCharArray()) {
+			if(skipNext) {
+				skipNext = false;
+				continue;
+			}
+			
+			if(ch == '&' || ch == '§') {
+				skipNext = true;
+				continue;
+			}
+			
+			length++;
+		}
+		return length;
 	}
 }
