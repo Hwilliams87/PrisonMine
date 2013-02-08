@@ -219,5 +219,5 @@ public class EditCommand  implements BaseCommand {
 	}
 	
 	@Override
-	public void getHelpLine() { Message.formatHelp("edit help", "", "Shows a help page on mine atribute editing", "prison.mine.edit"); }
+	public void getHelpLine() { Message.formatHelp("edit help", "", "Shows a help page on mine attribute editing", "prison.mine.edit"); }
 }

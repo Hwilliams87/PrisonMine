@@ -48,8 +48,8 @@ public class WarningCommand  implements BaseCommand {
 	@Override
 	public void getHelp() {
 		Message.formatHeader(20, "Timer");
-		Message.formatHelp("warning", "add <time>", "Adds a warning at time specified");
-		Message.formatHelp("warning", "remove <time>", "Adds a warning at time specified");
+		Message.formatHelp("warning", "+ <time>", "Adds a warning at time specified");
+		Message.formatHelp("warning", "- <time>", "Remove a warning at time specified");
 		return;
 	}
 	
