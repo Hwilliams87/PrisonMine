@@ -10,6 +10,7 @@ import org.bukkit.material.MaterialData;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.settings.Language;
+import com.wolvencraft.prison.mines.util.DrawingTools;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 import com.wolvencraft.prison.mines.util.constants.BlacklistState;
@@ -48,53 +49,84 @@ public class InfoCommand  implements BaseCommand {
 			List<String> text = new ArrayList<String>();
 			text.add("");
 			try {
-				String title = ""+ ChatColor.GREEN + ChatColor.BOLD + curMine.getName() + ChatColor.WHITE;
-				if(curMine.getParent() != null) title += " (" + ChatColor.GREEN + curMine.getParent() + ChatColor.WHITE + ") ";
+				String title = "[ ";
+				if(!curMine.getName().equals(curMine.getId()) && !curMine.getName().equals("")) title += "\"" + ChatColor.GREEN + curMine.getName() + ChatColor.WHITE + "\" (" + ChatColor.RED + ChatColor.BOLD + curMine.getId() + ChatColor.WHITE + ")";
+				else title += "" + ChatColor.RED + ChatColor.BOLD + curMine.getId() + ChatColor.WHITE;
+				title += " ]";
 				
-				text.add("!c---===[ " + title + " ]===---");
-				text.add("");
+				int width = 55;
+				
+				while (title.length() < width) { title = DrawingTools.LineHorizontal + title + DrawingTools.LineHorizontal; }
+				if(title.length() > width) title = title.substring(1);
+				
+				text.add(DrawingTools.CornerTopLeft + title + DrawingTools.CornerTopRight);
+				
+				String line = "";
+				if(curMine.hasParent()) line += "Extends " + ChatColor.RED + curMine.getParent() + ChatColor.WHITE;
+				if(!line.equals("")) {
+					while (line.length() < width) { line = DrawingTools.WhiteSpace + line + DrawingTools.WhiteSpace; }
+					if(line.length() > width) line = line.substring(1);
+					text.add(line);
+				}
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the title"); }
 			
-			// Protection
-			
-			try {				
-				String line = "";
+			// Protection and exceptions
+			try {
+				String line = "[ ";
 				
 				if(curMine.getProtection().contains(Protection.BLOCK_BREAK)) {
-					if(curMine.getBreakBlacklist().getState().equals(BlacklistState.WHITELIST)) line += "[ " + ChatColor.YELLOW + "Block Breaking" + ChatColor.WHITE + "]";
-					else line += "[ " + ChatColor.GREEN + "Block Breaking" + ChatColor.WHITE + "]";
-					line += "   ";
-				}
+					if(curMine.getBreakBlacklist().getState().equals(BlacklistState.WHITELIST)) line += ChatColor.YELLOW + "Break" + ChatColor.WHITE;
+					else line += ChatColor.GREEN + "Break" + ChatColor.WHITE;
+				} else line += ChatColor.RED + "Break" + ChatColor.WHITE;
+				
+				line += " | ";
 				
 				if(curMine.getProtection().contains(Protection.PVP)) {
-					line += "[ " + ChatColor.GREEN + "PVP" + ChatColor.WHITE + " ]";
-					line += "   ";
-				}
+					line += ChatColor.GREEN + "PvP" + ChatColor.WHITE;
+				} else line += ChatColor.RED + "PvP" + ChatColor.WHITE;
+
+				line += " | ";
 				
 				if(curMine.getProtection().contains(Protection.BLOCK_PLACE)) {
-					if(curMine.getPlaceBlacklist().getState().equals(BlacklistState.WHITELIST)) line += "[ " + ChatColor.YELLOW + "Block Placement" + ChatColor.WHITE + " ]";
-					else line += "[ " + ChatColor.GREEN + "Block Placement" + ChatColor.WHITE + " ]";
-				}
+					if(curMine.getPlaceBlacklist().getState().equals(BlacklistState.WHITELIST)) line += ChatColor.YELLOW + "Place" + ChatColor.WHITE;
+					else line += ChatColor.GREEN + "Place" + ChatColor.WHITE;
+				} else line += ChatColor.RED + "Place" + ChatColor.WHITE;
 				
-				if(!line.equals("")) {
-					text.add("!c" + line);
-					text.add("");
+				line += " ]      ";
+				
+				BlacklistState blState = curMine.getBlacklist().getState();
+				if(!blState.equals(BlacklistState.DISABLED)) line += "[ " + ChatColor.GREEN + "Exc." + ChatColor.WHITE + " ]";
+				else line += "[ " + ChatColor.RED + "Blacklist" + ChatColor.WHITE + " ]";
+
+				int width = 65;
+				
+				while (line.length() < width) {
+					line = DrawingTools.WhiteSpace + line + DrawingTools.WhiteSpace;
 				}
+				if(line.length() > width) line = line.substring(1);
+				
+				text.add(line);
+				
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the protection information"); }
 			
 			// Triggers
-			try {
-				boolean automaticReset = parentMine.getAutomaticReset();
-				boolean compositionReset = curMine.getCompositionReset();
-				
+			try {				
 				String line = "";
 				
-				if(automaticReset) line += "[ " + ChatColor.GREEN + Util.parseSeconds(parentMine.getResetsInSafe()) + ChatColor.WHITE + " | " + ChatColor.RED + Util.parseSeconds(parentMine.getResetPeriodSafe()) + ChatColor.WHITE + " ]";
-				if(automaticReset && compositionReset) line += "      ";
-				if(compositionReset) line += "[ " + ChatColor.GREEN + Util.round(curMine.getCurrentPercent()) + "%" + ChatColor.WHITE + " | " + ChatColor.RED + curMine.getRequiredPercent() + "%" + ChatColor.WHITE + " ]";
+				boolean automaticReset = parentMine.getAutomaticReset();
+				boolean compositionReset = curMine.getCompositionReset();
+								
+				if(automaticReset) line += "[ " + ChatColor.GREEN + Util.parseSeconds(parentMine.getResetsInSafe()) + ChatColor.WHITE + " / " + ChatColor.RED + Util.parseSeconds(parentMine.getResetPeriodSafe()) + ChatColor.WHITE + " ]";
+				if(automaticReset && compositionReset) line += "     ";
+				if(compositionReset) line += "[ " + ChatColor.GREEN + Util.round(curMine.getCurrentPercent() / 100) + ChatColor.WHITE + " / " + ChatColor.RED + curMine.getRequiredPercent() + "%" + ChatColor.WHITE + " ]";
 				
-				text.add("!c" + line);
-				text.add("");
+				int width = 65;
+				
+				while (line.length() < width) { line = DrawingTools.WhiteSpace + line + DrawingTools.WhiteSpace; }
+				if(line.length() > width) line = line.substring(1);
+				
+				text.add(line);
+					
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the trigger information"); }
 			
 			// Warnings
@@ -123,7 +155,7 @@ public class InfoCommand  implements BaseCommand {
 							line += ", " + children.get(i).getId();
 						}
 					}
-					text.add("!c" + line);
+					text.add(line);
 					text.add("");
 				}
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the children"); }
@@ -149,8 +181,8 @@ public class InfoCommand  implements BaseCommand {
 				for(int i = 0; i < (finalList.size() - 1); i += 2) {
 					int spaces = 10;
 					String line = finalList.get(i);
-					if(line.length() > 25) spaces -= (line.length() - 25);
-					else if(line.length() < 25) spaces += (25 - line.length());
+					if(line.length() > 20) spaces -= (line.length() - 20);
+					else if(line.length() < 20) spaces += (20 - line.length());
 					
 					line = "        " + line;
 					for(int j = 0; j < spaces; j++) line += " ";
@@ -158,38 +190,33 @@ public class InfoCommand  implements BaseCommand {
 					text.add(line);
 				}
 				if(finalList.size() % 2 != 0) text.add("        " + finalList.get(finalList.size() - 1));
-				text.add("");
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the mine composition"); }
-
+			
+			// Blacklist composition
 			try {
-				text.add("");
-				BlacklistState blState = curMine.getBlacklist().getState();
 				List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
 				
-				String line = "[ ";
-				if(!blState.equals(BlacklistState.DISABLED)) line += "[ " + ChatColor.GREEN + "Blacklist" + ChatColor.WHITE + " ]";
-				else line += ChatColor.RED + "Blacklist" + ChatColor.WHITE + " ]";
-				
-				line += "     ";
-				
-				if(blState.equals(BlacklistState.WHITELIST)) line += "[ " + ChatColor.GREEN + "Whitelist" + ChatColor.WHITE + " ]";
-				else line += "[ " + ChatColor.RED + "Whitelist" + ChatColor.WHITE + " ]";
-				
-				text.add("!c" + line);
 				if(!blocks.isEmpty()) {
-					text.add(ChatColor.BLUE + "    Blacklist Composition: ");
+					text.add(ChatColor.YELLOW + "   Blacklist Composition: ");
 					for(MaterialData block : blocks) {
 						String[] parts = {block.getItemTypeId() + "", block.getData() + ""};
-						text.add("        - " + Util.parseMetadata(parts, true) + " " + block.getItemType().toString().toLowerCase().replace("_", " "));
+						text.add("        " + Util.parseMetadata(parts, true) + " " + block.getItemType().toString().toLowerCase().replace("_", " "));
 					}
 				}
-				text.add("");
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the blacklist status"); }
+			
+			try {
+				String line = "";
+				for(int i = 0; i < 46; i++) {
+					line += DrawingTools.LineHorizontal;
+				}
+				text.add(DrawingTools.CornerBottomLeft + line + DrawingTools.CornerBottomRight);
+			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the closing bracket"); }
 			
 			for(String line : text) {
 				if(line.startsWith("!c")) {
 					line = line.substring(2);
-					int spacing = (55 - line.length()) / 2;
+					int spacing = (60 - line.length()) / 2;
 					for(int i = 0; i < spacing; i++) line = " " + line;
 				}
 				Message.send(line);

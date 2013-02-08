@@ -21,10 +21,14 @@ package com.wolvencraft.prison.mines;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import net.minecraft.server.v1_4_R1.SharedConstants;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -43,6 +47,7 @@ import com.wolvencraft.prison.mines.triggers.*;
 import com.wolvencraft.prison.mines.upgrade.MRLMine;
 import com.wolvencraft.prison.mines.upgrade.MRMine;
 import com.wolvencraft.prison.mines.util.DisplaySignTask;
+import com.wolvencraft.prison.mines.util.DrawingTools;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.data.Blacklist;
 import com.wolvencraft.prison.mines.util.data.BlockSerializable;
@@ -68,6 +73,21 @@ public class PrisonMine extends PrisonPlugin {
 	
 	@Override
 	public void onEnable() {
+		try {
+			ModifyAllowedCharacters();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		prisonSuite = PrisonSuite.addPlugin(this);
 		plugin = this;
 		
@@ -231,4 +251,18 @@ public class PrisonMine extends PrisonPlugin {
 	public static void addSign(DisplaySign sign) 				{ signs.add(sign); }
 	public static void addSign(List<DisplaySign> newSigns) 		{ for(DisplaySign sign : newSigns) signs.add(sign); }
 	public static void removeSign (DisplaySign sign) 			{ signs.remove(sign); }
+	
+	public void ModifyAllowedCharacters() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		Field field = SharedConstants.class.getDeclaredField("allowedCharacters");
+		field.setAccessible(true);
+		Field modifiersField = Field.class.getDeclaredField( "modifiers" );
+		modifiersField.setAccessible( true );
+		modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+		String oldallowedchars = (String)field.get(null);
+		String newchars = DrawingTools.getAllCharacters();
+		StringBuilder sb = new StringBuilder();
+		sb.append( oldallowedchars );
+		sb.append( newchars );
+		field.set( null, sb.toString() );
+	}
 }
