@@ -61,7 +61,9 @@ public class TriggerCommand implements BaseCommand {
 				
 				String percentString = args[2];
 				if(percentString.endsWith("%")) percentString.substring(0, percentString.length() - 1);
-				double percent = Double.parseDouble(percentString) / 100;
+				double percent = 0;
+				try {percent = Double.parseDouble(percentString) / 100; }
+				catch (NumberFormatException nfe) { Message.sendFormattedError("Invalid percent value provided"); return false; }
 				if(percent <= 0 || percent > 100) { Message.sendFormattedError("Invalid percent value provided"); return false; }
 				curMine.setCompositionPercent(percent);
 				Message.sendFormattedMine("Mine will reset once it is " + ChatColor.GOLD + percentString + "%" + ChatColor.WHITE + " empty");
