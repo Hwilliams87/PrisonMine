@@ -1,22 +1,25 @@
 package com.wolvencraft.prison.mines.util;
 
 public enum DrawingTools {
-	CornerTopLeft("+"),
-	CornerTopRight("+"),
-	CornerBottomLeft("+"),
-	CornerBottomRight("+"),
-	LineHorizontal("-"),
-	LineVertical("|"),
-	WhiteSpace(" ");
+	CornerTopLeft('+'),
+	CornerTopRight('+'),
+	CornerBottomLeft('+'),
+	CornerBottomRight('+'),
+	LineHorizontal('-'),
+	LineVertical('|'),
+	WhiteSpace(' '),
+	Color('\u00A7');
 	
-	DrawingTools(String character) {
+	DrawingTools(char character) {
 		this.character = character;
 	}
 	
-	String character;
+	char character;
 	
 	@Override
-	public String toString() { return character; }
+	public String toString() { return character + ""; }
+	
+	public char toChar() { return character; }
 	
 	public static String getAllCharacters() {
 		String all = "";
@@ -41,7 +44,7 @@ public enum DrawingTools {
 				continue;
 			}
 			
-			if(ch == '&' || ch == '§') {
+			if(ch == '&' || ch == DrawingTools.Color.toChar()) {
 				skipNext = true;
 				continue;
 			}
