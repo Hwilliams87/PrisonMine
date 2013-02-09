@@ -189,10 +189,10 @@ public class ProtectionCommand  implements BaseCommand {
 		Message.formatHelp("prot", "break + <block>", "Add <block> to the list");
 		Message.formatHelp("prot", "break - <block>", "Remove <block> from the list");
 		Message.send(ChatColor.RED + " Block Placement Protection:");
-		Message.formatHelp("prot", "break blacklist", "Toggles blacklist mode");
+		Message.formatHelp("prot", "place blacklist", "Toggles blacklist mode");
 		Message.formatHelp("prot", "place whitelist", "Toggles whitelist mode");
 		Message.formatHelp("prot", "place + <block>", "Add <block> to the blacklist");
-		Message.formatHelp("prot", "place - <block>", "Remove <block> from theblacklist");
+		Message.formatHelp("prot", "place - <block>", "Remove <block> from the blacklist");
 		return;
 	}
 	

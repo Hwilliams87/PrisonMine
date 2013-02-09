@@ -256,16 +256,20 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>true</b> if successful, <b>false</b> if not
      */
     public boolean reset() {
-    	try { removePlayers(); }
-    	catch(ConcurrentModificationException cme) {
-    		Message.log(Level.WARNING, "An error occured while removing players from the mine");
+    	if(PrisonMine.getSettings().PLAYERS_TP_ON_RESET) {
+        	try { removePlayers(); }
+        	catch(ConcurrentModificationException cme) { Message.log(Level.WARNING, "An error occured while removing players from the mine"); }
     	}
+    	
     	if(hasFlag(MineFlag.ResetSound)) {
     		String soundName = getFlag(MineFlag.ResetSound).getOption();
     		if(Util.soundExists(soundName)) {
-    			world.playSound(tpPoint, Util.getSound(soundName), 20, 0);
+    			for (Player player : Util.getNearbyPlayers(tpPoint, 32)) {
+    				player.playSound(tpPoint, Util.getSound(soundName), 1, 0);
+    			}
     		}
     	}
+    	
     	if(hasFlag(MineFlag.SurfaceOre)) return CustomTerrainRoutine.run(this);
     	else return RandomTerrainRoutine.run(this);
     }
@@ -276,8 +280,7 @@ public class Mine implements ConfigurationSerializable {
      * @throws ConcurrentModificationException Exception is thrown if a player is already being teleported
      */
     private boolean removePlayers() throws ConcurrentModificationException {
-    	if(!PrisonMine.getSettings().PLAYERS_TP_ON_RESET) return true;    	
-        for (Player p : Util.getLocalPlayers(world)) {
+        for (Player p : Util.getStaticPlayers(world)) {
             if (region.isLocationInRegion(p.getLocation())) {
                 p.teleport(tpPoint, PlayerTeleportEvent.TeleportCause.PLUGIN);
                 Message.sendFormattedSuccess(p, PrisonMine.getLanguage().MISC_TELEPORT, true, this);
@@ -366,7 +369,7 @@ public class Mine implements ConfigurationSerializable {
     }
     
     public boolean hasWarnings() {
-    	return warningTimes.isEmpty();
+    	return !warningTimes.isEmpty();
     }
     
     public boolean hasWarningTime(Integer time) {
@@ -636,7 +639,7 @@ public class Mine implements ConfigurationSerializable {
     
 	public List<Mine> getChildren() {
 		List<Mine> children = new ArrayList<Mine>();
-		for(Mine mine : PrisonMine.getLocalMines()) {
+		for(Mine mine : PrisonMine.getStaticMines()) {
 			if(mine.hasParent() && mine.getParent().equalsIgnoreCase(getId())) { children.add(mine); }
 		}
 		return children;
@@ -663,7 +666,7 @@ public class Mine implements ConfigurationSerializable {
 				String[] tempBlockName = {block.getBlock().getItemTypeId() + "", block.getBlock().getData() + ""};
 				blockName = Util.parseMetadata(tempBlockName, true) + " " + blockName;
 			}
-			String blockWeight = Util.round(block.getChance());
+			String blockWeight = Util.formatPercent(block.getChance()) + "%";
 			
 			if(!blockWeight.equalsIgnoreCase("0.0%"))
 				finalList.add(ChatColor.WHITE + blockWeight + " " + ChatColor.GREEN + blockName + ChatColor.WHITE);
@@ -678,7 +681,7 @@ public class Mine implements ConfigurationSerializable {
 	}
 	
 	public static Mine get(String id) {
-		for(Mine curMine : PrisonMine.getLocalMines()) {
+		for(Mine curMine : PrisonMine.getStaticMines()) {
 			if(curMine.getId().equalsIgnoreCase(id)) return curMine;
 		}
 		return null;

@@ -36,7 +36,7 @@ public class BlockProtectionListener implements Listener {
 		String errorString = PrisonMine.getLanguage().PROTECTION_BREAK;
 		errorString = errorString.replaceAll("<BLOCK>", b.getType().name().toLowerCase().replace("_", " "));
 		
-		for(Mine mine : PrisonMine.getLocalMines()) {
+		for(Mine mine : PrisonMine.getStaticMines()) {
 			Message.debug("Checking mine " + mine.getId());
 			
 			if(!mine.getProtectionRegion().isLocationInRegion(b.getLocation())) continue;
@@ -104,7 +104,7 @@ public class BlockProtectionListener implements Listener {
 		String errorString = PrisonMine.getLanguage().PROTECTION_PLACE;
 		errorString = errorString.replaceAll("<BLOCK>", b.getType().name().toLowerCase().replace("_", " "));
 		
-		for(Mine mine : PrisonMine.getLocalMines()) {
+		for(Mine mine : PrisonMine.getStaticMines()) {
 			Message.debug("Checking mine " + mine.getId());
 			
 			if(!mine.getProtectionRegion().isLocationInRegion(b.getLocation())) continue;
@@ -168,7 +168,7 @@ public class BlockProtectionListener implements Listener {
 
         Message.debug("Retrieving the region list...");
 
-        for (Mine mine : PrisonMine.getLocalMines()) {
+        for (Mine mine : PrisonMine.getStaticMines()) {
 			Message.debug("Checking mine " + mine.getId());
             
         	if(!mine.getProtectionRegion().isLocationInRegion(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation())) continue;
@@ -225,7 +225,7 @@ public class BlockProtectionListener implements Listener {
 
         Message.debug("Retrieving the region list...");
         
-        for (Mine mine : PrisonMine.getLocalMines()) {
+        for (Mine mine : PrisonMine.getStaticMines()) {
 			Message.debug("Checking mine " + mine.getId());
             
         	if(!mine.getProtectionRegion().isLocationInRegion(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation())) continue;

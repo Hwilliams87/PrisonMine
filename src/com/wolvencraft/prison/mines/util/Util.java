@@ -50,8 +50,7 @@ public class Util {
 	 */
 	public static MaterialData getBlock(String blockName) {
 		Message.debug("Parsing block: " + blockName);
-		try
-		{
+		try {
 			String[] parts = blockName.split(":");
 			if(parts.length > 2) return null;
 			
@@ -60,8 +59,6 @@ public class Util {
 			else {
 				MaterialHook ore = MaterialHook.match(parts[0]);
 				if(ore != null) parts[0] = ore.getMaterial();
-				
-				Message.debug(parts[0] + " => " + Material.getMaterial(parts[0].toUpperCase()).name());
 				block = new MaterialData(Material.getMaterial(parts[0].toUpperCase()));
 			}
 			
@@ -86,11 +83,9 @@ public class Util {
 	 * @return metadata of a block
 	 */
 	public static String parseMetadata(String[] parts, boolean recursive) {
-		if(recursive)
-		{
+		if(recursive) {
 			int data = Integer.parseInt(parts[1]);
-			switch(Integer.parseInt(parts[0]))
-			{
+			switch(Integer.parseInt(parts[0])) {
 				case 5:
 				case 6:
 				case 17:
@@ -174,33 +169,24 @@ public class Util {
 					if(data == 0) parts[1] = "";
 				}
 			}
-		}
-		else
-		{
-			if(parts[0].equalsIgnoreCase("5") || parts[0].equalsIgnoreCase("6") || parts[0].equalsIgnoreCase("17") || parts[0].equalsIgnoreCase("18"))
-			{
+		} else {
+			if(parts[0].equalsIgnoreCase("5") || parts[0].equalsIgnoreCase("6") || parts[0].equalsIgnoreCase("17") || parts[0].equalsIgnoreCase("18")) {
 				if(parts[1].equalsIgnoreCase("dark") || parts[1].equalsIgnoreCase("pine") || parts[1].equalsIgnoreCase("spruce")) parts[1] = 1 + "";
 				else if(parts[1].equalsIgnoreCase("birch")) parts[1] = 2 + "";
 				else if(parts[1].equalsIgnoreCase("jungle")) parts[1] = 3 + "";
 				else parts[1] = 0 + "";
-			}
-			else if(parts[0].equalsIgnoreCase("24"))
-			{
+			} else if(parts[0].equalsIgnoreCase("24")) {
 				if(parts[1].equalsIgnoreCase("chiseled") || parts[1].equalsIgnoreCase("creeper")) parts[1] = 1 + "";
 				else if(parts[1].equalsIgnoreCase("smooth")) parts[1] = 2 + "";
 				else parts[1] = 0 + "";
-			}
-			else if(parts[0].equalsIgnoreCase("33") || parts[0].equalsIgnoreCase("34"))
-			{
+			} else if(parts[0].equalsIgnoreCase("33") || parts[0].equalsIgnoreCase("34")) {
 				if(parts[1].equalsIgnoreCase("sandstone")) parts[1] = 1 + "";
 				else if(parts[1].equalsIgnoreCase("wooden") || parts[1].equalsIgnoreCase("wood") || parts[1].equalsIgnoreCase("plank")) parts[1] = 2+ "";
 				else if(parts[1].equalsIgnoreCase("cobblestone") || parts[1].equalsIgnoreCase("cobble")) parts[1] = 3 + "";
 				else if(parts[1].equalsIgnoreCase("brick")) parts[1] = 4 + "";
 				else if(parts[1].equalsIgnoreCase("stonebrick") || parts[1].equalsIgnoreCase("stone_brick")) parts[1] = 5 + "";
 				else if(parts[1].equalsIgnoreCase("smoothstone") || parts[1].equalsIgnoreCase("smooth")) parts[1] = 6 + "";
-			}
-			else if(parts[0].equalsIgnoreCase("35"))
-			{
+			} else if(parts[0].equalsIgnoreCase("35")) {
 				if(parts[1].equalsIgnoreCase("orange")) parts[1] = 1 + "";
 				else if(parts[1].equalsIgnoreCase("magenta")) parts[1] = 2 + "";
 				else if(parts[1].equalsIgnoreCase("lightblue")) parts[1] = 3 + "";
@@ -217,9 +203,7 @@ public class Util {
 				else if(parts[1].equalsIgnoreCase("red")) parts[1] = 14 + "";
 				else if(parts[1].equalsIgnoreCase("black")) parts[1] = 15 + "";
 				else parts[1] = 0 + "";
-			}
-			else if(parts[0].equalsIgnoreCase("84"))
-			{
+			} else if(parts[0].equalsIgnoreCase("84")) {
 				if(parts[1].equalsIgnoreCase("gold")) parts[1] = 1 + "";
 				else if(parts[1].equalsIgnoreCase("green")) parts[1] = 2 + "";
 				else if(parts[1].equalsIgnoreCase("orange")) parts[1] = 3 + "";
@@ -232,9 +216,7 @@ public class Util {
 				else if(parts[1].equalsIgnoreCase("seagreen")) parts[1] = 10 + "";
 				else if(parts[1].equalsIgnoreCase("broken")) parts[1] = 11 + "";
 				else parts[1] = 0 + "";
-			}
-			else if(parts[0].equalsIgnoreCase("98"))
-			{
+			} else if(parts[0].equalsIgnoreCase("98")) {
 				if(parts[1].equalsIgnoreCase("mossy")) parts[1] = 1 + "";
 				else if(parts[1].equalsIgnoreCase("cracked")) parts[1] = 2 + "";
 				else if(parts[1].equalsIgnoreCase("chiseled")) parts[1] = 3 + "";
@@ -250,10 +232,8 @@ public class Util {
 	 * @return boolean True if a string is numeric
 	 */
 	public static boolean isNumeric(String str) {  
-	  try
-	  { Double.parseDouble(str); }
-	  catch(NumberFormatException nfe)  
-	  { return false; }  
+	  try { Double.parseDouble(str); }
+	  catch(NumberFormatException nfe) { return false; }  
 	  return true;  
 	}
 	
@@ -264,7 +244,7 @@ public class Util {
 	 * @return Parsed string
 	 */
 	public static String parseVars(String str, Mine curMine) {
-		if(curMine == null) return parseChatColors(str);
+		if(curMine == null) return parseColor(str);
 		
 		for(MineVariable var : MineVariable.values()) {
 			if(!str.contains(var.getName())) continue;
@@ -275,16 +255,12 @@ public class Util {
 		if(str.startsWith("<M:") && str.endsWith(">")) str = parseVars(PrisonMine.getLanguage().SIGN_TITLE, curMine);
 		if(str.startsWith("<M>")) str = str.replaceAll("<M>", "");
 		
-		return parseChatColors(str);
+		return parseColor(str);
 	}
 	
-	public static String parseChatColors(String str) {
+	public static String parseColor(String str) {
 		if(str == null) return "";
-		
-		for(ChatColor color : ChatColor.values()) {
-			str = str.replaceAll("&" + color.getChar(), color + "");
-		}
-		
+		for(ChatColor color : ChatColor.values()) str = str.replaceAll("&" + color.getChar(), color + "");
 		return str;
 	}
 	
@@ -293,11 +269,11 @@ public class Util {
 	 * @param message Input in the HOUR:MIN:SEC format
 	 * @return Seconds
 	 */
-	public static int parseTime(String message) {
-		if(message.charAt(0) == ':') message = "0" + message;
-		if(message.charAt(message.length() - 1) == ':') message = message + "0";
+	public static int timeToSeconds(String textTime) {
+		if(textTime.charAt(0) == ':') textTime = "0" + textTime;
+		if(textTime.charAt(textTime.length() - 1) == ':') textTime = textTime + "0";
 
-		String[] parts = message.split(":");
+		String[] parts = textTime.split(":");
 		int time = 0;
 
 		try {
@@ -314,9 +290,7 @@ public class Util {
 				time += Integer.parseInt(parts[0]);
 			}
 			else return -1;
-		}
-		catch(NumberFormatException nfe) { return -1; }
-
+		} catch(NumberFormatException nfe) { return -1; }
 		return time;
 	}
 	
@@ -325,16 +299,14 @@ public class Util {
 	 * @param seconds Seconds to parse
 	 * @return Time in user-friendly format
 	 */
-	public static String parseSeconds(int seconds) {
+	public static String secondsToTime(int seconds) {
 		int hour = (int) Math.floor(seconds / 3600);
 		int min = (int) Math.floor((seconds - (hour * 3600)) / 60);
 		int sec = seconds - (hour * 3600) - (min * 60);
 		String resetTime = min + ":";
-		if(min < 10)
-			resetTime = "0" + resetTime;
+		if(min < 10) resetTime = "0" + resetTime;
 		resetTime = hour + ":" + resetTime;
-		if(sec < 10)
-			resetTime = resetTime + "0";
+		if(sec < 10) resetTime = resetTime + "0";
 		resetTime = resetTime + sec;
 		return resetTime;
 	}
@@ -344,7 +316,7 @@ public class Util {
 	 * @param material Material to parse
 	 * @return Name of the material
 	 */
-	public static String parseMaterialData(MaterialData material) {
+	public static String getMaterialName(MaterialData material) {
 		String str[] = {material.getItemTypeId() + "", material.getData() + ""};
 		String name = material.getItemType().toString().toLowerCase().replace("_", " ");
 		String meta = parseMetadata(str, true);
@@ -357,9 +329,9 @@ public class Util {
 	 * @param number Number to round
 	 * @return The rounded number
 	 */
-	public static String round(double number) {
-        NumberFormat formatter = new DecimalFormat("#0.0####%");
-		return formatter.format(number);
+	public static String formatPercent(double percent) {
+        NumberFormat formatter = new DecimalFormat("#0.0####");
+		return formatter.format(percent);
 	}
 	
 	/**
@@ -367,7 +339,7 @@ public class Util {
 	 * @param world World to check
 	 * @return The list of players
 	 */
-	public static List<Player> getLocalPlayers(World world) {
+	public static List<Player> getStaticPlayers(World world) {
 		List<Player> tempPlayers = new ArrayList<Player>();
 		for(Player p : world.getPlayers()) { tempPlayers.add(p); }
 		return tempPlayers;
@@ -439,7 +411,7 @@ public class Util {
 	 * @return List of players
 	 */
 	public static List<Player> getNearbyPlayers(Location loc, double radius) {
-		List<Player> players = getLocalPlayers(loc.getWorld());
+		List<Player> players = getStaticPlayers(loc.getWorld());
 		List<Player> nearbyPlayers = new ArrayList<Player>();
 		double radiusSquared = radius*radius;
 		

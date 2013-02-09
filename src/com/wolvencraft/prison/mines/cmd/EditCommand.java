@@ -88,7 +88,7 @@ public class EditCommand  implements BaseCommand {
 			if(index == null) curMine.addBlock(block, percent);
 			else index.setChance(index.getChance() + percent);
 			
-			Message.sendFormattedMine(Util.round(percent) + " of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
+			Message.sendFormattedMine(Util.formatPercent(percent) + "% of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
 			Message.sendFormattedMine("Reset the mine for the changes to take effect");
 			
 			return curMine.saveFile();
@@ -114,7 +114,7 @@ public class EditCommand  implements BaseCommand {
 				if(percent > blockData.getChance()) percent = blockData.getChance();
 				air.setChance(air.getChance() + percent);
 				blockData.setChance(blockData.getChance() - percent);
-				Message.sendFormattedMine(Util.round(percent) + " of " + args[1] + " was successfully removed from the mine");
+				Message.sendFormattedMine(Util.formatPercent(percent) + " of " + args[1] + " was successfully removed from the mine");
 			}
 			else {
 				air.setChance(air.getChance() + blockData.getChance());
@@ -124,7 +124,11 @@ public class EditCommand  implements BaseCommand {
 			
 			return curMine.saveFile();
 		} else if(args[0].equalsIgnoreCase("name")) {
-			if(args.length == 1) { getHelp(); return true; }
+			if(args.length == 1) {
+				curMine.setName("");
+				Message.sendFormattedMine("Mine display name has been cleared");
+				return true;
+			}
 			if(args.length < 2) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 			
 			String name = args[1];
@@ -145,10 +149,10 @@ public class EditCommand  implements BaseCommand {
 					Message.sendFormattedMine("Reset cooldown " + ChatColor.GREEN + "enabled");
 				}
 			} else if(args.length == 2) {
-				int seconds = Util.parseTime(args[1]);
+				int seconds = Util.timeToSeconds(args[1]);
 				if(seconds == -1) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 				curMine.setCooldownPeriod(seconds);
-				Message.sendFormattedMine("Reset cooldown set to " + ChatColor.GREEN + Util.parseSeconds(seconds));
+				Message.sendFormattedMine("Reset cooldown set to " + ChatColor.GREEN + Util.secondsToTime(seconds));
 			} else { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
 			
 			return curMine.saveFile();
@@ -219,5 +223,5 @@ public class EditCommand  implements BaseCommand {
 	}
 	
 	@Override
-	public void getHelpLine() { Message.formatHelp("edit help", "", "Shows a help page on mine atribute editing", "prison.mine.edit"); }
+	public void getHelpLine() { Message.formatHelp("edit help", "", "Shows a help page on mine attribute editing", "prison.mine.edit"); }
 }

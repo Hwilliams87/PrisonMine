@@ -15,7 +15,7 @@ public class ListCommand implements BaseCommand {
 		if(args.length != 1) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS); return false; }
 		Message.send(ChatColor.DARK_RED + "                    -=[ " + ChatColor.GREEN + ChatColor.BOLD + "Public Mines" + ChatColor.DARK_RED + " ]=-");
 		
-		for(Mine mine : PrisonMine.getLocalMines()) {
+		for(Mine mine : PrisonMine.getStaticMines()) {
 			String displayName = mine.getName();
 			if(displayName.equals(mine.getId())) Message.send(" - " + ChatColor.GREEN + mine.getId() + "");
 			else Message.send(" - " + ChatColor.GREEN + displayName + ChatColor.WHITE + " (" + mine.getId() + ")");

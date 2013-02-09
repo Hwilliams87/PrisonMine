@@ -30,10 +30,16 @@ public class TriggerCommand implements BaseCommand {
 					Message.sendFormattedMine("Time trigger is " + ChatColor.GREEN + "on");
 				}
 			} else {
-				int time = Util.parseTime(args[2]);
+				
+				if(!curMine.getAutomaticReset()) {
+					curMine.setAutomaticReset(true);
+					Message.sendFormattedMine("Time trigger is " + ChatColor.GREEN + "on");
+				}
+				
+				int time = Util.timeToSeconds(args[2]);
 				if(time <= 0) { Message.sendFormattedError("Invalid time provided"); return false; }
 				curMine.setResetPeriod(time);
-				String parsedTime = Util.parseSeconds(time);
+				String parsedTime = Util.secondsToTime(time);
 				Message.sendFormattedMine("Mine will now reset every " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s)");
 			}
 		} else if(args[1].equalsIgnoreCase("composition")) {
@@ -47,9 +53,17 @@ public class TriggerCommand implements BaseCommand {
 					Message.sendFormattedMine("Composition trigger is " + ChatColor.GREEN + "on");
 				}
 			} else {
+				
+				if(!curMine.getCompositionReset()) {
+					curMine.setCompositionReset(true);
+					Message.sendFormattedMine("Composition trigger is " + ChatColor.GREEN + "on");
+				}
+				
 				String percentString = args[2];
 				if(percentString.endsWith("%")) percentString.substring(0, percentString.length() - 1);
-				double percent = Double.parseDouble(percentString) / 100;
+				double percent = 0;
+				try {percent = Double.parseDouble(percentString) / 100; }
+				catch (NumberFormatException nfe) { Message.sendFormattedError("Invalid percent value provided"); return false; }
 				if(percent <= 0 || percent > 100) { Message.sendFormattedError("Invalid percent value provided"); return false; }
 				curMine.setCompositionPercent(percent);
 				Message.sendFormattedMine("Mine will reset once it is " + ChatColor.GOLD + percentString + "%" + ChatColor.WHITE + " empty");
@@ -62,9 +76,9 @@ public class TriggerCommand implements BaseCommand {
 	@Override
 	public void getHelp() {
 		Message.formatHeader(20, "Trigger");
-		Message.formatHelp("trigger", "time toggle", "Toggles the timer on and off");
+		Message.formatHelp("trigger", "time", "Toggles the timer on and off");
 		Message.formatHelp("trigger", "time <time>", "Sets the timer to the specified value");
-		Message.formatHelp("trigger", "composition toggle", "Toggles the composition trigger");
+		Message.formatHelp("trigger", "composition", "Toggles the composition trigger");
 		Message.formatHelp("trigger", "composition <percent>", "Sets the composition percent");
 	}
 	

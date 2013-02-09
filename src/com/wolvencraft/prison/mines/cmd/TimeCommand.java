@@ -33,7 +33,7 @@ public class TimeCommand implements BaseCommand {
 		Message.send(displayString);
 		Message.send("");
 		
-		if(parentMine.getAutomaticReset()) Message.send("    Resets every ->  " + ChatColor.GREEN + Util.parseSeconds(parentMine.getResetPeriodSafe()) + "    " + ChatColor.GOLD + Util.parseSeconds(parentMine.getResetsInSafe()) + ChatColor.WHITE + "  <- Next Reset");
+		if(parentMine.getAutomaticReset()) Message.send("    Resets every ->  " + ChatColor.GREEN + Util.secondsToTime(parentMine.getResetPeriodSafe()) + "    " + ChatColor.GOLD + Util.secondsToTime(parentMine.getResetsInSafe()) + ChatColor.WHITE + "  <- Next Reset");
 		else Message.send("   Mine has to be reset manually");
 		
 		return true;
