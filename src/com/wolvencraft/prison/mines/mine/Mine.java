@@ -256,16 +256,20 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>true</b> if successful, <b>false</b> if not
      */
     public boolean reset() {
-    	try { removePlayers(); }
-    	catch(ConcurrentModificationException cme) {
-    		Message.log(Level.WARNING, "An error occured while removing players from the mine");
+    	if(PrisonMine.getSettings().PLAYERS_TP_ON_RESET) {
+        	try { removePlayers(); }
+        	catch(ConcurrentModificationException cme) { Message.log(Level.WARNING, "An error occured while removing players from the mine"); }
     	}
+    	
     	if(hasFlag(MineFlag.ResetSound)) {
     		String soundName = getFlag(MineFlag.ResetSound).getOption();
     		if(Util.soundExists(soundName)) {
-    			world.playSound(tpPoint, Util.getSound(soundName), 20, 0);
+    			for (Player player : Util.getNearbyPlayers(tpPoint, 32)) {
+    				player.playSound(tpPoint, Util.getSound(soundName), 1, 00);
+    			}
     		}
     	}
+    	
     	if(hasFlag(MineFlag.SurfaceOre)) return CustomTerrainRoutine.run(this);
     	else return RandomTerrainRoutine.run(this);
     }
@@ -276,7 +280,6 @@ public class Mine implements ConfigurationSerializable {
      * @throws ConcurrentModificationException Exception is thrown if a player is already being teleported
      */
     private boolean removePlayers() throws ConcurrentModificationException {
-    	if(!PrisonMine.getSettings().PLAYERS_TP_ON_RESET) return true;    	
         for (Player p : Util.getStaticPlayers(world)) {
             if (region.isLocationInRegion(p.getLocation())) {
                 p.teleport(tpPoint, PlayerTeleportEvent.TeleportCause.PLUGIN);
