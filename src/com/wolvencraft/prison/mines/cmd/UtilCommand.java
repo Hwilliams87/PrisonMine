@@ -19,6 +19,11 @@ public class UtilCommand implements BaseCommand {
 			PrisonMine.setSigns(SignData.loadAll());
 			Message.sendFormattedSuccess("Data loaded from disk successfully", false);
 			return true;
+		} else if(args[0].equalsIgnoreCase("saveall")) {
+			MineData.saveAll();
+			SignData.saveAll();
+			Message.sendFormattedSuccess("Data saved to disk successfully", false);
+			return true;
 		} else {
 			Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);
 			return false;
