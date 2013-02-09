@@ -269,7 +269,7 @@ public class DisplaySign implements ConfigurationSerializable  {
 	 * @return <b>true</b> if there is an initialized DisplaySign at the location, <b>false</b> otherwise
 	 */
 	public static boolean exists(Location loc) {
-		for(DisplaySign sign : PrisonMine.getLocalSigns()) { if(sign.getLocation().equals(loc)) return true; }
+		for(DisplaySign sign : PrisonMine.getStaticSigns()) { if(sign.getLocation().equals(loc)) return true; }
 		return false;
 	}
 	
@@ -279,7 +279,7 @@ public class DisplaySign implements ConfigurationSerializable  {
 	 * @return <b>true</b> if there is a DisplaySign with the specified, <b>false</b> otherwise
 	 */
 	public static boolean exists(String id) {
-		for(DisplaySign sign : PrisonMine.getLocalSigns()) { if(sign.getId().equals(id)) return true; }
+		for(DisplaySign sign : PrisonMine.getStaticSigns()) { if(sign.getId().equals(id)) return true; }
 		return false;
 	}
 	
@@ -289,7 +289,7 @@ public class DisplaySign implements ConfigurationSerializable  {
 	 * @return <b>DisplaySign</b>, if there is one at the specified location, <b>null</b> otherwise
 	 */
 	public static DisplaySign get(Location loc) {
-		for(DisplaySign sign : PrisonMine.getLocalSigns()) { if(sign.getLocation().equals(loc)) return sign; }
+		for(DisplaySign sign : PrisonMine.getStaticSigns()) { if(sign.getLocation().equals(loc)) return sign; }
 		return null;
 	}
 	
@@ -306,7 +306,7 @@ public class DisplaySign implements ConfigurationSerializable  {
 	 * @return <b>DisplaySign</b>, if there is one with the specified ID, <b>null</b> otherwise
 	 */
 	public static DisplaySign get(String id) { 
-		for(DisplaySign sign : PrisonMine.getLocalSigns()) { if(sign.getId().equals(id)) return sign; }
+		for(DisplaySign sign : PrisonMine.getStaticSigns()) { if(sign.getId().equals(id)) return sign; }
 		return null;
 	}
 	
@@ -314,7 +314,7 @@ public class DisplaySign implements ConfigurationSerializable  {
 	 * Updates all the DisplaySigns with appropriate variables
 	 */
 	public static void updateAll() {
-		for(DisplaySign sign : PrisonMine.getLocalSigns()) {
+		for(DisplaySign sign : PrisonMine.getStaticSigns()) {
 			sign.update();
 		}
 	}

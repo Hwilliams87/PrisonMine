@@ -35,7 +35,7 @@ public class PlayerListener implements Listener {
 		if (attacker.hasPermission("prison.mine.bypass.pvp")) { return; }
 		Player victim = (Player) event.getEntity();
 
-		for (Mine mine : PrisonMine.getLocalMines()) {
+		for (Mine mine : PrisonMine.getStaticMines()) {
 			Message.debug("Checking mine " + mine.getId());
 			
 			if(!mine.getProtectionRegion().isLocationInRegion(victim.getLocation())) continue;

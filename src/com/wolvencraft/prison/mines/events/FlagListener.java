@@ -38,7 +38,7 @@ public class FlagListener implements Listener {
 		if(!(event.getEntity() instanceof Player)) return;
 		
 		Player player = (Player) event.getEntity();
-		for(Mine mine : PrisonMine.getLocalMines()) {
+		for(Mine mine : PrisonMine.getStaticMines()) {
 			if(!mine.getRegion().isLocationInRegion(player.getLocation())) continue;
 			
 			if(!mine.hasFlag(MineFlag.NoPlayerDamage)) continue;
@@ -57,7 +57,7 @@ public class FlagListener implements Listener {
 		
 		Block b = event.getBlock();
 		
-		for(Mine mine : PrisonMine.getLocalMines()) {
+		for(Mine mine : PrisonMine.getStaticMines()) {
 			if(!mine.getRegion().isLocationInRegion(b.getLocation())) continue;
 			
 			if(mine.hasFlag(MineFlag.NoToolDamage)) {
@@ -91,7 +91,7 @@ public class FlagListener implements Listener {
 		
 		Block b = event.getBlock();
 		
-		for(Mine mine : PrisonMine.getLocalMines()) {
+		for(Mine mine : PrisonMine.getStaticMines()) {
 			if(!mine.getRegion().isLocationInRegion(b.getLocation())) continue;
 			
 			if(mine.hasFlag(MineFlag.SuperTools)) {
@@ -107,7 +107,7 @@ public class FlagListener implements Listener {
 	@EventHandler
 	public void ToolReplaceListener (PlayerItemBreakEvent event) {
 		
-		for(Mine mine : PrisonMine.getLocalMines()) {
+		for(Mine mine : PrisonMine.getStaticMines()) {
 			if(!mine.getRegion().isLocationInRegion(event.getPlayer().getLocation())) continue;
 			
 			Player player = event.getPlayer();
@@ -127,7 +127,7 @@ public class FlagListener implements Listener {
 		
 		if(event.getFoodLevel() < player.getFoodLevel()) return;
 		
-		for(Mine mine : PrisonMine.getLocalMines()) {
+		for(Mine mine : PrisonMine.getStaticMines()) {
 			if(!mine.getRegion().isLocationInRegion(player.getLocation())) continue;
 			
 			if(!player.hasPermission("prison.mine.flags.nohungerchange." + mine.getId()) && !player.hasPermission("prison.mine.flags.nohungerchange")) { continue; }
@@ -141,7 +141,7 @@ public class FlagListener implements Listener {
 	public void PlayerEffectListener (PlayerMoveEvent event) {
 		if(event.isCancelled()) return;
 		
-		for(Mine mine : PrisonMine.getLocalMines()) {
+		for(Mine mine : PrisonMine.getStaticMines()) {
 			if(!mine.hasFlag(MineFlag.PlayerEffect)) continue;
 			
 			Player player = event.getPlayer();
@@ -157,7 +157,7 @@ public class FlagListener implements Listener {
 	
 	@EventHandler
 	public void NoExpDropListener (BlockExpEvent event) {
-		for(Mine mine : PrisonMine.getLocalMines()) {
+		for(Mine mine : PrisonMine.getStaticMines()) {
 			if(!mine.hasFlag(MineFlag.NoExpDrop)) continue;
 			if(!mine.getRegion().isLocationInRegion(event.getBlock().getLocation())) continue;
 			event.setExpToDrop(0);
@@ -169,7 +169,7 @@ public class FlagListener implements Listener {
 		if(event.isCancelled()) return;
 		if(!EconomyHook.usingVault()) return;
 		
-		for(Mine mine : PrisonMine.getLocalMines()) {
+		for(Mine mine : PrisonMine.getStaticMines()) {
 			Player player = event.getPlayer();
 			if(!player.hasPermission("prison.mine.flags.moneyreward." + mine.getId()) && !player.hasPermission("prison.mine.flags.moneyreward")) { continue; }
 			

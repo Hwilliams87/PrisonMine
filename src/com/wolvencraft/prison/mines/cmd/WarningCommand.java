@@ -20,21 +20,21 @@ public class WarningCommand  implements BaseCommand {
 		if(args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("+")) {
 			if(args.length != 3) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS); return false; }
 			
-			int time = Util.parseTime(args[2]);
+			int time = Util.timeToSeconds(args[2]);
 			if(time <= 0) { Message.sendFormattedError("Invalid time provided"); return false; }
 			if(time > curMine.getResetPeriod()) { Message.sendFormattedError("Time cannot be set to a value greater then the reset time"); return false; }
 
-			String parsedTime = Util.parseSeconds(time);
+			String parsedTime = Util.secondsToTime(time);
 			if(curMine.hasWarningTime(time)) { Message.sendFormattedError("Mine already sends a warning at " + ChatColor.GOLD + parsedTime, false); return false; }
 			curMine.addWarningTime(time);
 			Message.sendFormattedMine("Mine will now send warnings at " + ChatColor.GOLD + parsedTime);
 		} else if(args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("-")) {
 			if(args.length != 3) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ARGUMENTS); return false; }
 			
-			int time = Util.parseTime(args[2]);
+			int time = Util.timeToSeconds(args[2]);
 			if(time <= 0) { Message.sendFormattedError("Invalid time provided"); return false; }
 			
-			String parsedTime = Util.parseSeconds(time);
+			String parsedTime = Util.secondsToTime(time);
 			if(!curMine.hasWarningTime(time)) { Message.sendFormattedError("Mine does not send a warning at " + ChatColor.GOLD + parsedTime, false); return false; }
 			curMine.removeWarningTime(time);
 			

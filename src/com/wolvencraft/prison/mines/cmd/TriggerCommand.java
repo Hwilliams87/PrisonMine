@@ -36,10 +36,10 @@ public class TriggerCommand implements BaseCommand {
 					Message.sendFormattedMine("Time trigger is " + ChatColor.GREEN + "on");
 				}
 				
-				int time = Util.parseTime(args[2]);
+				int time = Util.timeToSeconds(args[2]);
 				if(time <= 0) { Message.sendFormattedError("Invalid time provided"); return false; }
 				curMine.setResetPeriod(time);
-				String parsedTime = Util.parseSeconds(time);
+				String parsedTime = Util.secondsToTime(time);
 				Message.sendFormattedMine("Mine will now reset every " + ChatColor.GOLD + parsedTime + ChatColor.WHITE + " minute(s)");
 			}
 		} else if(args[1].equalsIgnoreCase("composition")) {

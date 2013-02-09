@@ -277,7 +277,7 @@ public class Mine implements ConfigurationSerializable {
      */
     private boolean removePlayers() throws ConcurrentModificationException {
     	if(!PrisonMine.getSettings().PLAYERS_TP_ON_RESET) return true;    	
-        for (Player p : Util.getLocalPlayers(world)) {
+        for (Player p : Util.getStaticPlayers(world)) {
             if (region.isLocationInRegion(p.getLocation())) {
                 p.teleport(tpPoint, PlayerTeleportEvent.TeleportCause.PLUGIN);
                 Message.sendFormattedSuccess(p, PrisonMine.getLanguage().MISC_TELEPORT, true, this);
@@ -636,7 +636,7 @@ public class Mine implements ConfigurationSerializable {
     
 	public List<Mine> getChildren() {
 		List<Mine> children = new ArrayList<Mine>();
-		for(Mine mine : PrisonMine.getLocalMines()) {
+		for(Mine mine : PrisonMine.getStaticMines()) {
 			if(mine.hasParent() && mine.getParent().equalsIgnoreCase(getId())) { children.add(mine); }
 		}
 		return children;
@@ -663,7 +663,7 @@ public class Mine implements ConfigurationSerializable {
 				String[] tempBlockName = {block.getBlock().getItemTypeId() + "", block.getBlock().getData() + ""};
 				blockName = Util.parseMetadata(tempBlockName, true) + " " + blockName;
 			}
-			String blockWeight = Util.round(block.getChance());
+			String blockWeight = Util.formatPercent(block.getChance()) + "%";
 			
 			if(!blockWeight.equalsIgnoreCase("0.0%"))
 				finalList.add(ChatColor.WHITE + blockWeight + " " + ChatColor.GREEN + blockName + ChatColor.WHITE);
@@ -678,7 +678,7 @@ public class Mine implements ConfigurationSerializable {
 	}
 	
 	public static Mine get(String id) {
-		for(Mine curMine : PrisonMine.getLocalMines()) {
+		for(Mine curMine : PrisonMine.getStaticMines()) {
 			if(curMine.getId().equalsIgnoreCase(id)) return curMine;
 		}
 		return null;

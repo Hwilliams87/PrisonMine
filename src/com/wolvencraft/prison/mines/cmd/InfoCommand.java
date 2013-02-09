@@ -105,9 +105,9 @@ public class InfoCommand  implements BaseCommand {
 				boolean automaticReset = parentMine.getAutomaticReset();
 				boolean compositionReset = curMine.getCompositionReset();
 								
-				if(automaticReset) line += "[ " + ChatColor.GREEN + Util.parseSeconds(parentMine.getResetsInSafe()) + ChatColor.WHITE + " / " + ChatColor.RED + Util.parseSeconds(parentMine.getResetPeriodSafe()) + ChatColor.WHITE + " ]";
+				if(automaticReset) line += "[ " + ChatColor.GREEN + Util.secondsToTime(parentMine.getResetsInSafe()) + ChatColor.WHITE + " / " + ChatColor.RED + Util.secondsToTime(parentMine.getResetPeriodSafe()) + ChatColor.WHITE + " ]";
 				if(automaticReset && compositionReset) line += "     ";
-				if(compositionReset) line += "[ " + ChatColor.GREEN + Util.round(curMine.getCurrentPercent() / 100) + ChatColor.WHITE + " / " + ChatColor.RED + curMine.getRequiredPercent() + "%" + ChatColor.WHITE + " ]";
+				if(compositionReset) line += "[ " + ChatColor.GREEN + Util.formatPercent(curMine.getCurrentPercent()) + "%" + ChatColor.WHITE + " / " + ChatColor.RED + curMine.getRequiredPercent() + "%" + ChatColor.WHITE + " ]";
 				
 				int padding = (60 - DrawingTools.getTrueLength(line)) / 2;
 				for(int i = 0; i < padding; i++) { line = DrawingTools.WhiteSpace + line + DrawingTools.WhiteSpace; }
@@ -131,10 +131,10 @@ public class InfoCommand  implements BaseCommand {
 				if(parentMine.hasWarnings()) {
 					String line = ChatColor.YELLOW + "   Warnings: " + ChatColor.WHITE;
 					List<Integer> warnings = parentMine.getLocalWarningTimes();
-					line += Util.parseSeconds(warnings.get(0));
+					line += Util.secondsToTime(warnings.get(0));
 					if(warnings.size() > 1) {
 						for(int i = 1; i < warnings.size(); i++) {
-							line += ", " + Util.parseSeconds(warnings.get(i));
+							line += ", " + Util.secondsToTime(warnings.get(i));
 						}
 					}
 					text.add(line);
@@ -173,7 +173,7 @@ public class InfoCommand  implements BaseCommand {
 			// Cooldown
 			try {
 				if(curMine.getCooldown()) {
-					text.add(ChatColor.YELLOW + "   Cooldown: " + ChatColor.GREEN + Util.parseSeconds(curMine.getCooldownEndsIn()) + ChatColor.WHITE + " / " + ChatColor.RED + Util.parseSeconds(curMine.getCooldownPeriod()));
+					text.add(ChatColor.YELLOW + "   Cooldown: " + ChatColor.GREEN + Util.secondsToTime(curMine.getCooldownEndsIn()) + ChatColor.WHITE + " / " + ChatColor.RED + Util.secondsToTime(curMine.getCooldownPeriod()));
 				}
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the flags"); }
 			
@@ -262,7 +262,7 @@ public class InfoCommand  implements BaseCommand {
 			Message.send("");
 			
 			if(parentMine.getAutomaticReset())
-				Message.send("    Resets every ->  " + ChatColor.GREEN + Util.parseSeconds(parentMine.getResetPeriodSafe()) + "    " + ChatColor.GOLD + Util.parseSeconds(parentMine.getResetsInSafe()) + ChatColor.WHITE + "  <- Next Reset");
+				Message.send("    Resets every ->  " + ChatColor.GREEN + Util.secondsToTime(parentMine.getResetPeriodSafe()) + "    " + ChatColor.GOLD + Util.secondsToTime(parentMine.getResetsInSafe()) + ChatColor.WHITE + "  <- Next Reset");
 			else Message.send("   Mine has to be reset manually");
 			
 		} else {

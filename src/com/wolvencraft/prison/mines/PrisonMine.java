@@ -207,7 +207,7 @@ public class PrisonMine extends PrisonPlugin {
 	public void reloadSettings()						{ settings = null; settings = new Settings(this); }
 	public void reloadLanguage()						{ language = null; language = new Language(this); }
 	
-	public static List<Mine> getLocalMines() { 
+	public static List<Mine> getStaticMines() { 
 		List<Mine> temp = new ArrayList<Mine>();
 		for(Mine mine : mines) temp.add(mine);
 		return temp;
@@ -222,7 +222,7 @@ public class PrisonMine extends PrisonPlugin {
 	public static void addMine(List<Mine> newMines) 	{ for(Mine mine : newMines) mines.add(mine); }
 	public static void removeMine (Mine mine) 			{ mines.remove(mine); }
 	
-	public static List<DisplaySign> getLocalSigns() { 
+	public static List<DisplaySign> getStaticSigns() { 
 		List<DisplaySign> temp = new ArrayList<DisplaySign>();
 		for(DisplaySign sign : signs) temp.add(sign);
 		return temp;

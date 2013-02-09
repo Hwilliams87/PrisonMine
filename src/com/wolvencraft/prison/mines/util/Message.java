@@ -19,7 +19,7 @@ public class Message extends com.wolvencraft.prison.util.Message {
 		if(sender == null) sender = Bukkit.getServer().getConsoleSender();
 		if(message == null) message = "";
 		if(parseVars && curMine != null) message = Util.parseVars(message, curMine);
-		else message = Util.parseChatColors(message);
+		else message = Util.parseColor(message);
 		sender.sendMessage(message);
 	}
 	
@@ -116,7 +116,7 @@ public class Message extends com.wolvencraft.prison.util.Message {
         		sendFormatted(p, PrisonMine.getLanguage().GENERAL_SUCCESS, message, false);
         	}
         }
-        log(Util.parseChatColors(message));
+        log(Util.parseColor(message));
     }
     
     /**
