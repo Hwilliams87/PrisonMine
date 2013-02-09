@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.wolvencraft.prison.mines.PrisonMine;
+import com.wolvencraft.prison.mines.exceptions.DisplaySignNotFoundException;
 import com.wolvencraft.prison.mines.mine.DisplaySign;
 import com.wolvencraft.prison.mines.util.Message;
 
@@ -25,7 +26,7 @@ public class SignData {
 	 * Loads the sign data from disc
 	 * @return Loaded list of signs
 	 */
-	public static List<DisplaySign> loadAll() {
+	public static List<DisplaySign> loadAll() throws DisplaySignNotFoundException {
 		List<DisplaySign> signs = new ArrayList<DisplaySign>();
 		File signFolder = new File(PrisonMine.getInstance().getDataFolder(), "signs");
         if (!signFolder.exists() || !signFolder.isDirectory()) {
@@ -48,8 +49,7 @@ public class SignData {
 	            FileConfiguration mineConf = YamlConfiguration.loadConfiguration(signFile);
 	            Object sign = mineConf.get("displaysign");
 	            if (sign instanceof DisplaySign) signs.add((DisplaySign) sign);
-        	}
-        	catch (IllegalArgumentException ex) {
+        	} catch (IllegalArgumentException ex) {
         		Message.log(Level.SEVERE, ex.getMessage());
         		continue;
         	}
