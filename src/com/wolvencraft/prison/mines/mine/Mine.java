@@ -265,7 +265,7 @@ public class Mine implements ConfigurationSerializable {
     		String soundName = getFlag(MineFlag.ResetSound).getOption();
     		if(Util.soundExists(soundName)) {
     			for (Player player : Util.getNearbyPlayers(tpPoint, 32)) {
-    				player.playSound(tpPoint, Util.getSound(soundName), 1, 00);
+    				player.playSound(tpPoint, Util.getSound(soundName), 1, 0);
     			}
     		}
     	}
