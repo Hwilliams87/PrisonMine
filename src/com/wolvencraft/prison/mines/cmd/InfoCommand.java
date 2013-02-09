@@ -15,6 +15,7 @@ import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 import com.wolvencraft.prison.mines.util.constants.BlacklistState;
 import com.wolvencraft.prison.mines.util.constants.Protection;
+import com.wolvencraft.prison.mines.util.data.Blacklist;
 import com.wolvencraft.prison.mines.util.flags.BaseFlag;
 
 public class InfoCommand  implements BaseCommand {
@@ -48,6 +49,8 @@ public class InfoCommand  implements BaseCommand {
 			
 			List<String> text = new ArrayList<String>();
 			text.add("");
+			
+			// Title screen
 			try {
 				String line = "";
 				if(!curMine.getName().equals(curMine.getId()) && !curMine.getName().equals("")) line = "[ \"" + ChatColor.GREEN + curMine.getName() + ChatColor.WHITE + "\" (" + ChatColor.RED + ChatColor.BOLD + curMine.getId() + ChatColor.WHITE + ") ]";
@@ -126,14 +129,15 @@ public class InfoCommand  implements BaseCommand {
 			// Warnings
 			try {
 				if(parentMine.hasWarnings()) {
-					String line = "";
-					for(Integer warning : parentMine.getLocalWarningTimes()) {
-						if(!line.equals("")) line += ",";
-						line += " " + Util.parseSeconds(warning);
+					String line = ChatColor.YELLOW + "   Warnings: " + ChatColor.WHITE;
+					List<Integer> warnings = parentMine.getLocalWarningTimes();
+					line += Util.parseSeconds(warnings.get(0));
+					if(warnings.size() > 1) {
+						for(int i = 1; i < warnings.size(); i++) {
+							line += ", " + Util.parseSeconds(warnings.get(i));
+						}
 					}
-					line = ChatColor.YELLOW + "Warnings: " + ChatColor.WHITE + line;
-					text.add("!c" + line);
-					text.add("");
+					text.add(line);
 				}
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the warning information"); }
 			
@@ -143,14 +147,13 @@ public class InfoCommand  implements BaseCommand {
 				if(children.size() != 0) {
 					String line = "";
 					line = ChatColor.YELLOW + "   Children:" + ChatColor.WHITE;
-					line += " " + children.get(0);
+					line += " " + children.get(0).getId();
 					if(children.size() > 1) {
 						for(int i = 1; i < children.size(); i++) {
 							line += ", " + children.get(i).getId();
 						}
 					}
 					text.add(line);
-					text.add("");
 				}
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the children"); }
 			
@@ -164,6 +167,13 @@ public class InfoCommand  implements BaseCommand {
 						if(!flag.getOption().equals("")) str += " (" + flag.getOption() + ")";
 						text.add("        " + str);
 					}
+				}
+			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the flags"); }
+			
+			// Cooldown
+			try {
+				if(curMine.getCooldown()) {
+					text.add(ChatColor.YELLOW + "   Cooldown: " + ChatColor.GREEN + Util.parseSeconds(curMine.getCooldownEndsIn()) + ChatColor.WHITE + " / " + ChatColor.RED + Util.parseSeconds(curMine.getCooldownPeriod()));
 				}
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the flags"); }
 			
@@ -187,23 +197,59 @@ public class InfoCommand  implements BaseCommand {
 			
 			// Blacklist composition
 			try {
-				List<MaterialData> blocks = curMine.getBlacklist().getBlocks();
+				Blacklist blacklist = curMine.getBlacklist();
+				List<MaterialData> blocks = blacklist.getBlocks();
 				
-				if(!blocks.isEmpty()) {
-					text.add(ChatColor.YELLOW + "   Blacklist Composition: ");
+				if(!blacklist.getState().equals(BlacklistState.DISABLED) && !blocks.isEmpty()) {
+					if(blacklist.getState().equals(BlacklistState.BLACKLIST)) text.add(ChatColor.YELLOW + "   Reset exemptions (blacklist): ");
+					else if(blacklist.getState().equals(BlacklistState.WHITELIST)) text.add(ChatColor.YELLOW + "   Reset exemptions (whitelist): ");
 					for(MaterialData block : blocks) {
 						String[] parts = {block.getItemTypeId() + "", block.getData() + ""};
-						text.add("        " + Util.parseMetadata(parts, true) + " " + block.getItemType().toString().toLowerCase().replace("_", " "));
+						String metadata = Util.parseMetadata(parts, true);
+						String itemtype = block.getItemType().toString().toLowerCase().replace("_", " ");
+						if(metadata.equals("")) text.add("        " + itemtype);
+						else text.add("        " + metadata + " " + itemtype);
 					}
 				}
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the blacklist status"); }
+			
+			// Break protection
+			try {
+				Blacklist blacklist = curMine.getBreakBlacklist();
+				List<MaterialData> blocks = blacklist.getBlocks();
+				
+				if(!blacklist.getState().equals(BlacklistState.DISABLED) && !blocks.isEmpty()) {
+					if(blacklist.getState().equals(BlacklistState.BLACKLIST)) text.add(ChatColor.YELLOW + "   Block breaking protection (blacklist): ");
+					else if(blacklist.getState().equals(BlacklistState.WHITELIST)) text.add(ChatColor.YELLOW + "   Block breaking protection (whitelist): ");
+					for(MaterialData block : blocks) {
+						String[] parts = {block.getItemTypeId() + "", block.getData() + ""};
+						String metadata = Util.parseMetadata(parts, true);
+						String itemtype = block.getItemType().toString().toLowerCase().replace("_", " ");
+						if(metadata.equals("")) text.add("        " + itemtype);
+						else text.add("        " + metadata + " " + itemtype);
+					}
+				}
+			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the break protection status"); }
+			
+			// Place protection
+			try {
+				Blacklist blacklist = curMine.getPlaceBlacklist();
+				List<MaterialData> blocks = blacklist.getBlocks();
+				
+				if(!blacklist.getState().equals(BlacklistState.DISABLED) && !blocks.isEmpty()) {
+					if(blacklist.getState().equals(BlacklistState.BLACKLIST)) text.add(ChatColor.YELLOW + "   Block breaking protection (blacklist): ");
+					else if(blacklist.getState().equals(BlacklistState.WHITELIST)) text.add(ChatColor.YELLOW + "   Block breaking protection (whitelist): ");
+					for(MaterialData block : blocks) {
+						String[] parts = {block.getItemTypeId() + "", block.getData() + ""};
+						String metadata = Util.parseMetadata(parts, true);
+						String itemtype = block.getItemType().toString().toLowerCase().replace("_", " ");
+						if(metadata.equals("")) text.add("        " + itemtype);
+						else text.add("        " + metadata + " " + itemtype);
+					}
+				}
+			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the place protection status"); }
 						
 			for(String line : text) {
-				if(line.startsWith("!c")) {
-					line = line.substring(2);
-					int spacing = (60 - line.length()) / 2;
-					for(int i = 0; i < spacing; i++) line = " " + line;
-				}
 				Message.send(line);
 			}
 			
