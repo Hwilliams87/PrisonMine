@@ -35,7 +35,7 @@ public class FlagCommand implements BaseCommand {
 						Message.sendFormattedMine("Flag " + flag + " has been added");
 					}
 				} else {
-					curMine.removeFlag(flag, args[2]);
+					curMine.removeFlag(flag);
 					Message.sendFormattedMine("Flag " + flag + " has been removed");
 				}
 			} else {
