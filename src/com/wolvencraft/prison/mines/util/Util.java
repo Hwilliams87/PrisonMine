@@ -329,8 +329,18 @@ public class Util {
 	 * @param number Number to round
 	 * @return The rounded number
 	 */
-	public static String formatPercent(double percent) {
+	public static String formatDecimal(double percent) {
         NumberFormat formatter = new DecimalFormat("#0.0####");
+		return formatter.format(percent);
+	}
+	
+	/**
+	 * Rounds the number to the 4 decimal points and formats it as a percent
+	 * @param number Number to round
+	 * @return The rounded number
+	 */
+	public static String formatPercent(double percent) {
+        NumberFormat formatter = new DecimalFormat("#0.0####%");
 		return formatter.format(percent);
 	}
 	
