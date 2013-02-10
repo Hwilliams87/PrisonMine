@@ -57,7 +57,7 @@ public class DisplaySign implements ConfigurationSerializable  {
 		originalText = new ArrayList<String>();
 		for(String line : sign.getLines()) { originalText.add(line); }
 		
-        parseFirstLine(originalText.get(0).substring(3, originalText.get(0).length() - 1));
+        parseLines(originalText);
 		
 		saveFile();
 	}
@@ -97,7 +97,7 @@ public class DisplaySign implements ConfigurationSerializable  {
         
         originalText = (List<String>) me.get("lines");
         
-        parseFirstLine(originalText.get(0).substring(3, originalText.get(0).length() - 1));
+        parseLines(originalText);
 	}
 	
 	/**
@@ -117,32 +117,38 @@ public class DisplaySign implements ConfigurationSerializable  {
         return me;
     }
 	
-	private void parseFirstLine(String firstLine) {
-		String[] data = firstLine.split(":");
-		
-		if(data.length == 1) {
-			mineId = data[0];
-			reset = false;
-			paid = false;
-			price = -1;
-		} else if(data.length == 2) {
-			mineId = data[0];
-			reset = false;
-			paid = false;
-			price = -1;
-			if(data[1].equalsIgnoreCase("R")) reset = true;
-			else {
-				reset = true;
-				paid = true;
-				price = Double.parseDouble(data[1]);
-			}
-		} else {
-			mineId = data[0];
-			reset = false;
-			paid = false;
-			price = -1;
-		}
-	}
+    private void parseLines(List<String> lines) {
+    	for(String line : lines) {
+    		if(line.startsWith("<M") && line.endsWith(">")) {
+    			line = line.substring(3, line.length() - 1);
+    			String[] data = line.split(":");
+    			
+    			if(data.length == 1) {
+    				mineId = data[0];
+    				reset = false;
+    				paid = false;
+    				price = -1;
+    			} else if(data.length == 2) {
+    				mineId = data[0];
+    				reset = false;
+    				paid = false;
+    				price = -1;
+    				if(data[1].equalsIgnoreCase("R")) reset = true;
+    				else {
+    					reset = true;
+    					paid = true;
+    					price = Double.parseDouble(data[1]);
+    				}
+    			} else {
+    				mineId = data[0];
+    				reset = false;
+    				paid = false;
+    				price = -1;
+    			}
+    			return;
+    		}
+    	}
+    }
 
     public String getId() 			{ return signId; }
     public Location getLocation() 	{ return sign.getLocation(); }
