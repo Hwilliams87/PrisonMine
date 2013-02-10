@@ -107,7 +107,7 @@ public class InfoCommand  implements BaseCommand {
 								
 				if(automaticReset) line += "[ " + ChatColor.GREEN + Util.secondsToTime(parentMine.getResetsInSafe()) + ChatColor.WHITE + " / " + ChatColor.RED + Util.secondsToTime(parentMine.getResetPeriodSafe()) + ChatColor.WHITE + " ]";
 				if(automaticReset && compositionReset) line += "     ";
-				if(compositionReset) line += "[ " + ChatColor.GREEN + Util.formatDecimal(curMine.getCurrentPercent()) + "%" + ChatColor.WHITE + " / " + ChatColor.RED + curMine.getRequiredPercent() + "%" + ChatColor.WHITE + " ]";
+				if(compositionReset) line += "[ " + ChatColor.GREEN + Util.formatDecimal(curMine.getCurrentPercent()) + ChatColor.WHITE + " / " + ChatColor.RED + curMine.getRequiredPercent() + "%" + ChatColor.WHITE + " ]";
 				
 				int padding = (60 - DrawingTools.getTrueLength(line)) / 2;
 				for(int i = 0; i < padding; i++) { line = DrawingTools.WhiteSpace + line + DrawingTools.WhiteSpace; }
