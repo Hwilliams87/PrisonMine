@@ -1,11 +1,14 @@
 package com.wolvencraft.prison.mines.events;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
@@ -55,6 +58,18 @@ public class PlayerListener implements Listener {
 			Message.sendFormattedError(attacker, PrisonMine.getLanguage().PROTECTION_PVP);
 			event.setCancelled(true);
 			return;
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onPlayerLogin(PlayerLoginEvent event) {
+		if(!PrisonMine.getSettings().PLAYERS_TP_ON_RESET) return;
+		Location loc = event.getPlayer().getLocation();
+		for(Mine mine : PrisonMine.getStaticMines()) {
+			if(mine.getRegion().isLocationInRegion(loc)) {
+				event.getPlayer().teleport(mine.getTpPoint(), TeleportCause.PLUGIN);
+				return;
+			}
 		}
 	}
 }

@@ -164,6 +164,6 @@ public class Message extends com.wolvencraft.prison.util.Message {
 		CommandSender sender = CommandManager.getSender();
 		String spaces = "";
 		for(int i = 0; i < padding; i++) { spaces = spaces + " "; }
-		sender.sendMessage(spaces + "-=[ " + ChatColor.BLUE + name + ChatColor.WHITE + " ]=-");
+		sender.sendMessage(spaces + "-=[ " + ChatColor.BLUE + Util.parseColor(name) + ChatColor.WHITE + " ]=-");
 	}
 }

@@ -88,7 +88,7 @@ public class EditCommand  implements BaseCommand {
 			if(index == null) curMine.addBlock(block, percent);
 			else index.setChance(index.getChance() + percent);
 			
-			Message.sendFormattedMine(Util.formatPercent(percent) + "% of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
+			Message.sendFormattedMine(Util.formatPercent(percent)+ "% of " + block.getItemType().toString().toLowerCase().replace("_", " ") + " added to the mine");
 			Message.sendFormattedMine("Reset the mine for the changes to take effect");
 			
 			return curMine.saveFile();

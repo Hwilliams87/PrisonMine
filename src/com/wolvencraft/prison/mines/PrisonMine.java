@@ -208,7 +208,7 @@ public class PrisonMine extends PrisonPlugin {
 	public static Settings getSettings()				{ return settings; }
 	public static Language getLanguage()				{ return language; }
 	public static PrisonSuite getPrisonSuite() 			{ return prisonSuite; }
-	public double getVersion()							{ return Double.parseDouble(this.getDescription().getVersion()); }
+	public double getVersion()							{ return settings.PLUGIN_VERSION; }
 	public static Mine getCurMine(CommandSender sender) { return curMines.get(sender); }
 	public static Mine getCurMine() 					{ return getCurMine(CommandManager.getSender()); }
 	public static void setCurMine(Mine mine) 			{ setCurMine(CommandManager.getSender(), mine); }
