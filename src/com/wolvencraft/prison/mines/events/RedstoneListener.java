@@ -22,32 +22,25 @@ public class RedstoneListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onBlockRedstone(BlockRedstoneEvent e) {
-		Block triggeringBlock = e.getBlock();
-		if(!(triggeringBlock.getType().equals(Material.STONE_BUTTON) || 
-				triggeringBlock.getType().equals(Material.WOOD_BUTTON) || 
-				triggeringBlock.getType().equals(Material.STONE_PLATE) || 
-				triggeringBlock.getType().equals(Material.WOOD_PLATE) || 
-				triggeringBlock.getType().equals(Material.REDSTONE_WIRE) || 
-				triggeringBlock.getType().equals(Material.DIODE) ||
-				triggeringBlock.getType().equals(Material.DIODE_BLOCK_ON) ||
-				triggeringBlock.getType().equals(Material.REDSTONE_TORCH_ON) ||
-				triggeringBlock.getType().equals(Material.LEVER))) return;
+	public void onBlockRedstone(BlockRedstoneEvent event) {
+		if (event.getOldCurrent() != 0 || event.getNewCurrent() == 0) return;
 		
-		if (e.getOldCurrent() != 0 || e.getNewCurrent() == 0) return;
+		Block triggeringBlock = event.getBlock();
+		if(!(triggeringBlock.getType().equals(Material.DIODE_BLOCK_OFF) ||
+				triggeringBlock.getType().equals(Material.DIODE_BLOCK_ON) ||
+				triggeringBlock.getType().equals(Material.REDSTONE_TORCH_OFF) ||
+				triggeringBlock.getType().equals(Material.REDSTONE_TORCH_ON))) return;
 		
 		final BlockFace adjFaces[] = { BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.UP, BlockFace.DOWN };
 		
 		for (BlockFace bf : adjFaces) {
 			Block adjBlock = triggeringBlock.getRelative(bf);
-			if (adjBlock.getType() == Material.WALL_SIGN) {
+			if (adjBlock.getType().equals(Material.IRON_BLOCK)) {
 				if (adjBlock.isBlockPowered()) break;
-				
-				DisplaySign sign = DisplaySign.get(adjBlock.getLocation());
-				if(sign != null && sign.getReset()) {
+				for(DisplaySign sign : PrisonMine.getStaticSigns()) {
+					if(!sign.getReset() || sign.getAttachedBlock() == null || !sign.getAttachedBlock().getLocation().equals(adjBlock.getLocation())) continue;
 					Mine curMine = Mine.get(sign.getParent());
 					if(curMine == null) return;
-					
 					RedstoneResetRoutine.run(curMine);
 				}
 				

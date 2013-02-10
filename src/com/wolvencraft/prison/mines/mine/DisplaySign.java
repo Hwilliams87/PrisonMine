@@ -15,6 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,7 +28,6 @@ import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.exceptions.DisplaySignNotFoundException;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
-import com.wolvencraft.prison.mines.util.constants.SignMaterial;
 
 /**
  * A virtual representation of the dynamically-updated signs that are used to display information about mines
@@ -41,7 +41,6 @@ public class DisplaySign implements ConfigurationSerializable  {
 	private Sign sign;
 	private boolean reset;
 	private boolean paid;
-	private boolean redstone;
 	
 	private List<String> originalText;
 	
@@ -77,7 +76,6 @@ public class DisplaySign implements ConfigurationSerializable  {
 		mineId = parentSignClass.getParent();
 		paid = false;
 		reset = false;
-		redstone = false;
 		price = -1;
 		
 		saveFile();
@@ -126,16 +124,13 @@ public class DisplaySign implements ConfigurationSerializable  {
 			mineId = data[0];
 			reset = false;
 			paid = false;
-			redstone = false;
 			price = -1;
 		} else if(data.length == 2) {
 			mineId = data[0];
 			reset = false;
 			paid = false;
-			redstone = false;
 			price = -1;
 			if(data[1].equalsIgnoreCase("R")) reset = true;
-			else if(data[1].equalsIgnoreCase("S")) redstone = true;
 			else {
 				reset = true;
 				paid = true;
@@ -145,20 +140,29 @@ public class DisplaySign implements ConfigurationSerializable  {
 			mineId = data[0];
 			reset = false;
 			paid = false;
-			redstone = false;
 			price = -1;
 		}
 	}
 
     public String getId() 			{ return signId; }
     public Location getLocation() 	{ return sign.getLocation(); }
+    @Deprecated
     public Block getBaseBlock()		{
-    	SignMaterial signMat = (SignMaterial) sign.getBlock().getState();
+    	org.bukkit.material.Sign signMat = (org.bukkit.material.Sign) sign.getBlock().getState();
     	return sign.getBlock().getRelative(signMat.getAttachedFace());
     }
+    
+    public Block getAttachedBlock() {
+    	Block signBlock = sign.getBlock();
+    	BlockFace[] directions = {BlockFace.WEST, BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.UP, BlockFace.DOWN};
+    	for(BlockFace dir : directions) {
+        	if(signBlock.getRelative(dir).getType().equals(Material.IRON_BLOCK)) return signBlock.getRelative(dir);
+    	}
+    	return null;
+    }
+    
     public String getParent()	 	{ return mineId; }
     public boolean getReset() 		{ return reset; }
-    public boolean getRedstone() 	{ return redstone; }
     public boolean getPaid()		{ return paid; }
     public double getPrice()		{ return price; }
     public List<String> getLines() 	{ return originalText; }
