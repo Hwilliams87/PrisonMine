@@ -9,6 +9,9 @@ import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 
 public class Settings extends com.wolvencraft.prison.settings.Settings {
+	public final double PLUGIN_VERSION;
+	public final int PLUGIN_BUILD;
+	
 	public final boolean PLAYERS_TP_ON_RESET;
 	public final boolean RESET_FORCE_TIMER_UPDATE;
 	public final boolean RESET_ALL_MINES_ON_STARTUP;
@@ -22,6 +25,11 @@ public class Settings extends com.wolvencraft.prison.settings.Settings {
 	
 	public Settings(PrisonMine plugin) {
 		super(PrisonMine.getPrisonSuite());
+		String versionString = plugin.getDescription().getVersion();
+		String[] versionData = versionString.split(":");
+		PLUGIN_VERSION = Double.parseDouble(versionData[0] + "." + versionData[1]);
+		PLUGIN_BUILD = Integer.parseInt(versionData[2]);
+		
 		PLAYERS_TP_ON_RESET = plugin.getConfig().getBoolean("players.teleport-players-out-of-the-mine");
 		RESET_FORCE_TIMER_UPDATE = plugin.getConfig().getBoolean("reset.force-reset-timer-on-mine-reset");
 		RESET_ALL_MINES_ON_STARTUP = plugin.getConfig().getBoolean("reset.reset-all-mines-on-startup");
