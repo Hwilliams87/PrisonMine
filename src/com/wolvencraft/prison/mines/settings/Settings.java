@@ -26,7 +26,7 @@ public class Settings extends com.wolvencraft.prison.settings.Settings {
 	public Settings(PrisonMine plugin) {
 		super(PrisonMine.getPrisonSuite());
 		String versionString = plugin.getDescription().getVersion();
-		String[] versionData = versionString.split(":");
+		String[] versionData = versionString.split("\\.");
 		PLUGIN_VERSION = Double.parseDouble(versionData[0] + "." + versionData[1]);
 		PLUGIN_BUILD = Integer.parseInt(versionData[2]);
 		

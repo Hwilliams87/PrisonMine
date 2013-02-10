@@ -10,7 +10,7 @@ public class MetaCommand  implements BaseCommand {
 	@Override
     public boolean run(String[] args) {
         Message.formatHeader(20, PrisonMine.getLanguage().GENERAL_TITLE);
-        Message.send(ChatColor.GREEN + "PrisonMine v. " + ChatColor.BLUE + PrisonMine.getSettings().PLUGIN_VERSION + " (build " + PrisonMine.getSettings().PLUGIN_BUILD + ")");
+        Message.send(ChatColor.GREEN + "PrisonMine v. " + ChatColor.BLUE + PrisonMine.getSettings().PLUGIN_VERSION + ChatColor.GREEN + " (build " + PrisonMine.getSettings().PLUGIN_BUILD + ")");
         Message.send(ChatColor.YELLOW + "http://dev.bukkit.org/server-mods/prisonmine/");
         Message.send("Author: " + ChatColor.AQUA + "bitWolfy");
         Message.send("Testers: " + ChatColor.AQUA + "theangrytomato" + ChatColor.WHITE + ", " + ChatColor.AQUA + "Ramo909" + ChatColor.WHITE + ", " + ChatColor.AQUA + "Speedrookie");
