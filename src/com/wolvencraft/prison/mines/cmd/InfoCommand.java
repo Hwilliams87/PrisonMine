@@ -60,7 +60,7 @@ public class InfoCommand  implements BaseCommand {
 				
 				for(int i = 0; i < padding; i++) { line = DrawingTools.WhiteSpace + line + DrawingTools.WhiteSpace; }
 				
-				text.add(DrawingTools.CornerTopLeft + line + DrawingTools.CornerTopRight);
+				text.add(line);
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the title"); }
 			
 			// Protection and exceptions
