@@ -36,13 +36,11 @@ public class FlagListener implements Listener {
 	public void NoPlayerDamageListener (EntityDamageEvent event) {
 		if(event.isCancelled()) return;
 		if(!(event.getEntity() instanceof Player)) return;
-		
 		Player player = (Player) event.getEntity();
+		
 		for(Mine mine : PrisonMine.getStaticMines()) {
-			if(!mine.getRegion().isLocationInRegion(player.getLocation())) continue;
-			
 			if(!mine.hasFlag(MineFlag.NoPlayerDamage)) continue;
-			
+			if(!mine.getRegion().isLocationInRegion(player.getLocation())) continue;
 			if(!player.hasPermission("prison.mine.flags.noplayerdamage." + mine.getId()) && !player.hasPermission("prison.mine.flags.noplayerdamage")) { continue; }
 			
 			event.setCancelled(true);
@@ -54,53 +52,45 @@ public class FlagListener implements Listener {
 	@EventHandler
 	public void NoToolDamageListener (BlockBreakEvent event) {
 		if(event.isCancelled()) return;
+		Player player = event.getPlayer();
 		
 		Block b = event.getBlock();
 		
 		for(Mine mine : PrisonMine.getStaticMines()) {
+			if(!mine.hasFlag(MineFlag.NoToolDamage)) continue;
 			if(!mine.getRegion().isLocationInRegion(b.getLocation())) continue;
+			if(!player.hasPermission("prison.mine.flags.notooldamage." + mine.getId()) && !player.hasPermission("prison.mine.flags.notooldamage")) { continue; }
 			
-			if(mine.hasFlag(MineFlag.NoToolDamage)) {
-				Player player = event.getPlayer();
-				if(!player.hasPermission("prison.mine.flags.notooldamage." + mine.getId()) && !player.hasPermission("prison.mine.flags.notooldamage")) { continue; }
-
-				Message.debug("NoToolDamage flag is in effect");
-				ItemStack tool = player.getInventory().getItemInHand();
-				player.getInventory().remove(tool);
-				for(Material mat : PrisonMine.getSettings().TOOLS) {
-					if(mat.equals(tool.getType())) {
-						short durability = tool.getDurability();
-						if(durability != 0) {
-							Message.debug("Old durability: " + durability);
-							tool.setDurability((short)(durability - 1));
-							Message.debug("new durability: " + tool.getDurability());
-						} else tool.setDurability((short) 0);
-						break;
-					}
-				}
-				player.setItemInHand(tool);
-				player.updateInventory();
-				return;
+			ItemStack tool = player.getInventory().getItemInHand();
+			player.getInventory().remove(tool);
+			for(Material mat : PrisonMine.getSettings().TOOLS) {
+				if(!mat.equals(tool.getType())) continue;
+				
+				short durability = tool.getDurability();
+				if(durability != 0) {
+					tool.setDurability((short)(durability - 1));
+				} else tool.setDurability((short) 0);
+				break;
 			}
+			player.setItemInHand(tool);
+			player.updateInventory();
+			return;
 		}
 	}
 	
 	@EventHandler
 	public void SuperToolsListener (BlockDamageEvent event) {
 		if(event.isCancelled()) return;
-		
+		Player player = event.getPlayer();
 		Block b = event.getBlock();
 		
 		for(Mine mine : PrisonMine.getStaticMines()) {
+			if(!mine.hasFlag(MineFlag.SuperTools)) continue;
 			if(!mine.getRegion().isLocationInRegion(b.getLocation())) continue;
+			if(!player.hasPermission("prison.mine.flags.supertools." + mine.getId()) && !player.hasPermission("prison.mine.flags.supertools")) { continue; }
 			
-			if(mine.hasFlag(MineFlag.SuperTools)) {
-				Player player = event.getPlayer();
-				if(!player.hasPermission("prison.mine.flags.supertools." + mine.getId()) && !player.hasPermission("prison.mine.flags.supertools")) { continue; }
-				Message.debug("SuperTools flag is in effect");
-				b.breakNaturally(player.getItemInHand());
-				return;
-			}
+			b.breakNaturally(player.getItemInHand());
+			return;
 		}
 	}
 
@@ -108,6 +98,7 @@ public class FlagListener implements Listener {
 	public void ToolReplaceListener (PlayerItemBreakEvent event) {
 		
 		for(Mine mine : PrisonMine.getStaticMines()) {
+			if(!mine.hasFlag(MineFlag.ToolReplace)) continue;
 			if(!mine.getRegion().isLocationInRegion(event.getPlayer().getLocation())) continue;
 			
 			Player player = event.getPlayer();
@@ -123,13 +114,12 @@ public class FlagListener implements Listener {
 	public void NoHungerChangeListener (FoodLevelChangeEvent event) {
 		if(event.isCancelled()) return;
 		Player player = (Player) event.getEntity();
-		Message.debug(player.getPlayerListName() + "'s hunger level changed to " + event.getFoodLevel());
 		
 		if(event.getFoodLevel() < player.getFoodLevel()) return;
 		
 		for(Mine mine : PrisonMine.getStaticMines()) {
+			if(!mine.hasFlag(MineFlag.NoHungerLoss)) continue;
 			if(!mine.getRegion().isLocationInRegion(player.getLocation())) continue;
-			
 			if(!player.hasPermission("prison.mine.flags.nohungerchange." + mine.getId()) && !player.hasPermission("prison.mine.flags.nohungerchange")) { continue; }
 			
 			if(player.getFoodLevel() < 20) event.setFoodLevel(player.getFoodLevel() + 3);
@@ -140,13 +130,11 @@ public class FlagListener implements Listener {
 	@EventHandler
 	public void PlayerEffectListener (PlayerMoveEvent event) {
 		if(event.isCancelled()) return;
+		Player player = event.getPlayer();
 		
 		for(Mine mine : PrisonMine.getStaticMines()) {
 			if(!mine.hasFlag(MineFlag.PlayerEffect)) continue;
-			
-			Player player = event.getPlayer();
 			if(!mine.getRegion().isLocationInRegion(player.getLocation())) continue;
-			
 			if(!player.hasPermission("prison.mine.flags.playereffect." + mine.getId()) && !player.hasPermission("prison.mine.flags.playereffect")) { continue; }
 			
 			List<BaseFlag> effects = mine.getFlagsByType(MineFlag.PlayerEffect);
@@ -168,9 +156,9 @@ public class FlagListener implements Listener {
 	public void MoneyRewardListener (BlockBreakEvent event) {
 		if(event.isCancelled()) return;
 		if(!EconomyHook.usingVault()) return;
+		Player player = event.getPlayer();
 		
 		for(Mine mine : PrisonMine.getStaticMines()) {
-			Player player = event.getPlayer();
 			if(!player.hasPermission("prison.mine.flags.moneyreward." + mine.getId()) && !player.hasPermission("prison.mine.flags.moneyreward")) { continue; }
 			
 			if(mine.hasFlag(MineFlag.MoneyReward)) {
