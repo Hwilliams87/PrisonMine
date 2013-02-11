@@ -11,6 +11,7 @@
     + `/mine variables` lists all available variables from an in-game command
     + `/mine setwarp` will set the TP point for the mine
     + `/mine reload` (former `/mine data load`) will reload the data from the file
+    + `/mine saveall` (former `/mine data save`) will forcebly save all data to file
 + Changes to commands:
     + Changed the `/mine flag` command to have flags save mine-specific options.
         + `/mine flag <flag>` is still the syntax for flags without an option
@@ -39,10 +40,10 @@
         + `/mine warning toggle` was deprecated. Remove warnings with `/mine warning remove <time>` instead
     + Information:
         + Replaced the messy flag list with a cleaner one
-    + Debug:
-        + `/mine data save` is now listed as a debugging command, available as `/mine savedata`
     + About:
+    	+ Tweaked the plugin to output the build number alongside with the version
         + Credited `theangrytomato` for his participation in the development of the plugin
+        + Credited 'speedrookies' for his participation in the development of the plugin
 + New flags:
     + MoneyReward : Pay the players a specified money for mining any blocks in the mine
     + MoneyRewardPlus : Same as above, but excludes the most common block
@@ -56,6 +57,8 @@
     + SurfaceOre : Added an option to have a custom surface ore
     + SuperTools : Axes and spades will not be affected by the flag
     + NoToolDamage: Axes and spades will not be affected by the flag
++ New features:
+	+ If players logged out inside the mine region, they will be teleported to the mine TP point on login. This can be disabled with `teleport-players-out-of-the-mine` set to `false`
 + Bug fixes:
     + Security bug fix: Missing permission when breaking a Display Sign
     + Fixed block chance percentages sometimes being invalid due to a rounding error
@@ -64,6 +67,8 @@
     + Fixed `<PLAYER>` not reflecting the player who last reset the mine properly
     + Fixed `/mine warning remove` command not working
     + Fixed variables not being parsed in some messages
+    + Fixed some flags being turned on by default
+    + Fixed colors not being parsed inside help doc headers
     + Removed rogue remains of non-existent commands
     + Fixed several mistakes and type-o's
     + General cleanup and optimization
