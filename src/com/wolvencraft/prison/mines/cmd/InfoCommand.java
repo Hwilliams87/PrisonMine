@@ -56,7 +56,7 @@ public class InfoCommand  implements BaseCommand {
 				if(!curMine.getName().equals(curMine.getId()) && !curMine.getName().equals("")) line = "[ \"" + ChatColor.GREEN + curMine.getName() + ChatColor.WHITE + "\" (" + ChatColor.RED + ChatColor.BOLD + curMine.getId() + ChatColor.WHITE + ") ]";
 				else line = "[ " + ChatColor.RED + ChatColor.BOLD + curMine.getId() + ChatColor.WHITE + " ]";
 				
-				int padding = (45 - DrawingTools.getTrueLength(line)) / 2;
+				int padding = (60 - DrawingTools.getTrueLength(line)) / 2;
 				
 				for(int i = 0; i < padding; i++) { line = DrawingTools.WhiteSpace + line + DrawingTools.WhiteSpace; }
 				
