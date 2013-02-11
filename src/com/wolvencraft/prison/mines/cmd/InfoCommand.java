@@ -58,7 +58,7 @@ public class InfoCommand  implements BaseCommand {
 				
 				int padding = (45 - DrawingTools.getTrueLength(line)) / 2;
 				
-				for(int i = 0; i < padding; i++) { line = DrawingTools.LineHorizontal + line + DrawingTools.LineHorizontal; }
+				for(int i = 0; i < padding; i++) { line = DrawingTools.WhiteSpace + line + DrawingTools.WhiteSpace; }
 				
 				text.add(DrawingTools.CornerTopLeft + line + DrawingTools.CornerTopRight);
 			} catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the title"); }
