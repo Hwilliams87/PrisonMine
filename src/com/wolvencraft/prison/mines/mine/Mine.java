@@ -666,7 +666,7 @@ public class Mine implements ConfigurationSerializable {
 				String[] tempBlockName = {block.getBlock().getItemTypeId() + "", block.getBlock().getData() + ""};
 				blockName = Util.parseMetadata(tempBlockName, true) + " " + blockName;
 			}
-			String blockWeight = Util.formatPercent(block.getChance()) + "%";
+			String blockWeight = Util.formatPercent(block.getChance());
 			
 			if(!blockWeight.equalsIgnoreCase("0.0%"))
 				finalList.add(ChatColor.WHITE + blockWeight + " " + ChatColor.GREEN + blockName + ChatColor.WHITE);
