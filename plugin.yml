@@ -2,7 +2,7 @@ name: PrisonMine
 main: com.wolvencraft.prison.mines.PrisonMine
 version: 1.3.83
 description: A must-have tool for all prison servers
-authors: [bitWolfy, jjkoletar]
+author: bitWolfy
 depend: [PrisonSuite]
 commands:
   mine:
@@ -19,6 +19,7 @@ permissions:
       prison.mine.reset.sign: true
       prison.mine.protection.*: true
       prison.mine.reset.broadcast: true
+      prison.mine.about: true
   prison.mine.admin:
     default: op
     children:

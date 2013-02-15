@@ -20,7 +20,7 @@ public enum CommandManager implements CommandHook {
 	HELP (HelpCommand.class, null, true, "help"),
 	INFO (InfoCommand.class, "prison.mine.info.time", true, "info"),
 	LIST (ListCommand.class, "prison.mine.info.list", true, "list"),
-	META (MetaCommand.class, null, true, "meta", "about"),
+	META (MetaCommand.class, "prison.mine.about", true, "meta", "about"),
 	PROTECTION (ProtectionCommand.class, "prison.mine.edit", true, "protection", "prot"),
 	RESET (ResetCommand.class, null, true, "reset"),
 	SAVE (SaveCommand.class, "prison.mine.edit", false, "save", "create", "new"),
