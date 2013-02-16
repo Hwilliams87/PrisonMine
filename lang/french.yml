@@ -1,0 +1,24 @@
+general:
+  title: "[PrisonMine]"
+  title-success: "&a[PrisonMine]"
+  title-error: "&4[PrisonMine]"
+error:
+  mine-name: "Mine &c<ID>&f ne pas exister!"
+  mine-not-selected: "Selecter un mine premier avec &e/mine edit <name>"
+  removing-air: "Cette valuer est calculé automatiquement"
+editing:
+  mine-selected-successfully: "Mine &e<ID>&f a été sélectionnée"
+  mine-deselected-successfully: "Mine &e<ID>&f n'est plus sélectionnée"
+reset:
+  manual-reset-successful: "Mine &6<NAME>&f été réinitialisé!"
+  automatic-reset-warning: "Mine &6<NAME>&f réinitialisera dans &6<NTIME>&f minute(s)."
+  automatic-reset-successful: "Mine &6<NAME>&f été réinitialisé!"
+  timed-reset-successful: "Mine &6<NAME>&f été réinitialisé! prochain réinitialisé dans &6<PTIME>&f minute(s)."
+  composition-reset-successful: "Mine &6<NAME>&f été réinitialisé!"
+  mine-cooldown: "Mine &6<NAME>&f peu être réinitialisé dans &6<COOLENDS>&f minute(s)."
+sign:
+  title: "&e<NAME>&0"
+  withdraw: "&b<PRICE> &fa été retiré de votre compte!"
+  funds: "Vous n'avez pas assez d'argent pour réinitialisé le mine!"
+misc:
+  mine-teleport: "Vous avez été téléporté à &6<NAME>&f"
