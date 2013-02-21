@@ -24,7 +24,7 @@ public class ResetCommand implements BaseCommand {
 			if(args[1].equalsIgnoreCase("all")) {
 				boolean success = true;
 				for(Mine mine : PrisonMine.getStaticMines()) {
-					if(!CommandManager.RESET.run(mine.getId())) success = false;
+					if(!run(mine.getId())) success = false;
 				}
 				return success;
 			} else if(args[1].equalsIgnoreCase("help")) { getHelp(); return true; }
@@ -80,7 +80,7 @@ public class ResetCommand implements BaseCommand {
 				Message.debug("+---------------------------------------------");
 				Message.debug("| Mine " + childMine.getId() + " is resetting. Reset report:");
 				Message.debug("| Reset cause: parent mine is resetting (" + curMine.getId() + ")");
-				CommandManager.RESET.run(childMine.getId());
+				run(childMine.getId());
 				Message.debug("| Reached the end of the report for " + childMine.getId());
 				Message.debug("+---------------------------------------------");
 			}
@@ -93,6 +93,11 @@ public class ResetCommand implements BaseCommand {
 		else curMine.setLastResetBy(((Player) CommandManager.getSender()).getPlayerListName());
 		
 		return true;
+	}
+	
+	public boolean run(String arg) {
+		String[] args = {"", arg};
+		return run(args);
 	}
 	
 	@Override

@@ -95,12 +95,13 @@ public class DisplaySignListener implements Listener {
 					if(block.getState() instanceof Sign) {
 						Message.debug("Checking to see if the sign is valid");
 						Sign s = (Sign) block.getState();
-						String data = s.getLine(0);
-						if(data.startsWith("<M:") && data.endsWith(">")) {
-							Message.debug("Registering a new DisplaySign");
-							PrisonMine.addSign(new DisplaySign(s));
+						for(String line : s.getLines()) {
+							if(line.startsWith("<M:") && line.endsWith(">")) {
+								Message.debug("Registering a new DisplaySign");
+								PrisonMine.addSign(new DisplaySign(s));
+								return;
+							}
 						}
-						return;
 					}
 				} else {
 					sign.initChildren();

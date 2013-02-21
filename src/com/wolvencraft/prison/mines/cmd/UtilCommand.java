@@ -1,6 +1,7 @@
 package com.wolvencraft.prison.mines.cmd;
 
 import com.wolvencraft.prison.mines.PrisonMine;
+import com.wolvencraft.prison.mines.exceptions.DisplaySignNotFoundException;
 import com.wolvencraft.prison.mines.settings.MineData;
 import com.wolvencraft.prison.mines.settings.SignData;
 import com.wolvencraft.prison.mines.util.Message;
@@ -8,7 +9,7 @@ import com.wolvencraft.prison.mines.util.Message;
 public class UtilCommand implements BaseCommand {
 	
 	@Override
-	public boolean run(String[] args) {
+	public boolean run(String[] args) throws DisplaySignNotFoundException {
 		
 		if(args[0].equalsIgnoreCase("reload")) {
 			PrisonMine.getInstance().reloadConfig();

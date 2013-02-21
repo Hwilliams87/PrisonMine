@@ -8,11 +8,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolvencraft.prison.hooks.CommandHook;
 import com.wolvencraft.prison.mines.cmd.*;
 import com.wolvencraft.prison.mines.util.Message;
 
-public enum CommandManager implements CommandHook {
+public enum CommandManager {
 	BLACKLIST (BlacklistCommand.class, "prison.mine.edit", true, "blacklist", "bl", "whitelist", "wl"),
 	DEBUG(DebugCommand.class, "prison.mine.debug", true, "import", "debug", "setregion", "tp", "unload"),
 	EDIT (EditCommand.class, "prison.mine.edit", true, "edit", "add", "+", "remove", "-", "delete", "del", "name", "link", "setparent", "cooldown", "setwarp"),
@@ -67,7 +66,24 @@ public enum CommandManager implements CommandHook {
 		}
 		if(!allowConsole && !(sender instanceof Player)) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_SENDERISNOTPLAYER); return false; }
 		if(permission != null && (sender instanceof Player) && !sender.hasPermission(permission)) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ACCESS); return false; }
-		return clazz.run(args);
+		try {
+			return clazz.run(args);
+		} catch (Exception e) {
+			Message.sendFormattedError("An internal error occurred while running the command", false);
+			Message.log(Level.SEVERE, "=== An error occurred while executing command ===");
+			Message.log(Level.SEVERE, "Exception = " + e.toString());
+			Message.log(Level.SEVERE, "CommandSender = " + sender.getName());
+			Message.log(Level.SEVERE, "isConsole = " + (sender instanceof ConsoleCommandSender));
+			String fullArgs = ""; for(String arg : args) fullArgs += arg + " ";
+			Message.log(Level.SEVERE, "Command: /mine " + fullArgs);
+			Message.log(Level.SEVERE, "Permission = " + permission);
+			Message.log(Level.SEVERE, "hasPermission = " + sender.hasPermission(permission));
+			Message.log(Level.SEVERE, "");
+			Message.log(Level.SEVERE, "=== === === === === Error log === === === === ===");
+			e.printStackTrace();
+			Message.log(Level.SEVERE, "=== === === ===  End of error log  === === === ===");
+			return false;
+		}
 	}
 
 	public boolean run(String arg) {

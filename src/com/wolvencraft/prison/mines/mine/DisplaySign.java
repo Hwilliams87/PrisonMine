@@ -15,6 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,6 +25,7 @@ import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.util.Vector;
 
 import com.wolvencraft.prison.mines.PrisonMine;
+import com.wolvencraft.prison.mines.exceptions.DisplaySignNotFoundException;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 
@@ -34,12 +36,14 @@ import com.wolvencraft.prison.mines.util.Util;
  */
 @SerializableAs("DisplaySign")
 public class DisplaySign implements ConfigurationSerializable  {
-	private String id;
-	private Location loc;
-	private String parent;
+	private String signId;
+	private String mineId;
+	private Sign sign;
 	private boolean reset;
 	private boolean paid;
-	private List<String> lines;
+	
+	private List<String> originalText;
+	
 	private double price;
 	
 	/**
@@ -47,40 +51,14 @@ public class DisplaySign implements ConfigurationSerializable  {
 	 * @param sign Sign object
 	 */
 	public DisplaySign(Sign sign) {
-		id = generateId();
-		loc = sign.getLocation();
-		lines = new ArrayList<String>();
-		for(int i = 0; i < sign.getLines().length; i++) {
-			String line = sign.getLine(i);
-			lines.add(line);
-		}
-		String line = lines.get(0).substring(3);
-		line = line.substring(0, line.length() - 1);
-		Message.debug(line);
-		String[] data = line.split(":");
-		String temp = "";
-		for(String part : data) temp += part + ":";
-		Message.debug(temp);
+		this.signId = generateId();
+		this.sign = sign;
 		
-		if(data.length == 1) {
-			parent = data[0];
-			reset = false;
-			paid = false;
-			price = -1;
-		} else if(data.length == 2) {
-			parent = data[0];
-			reset = false;
-			paid = false;
-			price = -1;
-			if(data[1].equalsIgnoreCase("R")) reset = true;
-			else {
-				reset = true;
-				paid = true;
-				price = Double.parseDouble(data[1]);
-			}
-		}
+		originalText = new ArrayList<String>();
+		for(String line : sign.getLines()) { originalText.add(line); }
 		
-		Message.debug("Created a new sign: " + parent + " | " + reset);
+        parseLines(originalText);
+		
 		saveFile();
 	}
 	
@@ -90,18 +68,16 @@ public class DisplaySign implements ConfigurationSerializable  {
 	 * @param parentSignClass DisplaySign parent
 	 */
 	public DisplaySign(Sign sign, DisplaySign parentSignClass) {
-		id = generateId();
-		loc = sign.getLocation();
-		lines = new ArrayList<String>();
-		for(int i = 0; i < sign.getLines().length; i++) {
-			String line = sign.getLine(i);
-			lines.add(line);
-		}
-		parent = parentSignClass.getParent();
+		signId = generateId();
+		this.sign = sign;
+		originalText = new ArrayList<String>();
+		for(String line : sign.getLines()) { originalText.add(line); }
+		
+		mineId = parentSignClass.getParent();
 		paid = false;
 		reset = false;
 		price = -1;
-		Message.debug("Created a new sign: " + parent + " | " + reset);
+		
 		saveFile();
 	}
 	
@@ -110,16 +86,18 @@ public class DisplaySign implements ConfigurationSerializable  {
      * @param map Map to deserialize from
      */
 	@SuppressWarnings("unchecked")
-	public DisplaySign(Map<String, Object> me) {
-		id = (String) me.get("id");
+	public DisplaySign(Map<String, Object> me) throws DisplaySignNotFoundException {
+		signId = (String) me.get("id");
+        mineId = (String) me.get("parent");
+        
         World world = Bukkit.getWorld((String) me.get("world"));
-        loc = ((Vector) me.get("loc")).toLocation(world);
-        lines = (List<String>) me.get("lines");
-        parent = (String) me.get("parent");
-        reset = ((Boolean) me.get("reset")).booleanValue();
-        paid = ((Boolean) me.get("paid")).booleanValue();
-        price = ((Double) me.get("price")).doubleValue();
-        Message.debug("Loaded a sign: " + parent + " | " + reset);
+        Block signBlock = world.getBlockAt(((Vector) me.get("loc")).toLocation(world));
+        if(!(signBlock.getState() instanceof Sign)) throw new DisplaySignNotFoundException("No sign found at the stored location");
+        sign = (Sign) signBlock.getState();
+        
+        originalText = (List<String>) me.get("lines");
+        
+        parseLines(originalText);
 	}
 	
 	/**
@@ -128,34 +106,82 @@ public class DisplaySign implements ConfigurationSerializable  {
 	 */
     public Map<String, Object> serialize() {
         Map<String, Object> me = new HashMap<String, Object>();
-        me.put("id", id);
-        me.put("loc", loc.toVector());
-        me.put("world", loc.getWorld().getName());
-        me.put("parent", parent);
+        me.put("id", signId);
+        me.put("loc", sign.getLocation().toVector());
+        me.put("world", sign.getLocation().getWorld().getName());
+        me.put("parent", mineId);
         me.put("reset", reset);
         me.put("paid", paid);
-        me.put("lines", lines);
+        me.put("lines", originalText);
         me.put("price", price);
         return me;
     }
+	
+    private void parseLines(List<String> lines) {
+    	for(String line : lines) {
+    		if(line.startsWith("<M") && line.endsWith(">")) {
+    			line = line.substring(3, line.length() - 1);
+    			String[] data = line.split(":");
+    			
+    			if(data.length == 1) {
+    				mineId = data[0];
+    				reset = false;
+    				paid = false;
+    				price = -1;
+    			} else if(data.length == 2) {
+    				mineId = data[0];
+    				reset = false;
+    				paid = false;
+    				price = -1;
+    				if(data[1].equalsIgnoreCase("R")) reset = true;
+    				else {
+    					reset = true;
+    					paid = true;
+    					price = Double.parseDouble(data[1]);
+    				}
+    			} else {
+    				mineId = data[0];
+    				reset = false;
+    				paid = false;
+    				price = -1;
+    			}
+    			return;
+    		}
+    	}
+    }
 
-    public String getId() 			{ return id; }
-    public Location getLocation() 	{ return loc; }
-    public String getParent()	 	{ return parent; }
+    public String getId() 			{ return signId; }
+    public Location getLocation() 	{ return sign.getLocation(); }
+    @Deprecated
+    public Block getBaseBlock()		{
+    	org.bukkit.material.Sign signMat = (org.bukkit.material.Sign) sign.getBlock().getState();
+    	return sign.getBlock().getRelative(signMat.getAttachedFace());
+    }
+    
+    public Block getAttachedBlock() {
+    	Block signBlock = sign.getBlock();
+    	BlockFace[] directions = {BlockFace.WEST, BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.UP, BlockFace.DOWN};
+    	for(BlockFace dir : directions) {
+        	if(signBlock.getRelative(dir).getType().equals(Material.IRON_BLOCK)) return signBlock.getRelative(dir);
+    	}
+    	return null;
+    }
+    
+    public String getParent()	 	{ return mineId; }
     public boolean getReset() 		{ return reset; }
     public boolean getPaid()		{ return paid; }
-    public List<String> getLines() 	{ return lines; }
     public double getPrice()		{ return price; }
+    public List<String> getLines() 	{ return originalText; }
     
     /**
      * Updates the DisplaySign's lines with the appropriate variables
      * @return <b>true</b> if the update was successful, <b>false</b> otherwise
      */
     public boolean update() {
-		BlockState b = loc.getBlock().getState();
+		BlockState b = sign.getBlock().getState();
 		if(b instanceof Sign) {
 			Sign signBlock = (Sign) b;
-			for(int i = 0; i < lines.size(); i++) { signBlock.setLine(i, Util.parseVars(lines.get(i), Mine.get(parent))); }
+			for(int i = 0; i < originalText.size(); i++) { signBlock.setLine(i, Util.parseVars(originalText.get(i), Mine.get(mineId))); }
 			signBlock.update();
 			return true;
 		}
@@ -170,6 +196,7 @@ public class DisplaySign implements ConfigurationSerializable  {
      * The initialization is executed via <b>initChild()</b>
      */
     public void initChildren() {
+    	Location loc = sign.getLocation();
     	Location locNearby = loc.clone();
     	locNearby.setY(loc.getBlockY() + 1);
     	initChild(locNearby, this);
@@ -214,13 +241,13 @@ public class DisplaySign implements ConfigurationSerializable  {
 	 * @return <b>true</b> if the save was successful, <b>false</b> if an error occurred
 	 */
 	public boolean saveFile() {
-		File signFile = new File(new File(PrisonMine.getInstance().getDataFolder(), "signs"), id + ".psign.yml");
+		File signFile = new File(new File(PrisonMine.getInstance().getDataFolder(), "signs"), signId + ".psign.yml");
         FileConfiguration signConf =  YamlConfiguration.loadConfiguration(signFile);
         signConf.set("displaysign", this);
         try {
             signConf.save(signFile);
         } catch (IOException e) {
-        	Message.log(Level.SEVERE, "Unable to serialize sign '" + id + "'!");
+        	Message.log(Level.SEVERE, "Unable to serialize sign '" + signId + "'!");
             e.printStackTrace();
             return false;
         }
@@ -241,7 +268,7 @@ public class DisplaySign implements ConfigurationSerializable  {
         });
 		
 		for(File signFile : signFiles) {
-			if(signFile.getName().equals(id+ ".psign.yml")) {
+			if(signFile.getName().equals(signId+ ".psign.yml")) {
 				PrisonMine.removeSign(this);
 				return signFile.delete();
 			}

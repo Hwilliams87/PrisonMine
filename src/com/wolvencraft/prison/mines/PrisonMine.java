@@ -45,15 +45,11 @@ import com.wolvencraft.prison.mines.mine.*;
 import com.wolvencraft.prison.mines.routines.AutomaticResetRoutine;
 import com.wolvencraft.prison.mines.settings.*;
 import com.wolvencraft.prison.mines.triggers.*;
-import com.wolvencraft.prison.mines.upgrade.MRLMine;
-import com.wolvencraft.prison.mines.upgrade.MRMine;
+import com.wolvencraft.prison.mines.upgrade.*;
 import com.wolvencraft.prison.mines.util.DisplaySignTask;
 import com.wolvencraft.prison.mines.util.DrawingTools;
 import com.wolvencraft.prison.mines.util.Message;
-import com.wolvencraft.prison.mines.util.data.Blacklist;
-import com.wolvencraft.prison.mines.util.data.BlockSerializable;
-import com.wolvencraft.prison.mines.util.data.MineBlock;
-import com.wolvencraft.prison.mines.util.data.SimpleLoc;
+import com.wolvencraft.prison.mines.util.data.*;
 import com.wolvencraft.prison.region.PrisonRegion;
 
 public class PrisonMine extends PrisonPlugin {
@@ -107,8 +103,19 @@ public class PrisonMine extends PrisonPlugin {
 		ConfigurationSerialization.registerClass(MRLMine.class, "MRLMine");
 		Message.debug("+ Registered serializable classes");
 		
-		mines = MineData.loadAll();
-		signs = SignData.loadAll();
+		try { mines = MineData.loadAll(); }
+		catch (Exception e) {
+			Message.log(Level.SEVERE, "=== An error occurred while loading mine files ===");
+			e.printStackTrace();
+			Message.log(Level.SEVERE, "=== === === ===  End of error log  === === === ===");
+		}
+		
+		try { signs = SignData.loadAll(); }
+		catch (Exception e) {
+			Message.log(Level.SEVERE, "=== An error occurred while loading sign files ===");
+			e.printStackTrace();
+			Message.log(Level.SEVERE, "=== === === ===  End of error log  === === === ===");
+		}
 		
 		curMines = new HashMap<CommandSender, Mine>();
 		Message.debug("+ Loaded data from file");
@@ -118,6 +125,7 @@ public class PrisonMine extends PrisonPlugin {
 		new DisplaySignListener(this);
 		new PlayerListener(this);
 		new FlagListener(this);
+		new RedstoneListener(this);
 		
 		Message.debug("+ Sending sign task to PrisonCore");
 		PrisonSuite.addTask(signTask = new DisplaySignTask());
