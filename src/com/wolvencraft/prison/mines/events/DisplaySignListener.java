@@ -20,6 +20,7 @@ import com.wolvencraft.prison.mines.mine.DisplaySign;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.routines.ButtonResetRoutine;
 import com.wolvencraft.prison.mines.util.Message;
+import com.wolvencraft.prison.mines.util.constants.DisplaySignType;
 
 public class DisplaySignListener implements Listener {
 	
@@ -43,7 +44,7 @@ public class DisplaySignListener implements Listener {
 		        
 		        for(Block signBlock : signBlocks) {
 					DisplaySign sign = DisplaySign.get(signBlock.getLocation());
-					if(sign != null && sign.getReset()) {
+					if(sign != null && sign.getType().equals(DisplaySignType.Reset)) {
 						Mine curMine = Mine.get(sign.getParent());
 						if(curMine == null) return;
 						Player player = event.getPlayer();
@@ -58,7 +59,7 @@ public class DisplaySignListener implements Listener {
 							return;
 						}
 						
-						if(EconomyHook.usingVault() && sign.getPaid() && sign.getPrice() != -1) {
+						if(EconomyHook.usingVault() && sign.getType().equals(DisplaySignType.Paid) && sign.getPrice() != -1) {
 							Message.debug("Withdrawing " + sign.getPrice() + " from " + player.getName());
 							if(!EconomyHook.withdraw(player, sign.getPrice())) {
 								Message.sendFormattedError(player, PrisonMine.getLanguage().SIGN_FUNDS.replaceAll("<PRICE>", sign.getPrice() + ""));

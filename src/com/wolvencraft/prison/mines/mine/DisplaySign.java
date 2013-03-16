@@ -28,6 +28,7 @@ import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.exceptions.DisplaySignNotFoundException;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
+import com.wolvencraft.prison.mines.util.constants.DisplaySignType;
 
 /**
  * A virtual representation of the dynamically-updated signs that are used to display information about mines
@@ -39,8 +40,7 @@ public class DisplaySign implements ConfigurationSerializable  {
 	private String signId;
 	private String mineId;
 	private Sign sign;
-	private boolean reset;
-	private boolean paid;
+	private DisplaySignType type;
 	
 	private List<String> originalText;
 	
@@ -74,8 +74,7 @@ public class DisplaySign implements ConfigurationSerializable  {
 		for(String line : sign.getLines()) { originalText.add(line); }
 		
 		mineId = parentSignClass.getParent();
-		paid = false;
-		reset = false;
+		type = parentSignClass.getType();
 		price = -1;
 		
 		saveFile();
@@ -110,8 +109,7 @@ public class DisplaySign implements ConfigurationSerializable  {
         me.put("loc", sign.getLocation().toVector());
         me.put("world", sign.getLocation().getWorld().getName());
         me.put("parent", mineId);
-        me.put("reset", reset);
-        me.put("paid", paid);
+        me.put("type", type.getAlias());
         me.put("lines", originalText);
         me.put("price", price);
         return me;
@@ -125,24 +123,19 @@ public class DisplaySign implements ConfigurationSerializable  {
     			
     			if(data.length == 1) {
     				mineId = data[0];
-    				reset = false;
-    				paid = false;
-    				price = -1;
+    				type = DisplaySignType.Display;
     			} else if(data.length == 2) {
     				mineId = data[0];
-    				reset = false;
-    				paid = false;
     				price = -1;
-    				if(data[1].equalsIgnoreCase("R")) reset = true;
+    				if(data[1].equalsIgnoreCase("R")) type = DisplaySignType.Reset;
+    				else if(data[1].equalsIgnoreCase("O")) type = DisplaySignType.Output;
     				else {
-    					reset = true;
-    					paid = true;
+    					type = DisplaySignType.Paid;
     					price = Double.parseDouble(data[1]);
     				}
     			} else {
     				mineId = data[0];
-    				reset = false;
-    				paid = false;
+    				type = DisplaySignType.Display;
     				price = -1;
     			}
     			return;
@@ -152,11 +145,6 @@ public class DisplaySign implements ConfigurationSerializable  {
 
     public String getId() 			{ return signId; }
     public Location getLocation() 	{ return sign.getLocation(); }
-    @Deprecated
-    public Block getBaseBlock()		{
-    	org.bukkit.material.Sign signMat = (org.bukkit.material.Sign) sign.getBlock().getState();
-    	return sign.getBlock().getRelative(signMat.getAttachedFace());
-    }
     
     public Block getAttachedBlock() {
     	Block signBlock = sign.getBlock();
@@ -167,11 +155,19 @@ public class DisplaySign implements ConfigurationSerializable  {
     	return null;
     }
     
-    public String getParent()	 	{ return mineId; }
-    public boolean getReset() 		{ return reset; }
-    public boolean getPaid()		{ return paid; }
-    public double getPrice()		{ return price; }
-    public List<String> getLines() 	{ return originalText; }
+    public BlockFace getAttachedBlockFace() {
+    	Block signBlock = sign.getBlock();
+    	BlockFace[] directions = {BlockFace.WEST, BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.UP, BlockFace.DOWN};
+    	for(BlockFace dir : directions) {
+        	if(signBlock.getRelative(dir).getType().equals(Material.IRON_BLOCK)) return dir;
+    	}
+    	return null;
+    }
+    
+    public String getParent()	 		{ return mineId; }
+    public DisplaySignType getType() 	{ return type; }
+    public double getPrice()			{ return price; }
+    public List<String> getLines() 		{ return originalText; }
     
     /**
      * Updates the DisplaySign's lines with the appropriate variables

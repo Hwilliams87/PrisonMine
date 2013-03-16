@@ -13,6 +13,7 @@ import com.wolvencraft.prison.mines.mine.DisplaySign;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.routines.RedstoneResetRoutine;
 import com.wolvencraft.prison.mines.util.Message;
+import com.wolvencraft.prison.mines.util.constants.DisplaySignType;
 
 public class RedstoneListener implements Listener {
     
@@ -38,7 +39,7 @@ public class RedstoneListener implements Listener {
 			if (adjBlock.getType().equals(Material.IRON_BLOCK)) {
 				if (adjBlock.isBlockPowered()) break;
 				for(DisplaySign sign : PrisonMine.getStaticSigns()) {
-					if(!sign.getReset() || sign.getAttachedBlock() == null || !sign.getAttachedBlock().getLocation().equals(adjBlock.getLocation())) continue;
+					if(!sign.getType().equals(DisplaySignType.Reset) || sign.getAttachedBlock() == null || !sign.getAttachedBlock().getLocation().equals(adjBlock.getLocation())) continue;
 					Mine curMine = Mine.get(sign.getParent());
 					if(curMine == null) return;
 					RedstoneResetRoutine.run(curMine);

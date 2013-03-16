@@ -5,14 +5,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.SerializableAs;
 
 import com.wolvencraft.prison.PrisonSuite;
 import com.wolvencraft.prison.mines.PrisonMine;
+import com.wolvencraft.prison.mines.mine.DisplaySign;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.routines.AutomaticResetRoutine;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
+import com.wolvencraft.prison.mines.util.constants.DisplaySignType;
 import com.wolvencraft.prison.mines.util.constants.MineFlag;
 import com.wolvencraft.prison.mines.util.constants.ResetTrigger;
 
@@ -94,8 +98,18 @@ public class TimeTrigger implements BaseTrigger {
 		}
 		
 		List<Integer> warnTimes = mineObj.getLocalWarningTimes();
-		if(!mineObj.hasFlag(MineFlag.Silent) && mineObj.hasWarnings() && warnTimes.indexOf((int)(next / 20)) != -1)
-			Message.broadcast(Util.parseVars(PrisonMine.getLanguage().RESET_WARNING, mineObj));
+		if(mineObj.hasWarnings() && warnTimes.indexOf((int)(next / 20)) != -1) {
+			if(!mineObj.hasFlag(MineFlag.Silent))
+				Message.broadcast(Util.parseVars(PrisonMine.getLanguage().RESET_WARNING, mineObj));
+			
+			for(DisplaySign sign : PrisonMine.getStaticSigns()) {
+				if(!sign.getParent().equals(mine) || !sign.getType().equals(DisplaySignType.Output) || sign.getAttachedBlock() == null) continue;
+				
+				Block torch = sign.getAttachedBlock().getRelative(sign.getAttachedBlockFace());
+				if(torch == null || !torch.getType().equals(Material.REDSTONE_TORCH_ON)) continue;
+				torch.setType(Material.REDSTONE_TORCH_ON);
+			}
+		}
 		
 		mineObj.setLastResetBy("TIMER");
 	}
