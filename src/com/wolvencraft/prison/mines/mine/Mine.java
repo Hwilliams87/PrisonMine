@@ -10,6 +10,7 @@ import com.wolvencraft.prison.mines.triggers.CompositionTrigger;
 import com.wolvencraft.prison.mines.triggers.TimeTrigger;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
+import com.wolvencraft.prison.mines.util.constants.DisplaySignType;
 import com.wolvencraft.prison.mines.util.constants.MineFlag;
 import com.wolvencraft.prison.mines.util.constants.Protection;
 import com.wolvencraft.prison.mines.util.constants.ResetTrigger;
@@ -23,6 +24,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -269,6 +271,14 @@ public class Mine implements ConfigurationSerializable {
     			}
     		}
     	}
+    	
+    	for(DisplaySign sign : PrisonMine.getStaticSigns()) {
+			if(!sign.getParent().equals(id) || !sign.getType().equals(DisplaySignType.Output) || sign.getAttachedBlock() == null) continue;
+			
+			Block torch = sign.getAttachedBlock().getRelative(sign.getAttachedBlockFace());
+			if(torch == null || !torch.getType().equals(Material.REDSTONE_TORCH_OFF)) continue;
+			torch.setType(Material.REDSTONE_TORCH_ON);
+		}
     	
     	if(hasFlag(MineFlag.SurfaceOre)) return CustomTerrainRoutine.run(this);
     	else return RandomTerrainRoutine.run(this);

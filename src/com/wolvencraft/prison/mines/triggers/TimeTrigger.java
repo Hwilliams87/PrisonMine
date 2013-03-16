@@ -107,7 +107,7 @@ public class TimeTrigger implements BaseTrigger {
 				
 				Block torch = sign.getAttachedBlock().getRelative(sign.getAttachedBlockFace());
 				if(torch == null || !torch.getType().equals(Material.REDSTONE_TORCH_ON)) continue;
-				torch.setType(Material.REDSTONE_TORCH_ON);
+				torch.setType(Material.REDSTONE_TORCH_OFF);
 			}
 		}
 		
