@@ -117,7 +117,7 @@ public class PrisonMine extends PrisonPlugin {
 		new DisplaySignListener(this);
 		new PlayerListener(this);
 		new FlagListener(this);
-//		new RedstoneListener(this);
+		new RedstoneListener(this);
 		
 		Message.debug("+ Sending sign task to PrisonCore");
 		PrisonSuite.addTask(signTask = new DisplaySignTask());
