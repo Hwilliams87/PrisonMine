@@ -77,6 +77,7 @@ public enum CommandManager {
 			String fullArgs = ""; for(String arg : args) fullArgs += arg + " ";
 			Message.log(Level.SEVERE, "Command: /mine " + fullArgs);
 			Message.log(Level.SEVERE, "Permission = " + permission);
+			if(permission != null)
 			Message.log(Level.SEVERE, "hasPermission = " + sender.hasPermission(permission));
 			Message.log(Level.SEVERE, "");
 			Message.log(Level.SEVERE, "=== === === === === Error log === === === === ===");
