@@ -21,8 +21,8 @@ public class MineBlock implements ConfigurationSerializable {
 
     public MineBlock(Map<String, Object> me) {
         chance = (Double) me.get("chance");
-		DecimalFormat dFormat = new DecimalFormat("#.########");
-		chance = Double.valueOf(dFormat.format(chance));
+        DecimalFormat dFormat = new DecimalFormat("#.########");
+        chance = Double.valueOf(dFormat.format(chance));
         block = new MaterialData((Integer) me.get("blockId"), ((Integer) me.get("blockData")).byteValue());
     }
 
@@ -34,8 +34,8 @@ public class MineBlock implements ConfigurationSerializable {
         return me;
     }
     
-    public MaterialData getBlock() 	{ return block; }
-    public double getChance() 		{ return chance; }
+    public MaterialData getBlock()     { return block; }
+    public double getChance()         { return chance; }
     
     public void setChance(double chance) { this.chance = chance; }
 

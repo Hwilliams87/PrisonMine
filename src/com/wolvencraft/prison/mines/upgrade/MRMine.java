@@ -129,17 +129,17 @@ public class MRMine implements ConfigurationSerializable, Listener {
     }
      
     public Mine importMine() {
-    	PrisonRegion region = new PrisonRegion(one, two);
-    	
-    	Mine mine = new Mine(name, displayName, parent, region, world, tpPoint, blocks, blacklist, cooldownEnabled, cooldownSeconds, silent, warned, warningTimes, enabledProtection, breakBlacklist, placeBlacklist);
-    	
-    	if(automatic) {
-        	mine.setAutomaticReset(true);
-        	mine.setResetPeriod(automaticSeconds);
-    	}
+        PrisonRegion region = new PrisonRegion(one, two);
         
-    	mine.saveFile();
-    	Message.log("Imported mine from MineReset: " + name);
-    	return mine;
+        Mine mine = new Mine(name, displayName, parent, region, world, tpPoint, blocks, blacklist, cooldownEnabled, cooldownSeconds, silent, warned, warningTimes, enabledProtection, breakBlacklist, placeBlacklist);
+        
+        if(automatic) {
+            mine.setAutomaticReset(true);
+            mine.setResetPeriod(automaticSeconds);
+        }
+        
+        mine.saveFile();
+        Message.log("Imported mine from MineReset: " + name);
+        return mine;
     }
 }

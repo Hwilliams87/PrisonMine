@@ -89,37 +89,37 @@ public class Mine implements ConfigurationSerializable {
      * @param tpPoint Mine warp location4
      */
     public Mine(String id, PrisonRegion region, World world, Location tpPoint) {
-    	this.id = id;
-    	name = "";
-    	
-    	parent = null;
-    	
-    	this.region = region;
-    	this.world = world;
-    	this.tpPoint = tpPoint;
-    	
-    	blocks = new ArrayList<MineBlock>();
-    	blocks.add(new MineBlock(new MaterialData(Material.AIR), 1.0));
-    	blockReplaceBlacklist = new Blacklist();
-    	
-    	resetTriggers = new ArrayList<BaseTrigger>();
-    	
-    	cooldownEnabled = false;
-    	cooldownPeriod = 0;
-    	cooldownEndsIn = 0;
-    	
-    	warningTimes = new ArrayList<Integer>();
-    	
-    	flags = new ArrayList<BaseFlag>();
-    	
-    	enabledProtection = new ArrayList<Protection>();
-    	protectionRegion = region.clone();
-    	breakBlacklist = new Blacklist();
-    	placeBlacklist = new Blacklist();
-    	
-    	totalBlocks = blocksLeft = region.getBlockCount();
-    	
-    	lastResetBy = "None";
+        this.id = id;
+        name = "";
+        
+        parent = null;
+        
+        this.region = region;
+        this.world = world;
+        this.tpPoint = tpPoint;
+        
+        blocks = new ArrayList<MineBlock>();
+        blocks.add(new MineBlock(new MaterialData(Material.AIR), 1.0));
+        blockReplaceBlacklist = new Blacklist();
+        
+        resetTriggers = new ArrayList<BaseTrigger>();
+        
+        cooldownEnabled = false;
+        cooldownPeriod = 0;
+        cooldownEndsIn = 0;
+        
+        warningTimes = new ArrayList<Integer>();
+        
+        flags = new ArrayList<BaseFlag>();
+        
+        enabledProtection = new ArrayList<Protection>();
+        protectionRegion = region.clone();
+        breakBlacklist = new Blacklist();
+        placeBlacklist = new Blacklist();
+        
+        totalBlocks = blocksLeft = region.getBlockCount();
+        
+        lastResetBy = "None";
     }
     
     /**
@@ -173,54 +173,54 @@ public class Mine implements ConfigurationSerializable {
         this.totalBlocks = region.getBlockCount();
         this.blocksLeft = region.getBlockCount();
 
-    	this.lastResetBy = "None";
+        this.lastResetBy = "None";
     }
     
     /**
      * Constructor for deserialization from a map
      * @param map Map to deserialize from
      */
-	@SuppressWarnings("unchecked")
-	public Mine(Map<String, Object> map) {
-    	id = (String) map.get("id");
-    	name = (String) map.get("name");
-    	
-    	parent = (String) map.get("parent");
-    	
-    	region = (PrisonRegion) map.get("region");
-    	world = Bukkit.getWorld((String) map.get("world"));
-    	tpPoint = ((SimpleLoc) map.get("tpPoint")).toLocation();
-    	
-    	blocks = (List<MineBlock>) map.get("blocks");
-    	blockReplaceBlacklist = (Blacklist) map.get("blockReplaceBlacklist");
-    	
-    	resetTriggers = (List<BaseTrigger>) map.get("resetTriggers");
+    @SuppressWarnings("unchecked")
+    public Mine(Map<String, Object> map) {
+        id = (String) map.get("id");
+        name = (String) map.get("name");
+        
+        parent = (String) map.get("parent");
+        
+        region = (PrisonRegion) map.get("region");
+        world = Bukkit.getWorld((String) map.get("world"));
+        tpPoint = ((SimpleLoc) map.get("tpPoint")).toLocation();
+        
+        blocks = (List<MineBlock>) map.get("blocks");
+        blockReplaceBlacklist = (Blacklist) map.get("blockReplaceBlacklist");
+        
+        resetTriggers = (List<BaseTrigger>) map.get("resetTriggers");
 
-    	cooldownEnabled = ((Boolean) map.get("cooldownEnabled")).booleanValue();
-    	cooldownPeriod = ((Integer) map.get("cooldownPeriod")).intValue();
-    	cooldownEndsIn = 0;
-    	
-    	warningTimes = (List<Integer>) map.get("warningTimes");
-    	
-    	flags = MineFlag.toMineFlagList((List<String>) map.get("flags"));
-    	
-    	if(map.containsValue("silent") && !hasFlag(MineFlag.Silent) && ((Boolean) map.get("silent")).booleanValue()) flags.add(MineFlag.Silent.dispatch());
-    	
-    	enabledProtection = Protection.toProtectionList((List<String>) map.get("enabledProtection"));
-    	protectionRegion = (PrisonRegion) map.get("protectionRegion");
-    	breakBlacklist = (Blacklist) map.get("breakBlacklist");
-    	placeBlacklist = (Blacklist) map.get("placeBlacklist");
-    	
-    	totalBlocks = region.getBlockCount();
-    	blocksLeft = ((Integer) map.get("blocksLeft")).intValue();
-    	
-    	lastResetBy = "None";
+        cooldownEnabled = ((Boolean) map.get("cooldownEnabled")).booleanValue();
+        cooldownPeriod = ((Integer) map.get("cooldownPeriod")).intValue();
+        cooldownEndsIn = 0;
+        
+        warningTimes = (List<Integer>) map.get("warningTimes");
+        
+        flags = MineFlag.toMineFlagList((List<String>) map.get("flags"));
+        
+        if(map.containsValue("silent") && !hasFlag(MineFlag.Silent) && ((Boolean) map.get("silent")).booleanValue()) flags.add(MineFlag.Silent.dispatch());
+        
+        enabledProtection = Protection.toProtectionList((List<String>) map.get("enabledProtection"));
+        protectionRegion = (PrisonRegion) map.get("protectionRegion");
+        breakBlacklist = (Blacklist) map.get("breakBlacklist");
+        placeBlacklist = (Blacklist) map.get("placeBlacklist");
+        
+        totalBlocks = region.getBlockCount();
+        blocksLeft = ((Integer) map.get("blocksLeft")).intValue();
+        
+        lastResetBy = "None";
     }
-	
-	/**
-	 * Serialization method for mine data storage
-	 * @return Serialization map
-	 */
+    
+    /**
+     * Serialization method for mine data storage
+     * @return Serialization map
+     */
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("id", id);
@@ -258,32 +258,32 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>true</b> if successful, <b>false</b> if not
      */
     public boolean reset() {
-    	if(PrisonMine.getSettings().PLAYERS_TP_ON_RESET) {
-        	try { removePlayers(); }
-        	catch(ConcurrentModificationException cme) { Message.log(Level.WARNING, "An error occured while removing players from the mine"); }
-    	}
-    	
-    	if(hasFlag(MineFlag.ResetSound)) {
-    		String soundName = getFlag(MineFlag.ResetSound).getOption();
-    		if(Util.soundExists(soundName)) {
-    			for (Player player : Util.getNearbyPlayers(tpPoint, 32)) {
-    				player.playSound(tpPoint, Util.getSound(soundName), 1, 0);
-    			}
-    		}
-    	}
-    	
-    	/*
-    	for(DisplaySign sign : PrisonMine.getStaticSigns()) {
-			if(!sign.getParent().equals(id) || !sign.getType().equals(DisplaySignType.Output) || sign.getAttachedBlock() == null) continue;
-			
-			Block torch = sign.getAttachedBlock().getRelative(sign.getAttachedBlockFace());
-			if(torch == null || !torch.getType().equals(Material.REDSTONE_TORCH_OFF)) continue;
-			torch.setType(Material.REDSTONE_TORCH_ON);
-		}
-		*/
-    	
-    	if(hasFlag(MineFlag.SurfaceOre)) return CustomTerrainRoutine.run(this);
-    	else return RandomTerrainRoutine.run(this);
+        if(PrisonMine.getSettings().PLAYERS_TP_ON_RESET) {
+            try { removePlayers(); }
+            catch(ConcurrentModificationException cme) { Message.log(Level.WARNING, "An error occured while removing players from the mine"); }
+        }
+        
+        if(hasFlag(MineFlag.ResetSound)) {
+            String soundName = getFlag(MineFlag.ResetSound).getOption();
+            if(Util.soundExists(soundName)) {
+                for (Player player : Util.getNearbyPlayers(tpPoint, 32)) {
+                    player.playSound(tpPoint, Util.getSound(soundName), 1, 0);
+                }
+            }
+        }
+        
+        /*
+        for(DisplaySign sign : PrisonMine.getStaticSigns()) {
+            if(!sign.getParent().equals(id) || !sign.getType().equals(DisplaySignType.Output) || sign.getAttachedBlock() == null) continue;
+            
+            Block torch = sign.getAttachedBlock().getRelative(sign.getAttachedBlockFace());
+            if(torch == null || !torch.getType().equals(Material.REDSTONE_TORCH_OFF)) continue;
+            torch.setType(Material.REDSTONE_TORCH_ON);
+        }
+        */
+        
+        if(hasFlag(MineFlag.SurfaceOre)) return CustomTerrainRoutine.run(this);
+        else return RandomTerrainRoutine.run(this);
     }
     
     /**
@@ -301,111 +301,111 @@ public class Mine implements ConfigurationSerializable {
         return true;
     }
     
-    public String getId()							{ return id; }
-    public String getName() 						{ if(name.equalsIgnoreCase("")) return id; else return name; }
+    public String getId()                            { return id; }
+    public String getName()                         { if(name.equalsIgnoreCase("")) return id; else return name; }
     
-    public boolean hasParent()						{ return (parent != null); }
-    public String getParent() 						{ return parent; }
-    public Mine getSuperParent()					{ return getSuperParent(this); }
+    public boolean hasParent()                        { return (parent != null); }
+    public String getParent()                         { return parent; }
+    public Mine getSuperParent()                    { return getSuperParent(this); }
     
-    public PrisonRegion getRegion() 				{ return region;}
-    public World getWorld() 						{ return world; }
-    public Location getTpPoint() 					{ return tpPoint; }
+    public PrisonRegion getRegion()                 { return region;}
+    public World getWorld()                         { return world; }
+    public Location getTpPoint()                     { return tpPoint; }
 
-    public Blacklist getBlacklist() 				{ return blockReplaceBlacklist; }
+    public Blacklist getBlacklist()                 { return blockReplaceBlacklist; }
     
-    public boolean getCooldown() 					{ return cooldownEnabled; }
-    public int getCooldownPeriod() 					{ return cooldownPeriod; }
-    public int getCooldownEndsIn() 					{ return (int)(cooldownEndsIn / 20); }
+    public boolean getCooldown()                     { return cooldownEnabled; }
+    public int getCooldownPeriod()                     { return cooldownPeriod; }
+    public int getCooldownEndsIn()                     { return (int)(cooldownEndsIn / 20); }
     
-    public List<Protection> getProtection() 		{ return enabledProtection; }
-    public PrisonRegion getProtectionRegion() 		{ return protectionRegion; }
-    public Blacklist getBreakBlacklist() 			{ return breakBlacklist; }
-    public Blacklist getPlaceBlacklist() 			{ return placeBlacklist; }
+    public List<Protection> getProtection()         { return enabledProtection; }
+    public PrisonRegion getProtectionRegion()         { return protectionRegion; }
+    public Blacklist getBreakBlacklist()             { return breakBlacklist; }
+    public Blacklist getPlaceBlacklist()             { return placeBlacklist; }
     
-    public String getLastResetBy()					{ return lastResetBy; }
+    public String getLastResetBy()                    { return lastResetBy; }
     
-    public void setName(String name) 								{ this.name = name; }
-    public void setParent(String parent) 							{ this.parent = parent; }
-    public void setRegion(PrisonSelection sel)						{ this.region = null; this.region = new PrisonRegion(sel); }
-    public void setTpPoint(Location tpPoint) 						{ this.tpPoint = tpPoint; }
+    public void setName(String name)                                 { this.name = name; }
+    public void setParent(String parent)                             { this.parent = parent; }
+    public void setRegion(PrisonSelection sel)                        { this.region = null; this.region = new PrisonRegion(sel); }
+    public void setTpPoint(Location tpPoint)                         { this.tpPoint = tpPoint; }
     
-    public void setCooldownEnabled(boolean cooldownEnabled) 		{ this.cooldownEnabled = cooldownEnabled; }
-    public void setCooldownPeriod (int cooldownPeriod) 				{ this.cooldownPeriod = cooldownPeriod; }
-    public void updateCooldown(long ticks) 							{ cooldownEndsIn -= ticks; }
-    public void resetCooldown() 									{ cooldownEndsIn = cooldownPeriod * 20; }
+    public void setCooldownEnabled(boolean cooldownEnabled)         { this.cooldownEnabled = cooldownEnabled; }
+    public void setCooldownPeriod (int cooldownPeriod)                 { this.cooldownPeriod = cooldownPeriod; }
+    public void updateCooldown(long ticks)                             { cooldownEndsIn -= ticks; }
+    public void resetCooldown()                                     { cooldownEndsIn = cooldownPeriod * 20; }
     
-    public void setLastResetBy(String issuer)						{ this.lastResetBy = issuer; }
+    public void setLastResetBy(String issuer)                        { this.lastResetBy = issuer; }
     
 
     public List<MineBlock> getLocalBlocks() {
-    	List<MineBlock> tempBlocks = new ArrayList<MineBlock>();
-    	for(MineBlock block : blocks) tempBlocks.add(block);
-    	return tempBlocks;
+        List<MineBlock> tempBlocks = new ArrayList<MineBlock>();
+        for(MineBlock block : blocks) tempBlocks.add(block);
+        return tempBlocks;
     }
     
     public void addBlock(MineBlock block) {
-    	blocks.add(block);
+        blocks.add(block);
     }
     
     public void addBlock(MaterialData material, double percent) {
-    	blocks.add(new MineBlock(material, percent));
+        blocks.add(new MineBlock(material, percent));
     }
     
     public void removeBlock(MineBlock block) {
-    	blocks.remove(block);
+        blocks.remove(block);
     }
     
     public void removeBlock(MaterialData material) {
-    	blocks.remove(getBlock(material));
+        blocks.remove(getBlock(material));
     }
     
-	public MineBlock getBlock(MaterialData block) {
-		if(block == null) return null;
-		for(MineBlock thisBlock : blocks) { if(thisBlock.getBlock().equals(block)) return thisBlock; }
-		return null;
-	}
+    public MineBlock getBlock(MaterialData block) {
+        if(block == null) return null;
+        for(MineBlock thisBlock : blocks) { if(thisBlock.getBlock().equals(block)) return thisBlock; }
+        return null;
+    }
     
-	public MineBlock getMostCommonBlock() {
-		MineBlock mostCommon = blocks.get(0);
-		for(MineBlock curBlock : blocks) {
-			if(curBlock.getChance() > mostCommon.getChance()) mostCommon = curBlock;
-		}
-		return mostCommon;
-	}
+    public MineBlock getMostCommonBlock() {
+        MineBlock mostCommon = blocks.get(0);
+        for(MineBlock curBlock : blocks) {
+            if(curBlock.getChance() > mostCommon.getChance()) mostCommon = curBlock;
+        }
+        return mostCommon;
+    }
         
-    public List<Integer> getLocalWarningTimes()		{
-    	List<Integer> localWarningTimes = new ArrayList<Integer>();
-    	for(Integer time : warningTimes) localWarningTimes.add(time);
-    	return localWarningTimes;
+    public List<Integer> getLocalWarningTimes()        {
+        List<Integer> localWarningTimes = new ArrayList<Integer>();
+        for(Integer time : warningTimes) localWarningTimes.add(time);
+        return localWarningTimes;
     }
     
     public boolean hasWarnings() {
-    	return !warningTimes.isEmpty();
+        return !warningTimes.isEmpty();
     }
     
     public boolean hasWarningTime(Integer time) {
-    	return warningTimes.contains(time);
+        return warningTimes.contains(time);
     }
     
     public void addWarningTime(Integer time) {
-    	warningTimes.add(time);
+        warningTimes.add(time);
     }
     
     public void removeWarningTime(Integer time) {
-    	warningTimes.remove(time);
+        warningTimes.remove(time);
     }
-	
+    
     /**
      * Returns the instance of the trigger with the specified ID, or <b>null</b> if it is not present
      * @param triggerId ID of the requested trigger
      * @return Instance of the trigger, or <b>null</b> if it is not present
      */
     private BaseTrigger getTrigger(ResetTrigger triggerId) {
-    	for(BaseTrigger trigger : resetTriggers) {
-    		if(trigger.getId().equals(triggerId)) return trigger;
-    	}
-    	return null;
+        for(BaseTrigger trigger : resetTriggers) {
+            if(trigger.getId().equals(triggerId)) return trigger;
+        }
+        return null;
     }
     
     /**
@@ -414,7 +414,7 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>true</b> if the TimeTrigger is present, <b>false</b> otherwise
      */
     public boolean getAutomaticReset() {
-    	return (getTrigger(ResetTrigger.TIME) != null);
+        return (getTrigger(ResetTrigger.TIME) != null);
     }
     
     /**
@@ -422,16 +422,16 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>int</b> reset period of the mine, or <b>-1</b> if the trigger is absent
      */
     public int getResetPeriod() {
-    	if(getTrigger(ResetTrigger.TIME) == null) return -1;
-    	return ((TimeTrigger)(getTrigger(ResetTrigger.TIME))).getPeriod(); }
+        if(getTrigger(ResetTrigger.TIME) == null) return -1;
+        return ((TimeTrigger)(getTrigger(ResetTrigger.TIME))).getPeriod(); }
     
     /**
      * Returns the reset period (i.e. how often should the mine reset) of the mine's <b>superparent</b>, in seconds
      * @return <b>int</b> reset period of the mine's superparent, or <b>-1</b> if the trigger is absent
      */
     public int getResetPeriodSafe() {
-		if(parent == null) return getResetPeriod();
-		return get(parent).getResetPeriodSafe();
+        if(parent == null) return getResetPeriod();
+        return get(parent).getResetPeriodSafe();
     }
     
     /**
@@ -439,8 +439,8 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>int</b> time until the reset period ends
      */
     public int getResetsIn() {
-    	if(getTrigger(ResetTrigger.TIME) == null) return -1;
-    	return ((TimeTrigger)(getTrigger(ResetTrigger.TIME))).getNext();
+        if(getTrigger(ResetTrigger.TIME) == null) return -1;
+        return ((TimeTrigger)(getTrigger(ResetTrigger.TIME))).getNext();
     }
     
     /**
@@ -448,8 +448,8 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>int</b> time until the reset period ends
      */
     public int getResetsInSafe() {
-		if(parent == null) return getResetsIn();
-		return get(parent).getResetsInSafe();
+        if(parent == null) return getResetsIn();
+        return get(parent).getResetsInSafe();
     }
     
     /**
@@ -458,15 +458,15 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>false</b> if an error has occurred, <b>true</b> otherwise.
      */
     public boolean setAutomaticReset(boolean state) {
-    	if(state) {
-    		if(getTrigger(ResetTrigger.TIME) != null) return false;
-    		resetTriggers.add(new TimeTrigger(this, PrisonMine.getSettings().DEFAULTTIME));
-    	} else {
-    		if(getTrigger(ResetTrigger.TIME) == null) return false;
-    		getTrigger(ResetTrigger.TIME).cancel();
-    		resetTriggers.remove(getTrigger(ResetTrigger.TIME));
-    	}
-    	return true;
+        if(state) {
+            if(getTrigger(ResetTrigger.TIME) != null) return false;
+            resetTriggers.add(new TimeTrigger(this, PrisonMine.getSettings().DEFAULTTIME));
+        } else {
+            if(getTrigger(ResetTrigger.TIME) == null) return false;
+            getTrigger(ResetTrigger.TIME).cancel();
+            resetTriggers.remove(getTrigger(ResetTrigger.TIME));
+        }
+        return true;
     }
     
     /**
@@ -475,9 +475,9 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>false</b> if the TimeTrigger is not present, <b>true</b> otherwise
      */
     public boolean setResetPeriod(int period) {
-		if(getTrigger(ResetTrigger.TIME) == null) return false;
-    	((TimeTrigger)(getTrigger(ResetTrigger.TIME))).setPeriod(period);
-    	return true;
+        if(getTrigger(ResetTrigger.TIME) == null) return false;
+        ((TimeTrigger)(getTrigger(ResetTrigger.TIME))).setPeriod(period);
+        return true;
     }
     
     /**
@@ -486,9 +486,9 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>false</b> if the TimeTrigger is not present, <b>true</b> otherwise.
      */
     public boolean resetTimer() {
-		if(getTrigger(ResetTrigger.TIME) == null) return false;
-		((TimeTrigger)getTrigger(ResetTrigger.TIME)).resetTimer();
-		return true;
+        if(getTrigger(ResetTrigger.TIME) == null) return false;
+        ((TimeTrigger)getTrigger(ResetTrigger.TIME)).resetTimer();
+        return true;
     }
     
     /**
@@ -497,7 +497,7 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>true</b> if the CompositionTrigger is present, <b>false</b> otherwise
      */
     public boolean getCompositionReset() {
-    	return (getTrigger(ResetTrigger.COMPOSITION) != null);
+        return (getTrigger(ResetTrigger.COMPOSITION) != null);
     }
     
     /**
@@ -507,8 +507,8 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>int</b> number of blocks
      */
     public int getTotalBlocks() {
-    	totalBlocks = region.getBlockCount();
-    	return totalBlocks;
+        totalBlocks = region.getBlockCount();
+        return totalBlocks;
     }
     
     /**
@@ -517,7 +517,7 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>int</b> number of blocks
      */
     public int getTotalBlocksSafe() {
-    	return totalBlocks;
+        return totalBlocks;
     }
     
     /**
@@ -527,8 +527,8 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>int</b> number of non-air blocks in the mine
      */
     public int getBlocksLeft() {
-    	blocksLeft = region.getBlockCountSolid();
-    	return blocksLeft;
+        blocksLeft = region.getBlockCountSolid();
+        return blocksLeft;
     }
     
     /**
@@ -537,7 +537,7 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>int</b> number of non-air blocks in the mine
      */
     public int getBlocksLeftSafe() {
-    	return blocksLeft;
+        return blocksLeft;
     } 
     
     /**
@@ -546,7 +546,7 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>double</b> Percent of the mine that is taken up by solid blocks
      */
     public double getCurrentPercent() {
-    	return ((double) getBlocksLeft() / (double) getTotalBlocks()) * 100;
+        return ((double) getBlocksLeft() / (double) getTotalBlocks()) * 100;
     }
     
     /**
@@ -554,8 +554,8 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>double</b> Percentage required for the reset
      */
     public double getRequiredPercent() {
-    	if(getTrigger(ResetTrigger.COMPOSITION) == null) return -1;
-    	return ((CompositionTrigger)(getTrigger(ResetTrigger.COMPOSITION))).getPercent() * 100;
+        if(getTrigger(ResetTrigger.COMPOSITION) == null) return -1;
+        return ((CompositionTrigger)(getTrigger(ResetTrigger.COMPOSITION))).getPercent() * 100;
     }
     
     /**
@@ -564,16 +564,16 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>false</b> if an error has occurred, <b>true</b> otherwise.
      */
     public boolean setCompositionReset(boolean state) {
-    	if(state) {
-    		if(getCompositionReset()) return false;
-    		resetTriggers.add(new CompositionTrigger(this, 0));
-    	}
-    	else {
-    		if(!getCompositionReset()) return false;
-    		getTrigger(ResetTrigger.COMPOSITION).cancel();
-    		resetTriggers.remove(getTrigger(ResetTrigger.COMPOSITION));
-    	}
-    	return true;
+        if(state) {
+            if(getCompositionReset()) return false;
+            resetTriggers.add(new CompositionTrigger(this, 0));
+        }
+        else {
+            if(!getCompositionReset()) return false;
+            getTrigger(ResetTrigger.COMPOSITION).cancel();
+            resetTriggers.remove(getTrigger(ResetTrigger.COMPOSITION));
+        }
+        return true;
     }
     
     /**
@@ -582,160 +582,160 @@ public class Mine implements ConfigurationSerializable {
      * @return <b>false</b> if the CompositionTrigger is not present, <b>true</b> otherwise
      */
     public boolean setCompositionPercent(double percent) {
-    	if(getTrigger(ResetTrigger.COMPOSITION) == null) return false;
-    	((CompositionTrigger)(getTrigger(ResetTrigger.COMPOSITION))).setPercent(percent);
-    	return true;
+        if(getTrigger(ResetTrigger.COMPOSITION) == null) return false;
+        ((CompositionTrigger)(getTrigger(ResetTrigger.COMPOSITION))).setPercent(percent);
+        return true;
     }
     
     public List<BaseFlag> getAllFlags() {
-    	List<BaseFlag> localFlags = new ArrayList<BaseFlag>();
-    	for(BaseFlag flag : flags) localFlags.add(flag);
-    	return localFlags;
+        List<BaseFlag> localFlags = new ArrayList<BaseFlag>();
+        for(BaseFlag flag : flags) localFlags.add(flag);
+        return localFlags;
     }
     
     public List<BaseFlag> getFlagsByType(MineFlag flag) {
-    	List<BaseFlag> demFlags = new ArrayList<BaseFlag>();
-    	for(BaseFlag testFlag : flags) {
-    		if(testFlag.getName().equalsIgnoreCase(flag.getAlias())) demFlags.add(testFlag);
-    	}
-    	return demFlags;
+        List<BaseFlag> demFlags = new ArrayList<BaseFlag>();
+        for(BaseFlag testFlag : flags) {
+            if(testFlag.getName().equalsIgnoreCase(flag.getAlias())) demFlags.add(testFlag);
+        }
+        return demFlags;
     }
     
     public BaseFlag getFlag(MineFlag flag) {
-    	for(BaseFlag testFlag : flags) {
-    		if(testFlag.getName().equalsIgnoreCase(flag.getAlias())) return testFlag;
-    	}
-    	return null;
+        for(BaseFlag testFlag : flags) {
+            if(testFlag.getName().equalsIgnoreCase(flag.getAlias())) return testFlag;
+        }
+        return null;
     }
     
     public BaseFlag getFlag(MineFlag flag, String option) {
-    	for(BaseFlag testFlag : flags) {
-    		if(testFlag.getName().equalsIgnoreCase(flag.getAlias()) && testFlag.getOption().equalsIgnoreCase(option)) return testFlag;
-    	}
-    	return null;
+        for(BaseFlag testFlag : flags) {
+            if(testFlag.getName().equalsIgnoreCase(flag.getAlias()) && testFlag.getOption().equalsIgnoreCase(option)) return testFlag;
+        }
+        return null;
     }
     
     public boolean hasFlag(MineFlag flag) {
-    	for(BaseFlag testFlag : flags) {
-    		if(testFlag.getName().equalsIgnoreCase(flag.getAlias())) return true;
-    	}
-    	return false;
+        for(BaseFlag testFlag : flags) {
+            if(testFlag.getName().equalsIgnoreCase(flag.getAlias())) return true;
+        }
+        return false;
     }
     
     public boolean hasFlag(MineFlag flag, String option) {
-    	for(BaseFlag testFlag : flags) {
-    		if(testFlag.getName().equalsIgnoreCase(flag.getAlias()) && testFlag.getOption().equalsIgnoreCase(option)) return true;
-    	}
-    	return false;
+        for(BaseFlag testFlag : flags) {
+            if(testFlag.getName().equalsIgnoreCase(flag.getAlias()) && testFlag.getOption().equalsIgnoreCase(option)) return true;
+        }
+        return false;
     }
     
     public void addFlag(MineFlag flag, String option) {
-    	BaseFlag flagObj = flag.dispatch();
-    	flagObj.setOption(option);
-    	flags.add(flagObj);
+        BaseFlag flagObj = flag.dispatch();
+        flagObj.setOption(option);
+        flags.add(flagObj);
     }
     
     public void addFlag(MineFlag flag) {
-    	flags.add(flag.dispatch());
+        flags.add(flag.dispatch());
     }
     
     public void removeFlag(MineFlag flag, String option) {
-    	BaseFlag flagToRemove = getFlag(flag, option);
-    	flags.remove(flagToRemove);
+        BaseFlag flagToRemove = getFlag(flag, option);
+        flags.remove(flagToRemove);
     }
     
     public void removeFlag(MineFlag flag) {
-    	BaseFlag flagToRemove = getFlag(flag);
-    	flags.remove(flagToRemove);
+        BaseFlag flagToRemove = getFlag(flag);
+        flags.remove(flagToRemove);
     }
     
-	public List<Mine> getChildren() {
-		List<Mine> children = new ArrayList<Mine>();
-		for(Mine mine : PrisonMine.getStaticMines()) {
-			if(mine.hasParent() && mine.getParent().equalsIgnoreCase(getId())) { children.add(mine); }
-		}
-		return children;
-	}
-	
-	public List<String> getBlocksSorted() {
-		List<String> finalList = new ArrayList<String>(blocks.size());
-		
-		MineBlock tempBlock;
-		for(int j = blocks.size(); j > 0; j--) {
-			for(int i = 0; i < (j - 1); i++) {
-				if(blocks.get(i + 1).getChance() > blocks.get(i).getChance()) {
-					tempBlock = blocks.get(i).clone();
-					blocks.set(i, blocks.get(i + 1).clone());
-					blocks.set(i + 1, tempBlock.clone());
-				}
-				
-			}
-		}
-		
-		for(MineBlock block : blocks) {
-			String blockName = block.getBlock().getItemType().toString().toLowerCase().replace("_", " ");
-			if(block.getBlock().getData() != 0) {
-				String[] tempBlockName = {block.getBlock().getItemTypeId() + "", block.getBlock().getData() + ""};
-				blockName = Util.parseMetadata(tempBlockName, true) + " " + blockName;
-			}
-			String blockWeight = Util.formatPercent(block.getChance());
-			
-			if(!blockWeight.equalsIgnoreCase("0.0%"))
-				finalList.add(ChatColor.WHITE + blockWeight + " " + ChatColor.GREEN + blockName + ChatColor.WHITE);
-		}
-		
-		return finalList;
-	}
-	
-	private static Mine getSuperParent(Mine curMine) {
-		if(!curMine.hasParent()) return curMine;
-		return getSuperParent(get(curMine.getParent()));
-	}
-	
-	public static Mine get(String id) {
-		for(Mine curMine : PrisonMine.getStaticMines()) {
-			if(curMine.getId().equalsIgnoreCase(id)) return curMine;
-		}
-		return null;
-	}
-	
-	/**
-	 * Saves the mine data to file.
-	 * @return <b>true</b> if the save was successful, <b>false</b> if an error occurred
-	 */
-	public boolean saveFile() {
-		File mineFile = new File(new File(PrisonMine.getInstance().getDataFolder(), "mines"), id + ".pmine.yml");
+    public List<Mine> getChildren() {
+        List<Mine> children = new ArrayList<Mine>();
+        for(Mine mine : PrisonMine.getStaticMines()) {
+            if(mine.hasParent() && mine.getParent().equalsIgnoreCase(getId())) { children.add(mine); }
+        }
+        return children;
+    }
+    
+    public List<String> getBlocksSorted() {
+        List<String> finalList = new ArrayList<String>(blocks.size());
+        
+        MineBlock tempBlock;
+        for(int j = blocks.size(); j > 0; j--) {
+            for(int i = 0; i < (j - 1); i++) {
+                if(blocks.get(i + 1).getChance() > blocks.get(i).getChance()) {
+                    tempBlock = blocks.get(i).clone();
+                    blocks.set(i, blocks.get(i + 1).clone());
+                    blocks.set(i + 1, tempBlock.clone());
+                }
+                
+            }
+        }
+        
+        for(MineBlock block : blocks) {
+            String blockName = block.getBlock().getItemType().toString().toLowerCase().replace("_", " ");
+            if(block.getBlock().getData() != 0) {
+                String[] tempBlockName = {block.getBlock().getItemTypeId() + "", block.getBlock().getData() + ""};
+                blockName = Util.parseMetadata(tempBlockName, true) + " " + blockName;
+            }
+            String blockWeight = Util.formatPercent(block.getChance());
+            
+            if(!blockWeight.equalsIgnoreCase("0.0%"))
+                finalList.add(ChatColor.WHITE + blockWeight + " " + ChatColor.GREEN + blockName + ChatColor.WHITE);
+        }
+        
+        return finalList;
+    }
+    
+    private static Mine getSuperParent(Mine curMine) {
+        if(!curMine.hasParent()) return curMine;
+        return getSuperParent(get(curMine.getParent()));
+    }
+    
+    public static Mine get(String id) {
+        for(Mine curMine : PrisonMine.getStaticMines()) {
+            if(curMine.getId().equalsIgnoreCase(id)) return curMine;
+        }
+        return null;
+    }
+    
+    /**
+     * Saves the mine data to file.
+     * @return <b>true</b> if the save was successful, <b>false</b> if an error occurred
+     */
+    public boolean saveFile() {
+        File mineFile = new File(new File(PrisonMine.getInstance().getDataFolder(), "mines"), id + ".pmine.yml");
         FileConfiguration mineConf =  YamlConfiguration.loadConfiguration(mineFile);
         mineConf.set("mine", this);
         try {
             mineConf.save(mineFile);
         } catch (IOException e) {
-        	Message.log(Level.SEVERE, "Unable to serialize mine '" + id + "'!");
+            Message.log(Level.SEVERE, "Unable to serialize mine '" + id + "'!");
             e.printStackTrace();
             return false;
         }
         return true;
-	}
-	
-	/**
-	 * Deletes the mine data file.<br />
-	 * <b>Warning:</b> invoking this method will not remove the mine from the list of active mines
-	 * @return <b>true</b> if the deletion was successful, <b>false</b> if an error occurred
-	 */
-	public boolean deleteFile() {
-		File mineFolder = new File(PrisonMine.getInstance().getDataFolder(), "mines");
-		if(!mineFolder.exists() || !mineFolder.isDirectory()) return false;
-		
-		File[] mineFiles = mineFolder.listFiles(new FileFilter() {
+    }
+    
+    /**
+     * Deletes the mine data file.<br />
+     * <b>Warning:</b> invoking this method will not remove the mine from the list of active mines
+     * @return <b>true</b> if the deletion was successful, <b>false</b> if an error occurred
+     */
+    public boolean deleteFile() {
+        File mineFolder = new File(PrisonMine.getInstance().getDataFolder(), "mines");
+        if(!mineFolder.exists() || !mineFolder.isDirectory()) return false;
+        
+        File[] mineFiles = mineFolder.listFiles(new FileFilter() {
             public boolean accept(File file) { return file.getName().contains(".pmine.yml"); }
         });
-		
-		for(File mineFile : mineFiles) {
-			if(mineFile.getName().equals(id + ".pmine.yml")) {
-				return mineFile.delete();
-			}
-		}
-		
-		return false;
-	}
+        
+        for(File mineFile : mineFiles) {
+            if(mineFile.getName().equals(id + ".pmine.yml")) {
+                return mineFile.delete();
+            }
+        }
+        
+        return false;
+    }
 }

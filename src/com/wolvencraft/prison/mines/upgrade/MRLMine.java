@@ -60,7 +60,7 @@ public class MRLMine implements ConfigurationSerializable {
         }
         try {
             @SuppressWarnings("unchecked")
-			Map<String, Double> sComposition = (Map<String, Double>) me.get("composition");
+            Map<String, Double> sComposition = (Map<String, Double>) me.get("composition");
             composition = new HashMap<SerializableBlock, Double>();
             for (Map.Entry<String, Double> entry : sComposition.entrySet()) {
                 composition.put(new SerializableBlock(entry.getKey()), entry.getValue());
@@ -72,7 +72,7 @@ public class MRLMine implements ConfigurationSerializable {
         resetTime = Long.valueOf(me.get("resetTime").toString());
         resetDelay = (Integer) me.get("resetDelay");
         @SuppressWarnings("unchecked")
-		List<String> warnings = (List<String>) me.get("resetWarnings");
+        List<String> warnings = (List<String>) me.get("resetWarnings");
         resetWarnings = new LinkedList<Integer>();
         for (String warning : warnings) {
             try {
@@ -123,38 +123,38 @@ public class MRLMine implements ConfigurationSerializable {
         return me;
     }
     
-	public Mine importMine() {
-    	Location one = new Location(world, minX, minY, minZ);
-    	Location two = new Location(world, maxX, maxY, maxZ);
-    	PrisonRegion region = new PrisonRegion(one, two);
-    	Mine mine = new Mine(name, region, world, two);
-    	
-    	Iterator<Entry<SerializableBlock, Double>> it = composition.entrySet().iterator();
-    	double totalValue = 0;
+    public Mine importMine() {
+        Location one = new Location(world, minX, minY, minZ);
+        Location two = new Location(world, maxX, maxY, maxZ);
+        PrisonRegion region = new PrisonRegion(one, two);
+        Mine mine = new Mine(name, region, world, two);
+        
+        Iterator<Entry<SerializableBlock, Double>> it = composition.entrySet().iterator();
+        double totalValue = 0;
         mine.removeBlock(new MaterialData(Material.AIR));
         while (it.hasNext()) {
-			Map.Entry<SerializableBlock, Double> pairs = (Map.Entry<SerializableBlock, Double>) it.next();
+            Map.Entry<SerializableBlock, Double> pairs = (Map.Entry<SerializableBlock, Double>) it.next();
             mine.addBlock(new MaterialData(pairs.getKey().getBlockId()), pairs.getValue());
             totalValue += pairs.getValue().doubleValue();
             it.remove();
         }
         
         if(totalValue < 1) {
-        	mine.addBlock(new MaterialData(Material.AIR), (1.0 - totalValue));
+            mine.addBlock(new MaterialData(Material.AIR), (1.0 - totalValue));
         }
         
         
         if(resetDelay != 0) {
-        	mine.setAutomaticReset(true);
-        	mine.setResetPeriod(resetDelay * 60);
+            mine.setAutomaticReset(true);
+            mine.setResetPeriod(resetDelay * 60);
         }
         
         for(Integer warning : resetWarnings) {
-        	mine.addWarningTime(warning);
+            mine.addWarningTime(warning);
         }
         
         mine.saveFile();
         Message.log("Imported mine from MineResetLite: " + name);
-    	return mine;
+        return mine;
     }
 }

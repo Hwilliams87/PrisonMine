@@ -1,6 +1,8 @@
 /*
- * PrisonMine
- * Copyright (C) 2012 bitWolfy
+ * PrisonMine.java
+ * 
+ * Statistics
+ * Copyright (C) 2013 bitWolfy <http://www.wolvencraft.com> and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,197 +50,197 @@ import com.wolvencraft.prison.mines.util.data.*;
 import com.wolvencraft.prison.region.PrisonRegion;
 
 public class PrisonMine extends PrisonPlugin {
-	private static PrisonSuite prisonSuite;
-	private static PrisonMine plugin;
-	
-	private static Settings settings;
-	private FileConfiguration languageData = null;
-	private File languageDataFile = null;
-	private static Language language;
-	
-	private static List<Mine> mines;
-	private static List<DisplaySign> signs;
+    private static PrisonSuite prisonSuite;
+    private static PrisonMine plugin;
+    
+    private static Settings settings;
+    private FileConfiguration languageData = null;
+    private File languageDataFile = null;
+    private static Language language;
+    
+    private static List<Mine> mines;
+    private static List<DisplaySign> signs;
 
-	private static Map<CommandSender, Mine> curMines;
-	
-	private static TimedTask signTask;
-	
-	@Override
-	public void onEnable() {
-				
-		prisonSuite = PrisonSuite.addPlugin(this);
-		plugin = this;
-		
-		getConfig().options().copyDefaults(true);
-		saveConfig();
-		settings = new Settings(this);
-		Message.debug("+-----[ Starting up PrisonMine ]-----");
-		Message.debug("+ Established connection with PrisonCore");
-		
-		getLanguageData().options().copyDefaults(true);
-		saveLanguageData();
-		language = new Language(this);
-		Message.debug("+ Loaded plugin configuration");
-		
-		ConfigurationSerialization.registerClass(Mine.class, "pMine");
-		ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");
-		ConfigurationSerialization.registerClass(Blacklist.class, "Blacklist");
-		ConfigurationSerialization.registerClass(DisplaySign.class, "DisplaySign");
-		ConfigurationSerialization.registerClass(SimpleLoc.class, "SimpleLoc");
-		ConfigurationSerialization.registerClass(PrisonRegion.class, "PrisonRegion");
-		ConfigurationSerialization.registerClass(BaseTrigger.class, "BaseTrigger");
-		ConfigurationSerialization.registerClass(TimeTrigger.class, "TimeTrigger");
-		ConfigurationSerialization.registerClass(CompositionTrigger.class, "CompositionTrigger");
-		ConfigurationSerialization.registerClass(BlockSerializable.class, "BlockSerializable");
-		
-		ConfigurationSerialization.registerClass(MRMine.class, "MRMine");
-		ConfigurationSerialization.registerClass(MRLMine.class, "MRLMine");
-		Message.debug("+ Registered serializable classes");
-		
-		try { mines = MineData.loadAll(); }
-		catch (Exception e) {
-			Message.log(Level.SEVERE, "=== An error occurred while loading mine files ===");
-			e.printStackTrace();
-			Message.log(Level.SEVERE, "=== === === ===  End of error log  === === === ===");
-		}
-		
-		try { signs = SignData.loadAll(); }
-		catch (Exception e) {
-			Message.log(Level.SEVERE, "=== An error occurred while loading sign files ===");
-			e.printStackTrace();
-			Message.log(Level.SEVERE, "=== === === ===  End of error log  === === === ===");
-		}
-		
-		curMines = new HashMap<CommandSender, Mine>();
-		Message.debug("+ Loaded data from file");
+    private static Map<CommandSender, Mine> curMines;
+    
+    private static TimedTask signTask;
+    
+    @Override
+    public void onEnable() {
+                
+        prisonSuite = PrisonSuite.addPlugin(this);
+        plugin = this;
+        
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+        settings = new Settings(this);
+        Message.debug("+-----[ Starting up PrisonMine ]-----");
+        Message.debug("+ Established connection with PrisonCore");
+        
+        getLanguageData().options().copyDefaults(true);
+        saveLanguageData();
+        language = new Language(this);
+        Message.debug("+ Loaded plugin configuration");
+        
+        ConfigurationSerialization.registerClass(Mine.class, "pMine");
+        ConfigurationSerialization.registerClass(MineBlock.class, "MineBlock");
+        ConfigurationSerialization.registerClass(Blacklist.class, "Blacklist");
+        ConfigurationSerialization.registerClass(DisplaySign.class, "DisplaySign");
+        ConfigurationSerialization.registerClass(SimpleLoc.class, "SimpleLoc");
+        ConfigurationSerialization.registerClass(PrisonRegion.class, "PrisonRegion");
+        ConfigurationSerialization.registerClass(BaseTrigger.class, "BaseTrigger");
+        ConfigurationSerialization.registerClass(TimeTrigger.class, "TimeTrigger");
+        ConfigurationSerialization.registerClass(CompositionTrigger.class, "CompositionTrigger");
+        ConfigurationSerialization.registerClass(BlockSerializable.class, "BlockSerializable");
+        
+        ConfigurationSerialization.registerClass(MRMine.class, "MRMine");
+        ConfigurationSerialization.registerClass(MRLMine.class, "MRLMine");
+        Message.debug("+ Registered serializable classes");
+        
+        try { mines = MineData.loadAll(); }
+        catch (Exception e) {
+            Message.log(Level.SEVERE, "=== An error occurred while loading mine files ===");
+            e.printStackTrace();
+            Message.log(Level.SEVERE, "=== === === ===  End of error log  === === === ===");
+        }
+        
+        try { signs = SignData.loadAll(); }
+        catch (Exception e) {
+            Message.log(Level.SEVERE, "=== An error occurred while loading sign files ===");
+            e.printStackTrace();
+            Message.log(Level.SEVERE, "=== === === ===  End of error log  === === === ===");
+        }
+        
+        curMines = new HashMap<CommandSender, Mine>();
+        Message.debug("+ Loaded data from file");
 
-		Message.debug("+ Initializing Event Listeners");
-		new BlockProtectionListener(this);
-		new DisplaySignListener(this);
-		new PlayerListener(this);
-		new FlagListener(this);
-//		new RedstoneListener(this);
-		
-		Message.debug("+ Sending sign task to PrisonCore");
-		PrisonSuite.addTask(signTask = new DisplaySignTask());
-		
-		Message.debug("+---[ End of report ]---");
-		
-		Message.log("PrisonMine started [ " + mines.size() + " mine(s) found ]");
-		
-		if(settings.RESET_ALL_MINES_ON_STARTUP) {
-			Message.log("Resetting all mines, as defined in the configuration");
-			for(Mine mine : mines) AutomaticResetRoutine.run(mine);
-		}
-	}
-	
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if(!command.getName().equalsIgnoreCase("mine")) return false;
+        Message.debug("+ Initializing Event Listeners");
+        new BlockProtectionListener(this);
+        new DisplaySignListener(this);
+        new PlayerListener(this);
+        new FlagListener(this);
+//        new RedstoneListener(this);
+        
+        Message.debug("+ Sending sign task to PrisonCore");
+        PrisonSuite.addTask(signTask = new DisplaySignTask());
+        
+        Message.debug("+---[ End of report ]---");
+        
+        Message.log("PrisonMine started [ " + mines.size() + " mine(s) found ]");
+        
+        if(settings.RESET_ALL_MINES_ON_STARTUP) {
+            Message.log("Resetting all mines, as defined in the configuration");
+            for(Mine mine : mines) AutomaticResetRoutine.run(mine);
+        }
+    }
+    
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if(!command.getName().equalsIgnoreCase("mine")) return false;
 
-		CommandManager.setSender(sender);
-		
-		if(args.length == 0) { CommandManager.HELP.run(""); return true; }
-		
-		for(CommandManager cmd : CommandManager.values()) {
-			if(cmd.isCommand(args[0])) {
-				boolean result = cmd.run(args);
-				CommandManager.resetSender();
-				return result;
-			}
-		}
-		
-		Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);
-		CommandManager.resetSender();
-		return false;
-	}
-	
-	@Override
-	public void onDisable() {
-		MineData.saveAll();
-		SignData.saveAll();
-		
-		for(Mine mine : mines) {
-			if(!mine.getAutomaticReset()) continue;
-			for(TimedTask task : PrisonSuite.getLocalTasks()) {
-				if(task.getName().endsWith(mine.getId())) task.cancel();
-			}
-		}
-		
-		signTask.cancel();
-		
-		Message.log("Plugin stopped");
-	}
-	
-	public void reloadLanguageData() {
-		String lang = settings.LANGUAGE;
-		if(lang == null) lang = "english";
-		lang = lang + ".yml";
-		
-		if (languageDataFile == null) languageDataFile = new File(getDataFolder(), lang);
-		languageData = YamlConfiguration.loadConfiguration(languageDataFile);
-		
-		InputStream defConfigStream = getResource(lang);
-		if (defConfigStream != null) {
-			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-			languageData.setDefaults(defConfig);
-		}
-	}
-	
-	public FileConfiguration getLanguageData() {
-		if (languageData == null) reloadLanguageData();
-		return languageData;
-	}
+        CommandManager.setSender(sender);
+        
+        if(args.length == 0) { CommandManager.HELP.run(""); return true; }
+        
+        for(CommandManager cmd : CommandManager.values()) {
+            if(cmd.isCommand(args[0])) {
+                boolean result = cmd.run(args);
+                CommandManager.resetSender();
+                return result;
+            }
+        }
+        
+        Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);
+        CommandManager.resetSender();
+        return false;
+    }
+    
+    @Override
+    public void onDisable() {
+        MineData.saveAll();
+        SignData.saveAll();
+        
+        for(Mine mine : mines) {
+            if(!mine.getAutomaticReset()) continue;
+            for(TimedTask task : PrisonSuite.getLocalTasks()) {
+                if(task.getName().endsWith(mine.getId())) task.cancel();
+            }
+        }
+        
+        signTask.cancel();
+        
+        Message.log("Plugin stopped");
+    }
+    
+    public void reloadLanguageData() {
+        String lang = settings.LANGUAGE;
+        if(lang == null) lang = "english";
+        lang = lang + ".yml";
+        
+        if (languageDataFile == null) languageDataFile = new File(getDataFolder(), lang);
+        languageData = YamlConfiguration.loadConfiguration(languageDataFile);
+        
+        InputStream defConfigStream = getResource(lang);
+        if (defConfigStream != null) {
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+            languageData.setDefaults(defConfig);
+        }
+    }
+    
+    public FileConfiguration getLanguageData() {
+        if (languageData == null) reloadLanguageData();
+        return languageData;
+    }
 
-	public void saveLanguageData() {
-		if (languageData == null || languageDataFile == null) return;
-		try { languageData.save(languageDataFile); }
-		catch (IOException ex) { Message.log("Could not save config to " + languageDataFile); }
-	}
-	
-	public static PrisonMine getInstance() 				{ return plugin; }
-	public static Settings getSettings()				{ return settings; }
-	public static Language getLanguage()				{ return language; }
-	public static PrisonSuite getPrisonSuite() 			{ return prisonSuite; }
-	public double getVersion()							{ return settings.PLUGIN_VERSION; }
-	public static Mine getCurMine(CommandSender sender) { return curMines.get(sender); }
-	public static Mine getCurMine() 					{ return getCurMine(CommandManager.getSender()); }
-	public static void setCurMine(Mine mine) 			{ setCurMine(CommandManager.getSender(), mine); }
-	public void reloadSettings()						{ settings = null; settings = new Settings(this); }
-	public void reloadLanguage()						{ language = null; language = new Language(this); }
-	
-	public static List<Mine> getStaticMines() { 
-		List<Mine> temp = new ArrayList<Mine>();
-		for(Mine mine : mines) temp.add(mine);
-		return temp;
-	}
-	
-	public static void setMines(List<Mine> newMines) {
-		mines.clear();
-		for(Mine mine : newMines) mines.add(mine);
-	}
-	
-	public static void addMine(Mine mine) 				{ mines.add(mine); }
-	public static void addMine(List<Mine> newMines) 	{ for(Mine mine : newMines) mines.add(mine); }
-	public static void removeMine (Mine mine) 			{ mines.remove(mine); }
-	
-	public static List<DisplaySign> getStaticSigns() { 
-		List<DisplaySign> temp = new ArrayList<DisplaySign>();
-		for(DisplaySign sign : signs) temp.add(sign);
-		return temp;
-	}
-	
-	public static void setSigns(List<DisplaySign> newSigns) {
-		signs.clear();
-		for(DisplaySign sign : newSigns) signs.add(sign);
-	}
-	
-	public static void setCurMine(CommandSender sender, Mine mine) {
-		if(curMines.get(sender) != null) curMines.remove(sender);
-		if(mine != null) curMines.put(sender, mine);
-	}
-	
-	public static void addSign(DisplaySign sign) 				{ signs.add(sign); }
-	public static void addSign(List<DisplaySign> newSigns) 		{ for(DisplaySign sign : newSigns) signs.add(sign); }
-	public static void removeSign (DisplaySign sign) 			{ signs.remove(sign); }
+    public void saveLanguageData() {
+        if (languageData == null || languageDataFile == null) return;
+        try { languageData.save(languageDataFile); }
+        catch (IOException ex) { Message.log("Could not save config to " + languageDataFile); }
+    }
+    
+    public static PrisonMine getInstance()                 { return plugin; }
+    public static Settings getSettings()                { return settings; }
+    public static Language getLanguage()                { return language; }
+    public static PrisonSuite getPrisonSuite()             { return prisonSuite; }
+    public double getVersion()                            { return settings.PLUGIN_VERSION; }
+    public static Mine getCurMine(CommandSender sender) { return curMines.get(sender); }
+    public static Mine getCurMine()                     { return getCurMine(CommandManager.getSender()); }
+    public static void setCurMine(Mine mine)             { setCurMine(CommandManager.getSender(), mine); }
+    public void reloadSettings()                        { settings = null; settings = new Settings(this); }
+    public void reloadLanguage()                        { language = null; language = new Language(this); }
+    
+    public static List<Mine> getStaticMines() { 
+        List<Mine> temp = new ArrayList<Mine>();
+        for(Mine mine : mines) temp.add(mine);
+        return temp;
+    }
+    
+    public static void setMines(List<Mine> newMines) {
+        mines.clear();
+        for(Mine mine : newMines) mines.add(mine);
+    }
+    
+    public static void addMine(Mine mine)                 { mines.add(mine); }
+    public static void addMine(List<Mine> newMines)     { for(Mine mine : newMines) mines.add(mine); }
+    public static void removeMine (Mine mine)             { mines.remove(mine); }
+    
+    public static List<DisplaySign> getStaticSigns() { 
+        List<DisplaySign> temp = new ArrayList<DisplaySign>();
+        for(DisplaySign sign : signs) temp.add(sign);
+        return temp;
+    }
+    
+    public static void setSigns(List<DisplaySign> newSigns) {
+        signs.clear();
+        for(DisplaySign sign : newSigns) signs.add(sign);
+    }
+    
+    public static void setCurMine(CommandSender sender, Mine mine) {
+        if(curMines.get(sender) != null) curMines.remove(sender);
+        if(mine != null) curMines.put(sender, mine);
+    }
+    
+    public static void addSign(DisplaySign sign)                 { signs.add(sign); }
+    public static void addSign(List<DisplaySign> newSigns)         { for(DisplaySign sign : newSigns) signs.add(sign); }
+    public static void removeSign (DisplaySign sign)             { signs.remove(sign); }
 }

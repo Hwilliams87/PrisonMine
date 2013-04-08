@@ -14,21 +14,21 @@ import com.wolvencraft.prison.mines.exceptions.DisplaySignNotFoundException;
 import com.wolvencraft.prison.mines.mine.DisplaySign;
 import com.wolvencraft.prison.mines.util.Message;
 
-public class SignData {	
-	/**
-	 * Saves all the sign data to disc
-	 */
-	public static void saveAll() {
-		for (DisplaySign sign : PrisonMine.getStaticSigns()) sign.saveFile();
-	}
-	
-	/**
-	 * Loads the sign data from disc
-	 * @return Loaded list of signs
-	 */
-	public static List<DisplaySign> loadAll() throws DisplaySignNotFoundException {
-		List<DisplaySign> signs = new ArrayList<DisplaySign>();
-		File signFolder = new File(PrisonMine.getInstance().getDataFolder(), "signs");
+public class SignData {    
+    /**
+     * Saves all the sign data to disc
+     */
+    public static void saveAll() {
+        for (DisplaySign sign : PrisonMine.getStaticSigns()) sign.saveFile();
+    }
+    
+    /**
+     * Loads the sign data from disc
+     * @return Loaded list of signs
+     */
+    public static List<DisplaySign> loadAll() throws DisplaySignNotFoundException {
+        List<DisplaySign> signs = new ArrayList<DisplaySign>();
+        File signFolder = new File(PrisonMine.getInstance().getDataFolder(), "signs");
         if (!signFolder.exists() || !signFolder.isDirectory()) {
             signFolder.mkdir();
             return signs;
@@ -45,15 +45,15 @@ public class SignData {
         }
         
         for (File signFile : signFiles) {
-        	try {
-	            FileConfiguration mineConf = YamlConfiguration.loadConfiguration(signFile);
-	            Object sign = mineConf.get("displaysign");
-	            if (sign instanceof DisplaySign) signs.add((DisplaySign) sign);
-        	} catch (IllegalArgumentException ex) {
-        		Message.log(Level.SEVERE, ex.getMessage());
-        		continue;
-        	}
+            try {
+                FileConfiguration mineConf = YamlConfiguration.loadConfiguration(signFile);
+                Object sign = mineConf.get("displaysign");
+                if (sign instanceof DisplaySign) signs.add((DisplaySign) sign);
+            } catch (IllegalArgumentException ex) {
+                Message.log(Level.SEVERE, ex.getMessage());
+                continue;
+            }
         }
         return signs;
-	}
+    }
 }

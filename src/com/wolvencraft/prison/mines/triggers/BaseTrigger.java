@@ -8,6 +8,6 @@ import com.wolvencraft.prison.mines.util.constants.ResetTrigger;
 
 @SerializableAs("BaseTrigger")
 public interface BaseTrigger extends TimedTask, ConfigurationSerializable {
-	public ResetTrigger getId();
-	
+    public ResetTrigger getId();
+    
 }

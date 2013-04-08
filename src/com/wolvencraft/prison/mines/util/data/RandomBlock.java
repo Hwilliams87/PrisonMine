@@ -17,7 +17,7 @@ public class RandomBlock {
      * @param blocks Mine composition
      */
     public RandomBlock(List<MineBlock> blocks) {
-    	weightedBlocks = new ArrayList<MineBlock>();
+        weightedBlocks = new ArrayList<MineBlock>();
         double tally = 0;
         Message.debug("| Loading blocks from mine data");
         for (MineBlock block : blocks) {
@@ -33,13 +33,13 @@ public class RandomBlock {
      * @return Random block
      */
     public MaterialData next() {
-    	double r = new Random().nextDouble();
-    	for (MineBlock block : weightedBlocks) {
-    	    if (r <= block.getChance()) {
-    	        return block.getBlock();
-    	    }
-    	}
-    	return null;
+        double r = new Random().nextDouble();
+        for (MineBlock block : weightedBlocks) {
+            if (r <= block.getChance()) {
+                return block.getBlock();
+            }
+        }
+        return null;
     }
 
 }

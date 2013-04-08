@@ -20,16 +20,16 @@ import com.wolvencraft.prison.mines.util.Message;
  *
  */
 public class ImportData {
-	
-	/**
-	 * Loads the mine data from disc
-	 * @param mines List of mines to write the data to
-	 * @return Loaded list of mines
-	 */
-	public static List<Mine> loadAll() {
-		List<Mine> mines = new ArrayList<Mine>();
-		
-		File importFolder = new File(PrisonMine.getInstance().getDataFolder(), "import");
+    
+    /**
+     * Loads the mine data from disc
+     * @param mines List of mines to write the data to
+     * @return Loaded list of mines
+     */
+    public static List<Mine> loadAll() {
+        List<Mine> mines = new ArrayList<Mine>();
+        
+        File importFolder = new File(PrisonMine.getInstance().getDataFolder(), "import");
         if (!importFolder.exists() || !importFolder.isDirectory()) { return null; }
         File[] mrFiles = importFolder.listFiles(new FileFilter() {
             public boolean accept(File file) {
@@ -38,15 +38,15 @@ public class ImportData {
         });
 
         for (File mineFile : mrFiles) {
-        	try {
-		        FileConfiguration mineConf = YamlConfiguration.loadConfiguration(mineFile);
-		        Object mine = mineConf.get("mine");
-		        if (mine instanceof MRMine) { mines.add(((MRMine) mine).importMine()); }
-		        else if(mine instanceof MRLMine) { mines.add(((MRLMine) mine).importMine()); }
-		        else Message.log(Level.WARNING, "Unknown file in the import directory: " + mineFile.getName());
-        	} catch (IllegalArgumentException ex) { Message.log(Level.SEVERE, "You failed to rename the class properly: " + mineFile.getName()); }
-        	
+            try {
+                FileConfiguration mineConf = YamlConfiguration.loadConfiguration(mineFile);
+                Object mine = mineConf.get("mine");
+                if (mine instanceof MRMine) { mines.add(((MRMine) mine).importMine()); }
+                else if(mine instanceof MRLMine) { mines.add(((MRLMine) mine).importMine()); }
+                else Message.log(Level.WARNING, "Unknown file in the import directory: " + mineFile.getName());
+            } catch (IllegalArgumentException ex) { Message.log(Level.SEVERE, "You failed to rename the class properly: " + mineFile.getName()); }
+            
         }
         return mines;
-	}
+    }
 }

@@ -22,12 +22,12 @@
         + `/mine whitelist` will toggle the whitelist on or off, or switch to whitelist if blacklist is enabled
     + Protection:
         + `/mine protection help` is now used to receive help docs on the commands
-	    + Block breaking rules:
-	        + `/mine prot break blacklist` will toggle the blacklist on or off, or switch to blacklist if whitelist is enabled
-	        + `/mine prot break whitelist` will toggle the whitelist on or off, or switch to whitelist if blacklist is enabled
+        + Block breaking rules:
+            + `/mine prot break blacklist` will toggle the blacklist on or off, or switch to blacklist if whitelist is enabled
+            + `/mine prot break whitelist` will toggle the whitelist on or off, or switch to whitelist if blacklist is enabled
         + Block placement rules:
-	        + `/mine prot place blacklist` will toggle the blacklist on or off, or switch to blacklist if whitelist is enabled
-	        + `/mine prot place whitelist` will toggle the whitelist on or off, or switch to whitelist if blacklist is enabled
+            + `/mine prot place blacklist` will toggle the blacklist on or off, or switch to blacklist if whitelist is enabled
+            + `/mine prot place whitelist` will toggle the whitelist on or off, or switch to whitelist if blacklist is enabled
     + Editing:
         + `/mine edit help` is now used to receive help docs on the commands
         + `/mine edit` will now de-select the active mine, instead of `/mine edit none`
@@ -41,7 +41,7 @@
     + Information:
         + Replaced the messy flag list with a cleaner one
     + About:
-    	+ Tweaked the plugin to output the build number alongside with the version
+        + Tweaked the plugin to output the build number alongside with the version
         + Credited `theangrytomato` for his participation in the development of the plugin
         + Credited 'speedrookies' for his participation in the development of the plugin
 + New flags:
@@ -58,7 +58,7 @@
     + SuperTools : Axes and spades will not be affected by the flag
     + NoToolDamage: Axes and spades will not be affected by the flag
 + New features:
-	+ If players logged out inside the mine region, they will be teleported to the mine TP point on login. This can be disabled with `teleport-players-out-of-the-mine` set to `false`
+    + If players logged out inside the mine region, they will be teleported to the mine TP point on login. This can be disabled with `teleport-players-out-of-the-mine` set to `false`
 + Bug fixes:
     + Security bug fix: Missing permission when breaking a Display Sign
     + Fixed block chance percentages sometimes being invalid due to a rounding error
