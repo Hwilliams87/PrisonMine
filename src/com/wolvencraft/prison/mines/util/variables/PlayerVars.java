@@ -1,5 +1,5 @@
 /*
- * SurfaceOreFlag.java
+ * PlayerVars.java
  * 
  * PrisonMine
  * Copyright (C) 2013 bitWolfy <http://www.wolvencraft.com> and contributors
@@ -18,27 +18,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.wolvencraft.prison.mines.util.flags;
+package com.wolvencraft.prison.mines.util.variables;
 
-import com.wolvencraft.prison.util.Util;
+import org.bukkit.ChatColor;
 
-public class SurfaceOreFlag implements BaseFlag {
-    
-    private String option ="1";
-    
-    @Override
-    public String getName() { return "SurfaceOre"; }
+import com.wolvencraft.prison.mines.mine.Mine;
+import com.wolvencraft.prison.mines.util.Message;
+
+public class PlayerVars implements BaseVar {
 
     @Override
-    public String getOption() { return option; }
+    public String parse(Mine mine, String option) {
+        return mine.getLastResetBy();
+    }
 
     @Override
-    public void setOption(String option) { this.option = option; }
-
-    @Override
-    public boolean isOptionValid(String option) { 
-        if(Util.getBlock(option) == null) return false;
-        return true;
+    public void getHelp() {
+        Message.send("+ Player variables");
+        Message.send("|- " + ChatColor.GOLD + "<PLAYER> " + ChatColor.WHITE + "The name of the player who last rese the mine", false);
+        Message.send("");
     }
 
 }

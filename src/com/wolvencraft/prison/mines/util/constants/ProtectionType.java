@@ -1,3 +1,23 @@
+/*
+ * Protection.java
+ * 
+ * PrisonMine
+ * Copyright (C) 2013 bitWolfy <http://www.wolvencraft.com> and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.wolvencraft.prison.mines.util.constants;
 
 import java.util.ArrayList;
@@ -11,14 +31,14 @@ import java.util.List;
  * @author bitWolfy
  *
  */
-public enum Protection {
+public enum ProtectionType {
     PVP("PVP"),
     BLOCK_PLACE("BLOCK_PLACE"),
     BLOCK_BREAK("BLOCK_BREAK");
     
     private String alias;
     
-    Protection(String alias) { this.alias = alias; }
+    ProtectionType(String alias) { this.alias = alias; }
     
     public String getAlias() { return alias; }
     
@@ -27,8 +47,8 @@ public enum Protection {
      * @param alias Alias to test
      * @return <b>Protection</b>, or <b>null</b> if there isn't one
      */
-    public static Protection get(String alias) {
-        for(Protection prot : values()) {
+    public static ProtectionType get(String alias) {
+        for(ProtectionType prot : values()) {
             if(prot.getAlias().equalsIgnoreCase(alias)) return prot;
         }
         return null;
@@ -39,9 +59,9 @@ public enum Protection {
      * @param source List of Protection constants
      * @return List of Strings
      */
-    public static List<String> toStringList(List<Protection> source) {
+    public static List<String> toStringList(List<ProtectionType> source) {
         List<String> list = new ArrayList<String>();
-        for(Protection prot : source) {
+        for(ProtectionType prot : source) {
             list.add(prot.getAlias());
         }
         return list;
@@ -52,8 +72,8 @@ public enum Protection {
      * @param source List of String protection aliases
      * @return List of Protection constants
      */
-    public static List<Protection> toProtectionList(List<String> source) {
-        List<Protection> list = new ArrayList<Protection>();
+    public static List<ProtectionType> toProtectionList(List<String> source) {
+        List<ProtectionType> list = new ArrayList<ProtectionType>();
         for(String string : source) {
             list.add(get(string));
         }

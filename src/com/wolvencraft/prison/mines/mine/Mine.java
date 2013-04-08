@@ -1,3 +1,23 @@
+/*
+ * Mine.java
+ * 
+ * PrisonMine
+ * Copyright (C) 2013 bitWolfy <http://www.wolvencraft.com> and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.wolvencraft.prison.mines.mine;
 
 import com.wolvencraft.prison.region.PrisonRegion;
@@ -12,7 +32,7 @@ import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 //import com.wolvencraft.prison.mines.util.constants.DisplaySignType;
 import com.wolvencraft.prison.mines.util.constants.MineFlag;
-import com.wolvencraft.prison.mines.util.constants.Protection;
+import com.wolvencraft.prison.mines.util.constants.ProtectionType;
 import com.wolvencraft.prison.mines.util.constants.ResetTrigger;
 import com.wolvencraft.prison.mines.util.data.Blacklist;
 import com.wolvencraft.prison.mines.util.data.MineBlock;
@@ -71,7 +91,7 @@ public class Mine implements ConfigurationSerializable {
     
     private List<Integer> warningTimes;
     
-    private List<Protection> enabledProtection;
+    private List<ProtectionType> enabledProtection;
     private PrisonRegion protectionRegion; 
     private Blacklist breakBlacklist;
     private Blacklist placeBlacklist;
@@ -112,7 +132,7 @@ public class Mine implements ConfigurationSerializable {
         
         flags = new ArrayList<BaseFlag>();
         
-        enabledProtection = new ArrayList<Protection>();
+        enabledProtection = new ArrayList<ProtectionType>();
         protectionRegion = region.clone();
         breakBlacklist = new Blacklist();
         placeBlacklist = new Blacklist();
@@ -141,7 +161,7 @@ public class Mine implements ConfigurationSerializable {
      * @param breakBlacklist
      * @param placeBlacklist
      */
-    public Mine(String id, String name, String parent, PrisonRegion region, World world, Location tpPoint, List<MineBlock> blocks, Blacklist blockReplaceBlacklist, boolean cooldownEnabled, int cooldownPeriod, boolean silent, boolean warned, List<Integer> warningTimes, List<Protection> enabledProtection, Blacklist breakBlacklist, Blacklist placeBlacklist) {
+    public Mine(String id, String name, String parent, PrisonRegion region, World world, Location tpPoint, List<MineBlock> blocks, Blacklist blockReplaceBlacklist, boolean cooldownEnabled, int cooldownPeriod, boolean silent, boolean warned, List<Integer> warningTimes, List<ProtectionType> enabledProtection, Blacklist breakBlacklist, Blacklist placeBlacklist) {
         this.id = id;
         this.name = name;
 
@@ -206,7 +226,7 @@ public class Mine implements ConfigurationSerializable {
         
         if(map.containsValue("silent") && !hasFlag(MineFlag.Silent) && ((Boolean) map.get("silent")).booleanValue()) flags.add(MineFlag.Silent.dispatch());
         
-        enabledProtection = Protection.toProtectionList((List<String>) map.get("enabledProtection"));
+        enabledProtection = ProtectionType.toProtectionList((List<String>) map.get("enabledProtection"));
         protectionRegion = (PrisonRegion) map.get("protectionRegion");
         breakBlacklist = (Blacklist) map.get("breakBlacklist");
         placeBlacklist = (Blacklist) map.get("placeBlacklist");
@@ -244,7 +264,7 @@ public class Mine implements ConfigurationSerializable {
         
         map.put("flags", MineFlag.toStringList(flags));
         
-        map.put("enabledProtection", Protection.toStringList(enabledProtection));
+        map.put("enabledProtection", ProtectionType.toStringList(enabledProtection));
         map.put("protectionRegion", protectionRegion);
         map.put("breakBlacklist", breakBlacklist);
         map.put("placeBlacklist", placeBlacklist);
@@ -318,7 +338,7 @@ public class Mine implements ConfigurationSerializable {
     public int getCooldownPeriod()                     { return cooldownPeriod; }
     public int getCooldownEndsIn()                     { return (int)(cooldownEndsIn / 20); }
     
-    public List<Protection> getProtection()         { return enabledProtection; }
+    public List<ProtectionType> getProtection()         { return enabledProtection; }
     public PrisonRegion getProtectionRegion()         { return protectionRegion; }
     public Blacklist getBreakBlacklist()             { return breakBlacklist; }
     public Blacklist getPlaceBlacklist()             { return placeBlacklist; }

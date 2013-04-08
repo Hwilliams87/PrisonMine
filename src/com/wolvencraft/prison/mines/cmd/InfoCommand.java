@@ -1,7 +1,7 @@
 /*
  * InfoCommand.java
  * 
- * Statistics
+ * PrisonMine
  * Copyright (C) 2013 bitWolfy <http://www.wolvencraft.com> and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,7 +34,7 @@ import com.wolvencraft.prison.mines.util.DrawingTools;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 import com.wolvencraft.prison.mines.util.constants.BlacklistState;
-import com.wolvencraft.prison.mines.util.constants.Protection;
+import com.wolvencraft.prison.mines.util.constants.ProtectionType;
 import com.wolvencraft.prison.mines.util.data.Blacklist;
 import com.wolvencraft.prison.mines.util.flags.BaseFlag;
 
@@ -87,20 +87,20 @@ public class InfoCommand  implements BaseCommand {
             try {
                 String line = "[ ";
                 
-                if(curMine.getProtection().contains(Protection.BLOCK_BREAK)) {
+                if(curMine.getProtection().contains(ProtectionType.BLOCK_BREAK)) {
                     if(curMine.getBreakBlacklist().getState().equals(BlacklistState.WHITELIST)) line += ChatColor.YELLOW + "Break" + ChatColor.WHITE;
                     else line += ChatColor.GREEN + "Break" + ChatColor.WHITE;
                 } else line += ChatColor.RED + "Break" + ChatColor.WHITE;
                 
                 line += " | ";
                 
-                if(curMine.getProtection().contains(Protection.PVP)) {
+                if(curMine.getProtection().contains(ProtectionType.PVP)) {
                     line += ChatColor.GREEN + "PvP" + ChatColor.WHITE;
                 } else line += ChatColor.RED + "PvP" + ChatColor.WHITE;
 
                 line += " | ";
                 
-                if(curMine.getProtection().contains(Protection.BLOCK_PLACE)) {
+                if(curMine.getProtection().contains(ProtectionType.BLOCK_PLACE)) {
                     if(curMine.getPlaceBlacklist().getState().equals(BlacklistState.WHITELIST)) line += ChatColor.YELLOW + "Place" + ChatColor.WHITE;
                     else line += ChatColor.GREEN + "Place" + ChatColor.WHITE;
                 } else line += ChatColor.RED + "Place" + ChatColor.WHITE;

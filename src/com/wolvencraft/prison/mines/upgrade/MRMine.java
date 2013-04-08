@@ -1,3 +1,23 @@
+/*
+ * MRMine.java
+ * 
+ * PrisonMine
+ * Copyright (C) 2013 bitWolfy <http://www.wolvencraft.com> and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.wolvencraft.prison.mines.upgrade;
 
 import org.bukkit.Bukkit;
@@ -10,7 +30,7 @@ import org.bukkit.util.Vector;
 
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
-import com.wolvencraft.prison.mines.util.constants.Protection;
+import com.wolvencraft.prison.mines.util.constants.ProtectionType;
 import com.wolvencraft.prison.mines.util.data.Blacklist;
 import com.wolvencraft.prison.mines.util.data.MineBlock;
 import com.wolvencraft.prison.mines.util.data.SimpleLoc;
@@ -48,7 +68,7 @@ public class MRMine implements ConfigurationSerializable, Listener {
     private int cooldownSeconds;
     private boolean warned;
     private List<Integer> warningTimes;
-    private List<Protection> enabledProtection;
+    private List<ProtectionType> enabledProtection;
     private Location protOne;
     private Location protTwo;
     private Blacklist breakBlacklist;
@@ -85,9 +105,9 @@ public class MRMine implements ConfigurationSerializable, Listener {
         warningTimes = (List<Integer>) me.get("warningTimes");
         blocks = (List<MineBlock>) me.get("blocks");
         List<String> names = (List<String>) me.get("protectionTypes");
-        enabledProtection = new ArrayList<Protection>();
+        enabledProtection = new ArrayList<ProtectionType>();
         for(String name : names)
-            enabledProtection.add(Protection.valueOf(name));
+            enabledProtection.add(ProtectionType.valueOf(name));
         protOne = ((Vector) me.get("protOne")).toLocation(world);
         protTwo = ((Vector) me.get("protTwo")).toLocation(world);
         breakBlacklist = (Blacklist) me.get("breakBlacklist");
@@ -116,7 +136,7 @@ public class MRMine implements ConfigurationSerializable, Listener {
         me.put("isWarned", warned);
         me.put("warningTimes", warningTimes);
         List<String> names = new ArrayList<String>();
-        for(Protection prot : enabledProtection)
+        for(ProtectionType prot : enabledProtection)
             names.add(prot.name());
         me.put("protectionTypes", names);
         me.put("protOne", protOne.toVector());

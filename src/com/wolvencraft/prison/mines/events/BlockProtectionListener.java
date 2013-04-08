@@ -1,3 +1,23 @@
+/*
+ * BlockProtectionListener.java
+ * 
+ * PrisonMine
+ * Copyright (C) 2013 bitWolfy <http://www.wolvencraft.com> and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.wolvencraft.prison.mines.events;
 
 import org.bukkit.block.Block;
@@ -15,7 +35,7 @@ import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.constants.BlacklistState;
-import com.wolvencraft.prison.mines.util.constants.Protection;
+import com.wolvencraft.prison.mines.util.constants.ProtectionType;
 import com.wolvencraft.prison.mines.util.data.Blacklist;
 
 public class BlockProtectionListener implements Listener {
@@ -50,7 +70,7 @@ public class BlockProtectionListener implements Listener {
                 return;
             }
                 
-            if(!mine.getProtection().contains(Protection.BLOCK_BREAK)) {
+            if(!mine.getProtection().contains(ProtectionType.BLOCK_BREAK)) {
                 Message.debug("Mine has no block breaking protection enabled");
                 return;
             }
@@ -118,7 +138,7 @@ public class BlockProtectionListener implements Listener {
                 continue;
             }
                 
-            if(!mine.getProtection().contains(Protection.BLOCK_PLACE)) {
+            if(!mine.getProtection().contains(ProtectionType.BLOCK_PLACE)) {
                 Message.debug("Mine has no block placement protection enabled");
                 return;
             }
@@ -180,7 +200,7 @@ public class BlockProtectionListener implements Listener {
                   return;
             }
             
-            if (!mine.getProtection().contains(Protection.BLOCK_PLACE)) {
+            if (!mine.getProtection().contains(ProtectionType.BLOCK_PLACE)) {
                 Message.debug("The mine doesn't have placement protection enabled, skipping rest of check...");
                 continue;
             }
@@ -237,7 +257,7 @@ public class BlockProtectionListener implements Listener {
                   return;
             }
             
-            if (!mine.getProtection().contains(Protection.BLOCK_BREAK)) {
+            if (!mine.getProtection().contains(ProtectionType.BLOCK_BREAK)) {
                 Message.debug("The mine doesn't have breaking protection enabled, skipping rest of check...");
                 continue;
             }

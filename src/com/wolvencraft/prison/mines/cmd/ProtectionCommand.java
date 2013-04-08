@@ -1,7 +1,7 @@
 /*
  * ProtectionCommand.java
  * 
- * Statistics
+ * PrisonMine
  * Copyright (C) 2013 bitWolfy <http://www.wolvencraft.com> and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -37,7 +37,7 @@ import com.wolvencraft.prison.mines.settings.Language;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.Util;
 import com.wolvencraft.prison.mines.util.constants.BlacklistState;
-import com.wolvencraft.prison.mines.util.constants.Protection;
+import com.wolvencraft.prison.mines.util.constants.ProtectionType;
 
 public class ProtectionCommand  implements BaseCommand {
     
@@ -76,11 +76,11 @@ public class ProtectionCommand  implements BaseCommand {
         else if(args[1].equalsIgnoreCase("pvp")) {
             if(args.length != 2) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
             
-            if(curMine.getProtection().contains(Protection.PVP)) {
-                curMine.getProtection().remove(Protection.PVP);
+            if(curMine.getProtection().contains(ProtectionType.PVP)) {
+                curMine.getProtection().remove(ProtectionType.PVP);
                 Message.sendFormattedMine("PVP protection has been turned " + ChatColor.RED + "off");
             } else {
-                curMine.getProtection().add(Protection.PVP);
+                curMine.getProtection().add(ProtectionType.PVP);
                 Message.sendFormattedMine("PVP protection has been turned " + ChatColor.GREEN + "on");
             }
         }
@@ -96,25 +96,25 @@ public class ProtectionCommand  implements BaseCommand {
                     return false;
                 }
                 
-                if(curMine.getProtection().contains(Protection.BLOCK_BREAK) && curMine.getBreakBlacklist().getState().equals(BlacklistState.BLACKLIST)) {
+                if(curMine.getProtection().contains(ProtectionType.BLOCK_BREAK) && curMine.getBreakBlacklist().getState().equals(BlacklistState.BLACKLIST)) {
                     curMine.getBreakBlacklist().setState(BlacklistState.DISABLED);
-                    curMine.getProtection().remove(Protection.BLOCK_BREAK);
+                    curMine.getProtection().remove(ProtectionType.BLOCK_BREAK);
                     Message.sendFormattedSuccess("The block breaking protection is now disabled");
                 } else {
                     curMine.getBreakBlacklist().setState(BlacklistState.BLACKLIST);
-                    curMine.getProtection().add(Protection.BLOCK_BREAK);
+                    curMine.getProtection().add(ProtectionType.BLOCK_BREAK);
                     Message.sendFormattedSuccess("The block breaking protection is now in blacklist mode");
                 }
             } else if(args[2].equalsIgnoreCase("whitelist")) {
                 if(args.length != 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
                 
-                if(curMine.getProtection().contains(Protection.BLOCK_BREAK) && curMine.getBreakBlacklist().getState().equals(BlacklistState.WHITELIST)) {
+                if(curMine.getProtection().contains(ProtectionType.BLOCK_BREAK) && curMine.getBreakBlacklist().getState().equals(BlacklistState.WHITELIST)) {
                     curMine.getBreakBlacklist().setState(BlacklistState.DISABLED);
-                    curMine.getProtection().remove(Protection.BLOCK_BREAK);
+                    curMine.getProtection().remove(ProtectionType.BLOCK_BREAK);
                     Message.sendFormattedSuccess("The block breaking protection is now disabled");
                 } else {
                     curMine.getBreakBlacklist().setState(BlacklistState.WHITELIST);
-                    curMine.getProtection().add(Protection.BLOCK_BREAK);
+                    curMine.getProtection().add(ProtectionType.BLOCK_BREAK);
                     Message.sendFormattedSuccess("The block breaking protection is now in whitelist mode");
                 }
             } else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {
@@ -148,25 +148,25 @@ public class ProtectionCommand  implements BaseCommand {
             if(args[2].equalsIgnoreCase("blacklist")) {
                 if(args.length != 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
                 
-                if(curMine.getProtection().contains(Protection.BLOCK_PLACE) && curMine.getPlaceBlacklist().getState().equals(BlacklistState.BLACKLIST)) {
+                if(curMine.getProtection().contains(ProtectionType.BLOCK_PLACE) && curMine.getPlaceBlacklist().getState().equals(BlacklistState.BLACKLIST)) {
                     curMine.getPlaceBlacklist().setState(BlacklistState.DISABLED);
-                    curMine.getProtection().remove(Protection.BLOCK_PLACE);
+                    curMine.getProtection().remove(ProtectionType.BLOCK_PLACE);
                     Message.sendFormattedSuccess("The place protection is now disabled");
                 } else {
                     curMine.getPlaceBlacklist().setState(BlacklistState.BLACKLIST);
-                    curMine.getProtection().add(Protection.BLOCK_PLACE);
+                    curMine.getProtection().add(ProtectionType.BLOCK_PLACE);
                     Message.sendFormattedSuccess("The block placement protection is now in blacklist mode");
                 }
             } else if(args[2].equalsIgnoreCase("whitelist")) {
                 if(args.length != 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
                 
-                if(curMine.getProtection().contains(Protection.BLOCK_PLACE) && curMine.getPlaceBlacklist().getState().equals(BlacklistState.WHITELIST)) {
+                if(curMine.getProtection().contains(ProtectionType.BLOCK_PLACE) && curMine.getPlaceBlacklist().getState().equals(BlacklistState.WHITELIST)) {
                     curMine.getPlaceBlacklist().setState(BlacklistState.DISABLED);
-                    curMine.getProtection().remove(Protection.BLOCK_PLACE);
+                    curMine.getProtection().remove(ProtectionType.BLOCK_PLACE);
                     Message.sendFormattedSuccess("The block placement protection is now disabled");
                 } else {
                     curMine.getPlaceBlacklist().setState(BlacklistState.WHITELIST);
-                    curMine.getProtection().add(Protection.BLOCK_PLACE);
+                    curMine.getProtection().add(ProtectionType.BLOCK_PLACE);
                     Message.sendFormattedSuccess("The block placement protection is now in whitelist mode");
                 }
             } else if(args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("+")) {

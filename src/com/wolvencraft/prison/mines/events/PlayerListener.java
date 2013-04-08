@@ -1,3 +1,23 @@
+/*
+ * PlayerListener.java
+ * 
+ * PrisonMine
+ * Copyright (C) 2013 bitWolfy <http://www.wolvencraft.com> and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.wolvencraft.prison.mines.events;
 
 import org.bukkit.Location;
@@ -13,7 +33,7 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
-import com.wolvencraft.prison.mines.util.constants.Protection;
+import com.wolvencraft.prison.mines.util.constants.ProtectionType;
 
 public class PlayerListener implements Listener {
     
@@ -50,7 +70,7 @@ public class PlayerListener implements Listener {
                   return;
             }
             
-            if (!mine.getProtection().contains(Protection.PVP)) {
+            if (!mine.getProtection().contains(ProtectionType.PVP)) {
                 Message.debug(mine + " doesn't have PvP protection on");
                 continue;
             }
