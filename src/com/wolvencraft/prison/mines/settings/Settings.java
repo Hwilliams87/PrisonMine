@@ -56,7 +56,7 @@ public class Settings extends com.wolvencraft.prison.settings.Settings {
         RESET_TRIGGERS_CHILDREN_RESETS = plugin.getConfig().getBoolean("reset.manual-resets-children");
         BANNEDNAMES = new ArrayList<String>();
         for(CommandManager cmd : CommandManager.values()) {
-            for(String alias : cmd.getLocalAlias()) {
+            for(String alias : cmd.getAlias()) {
                 BANNEDNAMES.add(alias);
             }
         }

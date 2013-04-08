@@ -58,33 +58,70 @@ public enum CommandManager implements CommandHook {
     
     private static CommandSender sender = null;
     
-    CommandManager(Class<?> clazz, String permission, boolean allowConsole, String... args) {
-        try { this.clazz = (BaseCommand) clazz.newInstance(); }
+    private BaseCommand command;
+    private String permission;
+    private boolean allowConsole;
+    private List<String> alias;
+    
+    CommandManager(Class<?> command, String permission, boolean allowConsole, String... args) {
+        try { this.command = (BaseCommand) command.newInstance(); }
         catch (InstantiationException e) { Message.log(Level.SEVERE, "Error while instantiating a command! InstantiationException"); return; }
         catch (IllegalAccessException e) { Message.log(Level.SEVERE, "Error while instantiating a command! IllegalAccessException"); return; }
         
         this.permission = permission;
         this.allowConsole = allowConsole;
+        
         alias = new ArrayList<String>();
-        for(String arg : args) alias.add(arg);
+        for(String arg : args) {
+            alias.add(arg);
+        }
     }
     
-    private BaseCommand clazz;
-    private String permission;
-    private boolean allowConsole;
-    private List<String> alias;
+    /**
+     * Returns the command instance
+     * @return Command instance
+     */
+    public BaseCommand get() {
+        return command;
+    }
     
-    public BaseCommand get() { return clazz; }
-    public boolean isCommand(String arg) { return alias.contains(arg); }
-    public void getHelp() { clazz.getHelp(); }
-    public void getHelpLine() { clazz.getHelpLine(); }
+    /**
+     * Checks if the specified alias corresponds to the command
+     * @param alias Alias to check
+     */
+    public boolean isCommand(String alias) {
+        return this.alias.contains(alias);
+    }
     
-    public List<String> getLocalAlias() {
+    /**
+     * Returns the verbose help message for the command
+     */
+    public void getHelp() {
+        command.getHelp();
+    }
+    
+    /**
+     * Returns the single-line help message for the command
+     */
+    public void getHelpLine() {
+        command.getHelpLine();
+    }
+    
+    /**
+     * Returns the full list of aliases for the corresponding command
+     * @return List of aliases
+     */
+    public List<String> getAlias() {
         List<String> temp = new ArrayList<String>();
         for(String str : alias) temp.add(str);
         return temp;
     }
-
+    
+    /**
+     * Executes the corresponding command with specified arguments.<br />
+     * Checks for player's permissions before passing the arguments to the command
+     * @param args Arguments to pass on to the command
+     */
     public boolean run(String[] args) {
         if(sender != null) {
             if(sender instanceof Player) Message.debug("Command issued by player: " + sender.getName());
@@ -94,7 +131,7 @@ public enum CommandManager implements CommandHook {
         if(!allowConsole && !(sender instanceof Player)) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_SENDERISNOTPLAYER); return false; }
         if(permission != null && (sender instanceof Player) && !sender.hasPermission(permission)) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_ACCESS); return false; }
         try {
-            return clazz.run(args);
+            return command.run(args);
         } catch (Exception e) {
             Message.sendFormattedError("An internal error occurred while running the command", false);
             Message.log(Level.SEVERE, "=== An error occurred while executing command ===");
@@ -113,13 +150,38 @@ public enum CommandManager implements CommandHook {
             return false;
         }
     }
-
+    
+    /**
+     * Executes the corresponding command with specified arguments.<br />
+     * Checks for player's permissions before passing the arguments to the command.<br />
+     * Wraps around <code>run(String[] arg)</code> with one argument.
+     * @param args Arguments to pass on to the command
+     */
     public boolean run(String arg) {
         String[] args = {"", arg};
         return run(args);
     }
     
-    public static CommandSender getSender() { return sender; }
-    public static void setSender(CommandSender sender) { CommandManager.sender = sender; }
-    public static void resetSender() { sender = null; }
+    /**
+     * Returns the CommandSender for the command that is currently being processed.
+     * @return Command sender, or <b>null</b> if there is no command being processed
+     */
+    public static CommandSender getSender() {
+        return sender;
+    }
+    
+    /**
+     * Sets the CommandSender to the one specified
+     * @param sender Sender to be set
+     */
+    public static void setSender(CommandSender sender) {
+        CommandManager.sender = sender;
+    }
+    
+    /**
+     * Resets the active command sender to null
+     */
+    public static void resetSender() {
+        sender = null;
+    }
 }
