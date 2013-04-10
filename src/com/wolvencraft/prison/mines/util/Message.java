@@ -40,7 +40,7 @@ public class Message {
         if(message == null) message = "";
         if(parseVars && curMine != null) message = Util.parseVars(message, curMine);
         else message = Util.parseColor(message);
-        String[] parts = message.split("\\n");
+        String[] parts = message.split("<br>");
         for(String part : parts) sender.sendMessage(part);
     }
     
@@ -153,7 +153,8 @@ public class Message {
      * @param message Message to be sent
      */
     public static void log(String message) {
-        logger.info(message);
+        String[] parts = message.split("<br>");
+        for(String part : parts) logger.info(part);
     }
     
     /**
@@ -162,7 +163,8 @@ public class Message {
      * @param message Message to be sent
      */
     public static void log(Level level, String message) {
-        logger.log(level, message);
+        String[] parts = message.split("<br>");
+        for(String part : parts) logger.log(level, part);
     }
     
     public static void formatHelp(String command, String arguments, String description, String node) {
