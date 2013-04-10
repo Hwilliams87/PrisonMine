@@ -77,6 +77,10 @@ public class PrisonMine extends PrisonPlugin {
      */
     public PrisonMine() {
         instance = this;
+    }
+    
+    @Override
+    public void onEnable() {
         prisonSuite = PrisonSuite.addPlugin(this);
 
         getConfig().options().copyDefaults(true);
@@ -86,10 +90,7 @@ public class PrisonMine extends PrisonPlugin {
         getLanguageData().options().copyDefaults(true);
         saveLanguageData();
         language = new Language(this);
-    }
-    
-    @Override
-    public void onEnable() {
+        
         Message.debug("+-----[ Starting up PrisonMine ]-----");
 
         Message.debug("+ Register serializable classes");
