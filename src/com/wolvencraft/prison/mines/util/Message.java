@@ -40,7 +40,7 @@ public class Message {
         if(message == null) message = "";
         if(parseVars && curMine != null) message = Util.parseVars(message, curMine);
         else message = Util.parseColor(message);
-        String[] parts = message.split("\n");
+        String[] parts = message.split("\\n");
         for(String part : parts) sender.sendMessage(part);
     }
     
