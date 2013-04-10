@@ -32,7 +32,7 @@ import com.wolvencraft.prison.mines.CommandManager;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.mine.Mine;
 
-public class Message extends com.wolvencraft.prison.util.Message {
+public class Message {
     private static Logger logger = PrisonMine.getInstance().getLogger();
     
     public static void send(CommandSender sender, String message, boolean parseVars, Mine curMine) {
@@ -40,7 +40,8 @@ public class Message extends com.wolvencraft.prison.util.Message {
         if(message == null) message = "";
         if(parseVars && curMine != null) message = Util.parseVars(message, curMine);
         else message = Util.parseColor(message);
-        sender.sendMessage(message);
+        String[] parts = message.split("\n");
+        for(String part : parts) sender.sendMessage(part);
     }
     
     public static void send(CommandSender sender, String message, boolean parseVars) {
