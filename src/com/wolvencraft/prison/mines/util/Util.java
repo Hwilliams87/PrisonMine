@@ -248,6 +248,7 @@ public class Util {
     
     /**
      * Checks if a string is numeric
+     * @deprecated No longer used
      * @param str String String to be checked
      * @return boolean True if a string is numeric
      */

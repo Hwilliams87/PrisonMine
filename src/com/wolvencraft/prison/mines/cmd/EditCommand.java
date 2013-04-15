@@ -21,6 +21,8 @@
 package com.wolvencraft.prison.mines.cmd;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.List;
 
 
@@ -86,11 +88,10 @@ public class EditCommand  implements BaseCommand {
             double percent, percentAvailable = air.getChance();
             
             if(args.length == 3) {
-                if(Util.isNumeric(args[2])) percent = Double.parseDouble(args[2]);
-                else {
-                    try { percent = Double.parseDouble(args[2].replace("%", "")); }
-                    catch(NumberFormatException nfe) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
-                }
+                try { percent = NumberFormat.getInstance().parse(args[2].replace("%", "")).doubleValue(); }
+                catch (ParseException e) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
+                catch (NumberFormatException nfe) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
+                
                 percent = percent / 100;
             }
             else percent = percentAvailable;
@@ -125,18 +126,16 @@ public class EditCommand  implements BaseCommand {
             double percent = 0;
             
             if(args.length == 3) {
-                if(Util.isNumeric(args[2])) percent = Double.parseDouble(args[2]);
-                else {
-                    try { percent = Double.parseDouble(args[2].replace("%", "")); }
-                    catch(NumberFormatException nfe) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
-                }
+                try { percent = NumberFormat.getInstance().parse(args[2].replace("%", "")).doubleValue(); }
+                catch (ParseException e) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
+                catch (NumberFormatException nfe) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
+                
                 percent = percent / 100;
                 if(percent > blockData.getChance()) percent = blockData.getChance();
                 air.setChance(air.getChance() + percent);
                 blockData.setChance(blockData.getChance() - percent);
                 Message.sendFormattedMine(Util.formatPercent(percent) + " of " + args[1] + " was successfully removed from the mine");
-            }
-            else {
+            } else {
                 air.setChance(air.getChance() + blockData.getChance());
                 curMine.removeBlock(blockData);
                 Message.sendFormattedMine(args[1] + " was successfully removed from the mine");
