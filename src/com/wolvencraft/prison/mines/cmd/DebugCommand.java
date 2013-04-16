@@ -21,6 +21,8 @@
 package com.wolvencraft.prison.mines.cmd;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -72,6 +74,12 @@ public class DebugCommand implements BaseCommand {
         } else if(args[0].equalsIgnoreCase("unload")) {
             PrisonMine.removeMine(Mine.get(args[1]));
             Message.sendFormatted("DEBUG", "Unloaded " + args[1] + " from memory", false);
+            return true;
+        } else if(args[0].equalsIgnoreCase("locale")) {
+            if(args[1].equalsIgnoreCase("fr")) Locale.setDefault(Locale.FRENCH);
+            else Locale.setDefault(Locale.ENGLISH);
+            ResourceBundle.clearCache();
+            Message.sendFormatted("DEBUG", "Locale set to " + Locale.getDefault().toString(), false);
             return true;
         } else {
             Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);

@@ -20,7 +20,6 @@
 
 package com.wolvencraft.prison.mines.cmd;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
@@ -88,8 +87,9 @@ public class EditCommand  implements BaseCommand {
             double percent, percentAvailable = air.getChance();
             
             if(args.length == 3) {
-                try { percent = NumberFormat.getInstance().parse(args[2].replace("%", "")).doubleValue(); }
-                catch (ParseException e) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
+                String percentString = args[2].replace("%", "").replace(",", ".");
+                
+                try { percent = Double.parseDouble(percentString); }
                 catch (NumberFormatException nfe) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
                 
                 percent = percent / 100;
@@ -97,13 +97,11 @@ public class EditCommand  implements BaseCommand {
             else percent = percentAvailable;
             
             if(percent <= 0) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
-            DecimalFormat dFormat = new DecimalFormat("#.########");
-            percent = Double.valueOf(dFormat.format(percent));
             
             if((percentAvailable - percent) < 0) { Message.sendFormattedError("Invalid percentage. Use /mine info " + curMine.getId() + " to review the percentages"); return false; }
             else percentAvailable -= percent;
             
-            air.setChance(Double.valueOf(dFormat.format(percentAvailable)));
+            air.setChance(Double.valueOf(percentAvailable));
             MineBlock index = curMine.getBlock(block);
             
             if(index == null) curMine.addBlock(block, percent);

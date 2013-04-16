@@ -24,7 +24,6 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.material.MaterialData;
 
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,8 +40,6 @@ public class MineBlock implements ConfigurationSerializable {
 
     public MineBlock(Map<String, Object> me) {
         chance = (Double) me.get("chance");
-        DecimalFormat dFormat = new DecimalFormat("#.########");
-        chance = Double.valueOf(dFormat.format(chance));
         block = new MaterialData((Integer) me.get("blockId"), ((Integer) me.get("blockData")).byteValue());
     }
 
