@@ -101,7 +101,7 @@ public class EditCommand  implements BaseCommand {
             if((percentAvailable - percent) < 0) { Message.sendFormattedError("Invalid percentage. Use /mine info " + curMine.getId() + " to review the percentages"); return false; }
             else percentAvailable -= percent;
             
-            air.setChance(Double.valueOf(percentAvailable));
+            air.setChance(percentAvailable);
             MineBlock index = curMine.getBlock(block);
             
             if(index == null) curMine.addBlock(block, percent);
