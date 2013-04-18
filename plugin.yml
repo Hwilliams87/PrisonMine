@@ -1,6 +1,6 @@
 name: PrisonMine
 main: com.wolvencraft.prison.mines.PrisonMine
-version: 1.31.98
+version: 1.31.100
 description: A must-have tool for all prison servers
 author: bitWolfy
 depend: [PrisonSuite]
