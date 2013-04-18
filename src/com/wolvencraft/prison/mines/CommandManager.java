@@ -135,6 +135,7 @@ public enum CommandManager implements CommandHook {
         } catch (Exception e) {
             Message.sendFormattedError("An internal error occurred while running the command", false);
             Message.log(Level.SEVERE, "=== An error occurred while executing command ===");
+            Message.log(Level.SEVERE, "Version = " + PrisonMine.getInstance().getDescription().getVersion());
             Message.log(Level.SEVERE, "Exception = " + e.toString());
             Message.log(Level.SEVERE, "CommandSender = " + sender.getName());
             Message.log(Level.SEVERE, "isConsole = " + (sender instanceof ConsoleCommandSender));
