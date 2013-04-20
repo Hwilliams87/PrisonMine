@@ -125,6 +125,7 @@ public class DisplaySign implements ConfigurationSerializable  {
      */
     public Map<String, Object> serialize() {
         Map<String, Object> me = new HashMap<String, Object>();
+        if(type == null) type = DisplaySignType.Display;
         me.put("id", signId);
         me.put("loc", sign.getLocation().toVector());
         me.put("world", sign.getLocation().getWorld().getName());
