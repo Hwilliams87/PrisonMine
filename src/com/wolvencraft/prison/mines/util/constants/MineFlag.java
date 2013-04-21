@@ -29,6 +29,8 @@ import com.wolvencraft.prison.mines.util.flags.*;
 
 public enum MineFlag {
     
+    CommandAfterFlag(CommandAfterFlag.class, "commandafter", true, true, true),
+    CommandBeforeFlag(CommandBeforeFlag.class, "commandbefore", true, true, true),
     MoneyReward(MoneyRewardFlag.class, "moneyreward", true, false),
     MoneyRewardPlus(MoneyRewardPlusFlag.class, "moneyrewardpluss", true, false),
     NoExpDrop(NoExpDropFlag.class, "noexpdrop", false, false),
@@ -46,12 +48,22 @@ public enum MineFlag {
         this.clazz = clazz;
         this.alias = alias;
         this.hasOptions = hasOptions;
+        this.multiWord = false;
+        this.acceptDuplicates = acceptDuplicates;
+    }
+    
+    MineFlag(Class<?> clazz, String alias, boolean hasOptions, boolean multiWord, boolean acceptDuplicates) {
+        this.clazz = clazz;
+        this.alias = alias;
+        this.hasOptions = hasOptions;
+        this.multiWord = multiWord;
         this.acceptDuplicates = acceptDuplicates;
     }
     
     Class<?> clazz;
     String alias;
     boolean hasOptions;
+    boolean multiWord;
     boolean acceptDuplicates;
     
     public BaseFlag dispatch() {
@@ -67,6 +79,7 @@ public enum MineFlag {
     }
     
     public boolean hasOptions() { return hasOptions; }
+    public boolean isMultiWord() { return multiWord; }
     public boolean acceptDuplicates() { return acceptDuplicates; }
     public String getAlias() { return alias; }
     public boolean isOptionValid (String option) { return this.dispatch().isOptionValid(option); }

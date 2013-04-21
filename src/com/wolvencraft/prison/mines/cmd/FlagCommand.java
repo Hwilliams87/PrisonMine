@@ -33,7 +33,7 @@ public class FlagCommand implements BaseCommand {
         if(args.length == 1 || (args.length == 2 && args[1].equalsIgnoreCase("help"))) { getHelp(); return true; }
         
         Language language = PrisonMine.getLanguage();
-        if(args.length > 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
+//        if(args.length > 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
         
         Mine curMine = PrisonMine.getCurMine();
         if(curMine == null) { Message.sendFormattedError(PrisonMine.getLanguage().ERROR_MINENOTSELECTED); return false; }
@@ -42,16 +42,24 @@ public class FlagCommand implements BaseCommand {
         if(flag == null) { Message.sendFormattedError("The specified flag does not exist"); return false; }
         
         if(flag.hasOptions()) {
-            if(args.length != 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
+            if(!flag.isMultiWord() && args.length != 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
             if(!flag.isOptionValid(args[2])) { Message.sendFormattedError("This option is not valid"); return false; }
+            
+            String argString = "";
+            if(!flag.isMultiWord()) argString = args[2];
+            else {
+                for(int i = 2; i < args.length; i++) {
+                    argString += args[i] + " ";
+                }
+            }
             
             if(curMine.hasFlag(flag)) {
                 if(flag.acceptDuplicates()) {
-                    if(curMine.hasFlag(flag, args[2])) {
-                        curMine.removeFlag(flag, args[2]);
+                    if(curMine.hasFlag(flag, argString)) {
+                        curMine.removeFlag(flag, argString);
                         Message.sendFormattedMine("Flag " + flag + " has been removed");
                     } else {
-                        curMine.addFlag(flag, args[2]);
+                        curMine.addFlag(flag, argString);
                         Message.sendFormattedMine("Flag " + flag + " has been added");
                     }
                 } else {
@@ -59,7 +67,7 @@ public class FlagCommand implements BaseCommand {
                     Message.sendFormattedMine("Flag " + flag + " has been removed");
                 }
             } else {
-                curMine.addFlag(flag, args[2]);
+                curMine.addFlag(flag, argString);
                 Message.sendFormattedMine("Flag " + flag + " has been added");
             }
         } else {

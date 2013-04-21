@@ -44,6 +44,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.command.CommandException;
 //import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -283,6 +284,14 @@ public class Mine implements ConfigurationSerializable {
             catch(ConcurrentModificationException cme) { Message.log(Level.WARNING, "An error occured while removing players from the mine"); }
         }
         
+        if(hasFlag(MineFlag.CommandBeforeFlag)) {
+            for(BaseFlag flag : flags) {
+                if(!flag.getName().equals("commandbefore")) continue;
+                try { Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), flag.getOption()); }
+                catch (CommandException ex) { }
+            }
+        }
+        
         if(hasFlag(MineFlag.ResetSound)) {
             String soundName = getFlag(MineFlag.ResetSound).getOption();
             if(Util.soundExists(soundName)) {
@@ -301,9 +310,19 @@ public class Mine implements ConfigurationSerializable {
             torch.setType(Material.REDSTONE_TORCH_ON);
         }
         */
+        boolean result = true;
+        if(hasFlag(MineFlag.SurfaceOre)) result = CustomTerrainRoutine.run(this);
+        else result = RandomTerrainRoutine.run(this);
         
-        if(hasFlag(MineFlag.SurfaceOre)) return CustomTerrainRoutine.run(this);
-        else return RandomTerrainRoutine.run(this);
+        if(hasFlag(MineFlag.CommandAfterFlag)) {
+            for(BaseFlag flag : flags) {
+                if(!flag.getName().equals("commandafter")) continue;
+                try { Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), flag.getOption()); }
+                catch (CommandException ex) { }
+            }
+        }
+        
+        return result;
     }
     
     /**
