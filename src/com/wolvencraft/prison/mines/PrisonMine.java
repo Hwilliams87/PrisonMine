@@ -387,4 +387,15 @@ public class PrisonMine extends PrisonPlugin {
     public static void removeSign (DisplaySign sign) {
         signs.remove(sign);
     }
+    
+    /**
+     * Wraps around a BlocksUtil method to check if the server's bukkit version differs from the one
+     * the plugin was compiled with
+     * @return <b>true</b> if it is safe to proceed, <b>false</b> otherwise
+     */
+    public static boolean isCraftBukkitCompatible() {
+        try { com.wolvencraft.prison.mines.util.BlocksUtil.isBukkitCompatible(); }
+        catch (Throwable t) { return false; }
+        return true;
+    }
 }

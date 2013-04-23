@@ -312,7 +312,12 @@ public class Mine implements ConfigurationSerializable {
         */
         boolean result = true;
         if(hasFlag(MineFlag.SurfaceOre)) result = CustomTerrainRoutine.run(this);
-        else result = RandomTerrainRoutine.run(this);
+        else {
+// TODO Make this actually work
+//            if(PrisonMine.isCraftBukkitCompatible()) result = RandomFastTerrainRoutine.run(this);
+//            else 
+                result = RandomTerrainRoutine.run(this);
+        }
         
         if(hasFlag(MineFlag.CommandAfterFlag)) {
             for(BaseFlag flag : flags) {
