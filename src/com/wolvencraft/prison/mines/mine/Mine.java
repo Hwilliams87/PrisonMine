@@ -24,6 +24,7 @@ import com.wolvencraft.prison.region.PrisonRegion;
 import com.wolvencraft.prison.region.PrisonSelection;
 import com.wolvencraft.prison.mines.PrisonMine;
 import com.wolvencraft.prison.mines.routines.CustomTerrainRoutine;
+//import com.wolvencraft.prison.mines.routines.RandomFastTerrainRoutine;
 import com.wolvencraft.prison.mines.routines.RandomTerrainRoutine;
 import com.wolvencraft.prison.mines.triggers.BaseTrigger;
 import com.wolvencraft.prison.mines.triggers.CompositionTrigger;
@@ -313,9 +314,9 @@ public class Mine implements ConfigurationSerializable {
         boolean result = true;
         if(hasFlag(MineFlag.SurfaceOre)) result = CustomTerrainRoutine.run(this);
         else {
-// TODO Make this actually work
+// TODO One day, I'll make this work. One day...
 //            if(PrisonMine.isCraftBukkitCompatible()) result = RandomFastTerrainRoutine.run(this);
-//            else 
+//            else
                 result = RandomTerrainRoutine.run(this);
         }
         

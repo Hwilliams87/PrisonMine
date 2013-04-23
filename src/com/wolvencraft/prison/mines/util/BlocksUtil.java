@@ -46,6 +46,7 @@ public class BlocksUtil {
          
             chunksection.a(b.getX() & 15, b.getY() & 15, b.getZ() & 15, typeId);
             chunksection.b(b.getX() & 15, b.getY() & 15, b.getZ() & 15, data);
+            chunksection.c(b.getX() & 15, b.getY() & 15, b.getZ() & 15);
          
         } catch (Exception e) { e.printStackTrace(); }
     }

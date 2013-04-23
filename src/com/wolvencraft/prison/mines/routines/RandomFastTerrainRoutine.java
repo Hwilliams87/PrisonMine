@@ -23,6 +23,7 @@ package com.wolvencraft.prison.mines.routines;
 import java.util.ConcurrentModificationException;
 import java.util.logging.Level;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -59,6 +60,20 @@ public class RandomFastTerrainRoutine {
                     }
                 }
             }
+            int totalChunks = 0;
+            int updatedChunks = 0;
+            for(int x = one.getBlockX(); x <= two.getBlockX(); x+= 16) {
+                for(int z = one.getBlockZ(); z <= two.getBlockZ(); z+=16) {
+                    Chunk chunk = world.getChunkAt(x, z);
+                    if(!chunk.isLoaded()) {
+                        Message.debug("| Chunk was not loaded at x=" + x + ", z=" + z);
+                        chunk.load(true);
+                    }
+                    totalChunks++;
+                    if(world.refreshChunk(x, z)) { updatedChunks++; }
+                }
+            }
+            Message.debug("| " + updatedChunks + " / " + totalChunks + " chunks updated");
             Message.debug("| Reset complete! BlacklistState.DISABLED");
             return true;
         } else if(blState.equals(BlacklistState.BLACKLIST)) {
