@@ -1,3 +1,16 @@
+## PrisonMine 1.3.1 ##
+
+### Compatibility ###
+
++ CraftBukkit 1.5.2-R1.0
++ PrisonSuite 1.3
+
+### Changes ###
+
++ Update CraftBukkit to CB 1.5.2-R1.0
++ Fix the locale bug
++ General code cleanup and organization
+
 ## PrisonMine 1.3 ##
 
 ### Compatibility ###
