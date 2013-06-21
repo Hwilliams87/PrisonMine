@@ -41,7 +41,7 @@ public class ButtonResetRoutine {
             return;
         }
         
-        if(mine.getCooldown()) mine.resetCooldown();
+        if(mine.isCooldownEnabled()) mine.resetCooldown();
         
         String broadcastMessage = PrisonMine.getLanguage().RESET_MANUAL;
         broadcastMessage = Util.parseVars(broadcastMessage, mine);

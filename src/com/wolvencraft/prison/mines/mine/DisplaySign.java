@@ -30,6 +30,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -56,13 +59,14 @@ import com.wolvencraft.prison.mines.util.constants.DisplaySignType;
  *
  */
 @SerializableAs("DisplaySign")
+@Getter(AccessLevel.PUBLIC)
 public class DisplaySign implements ConfigurationSerializable  {
-    private String signId;
-    private String mineId;
+    private String id;
+    private String parentMine;
     private Sign sign;
     private DisplaySignType type;
     
-    private List<String> originalText;
+    private List<String> lines;
     
     private double price;
     
@@ -71,13 +75,13 @@ public class DisplaySign implements ConfigurationSerializable  {
      * @param sign Sign object
      */
     public DisplaySign(Sign sign) {
-        this.signId = generateId();
+        this.id = generateId();
         this.sign = sign;
         
-        originalText = new ArrayList<String>();
-        for(String line : sign.getLines()) { originalText.add(line); }
+        lines = new ArrayList<String>();
+        for(String line : sign.getLines()) { lines.add(line); }
         
-        parseLines(originalText);
+        parseLines(lines);
         
         saveFile();
     }
@@ -88,12 +92,12 @@ public class DisplaySign implements ConfigurationSerializable  {
      * @param parentSignClass DisplaySign parent
      */
     public DisplaySign(Sign sign, DisplaySign parentSignClass) {
-        signId = generateId();
+        id = generateId();
         this.sign = sign;
-        originalText = new ArrayList<String>();
-        for(String line : sign.getLines()) { originalText.add(line); }
+        lines = new ArrayList<String>();
+        for(String line : sign.getLines()) { lines.add(line); }
         
-        mineId = parentSignClass.getParent();
+        parentMine = parentSignClass.getParentMine();
         type = parentSignClass.getType();
         price = -1;
         
@@ -106,17 +110,17 @@ public class DisplaySign implements ConfigurationSerializable  {
      */
     @SuppressWarnings("unchecked")
     public DisplaySign(Map<String, Object> me) throws DisplaySignNotFoundException {
-        signId = (String) me.get("id");
-        mineId = (String) me.get("parent");
+        id = (String) me.get("id");
+        parentMine = (String) me.get("parent");
         
         World world = Bukkit.getWorld((String) me.get("world"));
         Block signBlock = world.getBlockAt(((Vector) me.get("loc")).toLocation(world));
         if(!(signBlock.getState() instanceof Sign)) throw new DisplaySignNotFoundException("No sign found at the stored location");
         sign = (Sign) signBlock.getState();
         
-        originalText = (List<String>) me.get("lines");
+        lines = (List<String>) me.get("lines");
         
-        parseLines(originalText);
+        parseLines(lines);
     }
     
     /**
@@ -126,12 +130,12 @@ public class DisplaySign implements ConfigurationSerializable  {
     public Map<String, Object> serialize() {
         Map<String, Object> me = new HashMap<String, Object>();
         if(type == null) type = DisplaySignType.Display;
-        me.put("id", signId);
+        me.put("id", id);
         me.put("loc", sign.getLocation().toVector());
         me.put("world", sign.getLocation().getWorld().getName());
-        me.put("parent", mineId);
+        me.put("parent", parentMine);
         me.put("type", type.getAlias());
-        me.put("lines", originalText);
+        me.put("lines", lines);
         me.put("price", price);
         return me;
     }
@@ -143,10 +147,10 @@ public class DisplaySign implements ConfigurationSerializable  {
                 String[] data = line.split(":");
                 
                 if(data.length == 1) {
-                    mineId = data[0];
+                    parentMine = data[0];
                     type = DisplaySignType.Display;
                 } else if(data.length == 2) {
-                    mineId = data[0];
+                    parentMine = data[0];
                     price = -1;
                     if(data[1].equalsIgnoreCase("R")) type = DisplaySignType.Reset;
                     else if(data[1].equalsIgnoreCase("O")) type = DisplaySignType.Output;
@@ -155,7 +159,7 @@ public class DisplaySign implements ConfigurationSerializable  {
                         price = Double.parseDouble(data[1]);
                     }
                 } else {
-                    mineId = data[0];
+                    parentMine = data[0];
                     type = DisplaySignType.Display;
                     price = -1;
                 }
@@ -163,8 +167,7 @@ public class DisplaySign implements ConfigurationSerializable  {
             }
         }
     }
-
-    public String getId()             { return signId; }
+    
     public Location getLocation()     { return sign.getLocation(); }
     
     public Block getAttachedBlock() {
@@ -185,11 +188,6 @@ public class DisplaySign implements ConfigurationSerializable  {
         return null;
     }
     
-    public String getParent()             { return mineId; }
-    public DisplaySignType getType()     { return type; }
-    public double getPrice()            { return price; }
-    public List<String> getLines()         { return originalText; }
-    
     /**
      * Updates the DisplaySign's lines with the appropriate variables
      * @return <b>true</b> if the update was successful, <b>false</b> otherwise
@@ -198,7 +196,7 @@ public class DisplaySign implements ConfigurationSerializable  {
         BlockState b = sign.getBlock().getState();
         if(b instanceof Sign) {
             Sign signBlock = (Sign) b;
-            for(int i = 0; i < originalText.size(); i++) { signBlock.setLine(i, Util.parseVars(originalText.get(i), Mine.get(mineId))); }
+            for(int i = 0; i < lines.size(); i++) { signBlock.setLine(i, Util.parseVars(lines.get(i), Mine.get(parentMine))); }
             signBlock.update();
             return true;
         }
@@ -258,13 +256,13 @@ public class DisplaySign implements ConfigurationSerializable  {
      * @return <b>true</b> if the save was successful, <b>false</b> if an error occurred
      */
     public boolean saveFile() {
-        File signFile = new File(new File(PrisonMine.getInstance().getDataFolder(), "signs"), signId + ".psign.yml");
+        File signFile = new File(new File(PrisonMine.getInstance().getDataFolder(), "signs"), id + ".psign.yml");
         FileConfiguration signConf =  YamlConfiguration.loadConfiguration(signFile);
         signConf.set("displaysign", this);
         try {
             signConf.save(signFile);
         } catch (IOException e) {
-            Message.log(Level.SEVERE, "Unable to serialize sign '" + signId + "'!");
+            Message.log(Level.SEVERE, "Unable to serialize sign '" + id + "'!");
             e.printStackTrace();
             return false;
         }
@@ -285,7 +283,7 @@ public class DisplaySign implements ConfigurationSerializable  {
         });
         
         for(File signFile : signFiles) {
-            if(signFile.getName().equals(signId+ ".psign.yml")) {
+            if(signFile.getName().equals(id+ ".psign.yml")) {
                 PrisonMine.removeSign(this);
                 return signFile.delete();
             }

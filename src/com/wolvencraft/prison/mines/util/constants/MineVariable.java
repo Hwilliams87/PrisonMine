@@ -22,6 +22,9 @@ package com.wolvencraft.prison.mines.util.constants;
 
 import java.util.logging.Level;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+
 import com.wolvencraft.prison.mines.mine.Mine;
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.variables.BaseVar;
@@ -34,24 +37,24 @@ import com.wolvencraft.prison.mines.util.variables.TimeTriggerVars;
 
 public enum MineVariable {
     
-    ID (IDVars.class, "ID", null, true),
-    IDS (IDVars.class, "IDS", "", false),
-    NAME (NameVars.class, "NAME", null, true),
-    NAMES (NameVars.class, "NAMES", "", false),
-    PLAYER (PlayerVars.class, "PLAYER", null, true),
-    TBLOCKS (BlockStatVars.class, "TBLOCKS", "tblocks", true),
-    RBLOCKS (BlockStatVars.class, "RBLOCKS", "rblocks", false),
-    PBLOCKS (BlockStatVars.class, "PBLOCKS", "pblocks", false),
-    PPER (CompositionTriggerVars.class, "PPER", "pper", true),
-    NPER (CompositionTriggerVars.class, "NPER", "nper", false),
-    PHOUR (TimeTriggerVars.class, "PHOUR", "phour", true),
-    PMIN (TimeTriggerVars.class, "PMIN", "pmin", false),
-    PSEC (TimeTriggerVars.class, "PSEC", "psec", false),
-    PTIME (TimeTriggerVars.class, "PTIME", "ptime", false),
-    NHOUR (TimeTriggerVars.class, "NHOUR", "nhour", true),
-    NMIN (TimeTriggerVars.class, "NMIN", "nmin", false),
-    NSEC (TimeTriggerVars.class, "NSEC", "nsec", false),
-    NTIME (TimeTriggerVars.class, "NTIME", "ntime", false);
+    ID          (IDVars.class, "ID", null, true),
+    IDS         (IDVars.class, "IDS", "", false),
+    NAME        (NameVars.class, "NAME", null, true),
+    NAMES       (NameVars.class, "NAMES", "", false),
+    PLAYER      (PlayerVars.class, "PLAYER", null, true),
+    TBLOCKS     (BlockStatVars.class, "TBLOCKS", "tblocks", true),
+    RBLOCKS     (BlockStatVars.class, "RBLOCKS", "rblocks", false),
+    PBLOCKS     (BlockStatVars.class, "PBLOCKS", "pblocks", false),
+    PPER        (CompositionTriggerVars.class, "PPER", "pper", true),
+    NPER        (CompositionTriggerVars.class, "NPER", "nper", false),
+    PHOUR       (TimeTriggerVars.class, "PHOUR", "phour", true),
+    PMIN        (TimeTriggerVars.class, "PMIN", "pmin", false),
+    PSEC        (TimeTriggerVars.class, "PSEC", "psec", false),
+    PTIME       (TimeTriggerVars.class, "PTIME", "ptime", false),
+    NHOUR       (TimeTriggerVars.class, "NHOUR", "nhour", true),
+    NMIN        (TimeTriggerVars.class, "NMIN", "nmin", false),
+    NSEC        (TimeTriggerVars.class, "NSEC", "nsec", false),
+    NTIME       (TimeTriggerVars.class, "NTIME", "ntime", false);
     
     MineVariable(Class<?> clazz, String name, String option, boolean showHelp) {
         try {
@@ -69,11 +72,12 @@ public enum MineVariable {
     }
     
     private BaseVar object;
+    
+    @Getter(AccessLevel.PUBLIC)
     private String name;
     private String option;
     private boolean showHelp;
     
-    public String getName() { return name; }
     public String parse(Mine mine) { return object.parse(mine, option); }
     public void getHelp() { if(showHelp) object.getHelp(); }
 }

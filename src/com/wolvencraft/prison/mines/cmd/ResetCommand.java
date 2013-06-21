@@ -66,7 +66,7 @@ public class ResetCommand implements BaseCommand {
             return false;
         }
         
-        if(curMine.getCooldown() && curMine.getCooldownEndsIn() > 0 && !Util.hasPermission("prison.mine.bypass.cooldown")) {
+        if(curMine.isCooldownEnabled() && curMine.getCooldownEndsIn() > 0 && !Util.hasPermission("prison.mine.bypass.cooldown")) {
             Message.sendFormattedError(Util.parseVars(PrisonMine.getLanguage().RESET_COOLDOWN, curMine));
             Message.debug("| Cooldown is in effect. Checking for bypass...");
             Message.debug("| Failed. Cancelling...");
@@ -82,7 +82,7 @@ public class ResetCommand implements BaseCommand {
         
         broadcastMessage = PrisonMine.getLanguage().RESET_MANUAL;
         
-        if(curMine.getCooldown()) curMine.resetCooldown();
+        if(curMine.isCooldownEnabled()) curMine.resetCooldown();
         
         if(!(curMine.reset())) {
             Message.debug("| Error while executing the generator! Aborting.");

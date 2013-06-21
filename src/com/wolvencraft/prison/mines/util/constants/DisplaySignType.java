@@ -20,20 +20,20 @@
 
 package com.wolvencraft.prison.mines.util.constants;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter(AccessLevel.PUBLIC)
+@AllArgsConstructor(access=AccessLevel.PRIVATE)
 public enum DisplaySignType {
     
-    Display("display"),
-    Reset("reset"),
-    Paid("paid"),
-    Output("output");
-    
-    DisplaySignType(String alias) {
-        this.alias = alias;
-    }
+    Display     ("display"),
+    Reset       ("reset"),
+    Paid        ("paid"),
+    Output      ("output");
     
     String alias;
-    
-    public String getAlias() { return alias; }
     
     public static DisplaySignType get(String alias) {
         for(DisplaySignType signType : DisplaySignType.values()) {

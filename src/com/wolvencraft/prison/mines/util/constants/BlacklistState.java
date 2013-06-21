@@ -20,20 +20,20 @@
 
 package com.wolvencraft.prison.mines.util.constants;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter(AccessLevel.PUBLIC)
+@AllArgsConstructor(access=AccessLevel.PRIVATE)
 public enum BlacklistState {
     DISABLED (0),
     WHITELIST (1),
     BLACKLIST (2);
     
-    BlacklistState(int id) {
-        this.id = id;
-    }
-    
     private int id;
     
-    public int getId() { return id; }
-    
-    public static BlacklistState fromId(int id) {
+    public static BlacklistState get(int id) {
         for(BlacklistState type : BlacklistState.values()) {
             if(type.getId() == id) return type;
         }

@@ -65,12 +65,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * A virtual representation of a cuboid region that is being reset during the runtime
  * @author bitWolfy
  *
  */
 @SerializableAs("pMine")
+@Getter(AccessLevel.PUBLIC)
+@Setter(AccessLevel.PUBLIC)
 public class Mine implements ConfigurationSerializable {
     private String id;
     private String name;
@@ -82,7 +88,7 @@ public class Mine implements ConfigurationSerializable {
     private Location tpPoint;
     
     private List<MineBlock> blocks;
-    private Blacklist blockReplaceBlacklist;
+    private Blacklist blacklist;
     
     private List<BaseTrigger> resetTriggers;
     private List<BaseFlag> flags;
@@ -93,7 +99,7 @@ public class Mine implements ConfigurationSerializable {
     
     private List<Integer> warningTimes;
     
-    private List<ProtectionType> enabledProtection;
+    private List<ProtectionType> protection;
     private PrisonRegion protectionRegion; 
     private Blacklist breakBlacklist;
     private Blacklist placeBlacklist;
@@ -122,7 +128,7 @@ public class Mine implements ConfigurationSerializable {
         
         blocks = new ArrayList<MineBlock>();
         blocks.add(new MineBlock(new MaterialData(Material.AIR), 1.0));
-        blockReplaceBlacklist = new Blacklist();
+        blacklist = new Blacklist();
         
         resetTriggers = new ArrayList<BaseTrigger>();
         
@@ -134,7 +140,7 @@ public class Mine implements ConfigurationSerializable {
         
         flags = new ArrayList<BaseFlag>();
         
-        enabledProtection = new ArrayList<ProtectionType>();
+        protection = new ArrayList<ProtectionType>();
         protectionRegion = region.clone();
         breakBlacklist = new Blacklist();
         placeBlacklist = new Blacklist();
@@ -174,7 +180,7 @@ public class Mine implements ConfigurationSerializable {
         this.tpPoint = tpPoint;
         
         this.blocks = blocks;
-        this.blockReplaceBlacklist = blockReplaceBlacklist;
+        this.blacklist = blockReplaceBlacklist;
         
         this.resetTriggers = new ArrayList<BaseTrigger>();
         this.flags = new ArrayList<BaseFlag>();
@@ -187,7 +193,7 @@ public class Mine implements ConfigurationSerializable {
         
         this.warningTimes = warningTimes;
         
-        this.enabledProtection = enabledProtection;
+        this.protection = enabledProtection;
         this.protectionRegion = region.clone(); 
         this.breakBlacklist = breakBlacklist;
         this.placeBlacklist = placeBlacklist;
@@ -214,7 +220,7 @@ public class Mine implements ConfigurationSerializable {
         tpPoint = ((SimpleLoc) map.get("tpPoint")).toLocation();
         
         blocks = (List<MineBlock>) map.get("blocks");
-        blockReplaceBlacklist = (Blacklist) map.get("blockReplaceBlacklist");
+        blacklist = (Blacklist) map.get("blockReplaceBlacklist");
         
         resetTriggers = (List<BaseTrigger>) map.get("resetTriggers");
 
@@ -228,7 +234,7 @@ public class Mine implements ConfigurationSerializable {
         
         if(map.containsValue("silent") && !hasFlag(MineFlag.Silent) && ((Boolean) map.get("silent")).booleanValue()) flags.add(MineFlag.Silent.dispatch());
         
-        enabledProtection = ProtectionType.toProtectionList((List<String>) map.get("enabledProtection"));
+        protection = ProtectionType.toProtectionList((List<String>) map.get("enabledProtection"));
         protectionRegion = (PrisonRegion) map.get("protectionRegion");
         breakBlacklist = (Blacklist) map.get("breakBlacklist");
         placeBlacklist = (Blacklist) map.get("placeBlacklist");
@@ -255,7 +261,7 @@ public class Mine implements ConfigurationSerializable {
         map.put("tpPoint", new SimpleLoc(tpPoint));
         
         map.put("blocks", blocks);
-        map.put("blockReplaceBlacklist", blockReplaceBlacklist);
+        map.put("blockReplaceBlacklist", blacklist);
         
         map.put("resetTriggers", resetTriggers);
         
@@ -266,7 +272,7 @@ public class Mine implements ConfigurationSerializable {
         
         map.put("flags", MineFlag.toStringList(flags));
         
-        map.put("enabledProtection", ProtectionType.toStringList(enabledProtection));
+        map.put("enabledProtection", ProtectionType.toStringList(protection));
         map.put("protectionRegion", protectionRegion);
         map.put("breakBlacklist", breakBlacklist);
         map.put("placeBlacklist", placeBlacklist);
@@ -314,9 +320,6 @@ public class Mine implements ConfigurationSerializable {
         boolean result = true;
         if(hasFlag(MineFlag.SurfaceOre)) result = CustomTerrainRoutine.run(this);
         else {
-// TODO One day, I'll make this work. One day...
-//            if(PrisonMine.isCraftBukkitCompatible()) result = RandomFastTerrainRoutine.run(this);
-//            else
                 result = RandomTerrainRoutine.run(this);
         }
         
@@ -346,48 +349,16 @@ public class Mine implements ConfigurationSerializable {
         return true;
     }
     
-    public String getId()                            { return id; }
-    public String getName()                         { if(name.equalsIgnoreCase("")) return id; else return name; }
+    public String getName()                     { if(name.equalsIgnoreCase("")) return id; else return name; }
+    public boolean hasParent()                  { return (parent != null); }
+    public Mine getSuperParent()                { return getSuperParent(this); }
+    public int getCooldownEndsIn()              { return (int)(cooldownEndsIn / 20); }
+    public List<MineBlock> getBlocks()          { return new ArrayList<MineBlock>(blocks); }
+    public List<Integer> getWarningTimes()      { return new ArrayList<Integer>(warningTimes); }
     
-    public boolean hasParent()                        { return (parent != null); }
-    public String getParent()                         { return parent; }
-    public Mine getSuperParent()                    { return getSuperParent(this); }
-    
-    public PrisonRegion getRegion()                 { return region;}
-    public World getWorld()                         { return world; }
-    public Location getTpPoint()                     { return tpPoint; }
-
-    public Blacklist getBlacklist()                 { return blockReplaceBlacklist; }
-    
-    public boolean getCooldown()                     { return cooldownEnabled; }
-    public int getCooldownPeriod()                     { return cooldownPeriod; }
-    public int getCooldownEndsIn()                     { return (int)(cooldownEndsIn / 20); }
-    
-    public List<ProtectionType> getProtection()         { return enabledProtection; }
-    public PrisonRegion getProtectionRegion()         { return protectionRegion; }
-    public Blacklist getBreakBlacklist()             { return breakBlacklist; }
-    public Blacklist getPlaceBlacklist()             { return placeBlacklist; }
-    
-    public String getLastResetBy()                    { return lastResetBy; }
-    
-    public void setName(String name)                                 { this.name = name; }
-    public void setParent(String parent)                             { this.parent = parent; }
-    public void setRegion(PrisonSelection sel)                        { this.region = null; this.region = new PrisonRegion(sel); }
-    public void setTpPoint(Location tpPoint)                         { this.tpPoint = tpPoint; }
-    
-    public void setCooldownEnabled(boolean cooldownEnabled)         { this.cooldownEnabled = cooldownEnabled; }
-    public void setCooldownPeriod (int cooldownPeriod)                 { this.cooldownPeriod = cooldownPeriod; }
-    public void updateCooldown(long ticks)                             { cooldownEndsIn -= ticks; }
-    public void resetCooldown()                                     { cooldownEndsIn = cooldownPeriod * 20; }
-    
-    public void setLastResetBy(String issuer)                        { this.lastResetBy = issuer; }
-    
-
-    public List<MineBlock> getLocalBlocks() {
-        List<MineBlock> tempBlocks = new ArrayList<MineBlock>();
-        for(MineBlock block : blocks) tempBlocks.add(block);
-        return tempBlocks;
-    }
+    public void setRegion(PrisonSelection sel)  { this.region = null; this.region = new PrisonRegion(sel); }
+    public void updateCooldown(long ticks)      { cooldownEndsIn -= ticks; }
+    public void resetCooldown()                 { cooldownEndsIn = cooldownPeriod * 20; }
     
     public void addBlock(MineBlock block) {
         blocks.add(block);
@@ -417,12 +388,6 @@ public class Mine implements ConfigurationSerializable {
             if(curBlock.getChance() > mostCommon.getChance()) mostCommon = curBlock;
         }
         return mostCommon;
-    }
-        
-    public List<Integer> getLocalWarningTimes()        {
-        List<Integer> localWarningTimes = new ArrayList<Integer>();
-        for(Integer time : warningTimes) localWarningTimes.add(time);
-        return localWarningTimes;
     }
     
     public boolean hasWarnings() {

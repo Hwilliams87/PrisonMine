@@ -39,7 +39,7 @@ public class AutomaticResetRoutine {
             return;
         }
         
-        if(mine.getCooldown()) mine.resetCooldown();
+        if(mine.isCooldownEnabled()) mine.resetCooldown();
         
         String broadcastMessage = PrisonMine.getLanguage().RESET_AUTOMATIC;
         

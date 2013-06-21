@@ -48,7 +48,7 @@ public class Blacklist implements ConfigurationSerializable {
         type = BlacklistState.DISABLED;
         if(me.containsKey("enabled") && ((Boolean) me.get("enabled"))) type = BlacklistState.BLACKLIST;
         if(me.containsKey("whitelist") && ((Boolean) me.get("whitelist"))) type = BlacklistState.WHITELIST;
-        if(me.containsKey("type")) type = BlacklistState.fromId((Integer) me.get("type"));
+        if(me.containsKey("type")) type = BlacklistState.get((Integer) me.get("type"));
         
         Map<Integer, Byte> materials = (Map<Integer, Byte>) me.get("blocks");
         blocks = new ArrayList<MaterialData>();

@@ -41,7 +41,7 @@ public class FlagCommand implements BaseCommand {
         MineFlag flag = MineFlag.get(args[1]);
         if(flag == null) { Message.sendFormattedError("The specified flag does not exist"); return false; }
         
-        if(flag.hasOptions()) {
+        if(flag.isParameterized()) {
             if(!flag.isMultiWord() && args.length != 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
             if(!flag.isOptionValid(args[2])) { Message.sendFormattedError("This option is not valid"); return false; }
             
@@ -54,7 +54,7 @@ public class FlagCommand implements BaseCommand {
             }
             
             if(curMine.hasFlag(flag)) {
-                if(flag.acceptDuplicates()) {
+                if(flag.isDuplicateAware()) {
                     if(curMine.hasFlag(flag, argString)) {
                         curMine.removeFlag(flag, argString);
                         Message.sendFormattedMine("Flag " + flag + " has been removed");

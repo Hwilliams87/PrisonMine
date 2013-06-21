@@ -150,7 +150,7 @@ public class InfoCommand  implements BaseCommand {
             try {
                 if(parentMine.hasWarnings()) {
                     String line = ChatColor.YELLOW + "   Warnings: " + ChatColor.WHITE;
-                    List<Integer> warnings = parentMine.getLocalWarningTimes();
+                    List<Integer> warnings = parentMine.getWarningTimes();
                     line += Util.secondsToTime(warnings.get(0));
                     if(warnings.size() > 1) {
                         for(int i = 1; i < warnings.size(); i++) {
@@ -192,7 +192,7 @@ public class InfoCommand  implements BaseCommand {
             
             // Cooldown
             try {
-                if(curMine.getCooldown()) {
+                if(curMine.isCooldownEnabled()) {
                     text.add(ChatColor.YELLOW + "   Cooldown: " + ChatColor.GREEN + Util.secondsToTime(curMine.getCooldownEndsIn()) + ChatColor.WHITE + " / " + ChatColor.RED + Util.secondsToTime(curMine.getCooldownPeriod()));
                 }
             } catch (Exception e) { Message.log(Level.SEVERE, "An error occurred while displaying the flags"); }

@@ -68,19 +68,12 @@ public class PrisonMine extends PrisonPlugin {
     private static List<DisplaySign> signs;
 
     private static Map<CommandSender, Mine> curMines;
-    
     private static TimedTask signTask;
-    
-    /**
-     * <b>Default constructor</b><br />
-     * Establishes the connection with PrisonSuite and loads plugin configuration
-     */
-    public PrisonMine() {
-        instance = this;
-    }
     
     @Override
     public void onEnable() {
+        instance = this;
+        
         prisonSuite = PrisonSuite.addPlugin(this);
 
         getConfig().options().copyDefaults(true);
@@ -130,7 +123,6 @@ public class PrisonMine extends PrisonPlugin {
         new DisplaySignListener(this);
         new PlayerListener(this);
         new FlagListener(this);
-//      new RedstoneListener(this);
         
         Message.debug("+ Sending sign task to PrisonCore");
         signTask = new DisplaySignTask();
@@ -144,27 +136,6 @@ public class PrisonMine extends PrisonPlugin {
             Message.log("Resetting all mines, as defined in the configuration");
             for(Mine mine : mines) AutomaticResetRoutine.run(mine);
         }
-    }
-    
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(!command.getName().equalsIgnoreCase("mine")) return false;
-
-        CommandManager.setSender(sender);
-        
-        if(args.length == 0) { CommandManager.HELP.run(""); return true; }
-        
-        for(CommandManager cmd : CommandManager.values()) {
-            if(cmd.isCommand(args[0])) {
-                boolean result = cmd.run(args);
-                CommandManager.resetSender();
-                return result;
-            }
-        }
-        
-        Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);
-        CommandManager.resetSender();
-        return false;
     }
     
     @Override
@@ -182,6 +153,25 @@ public class PrisonMine extends PrisonPlugin {
         signTask.cancel();
         
         Message.log("Plugin stopped");
+    }
+    
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        CommandManager.setSender(sender);
+        
+        if(args.length == 0) { CommandManager.HELP.run(""); return true; }
+        
+        for(CommandManager cmd : CommandManager.values()) {
+            if(cmd.isCommand(args[0])) {
+                boolean result = cmd.run(args);
+                CommandManager.resetSender();
+                return result;
+            }
+        }
+        
+        Message.sendFormattedError(PrisonMine.getLanguage().ERROR_COMMAND);
+        CommandManager.resetSender();
+        return false;
     }
     
     public void reloadLanguageData() {
@@ -386,16 +376,5 @@ public class PrisonMine extends PrisonPlugin {
      */
     public static void removeSign (DisplaySign sign) {
         signs.remove(sign);
-    }
-    
-    /**
-     * Wraps around a BlocksUtil method to check if the server's bukkit version differs from the one
-     * the plugin was compiled with
-     * @return <b>true</b> if it is safe to proceed, <b>false</b> otherwise
-     */
-    public static boolean isCraftBukkitCompatible() {
-        try { com.wolvencraft.prison.mines.util.BlocksUtil.isBukkitCompatible(); }
-        catch (Throwable t) { return false; }
-        return true;
     }
 }

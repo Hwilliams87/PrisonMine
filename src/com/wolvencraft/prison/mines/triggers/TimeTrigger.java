@@ -99,7 +99,7 @@ public class TimeTrigger implements BaseTrigger {
             return;
         }
         
-        if(mineObj.getCooldown() && mineObj.getCooldownEndsIn() > 0) {
+        if(mineObj.isCooldownEnabled() && mineObj.getCooldownEndsIn() > 0) {
             mineObj.updateCooldown(PrisonMine.getSettings().TICKRATE);
         }
         
@@ -117,7 +117,7 @@ public class TimeTrigger implements BaseTrigger {
             Message.debug("+---------------------------------------------");
         }
         
-        List<Integer> warnTimes = mineObj.getLocalWarningTimes();
+        List<Integer> warnTimes = mineObj.getWarningTimes();
         if(mineObj.hasWarnings() && warnTimes.indexOf((int)(next / 20)) != -1) {
             if(!mineObj.hasFlag(MineFlag.Silent))
                 Message.broadcast(Util.parseVars(PrisonMine.getLanguage().RESET_WARNING, mineObj));

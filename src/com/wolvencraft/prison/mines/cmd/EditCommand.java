@@ -75,7 +75,7 @@ public class EditCommand  implements BaseCommand {
             if(args.length == 1) { getHelp(); return true; }
             if(args.length > 3) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
             
-            List<MineBlock> localBlocks = curMine.getLocalBlocks();
+            List<MineBlock> localBlocks = curMine.getBlocks();
             if(localBlocks.size() == 0) curMine.addBlock(new MaterialData(Material.AIR), 1);
             
             MaterialData block = Util.getBlock(args[1]);
@@ -157,7 +157,7 @@ public class EditCommand  implements BaseCommand {
             if(args.length > 2) { Message.sendFormattedError(language.ERROR_ARGUMENTS); return false; }
             
             if(args.length == 1) {
-                if(curMine.getCooldown()) {
+                if(curMine.isCooldownEnabled()) {
                     curMine.setCooldownEnabled(false);
                     Message.sendFormattedMine("Reset cooldown " + ChatColor.RED + "disabled");
                 }

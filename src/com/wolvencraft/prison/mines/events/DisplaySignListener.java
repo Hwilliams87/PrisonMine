@@ -65,7 +65,7 @@ public class DisplaySignListener implements Listener {
                 for(Block signBlock : signBlocks) {
                     DisplaySign sign = DisplaySign.get(signBlock.getLocation());
                     if(sign != null && sign.getType().equals(DisplaySignType.Reset)) {
-                        Mine curMine = Mine.get(sign.getParent());
+                        Mine curMine = Mine.get(sign.getParentMine());
                         if(curMine == null) return;
                         Player player = event.getPlayer();
                         
@@ -74,7 +74,7 @@ public class DisplaySignListener implements Listener {
                             return;
                         }
                         
-                        if(curMine.getCooldown() && curMine.getCooldownEndsIn() > 0 && !player.hasPermission("prison.mine.bypass.cooldown")) {
+                        if(curMine.isCooldownEnabled() && curMine.getCooldownEndsIn() > 0 && !player.hasPermission("prison.mine.bypass.cooldown")) {
                             Message.sendFormattedError(player, PrisonMine.getLanguage().RESET_COOLDOWN, true, curMine);
                             return;
                         }

@@ -23,6 +23,10 @@ package com.wolvencraft.prison.mines.util.constants;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * Represents the three types of protection that can be enabled for a mine. The types are:<br /><br />
  * <b>PVP</b><br />
@@ -31,16 +35,15 @@ import java.util.List;
  * @author bitWolfy
  *
  */
+
+@Getter(AccessLevel.PUBLIC)
+@AllArgsConstructor(access=AccessLevel.PRIVATE)
 public enum ProtectionType {
-    PVP("PVP"),
-    BLOCK_PLACE("BLOCK_PLACE"),
-    BLOCK_BREAK("BLOCK_BREAK");
+    PVP         ("PVP"),
+    BLOCK_PLACE ("BLOCK_PLACE"),
+    BLOCK_BREAK ("BLOCK_BREAK");
     
     private String alias;
-    
-    ProtectionType(String alias) { this.alias = alias; }
-    
-    public String getAlias() { return alias; }
     
     /**
      * Returns the enum constant based on its alias

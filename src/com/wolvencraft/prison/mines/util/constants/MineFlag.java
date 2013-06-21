@@ -24,47 +24,47 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import com.wolvencraft.prison.mines.util.Message;
 import com.wolvencraft.prison.mines.util.flags.*;
 
+@Getter(AccessLevel.PUBLIC)
+@AllArgsConstructor(access=AccessLevel.PRIVATE)
 public enum MineFlag {
     
-    CommandAfterFlag(CommandAfterFlag.class, "commandafter", true, true, true),
-    CommandBeforeFlag(CommandBeforeFlag.class, "commandbefore", true, true, true),
-    MoneyReward(MoneyRewardFlag.class, "moneyreward", true, false),
-    MoneyRewardPlus(MoneyRewardPlusFlag.class, "moneyrewardpluss", true, false),
-    NoExpDrop(NoExpDropFlag.class, "noexpdrop", false, false),
-    NoHungerLoss(NoHungerLossFlag.class, "nohungerloss", false, false),
-    NoPlayerDamage(NoPlayerDamageFlag.class, "noplayerdamage", false, false),
-    NoToolDamage(NoToolDamageFlag.class, "notooldamage", false, false),
-    PlayerEffect(PlayerEffectFlag.class, "playereffect", true, true),
-    ResetSound(ResetSoundFlag.class, "resetsound", true, false),
-    Silent(SilentFlag.class, "silent", false, false),
-    SuperTools(SuperToolsFlag.class, "supertools", false, false),
-    SurfaceOre(SurfaceOreFlag.class, "surfaceore", true, false),
-    ToolReplace(ToolReplaceFlag.class, "toolreplace", false, false);
+    CommandAfterFlag    (CommandAfterFlag.class, "commandafter", true, true, true),
+    CommandBeforeFlag   (CommandBeforeFlag.class, "commandbefore", true, true, true),
+    MoneyReward         (MoneyRewardFlag.class, "moneyreward", true, false),
+    MoneyRewardPlus     (MoneyRewardPlusFlag.class, "moneyrewardpluss", true, false),
+    NoExpDrop           (NoExpDropFlag.class, "noexpdrop", false, false),
+    NoHungerLoss        (NoHungerLossFlag.class, "nohungerloss", false, false),
+    NoPlayerDamage      (NoPlayerDamageFlag.class, "noplayerdamage", false, false),
+    NoToolDamage        (NoToolDamageFlag.class, "notooldamage", false, false),
+    PlayerEffect        (PlayerEffectFlag.class, "playereffect", true, true),
+    ResetSound          (ResetSoundFlag.class, "resetsound", true, false),
+    Silent              (SilentFlag.class, "silent", false, false),
+    SuperTools          (SuperToolsFlag.class, "supertools", false, false),
+    SurfaceOre          (SurfaceOreFlag.class, "surfaceore", true, false),
+    ToolReplace         (ToolReplaceFlag.class, "toolreplace", false, false);
+
     
-    MineFlag(Class<?> clazz, String alias, boolean hasOptions, boolean acceptDuplicates) {
-        this.clazz = clazz;
-        this.alias = alias;
-        this.hasOptions = hasOptions;
-        this.multiWord = false;
-        this.acceptDuplicates = acceptDuplicates;
-    }
+    @Getter(AccessLevel.NONE) Class<?> clazz;
     
-    MineFlag(Class<?> clazz, String alias, boolean hasOptions, boolean multiWord, boolean acceptDuplicates) {
-        this.clazz = clazz;
-        this.alias = alias;
-        this.hasOptions = hasOptions;
-        this.multiWord = multiWord;
-        this.acceptDuplicates = acceptDuplicates;
-    }
-    
-    Class<?> clazz;
     String alias;
-    boolean hasOptions;
+    boolean parameterized;
     boolean multiWord;
-    boolean acceptDuplicates;
+    boolean duplicateAware;
+    
+    MineFlag(Class<?> clazz, String alias, boolean parameterized, boolean duplicateAware) {
+        this.clazz = clazz;
+        this.alias = alias;
+        this.parameterized = parameterized;
+        this.multiWord = false;
+        this.duplicateAware = duplicateAware;
+    }
     
     public BaseFlag dispatch() {
         try{
@@ -78,10 +78,6 @@ public enum MineFlag {
         }
     }
     
-    public boolean hasOptions() { return hasOptions; }
-    public boolean isMultiWord() { return multiWord; }
-    public boolean acceptDuplicates() { return acceptDuplicates; }
-    public String getAlias() { return alias; }
     public boolean isOptionValid (String option) { return this.dispatch().isOptionValid(option); }
     
     public static MineFlag get(String alias) {
@@ -99,7 +95,7 @@ public enum MineFlag {
     public static List<String> toStringList(List<BaseFlag> source) {
         List<String> list = new ArrayList<String>();
         for(BaseFlag flag : source) {
-            if(MineFlag.get(flag.getName()).hasOptions()) list.add(flag.getName() + "," + flag.getOption());
+            if(MineFlag.get(flag.getName()).isParameterized()) list.add(flag.getName() + "," + flag.getOption());
             else list.add(flag.getName());
         }
         return list;

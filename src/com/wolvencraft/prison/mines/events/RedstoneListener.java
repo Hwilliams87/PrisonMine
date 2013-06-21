@@ -60,7 +60,7 @@ public class RedstoneListener implements Listener {
                 if (adjBlock.isBlockPowered()) break;
                 for(DisplaySign sign : PrisonMine.getStaticSigns()) {
                     if(!sign.getType().equals(DisplaySignType.Reset) || sign.getAttachedBlock() == null || !sign.getAttachedBlock().getLocation().equals(adjBlock.getLocation())) continue;
-                    Mine curMine = Mine.get(sign.getParent());
+                    Mine curMine = Mine.get(sign.getParentMine());
                     if(curMine == null) return;
                     RedstoneResetRoutine.run(curMine);
                 }
